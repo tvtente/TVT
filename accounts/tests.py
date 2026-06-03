@@ -289,6 +289,19 @@ class UserNotificationTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "New post from notif-author")
 
+    def test_deleting_post_keeps_notification_and_clears_related_post(self):
+        post = self._create_published_post(slug="deletable-post", title="Deletable Post")
+        notification = UserNotification.objects.get(
+            recipient=self.follower,
+            notification_type=UserNotification.NotificationType.FOLLOWED_AUTHOR_PUBLISHED_POST,
+        )
+
+        post.delete()
+
+        notification.refresh_from_db()
+        self.assertIsNone(notification.related_post)
+        self.assertIn("Deletable Post", notification.message)
+
     def test_approved_comment_on_authors_post_creates_notification(self):
         post = self._create_published_post(slug="commented-post", title="Commented Post")
         commenter = User.objects.create_user(username="notif-commenter", password="testpass123")

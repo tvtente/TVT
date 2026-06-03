@@ -1,0 +1,19 @@
+{% extends "admin/delete_confirmation.html" %}
+{% load i18n %}
+
+{% block delete_confirm %}
+  {% if deletion_impact %}
+    <div class="messagelist">
+      <div class="warning">
+        <p>
+          {% blocktranslate count category_count=deletion_impact.category_count with related_posts=deletion_impact.related_posts_count uncategorized_posts=deletion_impact.uncategorized_posts_count %}
+            This category is currently linked to {{ related_posts }} post. Deleting it will not delete any post; it will only remove the category relationship. {{ uncategorized_posts }} post would be left without any category.
+          {% plural %}
+            These {{ category_count }} categories are currently linked to {{ related_posts }} posts. Deleting them will not delete any post; they will only remove the category relationships. {{ uncategorized_posts }} posts would be left without any category.
+          {% endblocktranslate %}
+        </p>
+      </div>
+    </div>
+  {% endif %}
+  {{ block.super }}
+{% endblock %}

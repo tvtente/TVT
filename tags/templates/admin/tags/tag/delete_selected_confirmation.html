@@ -1,0 +1,19 @@
+{% extends "admin/delete_selected_confirmation.html" %}
+{% load i18n %}
+
+{% block content %}
+  {% if not perms_lacking and not protected and deletion_impact %}
+    <div class="messagelist">
+      <div class="warning">
+        <p>
+          {% blocktranslate count tag_count=deletion_impact.tag_count with related_posts=deletion_impact.related_posts_count untagged_posts=deletion_impact.untagged_posts_count %}
+            This tag is currently linked to {{ related_posts }} post. Deleting it will not delete any post; it will only remove the tag relationship. {{ untagged_posts }} post would be left without any tag.
+          {% plural %}
+            These {{ tag_count }} tags are currently linked to {{ related_posts }} posts. Deleting them will not delete any post; they will only remove the tag relationships. {{ untagged_posts }} posts would be left without any tag.
+          {% endblocktranslate %}
+        </p>
+      </div>
+    </div>
+  {% endif %}
+  {{ block.super }}
+{% endblock %}

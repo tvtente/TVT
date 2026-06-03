@@ -433,7 +433,7 @@ class UserNotification(models.Model):
         "posts.Post",
         null=True,
         blank=True,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         related_name="notifications",
         verbose_name=_("Related post"),
     )
