@@ -1,0 +1,89 @@
+{% extends "core/base.html" %}
+{% load i18n %}
+
+{% block seo_title %}{{ meta_title|default:title }}{% endblock %}
+{% block seo_description %}{{ meta_description }}{% endblock %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-4 p-lg-5">
+            <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
+                <div>
+                    <h1 class="display-6 fw-semibold mb-2">{% translate "Order created" %}</h1>
+                    <p class="text-muted mb-0">
+                        {% translate "Your provisional order has been saved and is ready for the payment step." %}
+                    </p>
+                </div>
+                <span class="badge text-bg-dark fs-6">{{ order.reference }}</span>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-7">
+                    <h2 class="h5 mb-3">{% translate "Order items" %}</h2>
+                    <div class="list-group">
+                        {% for item in order.items.all %}
+                            <div class="list-group-item">
+                                <div class="d-flex justify-content-between align-items-start gap-3">
+                                    <div>
+                                        <strong class="d-block">{{ item.title_snapshot }}</strong>
+                                        {% if item.subtitle_snapshot %}
+                                            <span class="text-muted small d-block">{{ item.subtitle_snapshot }}</span>
+                                        {% endif %}
+                                        <span class="text-muted small">
+                                            {% translate "Quantity" %}: {{ item.quantity }}
+                                        </span>
+                                    </div>
+                                    <strong>{{ item.line_total }} {{ order.currency }}</strong>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="col-lg-5">
+                    <div class="card bg-light border-0 h-100">
+                        <div class="card-body p-4">
+                            <h2 class="h5 mb-3">{% translate "Order summary" %}</h2>
+
+                            {% if order.full_name %}
+                                <p class="mb-2"><strong>{% translate "Full name" %}:</strong> {{ order.full_name }}</p>
+                            {% endif %}
+                            {% if order.email %}
+                                <p class="mb-3"><strong>{% translate "Email" %}:</strong> {{ order.email }}</p>
+                            {% endif %}
+
+                            <p class="mb-2"><strong>{% translate "Status" %}:</strong> {{ order.get_status_display }}</p>
+                            <p class="mb-4"><strong>{% translate "Subtotal" %}:</strong> {{ order.subtotal }} {{ order.currency }}</p>
+
+                            <div class="alert alert-warning border-0 small">
+                                {% translate "The payment gateway is still unavailable. You can keep this order as a provisional record and connect the payment step later." %}
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                {% if order.status == "pending_payment" %}
+                                    <form action="{% url 'checkout_pay' %}" method="post" class="m-0">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="reference" value="{{ order.reference }}">
+                                        <button type="submit" class="btn btn-dark w-100">
+                                            {% translate "Proceed to payment" %}
+                                        </button>
+                                    </form>
+                                {% else %}
+                                    <button type="button" class="btn btn-secondary" disabled>
+                                        {% translate "Payment unavailable" %}
+                                    </button>
+                                {% endif %}
+                                <a href="{% url 'checkout_detail' %}" class="btn btn-outline-dark">
+                                    {% translate "Back to checkout" %}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

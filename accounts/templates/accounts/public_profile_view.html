@@ -1,0 +1,85 @@
+<!-- File: accounts/templates/accounts/public_profile_view.html -->
+{% extends 'core/base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{{ profile.get_display_name }}{% translate "'s Profile" %}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'accounts/css/profile_cv.css' %}">
+{% endblock %}
+
+{% block breadcrumbs %}
+  {% include "core/partials/_breadcrumbs.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="container my-5 profile-cv-page">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="d-flex justify-content-end mb-3">
+                <a
+                    href="{% url 'accounts:public_profile_pdf' user_obj.username %}"
+                    class="btn btn-primary cv-download-btn"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <i class="fas fa-file-pdf me-2"></i>{% translate "Download PDF" %}
+                </a>
+            </div>
+
+            <div id="profile-cv-export" class="cv-export-sheet">
+                {% include "accounts/_public_profile_cv_content.html" %}
+            </div>
+
+            <section id="profile-posts" class="cv-section card shadow-sm border-0 mb-4">
+                <div class="card-header bg-white border-0 pt-4 px-4">
+                    <h2 class="h5 mb-1">{% translate "Posts by" %} {{ profile.get_display_name }}</h2>
+                </div>
+                <div class="card-body px-4 pb-4">
+                    <div class="list-group list-group-flush">
+                        {% for post in user_posts %}
+                            <a href="{{ post.get_absolute_url }}" class="list-group-item list-group-item-action d-flex flex-column flex-md-row justify-content-between gap-2">
+                                <span>{{ post.title }}</span>
+                                <small class="text-muted">
+                                    {% translate "Published on" %} {{ post.published_date|date:"DATE_FORMAT" }}
+                                </small>
+                            </a>
+                        {% empty %}
+                            <p class="mb-0">{% translate "This user has not published any blog posts yet." %}</p>
+                        {% endfor %}
+                    </div>
+
+                    {% include 'core/partials/_pagination.html' with page_obj=user_posts param_name='posts_page' anchor='profile-posts' %}
+                </div>
+            </section>
+
+            <section id="profile-comments" class="cv-section card shadow-sm border-0">
+                <div class="card-header bg-white border-0 pt-4 px-4">
+                    <h2 class="h5 mb-1">{% translate "Comments by" %} {{ profile.get_display_name }}</h2>
+                </div>
+                <div class="card-body px-4 pb-4">
+                    <div class="list-group list-group-flush">
+                        {% for comment in user_comments %}
+                            <div class="list-group-item">
+                                <small class="text-muted me-2">
+                                    {{ comment.created_at|timesince }} {% translate "ago" %}:
+                                </small>
+                                <p class="mb-1">{{ comment.content|truncatechars:100 }}</p>
+                                <a href="{{ comment.post.get_absolute_url }}#comment-{{ comment.id }}" class="btn btn-sm btn-link">
+                                    {% translate "View in context" %}
+                                </a>
+                            </div>
+                        {% empty %}
+                            <p class="mb-0">{% translate "This user has not posted any comments yet." %}</p>
+                        {% endfor %}
+                    </div>
+
+                    {% include 'core/partials/_pagination.html' with page_obj=user_comments param_name='comments_page' anchor='profile-comments' %}
+                </div>
+            </section>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

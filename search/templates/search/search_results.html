@@ -1,0 +1,74 @@
+<!-- search/templates/search/search_results.html -->
+{% extends 'core/base.html' %}
+{% load i18n %}
+{% block content %}
+<div class="container mt-5">
+    {# --- Search Results Header --- #}
+    {% if query %}
+        <h1 class="display-5">
+            {% translate "Search results for:" %} <span class="text-primary">"{{ query }}"</span>
+        </h1>
+        <p class="lead text-muted">
+            {# Manual pluralization for total results #}
+            {% if total_results == 1 %}
+                {% blocktranslate trimmed %}1 result found.{% endblocktranslate %}
+            {% else %}
+                {% blocktranslate with count=total_results trimmed %}
+                {{ count }} results found.
+                {% endblocktranslate %}
+            {% endif %}
+        </p>
+    {% else %}
+        <h1 class="display-5">{% translate "Search" %}</h1>
+        <p class="lead text-muted">{% translate "Please enter a term in the search bar above." %}</p>
+    {% endif %}
+
+    <hr class="my-4">
+
+    {# --- Display Blog Post Results --- #}
+    {% if post_results %}
+        <h3 class="mb-3">{% translate "Blog Posts Found" %}</h3>
+        <ul class="list-group list-group-flush mb-5">
+            {% for post in post_results %}
+            <li class="list-group-item">
+                {% with social_image=post.get_social_image %}
+                <div class="d-flex gap-3 align-items-start">
+                    {% if social_image %}
+                    <a href="{{ post.get_absolute_url }}" class="flex-shrink-0">
+                        <img src="{{ social_image.url }}" class="search-result-thumbnail" alt="{{ post.title }}" loading="lazy">
+                    </a>
+                    {% endif %}
+                    <div class="flex-grow-1">
+                        <a href="{{ post.get_absolute_url }}" class="fs-5 text-decoration-none">{{ post.title }}</a>
+                        <p class="text-muted mb-0"><small>{% translate "Published on" %} {{ post.published_date|date:"DATE_FORMAT" }}</small></p>
+                    </div>
+                </div>
+                {% endwith %}
+            </li>
+            {% endfor %}
+        </ul>
+        {# We reuse the exact same centralized component, just with different variables #}
+        {% include 'core/partials/_pagination.html' with page_obj=post_results param_name='p_post' %}
+    {% endif %}
+
+    {# A divider that only shows if both result types are present #}
+    <hr class="my-5 {% if not page_results or not post_results %}d-none{% endif %}">
+
+    {# --- Display Page Results (ordered by importance) --- #}
+    {# This section is only shown if the search found any matching Pages. #}
+    {% if page_results %}
+        <h3 class="mb-3">{% translate "Pages Found" %}</h3>
+        <ul class="list-group list-group-flush mb-5">
+            {% for page in page_results %}
+            <li class="list-group-item">
+                <a href="{{ page.get_absolute_url }}" class="fs-5 text-decoration-none">{{ page.title }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+        {# Include the centralized pagination component. #}
+        {# We pass the page object and specify the unique URL parameter name for this list. #}
+        {% include 'core/partials/_pagination.html' with page_obj=page_results param_name='p_page' %}
+    {% endif %}
+
+</div>
+{% endblock %}

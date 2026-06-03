@@ -1,0 +1,19 @@
+{% extends 'core/base.html' %}
+{% load i18n %}
+
+{% block breadcrumbs %}
+  {% include "core/partials/_breadcrumbs.html" %}
+{% endblock %}
+
+{% block title %}
+  {{ menu.translated_title }}
+{% endblock %}
+
+{% block content %}
+  <h1>{{ menu.translated_title }}</h1>
+  <ul class="menu-tree">
+    {% for item in menu_items %}
+      {% include "menus/partials/_menu_item.html" with item=item %}
+    {% endfor %}
+  </ul>
+{% endblock %}

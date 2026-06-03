@@ -1,0 +1,100 @@
+{% extends "core/base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Inbox" %}{% endblock %}
+
+{% block breadcrumbs %}
+    {% include "core/partials/_breadcrumbs.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-4">
+        <div>
+            <h1 class="fw-bold mb-1">{% translate "Inbox" %}</h1>
+            <p class="text-muted mb-0">{% translate "System notifications related to your activity and followed authors." %}</p>
+        </div>
+        {% if notifications_page.paginator.count %}
+            <form method="post" action="{% url 'accounts:mark_all_notifications_read' %}" class="m-0">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                <button type="submit" class="btn btn-outline-dark btn-sm">
+                    {% translate "Mark all as read" %}
+                </button>
+            </form>
+        {% endif %}
+    </div>
+
+    {% if notifications_page.object_list %}
+        <div class="vstack gap-3">
+            {% for notification in notifications_page %}
+                <article class="card shadow-sm border-0 {% if not notification.is_read %}border-start border-4 border-warning{% endif %}">
+                    <div class="card-body">
+                        <div class="d-flex flex-column flex-lg-row align-items-lg-start justify-content-between gap-3">
+                            <div class="flex-grow-1">
+                                <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+                                    <h2 class="h5 mb-0">{{ notification.title }}</h2>
+                                    {% if not notification.is_read %}
+                                        <span class="badge text-bg-warning">{% translate "Unread" %}</span>
+                                    {% else %}
+                                        <span class="badge text-bg-light">{% translate "Read" %}</span>
+                                    {% endif %}
+                                </div>
+                                <p class="mb-2">{{ notification.message }}</p>
+                                <p class="text-muted small mb-0">
+                                    {{ notification.created_at|date:"DATETIME_FORMAT" }}
+                                </p>
+                            </div>
+                            <div class="d-flex flex-wrap gap-2">
+                                {% if notification.url %}
+                                    <a href="{{ notification.url }}" class="btn btn-warning btn-sm text-dark">
+                                        {% translate "Open" %}
+                                    </a>
+                                {% endif %}
+                                {% if not notification.is_read %}
+                                    <form method="post" action="{% url 'accounts:mark_notification_read' notification_id=notification.id %}" class="m-0">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                                        <button type="submit" class="btn btn-outline-dark btn-sm">
+                                            {% translate "Mark as read" %}
+                                        </button>
+                                    </form>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+
+        {% if notifications_page.paginator.num_pages > 1 %}
+            <nav class="mt-4" aria-label="{% translate 'Inbox pagination' %}">
+                <ul class="pagination justify-content-center">
+                    {% if notifications_page.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ notifications_page.previous_page_number }}">{% translate "Previous" %}</a>
+                        </li>
+                    {% endif %}
+                    <li class="page-item disabled">
+                        <span class="page-link">
+                            {% blocktranslate with current=notifications_page.number total=notifications_page.paginator.num_pages %}Page {{ current }} of {{ total }}{% endblocktranslate %}
+                        </span>
+                    </li>
+                    {% if notifications_page.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ notifications_page.next_page_number }}">{% translate "Next" %}</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% endif %}
+    {% else %}
+        <div class="card shadow-sm border-0">
+            <div class="card-body py-5 text-center">
+                <h2 class="h4 mb-3">{% translate "No notifications yet" %}</h2>
+                <p class="text-muted mb-0">{% translate "When something relevant happens, it will appear here." %}</p>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

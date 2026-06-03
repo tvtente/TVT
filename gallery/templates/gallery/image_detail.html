@@ -1,0 +1,20 @@
+<!-- File: gallery/templates/gallery/image_detail.html -->
+{% extends 'core/base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{{ image.title }} | {% translate "Image Detail" %}{% endblock %}
+
+{% block content %}
+<div class="container my-5 text-center">
+    <h1>{{ image.title }}</h1>
+    {% if image.description %}
+        <p class="lead">{{ image.description }}</p>
+    {% endif %}
+    {% if image.get_image_url %}
+        <img src="{{ image.get_image_url }}" alt="{{ image.title }}" class="zoomable img-fluid rounded shadow" style="max-width: 800px;">
+    {% endif %}
+    <p class="mt-4 text-muted">{% translate "Uploaded on" %} {{ image.uploaded_at|date:"DATE_FORMAT" }}</p>
+    <p class="mt-4"><a href="{% url 'gallery:gallery_view' %}">{% translate "Back to Gallery" %}</a></p>
+</div>
+{% endblock %}

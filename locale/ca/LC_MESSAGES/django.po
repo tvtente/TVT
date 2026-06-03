@@ -1,0 +1,5734 @@
+# Catalan translations for tvt-cms project.
+# Copyright (C) 2025 Gustavo
+# This file is distributed under the same license as the tvt-cms package.
+# Gustavo <tu_email@ejemplo.com>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: tvt-cms 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-11 09:44+0000\n"
+"PO-Revision-Date: 2025-06-29 22:12+0200\n"
+"Last-Translator: Gustavo <tu_email@ejemplo.com>\n"
+"Language-Team: Catalan <ca@li.org>\n"
+"Language: ca\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.6\n"
+
+#: accounts/admin.py:33 accounts/admin.py:144
+msgid "Identity"
+msgstr "Identitat"
+
+#: accounts/admin.py:36 accounts/admin.py:147
+msgid "Professional"
+msgstr "Professional"
+
+#: accounts/admin.py:49 accounts/admin.py:160 accounts/models.py:465
+#: accounts/models.py:534 accounts/models.py:600 accounts/models.py:665
+#: accounts/models.py:700 accounts/models.py:741 accounts/models.py:782
+#: accounts/models.py:820
+msgid "Profile"
+msgstr "Perfil"
+
+#: accounts/admin.py:52 accounts/admin.py:163 accounts/models.py:262
+msgid "Avatar"
+msgstr "Avatar"
+
+#: accounts/admin.py:75
+msgid "Personal info"
+msgstr "Informació personal"
+
+#: accounts/admin.py:78
+msgid "Permissions"
+msgstr "Permisos"
+
+#: accounts/admin.py:86
+msgid ""
+"Assign roles through groups. Direct per-user permissions are intentionally "
+"hidden."
+msgstr ""
+"Assigna rols mitjançant grups. Els permisos directes per usuari s’oculten "
+"intencionadament."
+
+#: accounts/admin.py:89
+msgid "Important dates"
+msgstr "Dates importants"
+
+#: accounts/admin.py:113 accounts/models.py:54 accounts/models.py:65
+#: accounts/models.py:76 accounts/models.py:86 accounts/models.py:97
+#: accounts/models.py:107 accounts/models.py:118 accounts/models.py:129
+#: accounts/models.py:140 accounts/models.py:151 accounts/models.py:636
+#: categories/models.py:20 contact/models.py:21
+msgid "Name"
+msgstr "Nom"
+
+#: accounts/admin.py:166
+msgid "Moderation / Visibility"
+msgstr "Moderació / Visibilitat"
+
+#: accounts/admin.py:174 accounts/models.py:211
+msgid "Display Name"
+msgstr "Nom de visualització"
+
+#: accounts/admin.py:178 accounts/models.py:222
+msgid "Professional Title"
+msgstr "Títol professional"
+
+#: accounts/admin.py:182 accounts/models.py:234 accounts/models.py:500
+msgid "Institution"
+msgstr "Institució"
+
+#: accounts/admin.py:216 accounts/models.py:418 accounts/models.py:851
+#: books/models.py:20 gallery/models.py:42 pages/admin.py:80 pages/models.py:19
+#: posts/models.py:55 publications/models.py:28
+msgid "Title"
+msgstr "Títol"
+
+#: accounts/forms.py:75
+msgid "Choose a username"
+msgstr "Trieu un nom d’usuari"
+
+#: accounts/forms.py:79
+msgid "Enter password"
+msgstr "Introduïu la contrasenya"
+
+#: accounts/forms.py:83
+msgid "Confirm password"
+msgstr "Confirmeu la contrasenya"
+
+#: accounts/forms.py:86 accounts/templates/registration/login.html:37
+#: reporte_completo.txt:1206
+msgid "Username"
+msgstr "Nom d'usuari"
+
+#: accounts/forms.py:87 accounts/templates/registration/login.html:41
+#: reporte_completo.txt:1210
+msgid "Password"
+msgstr "Contrasenya"
+
+#: accounts/forms.py:88
+msgid "Confirm Password"
+msgstr "Confirmeu la contrasenya"
+
+msgid "Failed to resolve the user biography from the profile."
+msgstr "No s'ha pogut resoldre la biografia de l'usuari des del perfil."
+
+msgid "Failed to resolve the user display name from the profile."
+msgstr "No s'ha pogut resoldre el nom visible de l'usuari des del perfil."
+
+msgid "Failed to resolve the translated URL from the available object translation."
+msgstr "No s'ha pogut resoldre l'URL traduida des de la traducció disponible de l'objecte."
+
+msgid "Failed to resolve the translated URL under the language override."
+msgstr "No s'ha pogut resoldre l'URL traduida sota el canvi temporal d'idioma."
+
+msgid "Failed to resolve the translated URL via the direct language URL helper."
+msgstr "No s'ha pogut resoldre l'URL traduida mitjançant l'ajudant directe d'URL per idioma."
+
+msgid "Failed to delete the previous custom avatar file."
+msgstr "No s'ha pogut eliminar el fitxer d'avatar personalitzat anterior."
+
+msgid "Failed to resolve the comment author display name from the profile."
+msgstr "No s'ha pogut resoldre el nom visible de l'autor del comentari des del perfil."
+
+msgid "Failed to resolve the comment translation credit display name from the profile."
+msgstr "No s'ha pogut resoldre el nom visible del crèdit de traducció del comentari des del perfil."
+
+msgid "Failed to resolve the media asset preview URL in the admin."
+msgstr "No s'ha pogut resoldre l'URL de previsualització del recurs multimèdia a l'administració."
+
+msgid "Failed to resolve the user avatar URL from the profile."
+msgstr "No s'ha pogut resoldre l'URL de l'avatar de l'usuari des del perfil."
+
+msgid "Failed to resolve the user profile while building the avatar URL."
+msgstr "No s'ha pogut resoldre el perfil de l'usuari en construir l'URL de l'avatar."
+
+#: accounts/forms.py:109
+msgid "First Name"
+msgstr "Nom de visualització"
+
+#: accounts/forms.py:110
+msgid "Last Name"
+msgstr "Últim nom"
+
+#: accounts/forms.py:111
+msgid "Contact Email"
+msgstr "Contacte Correu electrònic"
+
+#: accounts/forms.py:115
+msgid "Your first name"
+msgstr "El vostre nom"
+
+#: accounts/forms.py:119
+msgid "Your last name"
+msgstr "El vostre cognom"
+
+#: accounts/forms.py:134
+msgid "Profile Picture"
+msgstr "Perfil Imatge"
+
+#: accounts/models.py:17 books/models.py:25 categories/admin.py:33
+#: categories/models.py:24 gallery/models.py:46 menus/models.py:32
+#: posts/models.py:60 publications/models.py:34 tags/models.py:22
+msgid "Slug"
+msgstr "Slug"
+
+#: accounts/models.py:21 accounts/models.py:495 accounts/models.py:564
+#: accounts/models.py:631 accounts/models.py:676 accounts/models.py:718
+#: accounts/models.py:759 accounts/models.py:797 accounts/models.py:846
+#: shop/models.py:75 shop/models.py:87
+msgid "Order"
+msgstr "Comanda"
+
+#: accounts/models.py:25
+msgid "Is active"
+msgstr "Actiu"
+
+#: accounts/models.py:29 accounts/models.py:438
+msgid "Created at"
+msgstr "Creat el"
+
+#: accounts/models.py:33
+msgid "Updated at"
+msgstr "Actualitzat el"
+
+#: accounts/models.py:55 accounts/models.py:66 accounts/models.py:77
+#: accounts/models.py:87 accounts/models.py:98 accounts/models.py:108
+#: accounts/models.py:119 accounts/models.py:130 accounts/models.py:141
+#: accounts/models.py:152 accounts/models.py:514 accounts/models.py:582
+#: accounts/models.py:645 accounts/models.py:723 accounts/models.py:764
+#: accounts/models.py:860 books/models.py:34
+#: books/templates/books/book_detail.html:212 categories/models.py:28
+msgid "Description"
+msgstr "Descripció"
+
+#: accounts/models.py:59
+msgid "Language level"
+msgstr "Nivell d’idioma"
+
+#: accounts/models.py:60
+msgid "Language levels"
+msgstr "Nivells d’idioma"
+
+#: accounts/models.py:70
+msgid "Skill level"
+msgstr "Nivell d’habilitat"
+
+#: accounts/models.py:71
+msgid "Skill levels"
+msgstr "Nivells d’habilitat"
+
+#: accounts/models.py:81
+msgid "Competency level"
+msgstr "Nivell de competència"
+
+#: accounts/models.py:82
+msgid "Competency levels"
+msgstr "Nivells de competència"
+
+#: accounts/models.py:91 accounts/models.py:707
+msgid "Skill type"
+msgstr "Tipus d’habilitat"
+
+#: accounts/models.py:92
+msgid "Skill types"
+msgstr "Tipus d’habilitat"
+
+#: accounts/models.py:102 accounts/models.py:748
+msgid "Competency type"
+msgstr "Tipus de competència"
+
+#: accounts/models.py:103
+msgid "Competency types"
+msgstr "Tipus de competència"
+
+#: accounts/models.py:112
+msgid "Profile link type"
+msgstr "Tipus d’enllaç de perfil"
+
+#: accounts/models.py:113
+msgid "Profile link types"
+msgstr "Tipus d’enllaç de perfil"
+
+#: accounts/models.py:123
+msgid "External publication type"
+msgstr "Tipus de publicació externa"
+
+#: accounts/models.py:124
+msgid "External publication types"
+msgstr "Tipus de publicació externa"
+
+#: accounts/models.py:134 accounts/models.py:541
+msgid "Experience type"
+msgstr "Tipus d’experiència"
+
+#: accounts/models.py:135
+msgid "Experience types"
+msgstr "Tipus d’experiència"
+
+#: accounts/models.py:145 accounts/models.py:472
+msgid "Education type"
+msgstr "Tipus d’educació"
+
+#: accounts/models.py:146
+msgid "Education types"
+msgstr "Tipus d’educació"
+
+#: accounts/models.py:156 accounts/models.py:607
+msgid "Certification type"
+msgstr "Tipus de certificació"
+
+#: accounts/models.py:157
+msgid "Certification types"
+msgstr "Tipus de certificació"
+
+#: accounts/models.py:169
+msgid "Don't specify"
+msgstr "No especifiqueu"
+
+#: accounts/models.py:170
+msgid "Female"
+msgstr "Femenina"
+
+#: accounts/models.py:171
+msgid "Male"
+msgstr "Home"
+
+#: accounts/models.py:172
+msgid "Non-binary"
+msgstr "No binari"
+
+#: accounts/models.py:181
+msgid "Public Email"
+msgstr "Correu electrònic públic"
+
+#: accounts/models.py:182
+msgid "An email address you don't mind sharing publicly for contact."
+msgstr ""
+"Una adreça de correu que no et faci res compartir públicament per a contacte."
+
+#: accounts/models.py:187
+msgid "Website URL"
+msgstr "URL del lloc web"
+
+#: accounts/models.py:194
+msgid "ORCID"
+msgstr "ORCID"
+
+#: accounts/models.py:195
+msgid "ORCID iD format: 0000-0000-0000-0000"
+msgstr "Format d’ORCID iD: 0000-0000-0000-0000"
+
+#: accounts/models.py:199
+msgid "Is Researcher"
+msgstr "És investigador/a"
+
+#: accounts/models.py:200
+msgid "Mark if this profile belongs to a researcher."
+msgstr "Marca aquesta opció si el perfil pertany a una persona investigadora."
+
+#: accounts/models.py:204
+msgid "Is Contributor"
+msgstr "És col·laborador/a"
+
+#: accounts/models.py:205
+msgid "Mark if this user contributes to the project/community."
+msgstr "Marca si aquest usuari contribueix al projecte o a la comunitat."
+
+#: accounts/models.py:212
+msgid "Your full name or a nickname, which will be shown publicly."
+msgstr "El vostre nom complet o un sobrenom, que es mostrarà públicament."
+
+#: accounts/models.py:217 accounts/models.py:578
+msgid "Location"
+msgstr "Ubicació"
+
+#: accounts/models.py:223
+msgid "Your role, for example: Researcher, Professor, Data Analyst."
+msgstr "El teu rol, per exemple: investigador, professor, analista de dades."
+
+#: accounts/models.py:228
+msgid "Headline"
+msgstr "Titular professional"
+
+#: accounts/models.py:229
+msgid "Short professional summary shown in public profile cards."
+msgstr ""
+"Resum professional breu que es mostra a les targetes del perfil públic."
+
+#: accounts/models.py:235
+msgid "Organization, university, lab, or company."
+msgstr "Organització, universitat, laboratori o empresa."
+
+#: accounts/models.py:240
+msgid "Country"
+msgstr "País"
+
+#: accounts/models.py:245
+msgid "City"
+msgstr "Ciutat"
+
+#: accounts/models.py:249
+#: accounts/templates/accounts/_public_profile_cv_content.html:128
+msgid "Areas of Interest"
+msgstr "Àrees d’interès"
+
+#: accounts/models.py:250
+msgid "Research/professional interests, separated by commas or lines."
+msgstr "Interessos de recerca o professionals, separats per comes o línies."
+
+#: accounts/models.py:254
+msgid "Biography"
+msgstr "Biografia"
+
+#: accounts/models.py:268
+msgid "Default Avatar Preference"
+msgstr "Preferència avatar predeterminada"
+
+#: accounts/models.py:272
+msgid "Use default avatar"
+msgstr "Utilitzeu avatar predeterminat"
+
+#: accounts/models.py:273
+msgid "If enabled, the selected default static avatar is always used."
+msgstr ""
+"Si s’activa, sempre s’utilitza l’avatar estàtic predeterminat seleccionat."
+
+#: accounts/models.py:277
+msgid "Is a Trusted Commenter?"
+msgstr "És un comentarista de confiança?"
+
+#: accounts/models.py:278
+msgid "If checked, comments are automatically approved."
+msgstr "Si es comprova, els comentaris s’aproven automàticament."
+
+#: accounts/models.py:283
+msgid "List profile publicly?"
+msgstr "Perfil de la llista públicament?"
+
+#: accounts/models.py:284
+msgid "If checked, your profile will be visible in the public user directory."
+msgstr "Si es marca, el teu perfil serà visible al directori públic d’usuaris."
+
+#: accounts/models.py:288
+msgid "Profiles"
+msgstr "Perfils"
+
+#: accounts/models.py:290
+msgid "Can edit professional profile fields"
+msgstr "Pot editar els camps del perfil professional"
+
+#: accounts/models.py:291
+msgid "Can edit own CV"
+msgstr "Pot editar el seu propi CV"
+
+#: accounts/models.py:292
+msgid "Can list profile publicly"
+msgstr "Pot mostrar el perfil públicament"
+
+#: accounts/models.py:355
+msgid "Follower"
+msgstr "Seguidor"
+
+#: accounts/models.py:361
+msgid "Followed user"
+msgstr "Usuari seguit"
+
+#: accounts/models.py:363 books/models.py:140 comments/models.py:76
+#: comments/models.py:220 posts/models.py:144 posts/models.py:287
+#: posts/models.py:322 publications/models.py:196 shop/models.py:66
+msgid "Created At"
+msgstr "Data de Creació"
+
+#: accounts/models.py:366
+msgid "User follow"
+msgstr "Seguiment d'usuari"
+
+#: accounts/models.py:367
+msgid "User follows"
+msgstr "Seguiments d'usuaris"
+
+#: accounts/models.py:378
+msgid "Users cannot follow themselves."
+msgstr ""
+
+#: accounts/models.py:392
+#, fuzzy
+#| msgid "The newest published posts."
+msgid "Followed author published post"
+msgstr "Les publicacions més recents."
+
+#: accounts/models.py:394
+msgid "Comment on your post"
+msgstr ""
+
+#: accounts/models.py:395
+msgid "Reply to your comment"
+msgstr ""
+
+#: accounts/models.py:396
+#, fuzzy
+#| msgid "Post author"
+msgid "Post favorited"
+msgstr "Autor del post"
+
+#: accounts/models.py:397
+msgid "Your book purchased"
+msgstr ""
+
+#: accounts/models.py:403
+msgid "Recipient"
+msgstr ""
+
+#: accounts/models.py:411
+msgid "Actor"
+msgstr ""
+
+#: accounts/models.py:416
+#, fuzzy
+#| msgid "Certification type"
+msgid "Notification type"
+msgstr "Tipus de certificació"
+
+#: accounts/models.py:419 contact/models.py:24
+msgid "Message"
+msgstr "Missatge"
+
+#: accounts/models.py:420 accounts/models.py:786 accounts/models.py:837
+msgid "URL"
+msgstr "URL"
+
+#: accounts/models.py:421
+msgid "Payload"
+msgstr ""
+
+#: accounts/models.py:426
+msgid "Dedupe key"
+msgstr ""
+
+#: accounts/models.py:434
+#, fuzzy
+#| msgid "Relations"
+msgid "Related post"
+msgstr "Relacions"
+
+#: accounts/models.py:436
+msgid "Is read"
+msgstr ""
+
+#: accounts/models.py:437
+#, fuzzy
+#| msgid "Created at"
+msgid "Read at"
+msgstr "Creat el"
+
+#: accounts/models.py:441
+#, fuzzy
+#| msgid "Certification"
+msgid "User notification"
+msgstr "Certificació"
+
+#: accounts/models.py:442
+#, fuzzy
+#| msgid "Certifications"
+msgid "User notifications"
+msgstr "Certificacions"
+
+#: accounts/models.py:477
+msgid "Institution URL"
+msgstr "URL de la institució"
+
+#: accounts/models.py:482
+msgid "Start year"
+msgstr "Any d’inici"
+
+#: accounts/models.py:487
+msgid "End year"
+msgstr "Any de finalització"
+
+#: accounts/models.py:491 accounts/models.py:560
+msgid "Is current"
+msgstr "Actual"
+
+#: accounts/models.py:505
+msgid "Degree"
+msgstr "Títol / grau"
+
+#: accounts/models.py:510
+msgid "Field of study"
+msgstr "Àrea d’estudi"
+
+#: accounts/models.py:519 accounts/models.py:520
+#: accounts/templates/accounts/_public_profile_cv_content.html:195
+#: accounts/templates/registration/profile_cv_edit.html:41
+#: accounts/templates/registration/profile_cv_edit.html:110
+#: accounts/views.py:116
+msgid "Education"
+msgstr "Educació"
+
+#: accounts/models.py:546
+msgid "Organization URL"
+msgstr "URL de l’organització"
+
+#: accounts/models.py:551
+msgid "Start date"
+msgstr "Data d’inici"
+
+#: accounts/models.py:556
+msgid "End date"
+msgstr "Data de finalització"
+
+#: accounts/models.py:569
+msgid "Organization"
+msgstr "Organització"
+
+#: accounts/models.py:573
+msgid "Position"
+msgstr "Càrrec"
+
+#: accounts/models.py:587 accounts/models.py:588
+#: accounts/templates/accounts/_public_profile_cv_content.html:145
+#: accounts/templates/registration/profile_cv_edit.html:49
+#: accounts/templates/registration/profile_cv_edit.html:204
+#: accounts/views.py:117
+msgid "Experience"
+msgstr "Experiència"
+
+#: accounts/models.py:612
+msgid "Issue date"
+msgstr "Data d’emissió"
+
+#: accounts/models.py:617
+msgid "Expiration date"
+msgstr "Data de venciment"
+
+#: accounts/models.py:622
+#: accounts/templates/accounts/_public_profile_cv_content.html:283
+msgid "Credential ID"
+msgstr "ID de credencial"
+
+#: accounts/models.py:627
+msgid "Credential URL"
+msgstr "URL de credencial"
+
+#: accounts/models.py:641
+msgid "Issuer"
+msgstr "Entitat emissora"
+
+#: accounts/models.py:650
+msgid "Certification"
+msgstr "Certificació"
+
+#: accounts/models.py:651
+#: accounts/templates/accounts/_public_profile_cv_content.html:254
+#: accounts/templates/registration/profile_cv_edit.html:57
+#: accounts/templates/registration/profile_cv_edit.html:298
+#: accounts/views.py:118
+msgid "Certifications"
+msgstr "Certificacions"
+
+#: accounts/models.py:672 accounts/models.py:714 accounts/models.py:755
+msgid "Level"
+msgstr "Nivell"
+
+#: accounts/models.py:681 accounts/models.py:686 comments/models.py:29
+#: gallery/models.py:55 tags/models.py:64
+msgid "Language"
+msgstr "Idioma"
+
+#: accounts/models.py:687
+#: accounts/templates/accounts/_public_profile_cv_content.html:310
+#: accounts/templates/registration/profile_cv_edit.html:65
+#: accounts/templates/registration/profile_cv_edit.html:392
+#: accounts/views.py:119 posts/admin.py:461
+msgid "Languages"
+msgstr "Idiomes"
+
+#: accounts/models.py:728 accounts/models.py:733
+msgid "Skill"
+msgstr "Habilitat"
+
+#: accounts/models.py:729
+#: accounts/templates/accounts/_public_profile_cv_content.html:329
+#: accounts/templates/registration/profile_cv_edit.html:73
+#: accounts/templates/registration/profile_cv_edit.html:474
+#: accounts/views.py:120
+msgid "Skills"
+msgstr "Habilitats"
+
+#: accounts/models.py:769 accounts/models.py:774
+msgid "Competency"
+msgstr "Competència"
+
+#: accounts/models.py:770
+#: accounts/templates/accounts/_public_profile_cv_content.html:356
+#: accounts/templates/registration/profile_cv_edit.html:81
+#: accounts/templates/registration/profile_cv_edit.html:568
+#: accounts/views.py:121
+msgid "Competencies"
+msgstr "Competències"
+
+#: accounts/models.py:793
+msgid "Link type"
+msgstr "Tipus d’enllaç"
+
+#: accounts/models.py:802 tags/models.py:14
+msgid "Label"
+msgstr "Etiqueta"
+
+#: accounts/models.py:807
+msgid "Profile Link"
+msgstr "Enllaç de perfil"
+
+#: accounts/models.py:808
+msgid "Profile Links"
+msgstr "Enllaços de perfil"
+
+#: accounts/models.py:827
+msgid "Publication type"
+msgstr "Tipus de publicació"
+
+#: accounts/models.py:832
+msgid "Year"
+msgstr "Any"
+
+#: accounts/models.py:842 publications/models.py:173
+#: publications/templates/publications/publication_detail.html:61
+msgid "DOI"
+msgstr "DOI"
+
+#: accounts/models.py:856
+msgid "Publisher"
+msgstr "Editorial / entitat publicadora"
+
+#: accounts/models.py:865
+msgid "External Publication"
+msgstr "Publicació externa"
+
+#: accounts/models.py:866
+#: accounts/templates/accounts/_public_profile_cv_content.html:459
+#: accounts/templates/registration/profile_cv_edit.html:97
+#: accounts/templates/registration/profile_cv_edit.html:744
+#: accounts/views.py:123
+msgid "External Publications"
+msgstr "Publicacions externes"
+
+#: accounts/services.py:78
+#, fuzzy, python-format
+#| msgid "Translated by"
+msgid "New post from %(user)s"
+msgstr "Traduït per"
+
+#: accounts/services.py:79
+#, python-format
+msgid "%(user)s published the post \"%(title)s\"."
+msgstr ""
+
+#: accounts/services.py:112
+msgid "Someone"
+msgstr ""
+
+#: accounts/services.py:118
+msgid "New comment on your post"
+msgstr ""
+
+#: accounts/services.py:119
+#, python-format
+msgid "%(user)s commented on your post \"%(title)s\"."
+msgstr ""
+
+#: accounts/services.py:148
+msgid "New favorite on your post"
+msgstr ""
+
+#: accounts/services.py:149
+#, fuzzy, python-format
+#| msgid "You added this post to your favorites."
+msgid "%(user)s added your post \"%(title)s\" to favorites."
+msgstr "Has afegit aquest post als teus favorits."
+
+#: accounts/templates/accounts/_public_profile_cv_content.html:18
+#: posts/templates/posts/post_detail.html:405
+msgid "followers"
+msgstr "seguidors"
+
+#: accounts/templates/accounts/_public_profile_cv_content.html:20
+#: posts/templates/posts/post_detail.html:407
+#, fuzzy
+#| msgid "Posts"
+msgid "posts"
+msgstr "Posts"
+
+#: accounts/templates/accounts/_public_profile_cv_content.html:41
+#: core/templates/core/partials/_header.html:64
+#: posts/templates/posts/post_detail.html:426
+#: posts/templates/posts/post_detail.html:1012 posts/views.py:141
+msgid "Following"
+msgstr "Seguint"
+
+#: accounts/templates/accounts/_public_profile_cv_content.html:43
+#: posts/templates/posts/post_detail.html:428
+#: posts/templates/posts/post_detail.html:435
+#: posts/templates/posts/post_detail.html:1013
+msgid "Follow"
+msgstr "Seguir"
+
+#: accounts/templates/accounts/_public_profile_cv_content.html:50
+msgid "Researcher"
+msgstr "Investigador/a"
+
+#: accounts/templates/accounts/_public_profile_cv_content.html:53
+msgid "Contributor"
+msgstr "Col·laborador/a"
+
+#: accounts/templates/accounts/_public_profile_cv_content.html:115
+#: reporte_completo.txt:838
+msgid "About Me"
+msgstr "Sobre mi"
+
+#: accounts/templates/accounts/_public_profile_cv_content.html:176
+#: accounts/templates/accounts/_public_profile_cv_content.html:234
+msgid "Present"
+msgstr "Present"
+
+#: accounts/templates/accounts/_public_profile_cv_content.html:290
+msgid "View credential"
+msgstr "ID de credencial"
+
+#: accounts/templates/accounts/_public_profile_cv_content.html:381
+#: accounts/templates/registration/profile_cv_edit.html:89
+#: accounts/templates/registration/profile_cv_edit.html:662
+#: accounts/views.py:122
+msgid "Professional Links"
+msgstr "Enllaços professionals"
+
+#: accounts/templates/accounts/_public_profile_cv_content.html:409
+msgid "TVTente Scientific Publications"
+msgstr "Publicacions externes"
+
+#: accounts/templates/accounts/inbox.html:4
+#: accounts/templates/accounts/inbox.html:14 accounts/views.py:423
+#: core/templates/core/partials/_header.html:57
+msgid "Inbox"
+msgstr ""
+
+#: accounts/templates/accounts/inbox.html:15
+msgid "System notifications related to your activity and followed authors."
+msgstr ""
+
+#: accounts/templates/accounts/inbox.html:22
+msgid "Mark all as read"
+msgstr ""
+
+#: accounts/templates/accounts/inbox.html:38
+msgid "Unread"
+msgstr ""
+
+#: accounts/templates/accounts/inbox.html:40
+#, fuzzy
+#| msgid "Read more"
+msgid "Read"
+msgstr "Llegir Més"
+
+#: accounts/templates/accounts/inbox.html:51
+msgid "Open"
+msgstr ""
+
+#: accounts/templates/accounts/inbox.html:59
+msgid "Mark as read"
+msgstr ""
+
+#: accounts/templates/accounts/inbox.html:71
+#, fuzzy
+#| msgid "Books pagination"
+msgid "Inbox pagination"
+msgstr "Paginació de llibres"
+
+#: accounts/templates/accounts/inbox.html:75
+#: books/templates/books/book_list.html:141
+#: core/templates/core/partials/_pagination.html:16
+#: core/templates/core/partials/_pagination.html:21
+#: publications/templates/publications/publication_list.html:99
+#: reporte_completo.txt:6437 reporte_completo.txt:6571
+#: reporte_completo.txt:6969 reporte_completo.txt:6971
+#: widgets/templates/widgets/partials/_post_carousel.html:73
+msgid "Previous"
+msgstr "Anterior"
+
+#: accounts/templates/accounts/inbox.html:80
+#, python-format
+msgid "Page %(current)s of %(total)s"
+msgstr ""
+
+#: accounts/templates/accounts/inbox.html:85
+#: books/templates/books/book_list.html:153
+#: core/templates/core/partials/_pagination.html:46
+#: core/templates/core/partials/_pagination.html:51
+#: publications/templates/publications/publication_list.html:113
+#: reporte_completo.txt:6441 reporte_completo.txt:6575
+#: reporte_completo.txt:6985 reporte_completo.txt:6987
+#: widgets/templates/widgets/partials/_post_carousel.html:77
+msgid "Next"
+msgstr "El proper"
+
+#: accounts/templates/accounts/inbox.html:94
+#, fuzzy
+#| msgid "Certification type"
+msgid "No notifications yet"
+msgstr "Tipus de certificació"
+
+#: accounts/templates/accounts/inbox.html:95
+msgid "When something relevant happens, it will appear here."
+msgstr ""
+
+#: accounts/templates/accounts/public_profile_print.html:8
+msgid "CV"
+msgstr "CV"
+
+#: accounts/templates/accounts/public_profile_view.html:6
+msgid "'s Profile"
+msgstr "Perfil"
+
+#: accounts/templates/accounts/public_profile_view.html:27
+msgid "Download PDF"
+msgstr "Descarrega PDF"
+
+#: accounts/templates/accounts/public_profile_view.html:37
+#: reporte_completo.txt:846
+msgid "Posts by"
+msgstr "Publicacions de"
+
+#: accounts/templates/accounts/public_profile_view.html:45
+#: reporte_completo.txt:851 reporte_completo.txt:2879
+#: search/templates/search/search_results.html:43
+msgid "Published on"
+msgstr "Publicat el"
+
+#: accounts/templates/accounts/public_profile_view.html:49
+#: reporte_completo.txt:854
+msgid "This user has not published any blog posts yet."
+msgstr "Aquest usuari encara no ha publicat cap publicació al bloc."
+
+#: accounts/templates/accounts/public_profile_view.html:59
+#: reporte_completo.txt:862
+msgid "Comments by"
+msgstr "Comentaris de"
+
+#: accounts/templates/accounts/public_profile_view.html:66
+#: posts/templates/posts/post_detail.html:726 reporte_completo.txt:867
+#: reporte_completo.txt:5475
+msgid "ago"
+msgstr "fa"
+
+#: accounts/templates/accounts/public_profile_view.html:70
+#: reporte_completo.txt:869
+msgid "View in context"
+msgstr "Veure en context"
+
+#: accounts/templates/accounts/public_profile_view.html:74
+#: reporte_completo.txt:873
+msgid "This user has not posted any comments yet."
+msgstr "Aquest usuari encara no ha publicat cap comentari."
+
+#: accounts/templates/accounts/user_directory.html:7 reporte_completo.txt:888
+#: widgets/models.py:54
+msgid "User Directory"
+msgstr "Directori d'usuaris"
+
+#: accounts/templates/accounts/user_directory.html:15 reporte_completo.txt:892
+msgid "Our Community Members"
+msgstr "Els nostres membres comunitaris"
+
+#: accounts/templates/accounts/user_directory.html:16 reporte_completo.txt:893
+msgid "Explore profiles of users who are part of our community."
+msgstr "Explora els perfils d’usuaris que formen part de la nostra comunitat."
+
+#: accounts/templates/accounts/user_directory.html:49 reporte_completo.txt:920
+msgid "No users found in the directory."
+msgstr "No s’ha trobat usuaris al directori."
+
+#: accounts/templates/registration/login.html:6
+#: accounts/templates/registration/login.html:13
+#: accounts/templates/registration/login.html:52
+#: accounts/templates/registration/password_reset_complete.html:15
+#: core/templates/core/partials/_header.html:99 reporte_completo.txt:1189
+#: reporte_completo.txt:1196 reporte_completo.txt:1221
+#: reporte_completo.txt:1251 reporte_completo.txt:6891
+msgid "Log In"
+msgstr "Iniciar sessió"
+
+#: accounts/templates/registration/login.html:18
+#: templates/socialaccount/login.html:4
+msgid "Continue with Google"
+msgstr "Continuar amb Google"
+
+#: accounts/templates/registration/login.html:24
+#: accounts/templates/registration/signup.html:24
+msgid "or"
+msgstr "o"
+
+#: accounts/templates/registration/login.html:31 reporte_completo.txt:1200
+msgid "Your username and password didn't match. Please try again."
+msgstr "El nom d’usuari i la contrasenya no coincideixen. Torna-ho a provar."
+
+#: accounts/templates/registration/login.html:47 reporte_completo.txt:1216
+msgid "Forgot password?"
+msgstr "Has oblidat la contrasenya?"
+
+#: accounts/templates/registration/login.html:62 reporte_completo.txt:1231
+#, python-format
+msgid "Don't have an account? <a href=\"%(signup_url)s\">Sign up here</a>."
+msgstr "No tens compte? <a href=\"%(signup_url)s\">Registra’t aquí</a>."
+
+#: accounts/templates/registration/password_reset_complete.html:5
+#: reporte_completo.txt:1241
+msgid "Password Changed"
+msgstr "Contrasenya Cantada"
+
+#: accounts/templates/registration/password_reset_complete.html:13
+#: reporte_completo.txt:1249
+msgid "Password has been changed successfully!"
+msgstr "La contrasenya s'ha canviat amb èxit!"
+
+#: accounts/templates/registration/password_reset_complete.html:14
+#: reporte_completo.txt:1250
+msgid "Your password has been set. You may go ahead and log in now."
+msgstr "La contrasenya s’ha establert. Ja pots iniciar sessió."
+
+#: accounts/templates/registration/password_reset_confirm.html:5
+#: reporte_completo.txt:1147
+msgid "Enter New Password"
+msgstr "Introduïu una nova contrasenya"
+
+#: accounts/templates/registration/password_reset_confirm.html:12
+#: reporte_completo.txt:1154
+msgid "Set a New Password"
+msgstr "Definiu una nova contrasenya"
+
+#: accounts/templates/registration/password_reset_confirm.html:29
+#: reporte_completo.txt:1171
+msgid "Change Password"
+msgstr "Canviar la contrasenya"
+
+#: accounts/templates/registration/password_reset_confirm.html:34
+#: reporte_completo.txt:1176
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used."
+msgstr ""
+"L’enllaç per restablir la contrasenya no és vàlid, possiblement perquè ja "
+"s’ha utilitzat."
+
+#: accounts/templates/registration/password_reset_confirm.html:35
+#: reporte_completo.txt:1177
+msgid "Please request a new password reset."
+msgstr "Sol·liciteu un nou restabliment de contrasenya."
+
+#: accounts/templates/registration/password_reset_done.html:5
+#: reporte_completo.txt:966
+msgid "Password Reset Sent"
+msgstr "Restablir la contrasenya enviat"
+
+#: accounts/templates/registration/password_reset_done.html:13
+#: reporte_completo.txt:974
+msgid "Password Reset Email Sent"
+msgstr "Restablir la contrasenya Enviar correu electrònic"
+
+#: accounts/templates/registration/password_reset_done.html:14
+#: reporte_completo.txt:975
+msgid ""
+"We've emailed you instructions for setting your password. You should receive "
+"them shortly."
+msgstr ""
+"T’hem enviat per correu electrònic les instruccions per establir la "
+"contrasenya. Les hauries de rebre aviat."
+
+#: accounts/templates/registration/password_reset_done.html:15
+#: reporte_completo.txt:976
+msgid ""
+"If you don't receive an email, please make sure you've entered the address "
+"you registered with, and check your spam folder."
+msgstr ""
+"Si no reps cap correu, assegura’t d’haver introduït l’adreça amb què et vas "
+"registrar i revisa la carpeta de correu brossa."
+
+#: accounts/templates/registration/password_reset_done.html:16
+#: reporte_completo.txt:977
+msgid "Return to Login"
+msgstr "Tornar a la sessió"
+
+#: accounts/templates/registration/password_reset_email.html:4
+#: reporte_completo.txt:1122
+msgid "Hi"
+msgstr "Hola"
+
+#: accounts/templates/registration/password_reset_email.html:6
+#: reporte_completo.txt:1124
+msgid "It looks like you requested a password reset for your account at"
+msgstr "Sembla que has sol·licitat restablir la contrasenya del teu compte a"
+
+#: accounts/templates/registration/password_reset_email.html:13
+#: reporte_completo.txt:1131
+#, python-format
+msgid ""
+"\n"
+"Please go to the following page and choose a new password:\n"
+"%(protocol)s://%(domain)s%(reset_password_url)s\n"
+msgstr ""
+"\n"
+"Ves a la pàgina següent i tria una contrasenya nova:\n"
+"%(protocol)s://%(domain)s%(reset_password_url)s\n"
+
+#: accounts/templates/registration/password_reset_email.html:19
+#: reporte_completo.txt:1137
+msgid "Your username, in case you've forgotten:"
+msgstr "El vostre nom d’usuari, per si heu oblidat:"
+
+#: accounts/templates/registration/password_reset_email.html:21
+#: reporte_completo.txt:1139
+msgid "Thanks for using our site!"
+msgstr "Gràcies per utilitzar el nostre lloc!"
+
+#: accounts/templates/registration/password_reset_email.html:23
+#: reporte_completo.txt:1141
+msgid "The"
+msgstr "EL"
+
+#: accounts/templates/registration/password_reset_email.html:23
+#: reporte_completo.txt:1141
+msgid "team"
+msgstr "equip"
+
+#: accounts/templates/registration/password_reset_form.html:5
+#: reporte_completo.txt:935
+msgid "Reset Password"
+msgstr "Restablir la contrasenya"
+
+#: accounts/templates/registration/password_reset_form.html:12
+#: reporte_completo.txt:942
+msgid "Reset Your Password"
+msgstr "Restablir la vostra contrasenya"
+
+#: accounts/templates/registration/password_reset_form.html:13
+#: reporte_completo.txt:943
+msgid ""
+"Enter your email address below, and we'll send you instructions to set a new "
+"one."
+msgstr ""
+"Introdueix l’adreça de correu electrònic i t’enviarem instruccions per "
+"establir-ne una de nova."
+
+#: accounts/templates/registration/password_reset_form.html:24
+#: reporte_completo.txt:954
+msgid "Send Reset Link"
+msgstr "Enviar enllaç de restabliment"
+
+#: accounts/templates/registration/password_reset_subject.txt:2
+msgid "Password reset for"
+msgstr "Restablir la contrasenya per"
+
+#: accounts/templates/registration/profile_cv_edit.html:5
+#: accounts/templates/registration/profile_edit.html:35 accounts/views.py:645
+msgid "Edit CV"
+msgstr "Editar currículum"
+
+#: accounts/templates/registration/profile_cv_edit.html:19
+msgid "Edit Your CV"
+msgstr "Edita el teu currículum"
+
+#: accounts/templates/registration/profile_cv_edit.html:21
+msgid ""
+"Add your education, experience, languages, skills, links and publications."
+msgstr ""
+"Afegeix la teva formació, experiència, idiomes, habilitats, enllaços i "
+"publicacions."
+
+#: accounts/templates/registration/profile_cv_edit.html:26
+msgid "Basic profile"
+msgstr "Perfil bàsic"
+
+#: accounts/templates/registration/profile_cv_edit.html:29
+#: accounts/templates/registration/profile_edit.html:42
+msgid "View public profile"
+msgstr "Veure perfil públic"
+
+#: accounts/templates/registration/profile_cv_edit.html:111
+msgid "Add your academic background, degrees, and institutions."
+msgstr "Afegeix la teva formació acadèmica, títols i institucions."
+
+#: accounts/templates/registration/profile_cv_edit.html:137
+#: accounts/templates/registration/profile_cv_edit.html:174
+#: accounts/templates/registration/profile_cv_edit.html:231
+#: accounts/templates/registration/profile_cv_edit.html:268
+#: accounts/templates/registration/profile_cv_edit.html:325
+#: accounts/templates/registration/profile_cv_edit.html:362
+#: accounts/templates/registration/profile_cv_edit.html:419
+#: accounts/templates/registration/profile_cv_edit.html:449
+#: accounts/templates/registration/profile_cv_edit.html:501
+#: accounts/templates/registration/profile_cv_edit.html:538
+#: accounts/templates/registration/profile_cv_edit.html:595
+#: accounts/templates/registration/profile_cv_edit.html:632
+#: accounts/templates/registration/profile_cv_edit.html:689
+#: accounts/templates/registration/profile_cv_edit.html:719
+#: accounts/templates/registration/profile_cv_edit.html:771
+#: accounts/templates/registration/profile_cv_edit.html:808
+msgid "Delete this item"
+msgstr "Eliminar aquest element"
+
+#: accounts/templates/registration/profile_cv_edit.html:196
+#: accounts/templates/registration/profile_cv_edit.html:290
+#: accounts/templates/registration/profile_cv_edit.html:384
+#: accounts/templates/registration/profile_cv_edit.html:466
+#: accounts/templates/registration/profile_cv_edit.html:560
+#: accounts/templates/registration/profile_cv_edit.html:654
+#: accounts/templates/registration/profile_cv_edit.html:736
+#: accounts/templates/registration/profile_cv_edit.html:830
+msgid "Add another"
+msgstr "Afegir-ne un altre"
+
+#: accounts/templates/registration/profile_cv_edit.html:205
+msgid ""
+"List positions, organizations, and dates relevant to your professional path."
+msgstr ""
+"Enumera càrrecs, organitzacions i dates rellevants per al teu recorregut "
+"professional."
+
+#: accounts/templates/registration/profile_cv_edit.html:299
+msgid "Add certifications, issuing institutions, and credential links."
+msgstr "Afegeix certificacions, entitats emissores i enllaços de credencials."
+
+#: accounts/templates/registration/profile_cv_edit.html:393
+msgid "Specify languages and your level in each one."
+msgstr "Indica els idiomes i el teu nivell en cadascun."
+
+#: accounts/templates/registration/profile_cv_edit.html:475
+msgid "Add technical or operational skills with their corresponding level."
+msgstr "Afegeix habilitats tècniques o operatives amb el nivell corresponent."
+
+#: accounts/templates/registration/profile_cv_edit.html:569
+msgid ""
+"Add personal and professional competencies such as teamwork, leadership or "
+"commitment."
+msgstr ""
+"Afegeix competències personals i professionals com el treball en equip, el "
+"lideratge o el compromís."
+
+#: accounts/templates/registration/profile_cv_edit.html:663
+msgid ""
+"Include links such as ORCID, LinkedIn, personal website, portfolio or other "
+"relevant profiles."
+msgstr ""
+"Inclou enllaços com ORCID, LinkedIn, lloc web personal, portafolis o altres "
+"perfils rellevants."
+
+#: accounts/templates/registration/profile_cv_edit.html:745
+msgid ""
+"Reference articles, papers, books, reports or other external publications."
+msgstr ""
+"Referencia articles, treballs, llibres, informes o altres publicacions "
+"externes."
+
+#: accounts/templates/registration/profile_cv_edit.html:839
+msgid "Ready to save your CV?"
+msgstr "A punt per desar el teu currículum?"
+
+#: accounts/templates/registration/profile_cv_edit.html:840
+msgid "Review the information and save your changes."
+msgstr "Revisa la informació i desa els canvis."
+
+#: accounts/templates/registration/profile_cv_edit.html:843
+msgid "Save CV"
+msgstr "Desar currículum"
+
+#: accounts/templates/registration/profile_edit.html:6 accounts/views.py:574
+#: accounts/views.py:644 core/templates/core/partials/_header.html:76
+#: reporte_completo.txt:987 reporte_completo.txt:6871
+msgid "Edit Profile"
+msgstr "Edita el perfil"
+
+#: accounts/templates/registration/profile_edit.html:21
+#: reporte_completo.txt:994
+msgid "Edit Your Profile"
+msgstr "Edita el teu perfil"
+
+#: accounts/templates/registration/profile_edit.html:24
+msgid "Manage your public and professional profile information."
+msgstr "Gestiona la informació bàsica del teu perfil públic."
+
+#: accounts/templates/registration/profile_edit.html:26
+msgid "Manage your basic account profile information."
+msgstr "Gestiona la informació bàsica del teu perfil públic."
+
+#: accounts/templates/registration/profile_edit.html:56
+#: reporte_completo.txt:1002
+msgid "User Information"
+msgstr "Informació de l'usuari"
+
+#: accounts/templates/registration/profile_edit.html:79
+#: reporte_completo.txt:1019
+msgid "Profile Details"
+msgstr "Detalls del perfil"
+
+#: accounts/templates/registration/profile_edit.html:293
+#: reporte_completo.txt:1063
+msgid "Current Avatar"
+msgstr "Avatar actual"
+
+#: accounts/templates/registration/profile_edit.html:370
+#: reporte_completo.txt:1111
+msgid "Save Changes"
+msgstr "Desa els canvis"
+
+#: accounts/templates/registration/signup.html:6
+#: accounts/templates/registration/signup.html:65 reporte_completo.txt:1261
+#: reporte_completo.txt:1306
+msgid "Sign Up"
+msgstr "Registra't"
+
+#: accounts/templates/registration/signup.html:13 reporte_completo.txt:1268
+msgid "Create an Account"
+msgstr "Crear un compte"
+
+#: accounts/templates/registration/signup.html:18
+msgid "Sign up with Google"
+msgstr "Registrar-se amb Google"
+
+#: accounts/templates/registration/signup.html:45 reporte_completo.txt:1286
+msgid "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
+msgstr "Obligat. 150 caràcters o menys. Cartes, dígits i @/./ + / - / _ només."
+
+#: accounts/templates/registration/signup.html:53 reporte_completo.txt:1294
+msgid "Your password must contain at least 8 characters."
+msgstr "La vostra contrasenya ha de contenir almenys 8 caràcters."
+
+#: accounts/templates/registration/signup.html:71 reporte_completo.txt:1312
+msgid "Already have an account?"
+msgstr "Ja teniu un compte?"
+
+#: accounts/templates/registration/signup.html:71 reporte_completo.txt:1312
+msgid "Log in here"
+msgstr "Inicieu la sessió aquí"
+
+#: accounts/views.py:339 accounts/views.py:422 accounts/views.py:573
+#: accounts/views.py:643 accounts/views.py:815 books/views.py:165
+#: books/views.py:205 books/views.py:311 books/views.py:368
+#: categories/views.py:40 categories/views.py:85
+#: core/templates/core/partials/_breadcrumbs.html:20
+#: core/templates/core/partials/_breadcrumbs.html:24
+#: core/templates/core/partials/_breadcrumbs.html:28
+#: core/templates/core/partials/_header.html:12 core/views.py:59
+#: core/views.py:76 core/views.py:102 core/views.py:150 gallery/views.py:174
+#: menus/views.py:11 pages/views.py:43 pages/views.py:101 posts/views.py:89
+#: posts/views.py:144 posts/views.py:194 posts/views.py:536 posts/views.py:712
+#: posts/views.py:819 publications/views.py:69 publications/views.py:157
+#: publications/views.py:250 shop/views.py:19 testimonials/views.py:9
+msgid "Home"
+msgstr "Comença"
+
+#: accounts/views.py:340 accounts/views.py:816
+msgid "Users"
+msgstr "Usuaris"
+
+#: accounts/views.py:368
+#, fuzzy
+#| msgid "Page not found."
+msgid "Profile not found."
+msgstr "Pàgina no trobada."
+
+#: accounts/views.py:378
+msgid "You cannot follow your own account."
+msgstr "No pots seguir el teu propi compte."
+
+#: accounts/views.py:388
+#, python-format
+msgid "You stopped following %(user)s."
+msgstr "Has deixat de seguir %(user)s."
+
+#: accounts/views.py:392
+#, python-format
+msgid "You are now following %(user)s."
+msgstr "Ara segueixes %(user)s."
+
+#: accounts/views.py:436
+#, fuzzy
+#| msgid "Publication not found."
+msgid "Notification not found."
+msgstr "No s'han trobat publicacions publicades."
+
+#: accounts/views.py:450
+msgid "Notification marked as read."
+msgstr ""
+
+#: accounts/views.py:457
+#, fuzzy
+#| msgid "Book not found."
+msgid "Inbox not found."
+msgstr "Llibre no trobat."
+
+#: accounts/views.py:467
+msgid "All notifications were marked as read."
+msgstr ""
+
+#: accounts/views.py:482
+msgid "Welcome! Your account has been created successfully."
+msgstr "Benvingut! El vostre compte s’ha creat amb èxit."
+
+#: accounts/views.py:560
+msgid "Your profile has been updated successfully!"
+msgstr "El vostre perfil s’ha actualitzat amb èxit!"
+
+#: accounts/views.py:599
+msgid "You do not have permission to edit a CV."
+msgstr "No tens permís per editar un CV."
+
+#: accounts/views.py:630
+msgid "Your CV has been updated successfully."
+msgstr "El teu currículum s’ha actualitzat correctament."
+
+#: accounts/views.py:633
+msgid "Please review the highlighted errors before saving."
+msgstr "Revisa els errors ressaltats abans de desar."
+
+#: accounts/views.py:685 accounts/views.py:686
+msgid "CV not available in this language"
+msgstr "Publicació no disponible en aquest idioma"
+
+#: accounts/views.py:688 core/templates/core/translation_unavailable.html:39
+msgid ""
+"This profile exists, but its CV has not been entered in the selected "
+"language yet."
+msgstr ""
+"Aquest perfil existeix, però el seu CV encara no s’ha introduït en l’idioma "
+"seleccionat."
+
+#: accounts/views.py:717 accounts/views.py:731
+msgid "CV not available in this language."
+msgstr "Publicació no disponible en aquest idioma"
+
+#: accounts/views.py:727
+msgid "Chrome/Chromium is not available for PDF generation."
+msgstr "Chrome/Chromium is not available for PDF generation."
+
+#: accounts/views.py:766
+msgid "The PDF could not be generated at this time."
+msgstr "The PDF could not be generated at this time."
+
+#: books/admin.py:79 publications/admin.py:105
+msgid "Main Information"
+msgstr "Informació principal"
+
+#: books/admin.py:86
+msgid "Editorial Content"
+msgstr "Contingut editorial"
+
+#: books/admin.py:95
+msgid "Commercial Metadata"
+msgstr "Metadades comercials"
+
+#: books/admin.py:107 publications/admin.py:141
+msgid "Relations"
+msgstr "Relacions"
+
+#: books/admin.py:113
+msgid ""
+"Selectable authors are limited to active users with a professional profile "
+"or contributor/researcher flags."
+msgstr ""
+"Els autors seleccionables es limiten a usuaris actius amb perfil "
+"professional o amb les marques de col·laborador o investigador."
+
+#: books/admin.py:116 publications/admin.py:150
+msgid "Media & Files"
+msgstr "Mitjans i fitxers"
+
+#: books/admin.py:124 publications/admin.py:157
+msgid "System Info"
+msgstr "Informació del sistema"
+
+#: books/admin.py:151 books/models.py:91
+#: books/templates/books/book_detail.html:79 publications/admin.py:182
+#: publications/models.py:159
+#: publications/templates/publications/publication_detail.html:51
+msgid "Authors"
+msgstr "Autor"
+
+#: books/admin.py:160 books/models.py:97
+#: books/templates/books/book_detail.html:105 categories/models.py:66
+#: categories/views.py:41 pages/admin.py:232 pages/models.py:42
+#: pages/templates/pages/page_detail.html:138 posts/admin.py:437
+#: posts/models.py:161 posts/templates/posts/post_detail.html:354
+#: publications/admin.py:192 publications/models.py:165
+#: publications/templates/publications/publication_detail.html:71
+#: reporte_completo.txt:1784 reporte_completo.txt:5429
+msgid "Categories"
+msgstr "Categories"
+
+#: books/admin.py:245
+msgid "Cover image — media library"
+msgstr "Imatge Destacada"
+
+#: books/admin.py:253 posts/admin.py:297 publications/admin.py:300
+msgid "Social image — media library"
+msgstr "Imatge social — biblioteca multimèdia"
+
+#: books/admin.py:303 publications/admin.py:359
+msgid "Invalid media library image selection."
+msgstr "Selecció d’imatge de la biblioteca multimèdia no vàlida."
+
+#: books/admin.py:331 gallery/admin.py:206 pages/admin.py:227
+#: posts/admin.py:549 publications/admin.py:392
+msgid "The staged upload expired or was already removed. Upload again."
+msgstr "La càrrega temporal ha caducat o ja s’ha eliminat. Torna-la a pujar."
+
+#: books/models.py:30
+msgid "Subtitle"
+msgstr "Títol"
+
+#: books/models.py:38 books/templates/books/book_detail.html:118
+msgid "Excerpt"
+msgstr "Excerpt"
+
+#: books/models.py:42 books/templates/books/book_detail.html:221
+msgid "Table of contents"
+msgstr "Contingut"
+
+#: books/models.py:48 posts/models.py:75 publications/models.py:127
+msgid "Meta Title"
+msgstr "Títol del Menú"
+
+#: books/models.py:54 posts/models.py:81 publications/models.py:133
+msgid "Meta Description"
+msgstr "Meta Descripció"
+
+#: books/models.py:62
+msgid "Cover image (library)"
+msgstr "Imatge Destacada"
+
+#: books/models.py:63
+msgid "Primary book cover from Media Library."
+msgstr "Primary book cover from Media Library."
+
+#: books/models.py:71 posts/models.py:98 publications/models.py:150
+msgid "Social image (library)"
+msgstr "Imatge social (biblioteca)"
+
+#: books/models.py:72
+msgid "Square or social-preview image from Media Library."
+msgstr "Square or social-preview image from Media Library."
+
+#: books/models.py:78
+msgid "Preview PDF"
+msgstr "PDF de vista prèvia"
+
+#: books/models.py:84 publications/models.py:181
+msgid "Full PDF"
+msgstr "PDF complet"
+
+#: books/models.py:102 books/templates/books/book_detail.html:91
+msgid "ISBN"
+msgstr "ISBN"
+
+#: books/models.py:106 publications/models.py:187
+msgid "Publication Date"
+msgstr "Data de Creació"
+
+#: books/models.py:110 publications/models.py:191
+msgid "Is Published?"
+msgstr "Publicat"
+
+#: books/models.py:117 books/templates/books/book_detail.html:98
+msgid "Price"
+msgstr "Price"
+
+#: books/models.py:122 shop/models.py:50
+msgid "Currency"
+msgstr "Currency"
+
+#: books/models.py:126
+msgid "Allow Free Preview"
+msgstr "Permet vista prèvia gratuïta"
+
+#: books/models.py:130
+msgid "Requires Purchase"
+msgstr "Requires Purchase"
+
+#: books/models.py:135
+#, fuzzy
+#| msgid "available"
+msgid "Available from"
+msgstr "Disponible a partir de"
+
+#: books/models.py:136
+msgid "Optional release date for the purchasable full edition."
+msgstr "Data opcional de llançament per a l’edició completa vendible."
+
+#: books/models.py:144 comments/models.py:80 posts/models.py:145
+#: posts/models.py:288 publications/models.py:200 shop/models.py:70
+msgid "Updated At"
+msgstr "Actualitzat a"
+
+#: books/models.py:148 shop/models.py:95
+msgid "Book"
+msgstr "Llibre"
+
+#: books/models.py:149 books/templates/books/book_list.html:33
+#: books/views.py:166 books/views.py:176 books/views.py:177 books/views.py:206
+#: books/views.py:312 books/views.py:369
+msgid "Books"
+msgstr "Llibres"
+
+#: books/models.py:154 categories/models.py:74 categories/models.py:76
+#: menus/admin.py:76 menus/models.py:202 pages/models.py:101
+#: pages/models.py:167 pages/models.py:235 pages/models.py:239
+#: publications/models.py:210 widgets/models.py:149
+msgid "Untitled"
+msgstr "Títol"
+
+#: books/templates/books/book_detail.html:50
+msgid "Back to books"
+msgstr "Torna als llibres"
+
+#: books/templates/books/book_detail.html:67
+msgid "Editorial book"
+msgstr "Llibre editorial"
+
+#: books/templates/books/book_detail.html:85
+#: publications/templates/publications/publication_detail.html:42
+msgid "Publication date"
+msgstr "Data de Creació"
+
+#: books/templates/books/book_detail.html:146
+#: books/templates/books/book_list.html:123
+msgid "Add to cart"
+msgstr "Afegeix al carret"
+
+#: books/templates/books/book_detail.html:153
+#: books/templates/books/book_list.html:102
+msgid "Coming soon"
+msgstr "Disponible aviat"
+
+#: books/templates/books/book_detail.html:156
+#, fuzzy, python-format
+#| msgid ""
+#| "\n"
+#| "                                Published on %(date)s\n"
+#| "                            "
+msgid ""
+"\n"
+"                                This full edition will be available from "
+"%(available_date)s.\n"
+"                            "
+msgstr ""
+"\n"
+"                                Publicat el %(date)s\n"
+"                            "
+
+#: books/templates/books/book_detail.html:161
+#: books/templates/books/book_list.html:108
+#, fuzzy
+#| msgid "available"
+msgid "Available soon."
+msgstr "Disponible aviat."
+
+#: books/templates/books/book_detail.html:169
+msgid "View preview edition"
+msgstr "Veure edició de vista prèvia"
+
+#: books/templates/books/book_detail.html:176
+msgid "View full edition"
+msgstr "Veure edició completa"
+
+#: books/templates/books/book_detail.html:180
+msgid "Full edition available after purchase"
+msgstr "Edició completa disponible després de la compra"
+
+#: books/templates/books/book_detail.html:181
+msgid ""
+"The complete digital document is only enabled for users with a completed "
+"purchase."
+msgstr ""
+"El document digital complet només està habilitat per a usuaris amb una "
+"compra completada."
+
+#: books/templates/books/book_detail.html:188
+msgid "Preview not available in this language."
+msgstr "Vista prèvia no disponible en aquest idioma."
+
+#: books/templates/books/book_detail.html:189
+msgid "This book preview is available in these language editions:"
+msgstr ""
+"La vista prèvia d’aquest llibre està disponible en aquestes edicions "
+"lingüístiques:"
+
+#: books/templates/books/book_detail.html:200
+msgid "Full document not available in this language."
+msgstr "Document complet no disponible en aquest idioma."
+
+#: books/templates/books/book_detail.html:201
+msgid "This book can be consulted in full in these language editions:"
+msgstr ""
+"Aquest llibre es pot consultar complet en aquestes edicions lingüístiques:"
+
+#: books/templates/books/book_list.html:35 books/views.py:179
+msgid "Books, editorial works, and stable publications published by TVTente."
+msgstr ""
+"Llibres, obres editorials i publicacions estables publicades per TVTente."
+
+#: books/templates/books/book_list.html:104
+#, fuzzy, python-format
+#| msgid ""
+#| "\n"
+#| "                                    Published on %(published_date)s by "
+#| "%(author)s\n"
+#| "                                "
+msgid ""
+"\n"
+"                                            Available from "
+"%(available_date)s.\n"
+"                                        "
+msgstr ""
+"\n"
+"                                    Publicat el %(published_date)s per "
+"%(author)s\n"
+"                                "
+
+#: books/templates/books/book_list.html:116
+msgid "View book"
+msgstr "Veure llibre"
+
+#: books/templates/books/book_list.html:136
+msgid "Books pagination"
+msgstr "Paginació de llibres"
+
+#: books/templates/books/book_list.html:162
+msgid "There are no published books yet."
+msgstr "Aquest usuari encara no ha publicat cap publicació al bloc."
+
+#: books/views.py:96 books/views.py:242
+msgid "Book not found."
+msgstr "Llibre no trobat."
+
+#: books/views.py:113 books/views.py:114
+msgid "Book not available in this language"
+msgstr "Llibre no disponible en aquest idioma"
+
+#: books/views.py:116
+msgid ""
+"This book exists, but it has not been translated into the selected language "
+"yet."
+msgstr ""
+"This book exists, but it has not been translated into the selected language "
+"yet."
+
+#: books/views.py:233 books/views.py:261 core/views.py:118 core/views.py:145
+#: core/views.py:167 core/views.py:179 pages/views.py:34
+msgid "Page not found."
+msgstr "Pàgina no trobada."
+
+#: books/views.py:247
+msgid "The book was added to your cart."
+msgstr "The book was added to your cart."
+
+#: books/views.py:252
+msgid "This book is not available for purchase yet."
+msgstr "Aquest contingut no està disponible en aquest idioma."
+
+#: books/views.py:266
+msgid "The book was removed from your cart."
+msgstr "The book was removed from your cart."
+
+#: books/views.py:271
+msgid "That book was no longer in your cart."
+msgstr "That book was no longer in your cart."
+
+#: books/views.py:301 books/views.py:302
+msgid "Book preview not available in this language"
+msgstr "Vista prèvia del llibre no disponible en aquest idioma"
+
+#: books/views.py:304
+msgid ""
+"This book exists, but its preview is not available in the selected language."
+msgstr "Aquest contingut no està disponible en aquest idioma."
+
+#: books/views.py:314 gallery/admin.py:111 gallery/admin.py:145
+msgid "Preview"
+msgstr "Vista prèvia"
+
+#: books/views.py:325 books/views.py:326
+msgid "Book preview"
+msgstr "Vista prèvia del llibre"
+
+#: books/views.py:327
+msgid "Read the book preview online."
+msgstr "Read the book preview online."
+
+#: books/views.py:340
+msgid ""
+"You need a completed purchase before accessing the full edition of this book."
+msgstr ""
+"Necessites una compra completada abans d'accedir a l'edició completa "
+"d'aquest llibre."
+
+#: books/views.py:358 books/views.py:359
+msgid "Book document not available in this language"
+msgstr "Document del llibre no disponible en aquest idioma"
+
+#: books/views.py:361
+msgid ""
+"This book exists, but its full document is not available in the selected "
+"language."
+msgstr "Aquest contingut no està disponible en aquest idioma."
+
+#: books/views.py:371 books/views.py:382 books/views.py:383
+msgid "Full document"
+msgstr "Contingut"
+
+#: books/views.py:384
+msgid "Read the full book document online."
+msgstr "Read the full book document online."
+
+#: categories/models.py:29
+msgid "An optional description for the category."
+msgstr "Una descripció opcional de la categoria."
+
+#: categories/models.py:35 pages/models.py:22
+msgid "Meta Title (SEO)"
+msgstr "Meta Títol (SEO)"
+
+#: categories/models.py:36
+msgid "A precise title for search engine results (max 70 chars)."
+msgstr ""
+"Un títol precís per als resultats dels motors de cerca (màx. 70 caràcters)."
+
+#: categories/models.py:42 pages/models.py:23
+msgid "Meta Description (SEO)"
+msgstr "Meta Descripció (SEO)"
+
+#: categories/models.py:43
+msgid "A short description for search engine previews (max 160 chars)."
+msgstr ""
+"Una descripció breu per a les previsualitzacions dels cercadors (màx. 160 "
+"caràcters)."
+
+#: categories/models.py:57
+msgid "Parent Category"
+msgstr "Categoria dels pares"
+
+#: categories/models.py:58
+msgid "Select a parent to create a sub-category."
+msgstr "Seleccioneu un progenitor per crear una subcategoria."
+
+#: categories/models.py:65
+msgid "Category"
+msgstr "Categoria"
+
+#: categories/templates/categories/category_tree.html:6
+#: reporte_completo.txt:3635
+msgid "All Categories"
+msgstr "Totes les categories"
+
+#: categories/templates/categories/category_tree.html:19
+#: reporte_completo.txt:3644
+msgid "Explore Our Topics"
+msgstr "Exploreu els nostres temes"
+
+#: categories/templates/categories/category_tree.html:20
+#: reporte_completo.txt:3645
+msgid "Navigate through our content organized by category."
+msgstr "Navegueu pel nostre contingut organitzat per categoria."
+
+#: categories/views.py:86 posts/models.py:167 posts/views.py:90
+#: posts/views.py:145 posts/views.py:195 posts/views.py:537 posts/views.py:713
+#: posts/views.py:820
+msgid "Posts"
+msgstr "Posts"
+
+#: comments/admin.py:15 comments/admin.py:174 comments/admin.py:180
+#, fuzzy
+#| msgid "Pending payment"
+msgid "Pending suggestion"
+msgstr "Pendent de pagament"
+
+#: comments/admin.py:20
+#, fuzzy
+#| msgid "Pending payment"
+msgid "With pending suggestion"
+msgstr "Pendent de pagament"
+
+#: comments/admin.py:21
+#, fuzzy
+#| msgid "Pending payment"
+msgid "Without pending suggestion"
+msgstr "Pendent de pagament"
+
+#: comments/admin.py:90
+#, fuzzy
+#| msgid "Comment translations"
+msgid "Pending translations"
+msgstr "traduccions de comentaris"
+
+#: comments/admin.py:155 comments/models.py:25 comments/models.py:245
+msgid "Comment"
+msgstr "comentari"
+
+#: comments/admin.py:160 comments/models.py:184 posts/models.py:166
+#: posts/models.py:248 posts/models.py:277 posts/models.py:320
+#: tags/models.py:52
+msgid "Post"
+msgstr "Post"
+
+#: comments/admin.py:164
+#, fuzzy
+#| msgid "View original"
+msgid "Original comment"
+msgstr "Veure original"
+
+#: comments/admin.py:168
+#, fuzzy
+#| msgid "Comment translation"
+msgid "Current public translation"
+msgstr "traducció de comentari"
+
+#: comments/admin.py:171
+#, fuzzy
+#| msgid "Auto-approve comments"
+msgid "No approved content yet."
+msgstr "Comentaris aprovats automàticament"
+
+#: comments/admin.py:177
+#, fuzzy
+#| msgid "Pending payment"
+msgid "No pending suggestion."
+msgstr "Pendent de pagament"
+
+#: comments/admin.py:184
+#, fuzzy
+#| msgid "Preview"
+msgid "Pending review"
+msgstr "Vista prèvia"
+
+#: comments/admin.py:187
+msgid "No"
+msgstr ""
+
+#: comments/admin.py:189
+#, fuzzy, python-format
+#| msgid "Translated by"
+msgid "Yes, by %(user)s"
+msgstr "Traduït per"
+
+#: comments/admin.py:190
+msgid "Yes"
+msgstr ""
+
+#: comments/admin.py:192
+msgid "Approve pending translation suggestions"
+msgstr ""
+
+#: comments/admin.py:203
+#, fuzzy, python-format
+#| msgid "%(count)s results found."
+msgid "%(count)s translation(s) approved."
+msgstr "%(count)s resultats trobats."
+
+#: comments/admin.py:205
+msgid "Reject pending translation suggestions"
+msgstr ""
+
+#: comments/admin.py:211
+#, python-format
+msgid "%(count)s pending suggestion(s) rejected."
+msgstr ""
+
+#: comments/forms.py:30
+msgid "Write your comment here..."
+msgstr "Escriu el teu missatge aquí..."
+
+#: comments/forms.py:34
+msgid "Your Name (required)"
+msgstr "El vostre nom (obligatori)"
+
+#: comments/forms.py:38
+msgid "Your Email (required, not published)"
+msgstr "El vostre correu electrònic (obligatori, no publicat)"
+
+#: comments/forms.py:66 posts/templates/posts/post_detail.html:713
+msgid "Suggest a better translation..."
+msgstr "Suggeriu una millor traducció..."
+
+#: comments/models.py:18
+msgid "Human"
+msgstr "Humana"
+
+#: comments/models.py:19
+msgid "Machine"
+msgstr "Automàtica"
+
+#: comments/models.py:32 comments/models.py:224
+msgid "Translated Content"
+msgstr "Contingut traduït"
+
+#: comments/models.py:38
+msgid "Translation source"
+msgstr "Font de traducció"
+
+#: comments/models.py:43
+msgid "Translation provider"
+msgstr "Proveïdor de traducció"
+
+#: comments/models.py:44
+msgid "Optional provider or engine name for machine translations."
+msgstr "Proveïdor o motor opcional per a traduccions automàtiques."
+
+#: comments/models.py:52 comments/models.py:231
+msgid "Translated by"
+msgstr "Traduït per"
+
+#: comments/models.py:53 comments/models.py:232
+msgid "User who provided the translation, if different from the author."
+msgstr "Usuari que ha proporcionat la traducció, si és diferent de l’autor."
+
+#: comments/models.py:58
+msgid "Pending suggested content"
+msgstr ""
+
+#: comments/models.py:66
+msgid "Pending suggested by"
+msgstr ""
+
+#: comments/models.py:67
+msgid "User who suggested a human translation pending moderation."
+msgstr ""
+
+#: comments/models.py:72
+msgid "Pending suggested at"
+msgstr ""
+
+#: comments/models.py:84
+msgid "Is preferred?"
+msgstr ""
+
+#: comments/models.py:85
+msgid ""
+"Whether this translation should be shown before other alternatives for the "
+"same language."
+msgstr ""
+
+#: comments/models.py:89
+#, fuzzy
+#| msgid "Is Approved?"
+msgid "Is approved?"
+msgstr "S’aprova?"
+
+#: comments/models.py:90
+msgid "Whether this translation is approved for public display."
+msgstr ""
+
+#: comments/models.py:94
+msgid "Comment translation"
+msgstr "traducció de comentari"
+
+#: comments/models.py:95
+msgid "Comment translations"
+msgstr "traduccions de comentaris"
+
+#: comments/models.py:194
+msgid "Parent Comment"
+msgstr "Comentari dels pares"
+
+#: comments/models.py:203 posts/models.py:271 posts/models.py:314
+#: shop/models.py:30
+msgid "User"
+msgstr "Usuari"
+
+#: comments/models.py:209
+msgid "Author Name"
+msgstr "Nom de l'autor"
+
+#: comments/models.py:214
+msgid "Author Email"
+msgstr "Correu electrònic de l’autor"
+
+#: comments/models.py:217 pages/admin.py:273 pages/models.py:21
+#: pages/models.py:197 posts/models.py:69
+msgid "Content"
+msgstr "Contingut"
+
+#: comments/models.py:218
+msgid "Original Language"
+msgstr "Idioma original"
+
+#: comments/models.py:221
+msgid "Is Approved?"
+msgstr "S’aprova?"
+
+#: comments/models.py:238
+msgid "Translation Language"
+msgstr "Idioma de traducció"
+
+#: comments/models.py:246 site_settings/admin.py:109
+msgid "Comments"
+msgstr "comentaris"
+
+#: comments/models.py:341 posts/templates/posts/post_detail.html:1036
+#, fuzzy
+#| msgid "Submit translation"
+msgid "Automatic translation"
+msgstr "Envia la traducció"
+
+#: comments/models.py:342 posts/templates/posts/post_detail.html:1037
+#, fuzzy
+#| msgid "Comment translation"
+msgid "Community translation"
+msgstr "traducció de comentari"
+
+#: comments/models.py:363
+#, fuzzy, python-format
+#| msgid "Translated by"
+msgid "Translated by %(user)s"
+msgstr "Traduït per"
+
+#: comments/models.py:365 posts/templates/posts/post_detail.html:1038
+#, fuzzy
+#| msgid "Translated by"
+msgid "Translated by community"
+msgstr "Traduït per"
+
+#: comments/services.py:53
+msgid "DeepL translation is enabled but DEEPL_API_KEY is missing."
+msgstr ""
+
+#: comments/services.py:82
+msgid "The translation provider could not be reached right now."
+msgstr ""
+
+#: comments/services.py:89 comments/views.py:52
+#: posts/templates/posts/post_detail.html:1160
+#, fuzzy
+#| msgid "The requested page could not be found."
+msgid "The requested translation could not be generated."
+msgstr "The requested page could not be found."
+
+#: comments/services.py:99
+#, fuzzy
+#| msgid "This publication is not available in this language."
+msgid "Automatic translation is not available right now."
+msgstr "Aquesta publicació no està disponible en aquest idioma."
+
+#: comments/services.py:106
+#, fuzzy
+#| msgid "Translation provider"
+msgid "Unsupported comment translation provider."
+msgstr "Proveïdor de traducció"
+
+#: comments/views.py:75
+msgid "You need to log in to suggest a translation."
+msgstr "Cal iniciar sessió per suggerir una traducció."
+
+#: comments/views.py:90
+msgid ""
+"A translation must target a different language from the original comment."
+msgstr ""
+"La traducció ha d’adreçar-se a un idioma diferent del comentari original."
+
+#: comments/views.py:100 posts/templates/posts/post_detail.html:1257
+msgid "Invalid translation content."
+msgstr "Contingut de traducció no vàlid."
+
+#: comments/views.py:138
+msgid "Thanks. Your translation suggestion is now awaiting moderation."
+msgstr ""
+
+#: comments/views.py:140
+#, fuzzy
+#| msgid "Your CV has been updated successfully."
+msgid "The translation was updated successfully."
+msgstr "El teu currículum s’ha actualitzat correctament."
+
+#: contact/forms.py:21
+msgid "Your Full Name"
+msgstr "El vostre nom complet"
+
+#: contact/forms.py:25
+msgid "Your Email Address"
+msgstr "El vostre correu electrònic"
+
+#: contact/forms.py:29
+msgid "Message Subject"
+msgstr "Assumpte del missatge"
+
+#: contact/forms.py:34
+msgid "Write your message here..."
+msgstr "Escriu el teu missatge aquí..."
+
+#: contact/forms.py:41
+msgid "Full Name"
+msgstr "Nom complet"
+
+#: contact/forms.py:42
+msgid "Email Address"
+msgstr "Adreça de correu electrònic"
+
+#: contact/models.py:14
+msgid "Low"
+msgstr "Baixa"
+
+#: contact/models.py:15
+msgid "Medium"
+msgstr "Mitjana"
+
+#: contact/models.py:16
+msgid "High"
+msgstr "Alt"
+
+#: contact/models.py:17
+msgid "Urgent"
+msgstr "Urgent"
+
+#: contact/models.py:18
+msgid "Critical"
+msgstr "Crític"
+
+#: contact/models.py:22 core/templates/core/checkout_detail.html:58
+#: core/templates/core/checkout_order_pending.html:54 shop/models.py:39
+msgid "Email"
+msgstr "Correu electrònic"
+
+#: contact/models.py:23
+msgid "Subject"
+msgstr "Assumpte"
+
+#: contact/models.py:30
+msgid "Priority"
+msgstr "Prioritat"
+
+#: contact/models.py:34
+msgid "Has been read?"
+msgstr "S'ha llegit?"
+
+#: contact/models.py:35
+msgid "Indicates if an admin has reviewed this message."
+msgstr "Indica si un administrador ha revisat aquest missatge."
+
+#: contact/models.py:41
+msgid "Received At"
+msgstr "Rebutjat a"
+
+#: contact/models.py:46
+msgid "Responded At"
+msgstr "Va respondre a"
+
+#: contact/models.py:47
+msgid "Automatically set when the message is first marked as read."
+msgstr ""
+"S’estableix automàticament quan el missatge es marca com a llegit per "
+"primera vegada."
+
+#: contact/models.py:55
+msgid "Responded By"
+msgstr "Respondat per"
+
+#: contact/models.py:60
+msgid "Contact Message"
+msgstr "Missatge de contacte"
+
+#: contact/models.py:61
+msgid "Contact Messages"
+msgstr "Missatges de contacte"
+
+#: contact/templates/contact/contact_form.html:6 reporte_completo.txt:3138
+#: reporte_completo.txt:5780
+msgid "Contact Us"
+msgstr "Contacta amb nosaltres"
+
+#: contact/templates/contact/contact_form.html:7 reporte_completo.txt:3139
+msgid ""
+"Get in touch with the Tavata team. We would love to hear about your project "
+"in Computer Vision or Natural Language Processing."
+msgstr ""
+"Posa’t en contacte amb l’equip de Tavata. Ens encantarà conèixer el teu "
+"projecte de Visió per Computador o Processament del Llenguatge Natural."
+
+#: contact/templates/contact/contact_form.html:17 reporte_completo.txt:3149
+msgid "Get in Touch"
+msgstr "Poseu-vos en contacte"
+
+#: contact/templates/contact/contact_form.html:19 reporte_completo.txt:3151
+msgid ""
+"Have a question or a project in mind? We're here to help. Fill out the form "
+"below and we will get back to you as soon as possible."
+msgstr ""
+"Tens una pregunta o un projecte al cap? Som aquí per ajudar-te. Omple el "
+"formulari i et respondrem tan aviat com puguem."
+
+#: contact/templates/contact/contact_form.html:77 reporte_completo.txt:3209
+msgid "Send Message"
+msgstr "Enviar missatge"
+
+#: contact/views.py:20
+msgid "Thank you for your message! We will get back to you shortly."
+msgstr "Gràcies pel vostre missatge! Tornarem a arribar aviat."
+
+#: core/templates/core/cart_detail.html:14 core/views.py:77 core/views.py:79
+#: core/views.py:80 core/views.py:103 core/views.py:151
+msgid "Shopping cart"
+msgstr "Carret de compra"
+
+#: core/templates/core/cart_detail.html:16
+#, python-format
+msgid ""
+"\n"
+"                            You have %(total)s item in your cart.\n"
+"                        "
+msgid_plural ""
+"\n"
+"                            You have %(total)s items in your cart.\n"
+"                        "
+msgstr[0] ""
+"\n"
+"                            Tens %(total)s article al carret.\n"
+"                        "
+msgstr[1] ""
+"\n"
+"                            Tens %(total)s articles al carret.\n"
+"                        "
+
+#: core/templates/core/cart_detail.html:25
+msgid "Browse books"
+msgstr "Explora llibres"
+
+#: core/templates/core/cart_detail.html:55
+#: core/templates/core/checkout_detail.html:30
+#: core/templates/core/checkout_order_pending.html:35 shop/models.py:108
+#: shop/templates/shop/my_orders.html:54
+msgid "Quantity"
+msgstr "Quantitat"
+
+#: core/templates/core/cart_detail.html:69
+msgid "Remove"
+msgstr "Elimina"
+
+#: core/templates/core/cart_detail.html:81
+#: core/templates/core/checkout_detail.html:74
+#: core/templates/core/checkout_order_pending.html:58 shop/models.py:56
+msgid "Subtotal"
+msgstr "Subtotal"
+
+#: core/templates/core/cart_detail.html:86
+msgid "Continue browsing"
+msgstr "Continua explorant"
+
+#: core/templates/core/cart_detail.html:89
+#: core/templates/core/checkout_detail.html:14 core/views.py:104
+#: core/views.py:106 core/views.py:107 core/views.py:152
+msgid "Checkout"
+msgstr "Finalitza la compra"
+
+#: core/templates/core/cart_detail.html:95
+msgid ""
+"Your cart is empty for now. From here users will be able to review selected "
+"books before continuing to checkout."
+msgstr ""
+"El teu carret és buit de moment. Des d’aquí els usuaris podran revisar els "
+"llibres seleccionats abans de continuar amb el pagament."
+
+#: core/templates/core/checkout_detail.html:16
+msgid "Review your order details before continuing to payment."
+msgstr ""
+"Revisa les dades de la teva comanda abans de continuar amb el pagament."
+
+#: core/templates/core/checkout_detail.html:40
+msgid ""
+"Your cart is empty. Add at least one book before continuing to checkout."
+msgstr ""
+"El teu carret és buit. Afegeix almenys un llibre abans de continuar amb el "
+"checkout."
+
+#: core/templates/core/checkout_detail.html:50
+msgid "Buyer information"
+msgstr "Informació del comprador"
+
+#: core/templates/core/checkout_detail.html:53
+#: core/templates/core/checkout_order_pending.html:51 shop/models.py:35
+msgid "Full name"
+msgstr "Nom complet"
+
+#: core/templates/core/checkout_detail.html:66
+#: core/templates/core/checkout_order_pending.html:48
+msgid "Order summary"
+msgstr "Resum de la comanda"
+
+#: core/templates/core/checkout_detail.html:69
+msgid "Items"
+msgstr "Articles"
+
+#: core/templates/core/checkout_detail.html:79
+msgid ""
+"The payment gateway is not enabled yet. This checkout is ready up to the "
+"final payment step."
+msgstr ""
+"La passarel·la de pagament encara no està habilitada. Aquest checkout està "
+"llest fins al pas final del pagament."
+
+#: core/templates/core/checkout_detail.html:86
+msgid "Create provisional order"
+msgstr "Crear comanda provisional"
+
+#: core/templates/core/checkout_detail.html:90
+msgid "Back to cart"
+msgstr "Tornar al carret"
+
+#: core/templates/core/checkout_order_pending.html:14 core/views.py:153
+#: core/views.py:155 core/views.py:156
+msgid "Order created"
+msgstr "Comanda creada"
+
+#: core/templates/core/checkout_order_pending.html:16
+msgid ""
+"Your provisional order has been saved and is ready for the payment step."
+msgstr ""
+"La teva comanda provisional s'ha desat i està llesta per al pas de pagament."
+
+#: core/templates/core/checkout_order_pending.html:24 shop/models.py:125
+#: shop/templates/shop/my_orders.html:43
+msgid "Order items"
+msgstr "Articles de la comanda"
+
+#: core/templates/core/checkout_order_pending.html:57 pages/models.py:37
+#: posts/models.py:122 shop/models.py:45
+msgid "Status"
+msgstr "Estat"
+
+#: core/templates/core/checkout_order_pending.html:61
+msgid ""
+"The payment gateway is still unavailable. You can keep this order as a "
+"provisional record and connect the payment step later."
+msgstr ""
+"La passarel·la de pagament continua sense estar disponible. Pots conservar "
+"aquesta comanda com a registre provisional i connectar el pas de pagament "
+"més endavant."
+
+#: core/templates/core/checkout_order_pending.html:70
+msgid "Proceed to payment"
+msgstr "Continuar al pagament"
+
+#: core/templates/core/checkout_order_pending.html:75 shop/models.py:14
+msgid "Payment unavailable"
+msgstr "Pagament no disponible"
+
+#: core/templates/core/checkout_order_pending.html:79
+msgid "Back to checkout"
+msgstr "Tornar al checkout"
+
+#: core/templates/core/partials/_footer.html:14
+#, python-format
+msgid "&copy; %(year)s TVTMente."
+msgstr "&copy; %(year)s TVTMente."
+
+#: core/templates/core/partials/_header.html:17
+msgid "Toggle navigation"
+msgstr "Toggle navigation"
+
+#: core/templates/core/partials/_header.html:34
+#: shop/templates/shop/my_orders.html:21
+msgid "View shopping cart"
+msgstr "Veure el carret"
+
+#: core/templates/core/partials/_header.html:37
+msgid "Cart"
+msgstr "Carret"
+
+#: core/templates/core/partials/_header.html:49
+#: core/templates/core/partials/_header.html:120
+#: core/templates/core/partials/_header.html:123 reporte_completo.txt:2847
+#: reporte_completo.txt:6862 search/templates/search/search_results.html:22
+#: site_settings/admin.py:98 templates/404.html:31 templates/404.html:33
+msgid "Search"
+msgstr "Cercar"
+
+#: core/templates/core/partials/_header.html:68 posts/views.py:191
+msgid "My favorites"
+msgstr "Els meus favorits"
+
+#: core/templates/core/partials/_header.html:72
+#: shop/templates/shop/my_orders.html:14 shop/views.py:20 shop/views.py:22
+#: shop/views.py:23
+msgid "My orders"
+msgstr "Les meves comandes"
+
+#: core/templates/core/partials/_header.html:85 reporte_completo.txt:6880
+#, python-format
+msgid "Hello, %(user_name)s"
+msgstr "Hola,%(user_name)s"
+
+#: core/templates/core/partials/_header.html:92 reporte_completo.txt:6886
+msgid "Log Out"
+msgstr "Tanqueu"
+
+#: core/templates/core/partials/_header.html:119 reporte_completo.txt:6861
+#: templates/404.html:31
+msgid "Search..."
+msgstr "Cercar..."
+
+#: core/templates/core/partials/_language_selector_bar.html:11
+msgid "Language selector"
+msgstr "Nivell d’idioma"
+
+#: core/templates/core/partials/_language_selector_bar.html:24
+#, python-format
+msgid "Switch to %(language_name)s"
+msgstr "Switch to %(language_name)s"
+
+#: core/templates/core/partials/_topbar.html:18 reporte_completo.txt:6917
+#: site_settings/models.py:129
+msgid "Site Logo"
+msgstr "Logotip del lloc"
+
+#: core/templates/core/partials/_topbar.html:43
+#: core/templates/core/partials/_topbar.html:51 reporte_completo.txt:6940
+#: reporte_completo.txt:6943
+msgid "Advertisement"
+msgstr "Publicitat"
+
+#: core/templates/core/translation_unavailable.html:5
+msgid "Content not available in this language"
+msgstr "Aquest contingut no està disponible en aquest idioma."
+
+#: core/templates/core/translation_unavailable.html:21
+msgid "This post is not available in this language."
+msgstr "Aquest contingut no està disponible en aquest idioma."
+
+#: core/templates/core/translation_unavailable.html:23
+msgid "This book is not available in this language."
+msgstr "Aquest contingut no està disponible en aquest idioma."
+
+#: core/templates/core/translation_unavailable.html:25
+msgid "This publication is not available in this language."
+msgstr "Aquesta publicació no està disponible en aquest idioma."
+
+#: core/templates/core/translation_unavailable.html:27
+msgid "This CV is not available in this language."
+msgstr "Aquest CV no està disponible en aquest idioma."
+
+#: core/templates/core/translation_unavailable.html:29
+msgid "This content is not available in this language."
+msgstr "Aquest contingut no està disponible en aquest idioma."
+
+#: core/templates/core/translation_unavailable.html:35
+msgid ""
+"This book exists, but its preview PDF is not available in the selected "
+"language yet."
+msgstr "Aquest contingut no està disponible en aquest idioma."
+
+#: core/templates/core/translation_unavailable.html:37
+msgid ""
+"This book exists, but its full document is not available in the selected "
+"language yet."
+msgstr "Aquest contingut no està disponible en aquest idioma."
+
+#: core/templates/core/translation_unavailable.html:41
+msgid ""
+"The content exists, but it has not been translated into the selected "
+"language yet."
+msgstr "Aquest contingut no està disponible en aquest idioma."
+
+#: core/templates/core/translation_unavailable.html:49
+msgid "Available language editions:"
+msgstr "Idiomes disponibles:"
+
+#: core/templates/core/translation_unavailable.html:51
+msgid "Available languages:"
+msgstr "Idiomes disponibles:"
+
+#: core/templates/core/translation_unavailable.html:57
+msgid "You can open this book preview in the languages listed below."
+msgstr "You can open this book preview in the languages listed below."
+
+#: core/templates/core/translation_unavailable.html:61
+msgid ""
+"You can open the full document of this book in the languages listed below."
+msgstr ""
+"You can open the full document of this book in the languages listed below."
+
+#: core/templates/core/translation_unavailable.html:65
+msgid "This book is available in the languages listed below."
+msgstr "Aquest contingut no està disponible en aquest idioma."
+
+#: core/templates/core/translation_unavailable.html:80
+msgid ""
+"If you think this content should be available in this language, please "
+"contact the administration."
+msgstr ""
+"Si considera que aquest contingut hauria d'estar disponible en aquest "
+"idioma, contacti amb l'administració."
+
+#: core/templates/core/translation_unavailable.html:85
+msgid "Contact administration"
+msgstr "Contactar amb l'administració"
+
+#: core/templates/core/translation_unavailable.html:89
+msgid "Go to home"
+msgstr "Anar a l'inici"
+
+#: core/views.py:82
+msgid "Review the books you want to buy before continuing to checkout."
+msgstr "Review the books you want to buy before continuing to checkout."
+
+#: core/views.py:109
+msgid "Review your books and continue to the payment step."
+msgstr "Revisa els teus llibres i continua al pas de pagament."
+
+#: core/views.py:124
+msgid "Your cart is empty. Add at least one book before creating an order."
+msgstr ""
+"El teu carret és buit. Afegeix almenys un llibre abans de crear una comanda."
+
+#: core/views.py:130
+msgid "Your provisional order has been created successfully."
+msgstr "La teva comanda provisional s'ha creat correctament."
+
+#: core/views.py:158
+msgid ""
+"Your provisional order has been created and is ready for the payment step."
+msgstr ""
+"La teva comanda provisional s'ha creat i està llesta per al pas de pagament."
+
+#: core/views.py:187
+msgid ""
+"The payment step is not available yet. Your order has been marked as payment "
+"unavailable."
+msgstr ""
+"El pas de pagament encara no està disponible. La teva comanda s'ha marcat "
+"com a pagament no disponible."
+
+#: core/views.py:193
+msgid "This order is already marked as payment unavailable."
+msgstr "Aquesta comanda ja està marcada com a pagament no disponible."
+
+#: core/views.py:198
+msgid "This order is no longer pending payment."
+msgstr "Aquesta comanda ja no està pendent de pagament."
+
+#: gallery/admin.py:100
+msgid "Library"
+msgstr "Biblioteca"
+
+#: gallery/admin.py:155
+msgid "Public URL"
+msgstr "Correu electrònic públic"
+
+#: gallery/admin.py:162 gallery/models.py:75
+msgid "Summary / Abstract"
+msgstr "Resum / abstract"
+
+#: gallery/forms.py:10
+msgid "Slug (filename base)"
+msgstr "Slug (base del nom del fitxer)"
+
+#: gallery/forms.py:11
+#, python-brace-format
+msgid "Stored as gallery/{slug}.ext; numeric suffixes are added if needed."
+msgstr ""
+"S’emmagatzema com a gallery/{slug}.ext; s’hi afegeixen sufixos numèrics si "
+"cal."
+
+#: gallery/forms.py:41
+msgid ""
+"Choose either a staged upload, an existing library image, or a direct file "
+"upload."
+msgstr ""
+"Tria entre una càrrega temporal, una imatge existent de la biblioteca o una "
+"càrrega directa de fitxer."
+
+#: gallery/forms.py:45
+msgid "Selected library image is no longer available."
+msgstr "La imatge seleccionada de la biblioteca ja no està disponible."
+
+#: gallery/forms.py:48
+msgid "The staged upload expired or was removed. Upload again."
+msgstr "La càrrega temporal ha caducat o s’ha eliminat. Torna-la a pujar."
+
+#: gallery/forms.py:52
+msgid "Upload an image or use the media library."
+msgstr "Puja una imatge o utilitza la biblioteca multimèdia."
+
+#: gallery/models.py:47
+#, python-brace-format
+msgid "Used as the filename stem: gallery/{slug}.ext"
+msgstr "S’utilitza com a base del nom del fitxer: gallery/{slug}.ext"
+
+#: gallery/models.py:64
+msgid "Derived from"
+msgstr "Derivada de"
+
+#: gallery/models.py:65
+msgid "Optional source image when this row was created as a new version."
+msgstr ""
+"Imatge d’origen opcional quan aquesta fila es va crear com a versió nova."
+
+#: gallery/models.py:72 gallery/models.py:81
+msgid "Image"
+msgstr "Imatge"
+
+#: gallery/models.py:77
+msgid "Uploaded at"
+msgstr "Carregada a"
+
+#: gallery/models.py:82
+msgid "Images"
+msgstr "Imatge"
+
+#: gallery/models.py:107
+msgid "Staged file"
+msgstr "Fitxer temporal"
+
+#: gallery/models.py:120
+msgid "Staged upload"
+msgstr "Càrrega temporal"
+
+#: gallery/models.py:121
+msgid "Staged uploads"
+msgstr "Publicacions etiquetades"
+
+#: gallery/templates/gallery/gallery_page.html:8 reporte_completo.txt:2288
+msgid "Image Gallery"
+msgstr "Galeria d'imatges"
+
+#: gallery/templates/gallery/gallery_page.html:21 reporte_completo.txt:2301
+msgid "Read more"
+msgstr "Llegir Més"
+
+#: gallery/templates/gallery/gallery_page.html:26 reporte_completo.txt:2306
+#, python-format
+msgid ""
+"\n"
+"                  Uploaded: %(date)s\n"
+"                "
+msgstr ""
+"\n"
+"                  Pujat: %(date)s\n"
+"                "
+
+#: gallery/templates/gallery/gallery_page.html:36 reporte_completo.txt:2316
+msgid "No images in the gallery."
+msgstr "No hi ha imatges a la galeria."
+
+#: gallery/templates/gallery/image_detail.html:6 reporte_completo.txt:2269
+msgid "Image Detail"
+msgstr "Deteriorament de la imatge"
+
+#: gallery/templates/gallery/image_detail.html:17 reporte_completo.txt:2280
+msgid "Uploaded on"
+msgstr "Carregada a"
+
+#: gallery/templates/gallery/image_detail.html:18 reporte_completo.txt:2281
+msgid "Back to Gallery"
+msgstr "Tornar a la Galeria"
+
+#: gallery/views.py:175
+msgid "Gallery"
+msgstr "Galeria d'imatges"
+
+#: menus/admin.py:18 menus/models.py:26
+msgid "Menu Title"
+msgstr "Títol del Menú"
+
+#: menus/admin.py:73 menus/models.py:191
+msgid "Menu Item"
+msgstr "Element de Menú"
+
+#: menus/admin.py:94
+msgid "Visible for"
+msgstr "Visible per a"
+
+#: menus/admin.py:99
+msgid "Everyone"
+msgstr "Tothom"
+
+#: menus/models.py:35 menus/models.py:82
+msgid "Menu"
+msgstr "Menú"
+
+#: menus/models.py:36 menus/views.py:12
+msgid "Menus"
+msgstr "Menús"
+
+#: menus/models.py:60 menus/models.py:151
+msgid "Manual URL"
+msgstr "URL manual"
+
+#: menus/models.py:61
+msgid "Home Page"
+msgstr "És la pàgina d'inici?"
+
+#: menus/models.py:62
+msgid "Single Page"
+msgstr "Pàgina única"
+
+#: menus/models.py:63
+msgid "Single Category"
+msgstr "Categoria"
+
+#: menus/models.py:64
+msgid "Post List (Dropdown)"
+msgstr "Llista de pàgines importants (d'abandonament)"
+
+#: menus/models.py:66
+msgid "Post Categories Tree (Dropdown)"
+msgstr "Blog Categories Tree (d'abandonament)"
+
+#: menus/models.py:67
+msgid "Important Pages List (Dropdown)"
+msgstr "Llista de pàgines importants (d'abandonament)"
+
+#: menus/models.py:70 posts/selectors.py:14
+msgid "Latest Posts"
+msgstr "Últimes publicacions"
+
+#: menus/models.py:71 posts/selectors.py:18
+msgid "New Posts Today"
+msgstr "Novetats d'avui"
+
+#: menus/models.py:72 posts/selectors.py:22
+msgid "Most Discussed Posts"
+msgstr "Més debatudes"
+
+#: menus/models.py:73 posts/selectors.py:26
+msgid "Trending Posts"
+msgstr "Tendències"
+
+#: menus/models.py:74 posts/selectors.py:30
+msgid "Recommended Posts"
+msgstr "Recomanades"
+
+#: menus/models.py:94
+msgid "Parent Menu Item"
+msgstr "Menú de pares Article"
+
+#: menus/models.py:95
+msgid "Select a parent item to nest this menu item within it."
+msgstr "Selecciona un element pare per niar-hi aquest element de menú."
+
+#: menus/models.py:103
+msgid "Visible for groups"
+msgstr "Visible per a grups"
+
+#: menus/models.py:105
+msgid ""
+"Leave empty to show this menu item to everyone. Select one or more groups to "
+"restrict visibility."
+msgstr ""
+"Deixa-ho buit per mostrar aquest element de menú a tothom. Selecciona un o "
+"més grups per restringir-ne la visibilitat."
+
+#: menus/models.py:114
+msgid "Link Text"
+msgstr "Text de l'Enllaç"
+
+#: menus/models.py:117 pages/models.py:202 widgets/models.py:95
+msgid "Display Order"
+msgstr "Ordre de visualització"
+
+#: menus/models.py:125
+msgid "Link Type"
+msgstr "Tipus d’enllaç"
+
+#: menus/models.py:126
+msgid ""
+"Determines how this menu item behaves: a direct link, or a dynamic content "
+"generator."
+msgstr ""
+"Determina com es comporta aquest element de menú: un enllaç directe o un "
+"generador de contingut dinàmic."
+
+#: menus/models.py:135
+msgid "Page Link"
+msgstr "Enllaç de pàgina"
+
+#: menus/models.py:136
+msgid ""
+"Link to a specific internal page. Only used if Link Type is 'Single Page'."
+msgstr ""
+"Enllaç a una pàgina interna específica. Només s’utilitza si el tipus "
+"d’enllaç és «Pàgina única»."
+
+#: menus/models.py:144
+msgid "Category Link"
+msgstr "Categoria"
+
+#: menus/models.py:145
+msgid ""
+"Link to a specific category. Only used if Link Type is 'Single Category'."
+msgstr ""
+"Enllaç a una categoria específica. Només s’utilitza si el tipus d’enllaç és "
+"«Categoria única»."
+
+#: menus/models.py:153
+msgid ""
+"Use for external URLs (e.g., 'https://google.com') or custom internal paths "
+"(e.g., '/blog/'). Only used if Link Type is 'Manual URL'."
+msgstr ""
+"Utilitza-ho per a URL externes (p. ex. «https://google.com») o camins "
+"interns personalitzats (p. ex. «/blog/»). Només s’utilitza si el tipus "
+"d’enllaç és «URL manual»."
+
+#: menus/models.py:162
+msgid "Post List Type"
+msgstr "Publicacions de"
+
+#: menus/models.py:163
+msgid "Determines which posts are shown when Link Type is 'Post List'."
+msgstr ""
+"Determina quines publicacions es mostren quan el tipus d’enllaç és «Llista "
+"de publicacions»."
+
+#: menus/models.py:168
+msgid "Dynamic Items Limit"
+msgstr "Límit d’elements dinàmics"
+
+#: menus/models.py:169
+msgid "Maximum number of generated items for dynamic dropdowns."
+msgstr "Nombre màxim d’elements generats per als desplegables dinàmics."
+
+#: menus/models.py:175
+msgid "Icon Class"
+msgstr "Classe Icon"
+
+#: menus/models.py:176
+msgid ""
+"FontAwesome class (e.g., 'fas fa-home') to display an icon next to the link."
+msgstr ""
+"Classe de FontAwesome (p. ex. «fas fa-home») per mostrar una icona al costat "
+"de l’enllaç."
+
+#: menus/models.py:192
+msgid "Menu Items"
+msgstr "Elements de Menú"
+
+#: menus/models.py:210
+msgid "Manual URL is required for this link type."
+msgstr "L’URL manual és obligatòria per a aquest tipus d’enllaç."
+
+#: menus/models.py:212
+msgid "Page Link is required for this link type."
+msgstr "L’enllaç a pàgina és obligatori per a aquest tipus d’enllaç."
+
+#: menus/models.py:214
+msgid "Category Link is required for this link type."
+msgstr "L’enllaç a categoria és obligatori per a aquest tipus d’enllaç."
+
+#: menus/models.py:216
+msgid "Post List Type is required for this link type."
+msgstr ""
+"El tipus de llista de publicacions és obligatori per a aquest tipus d’enllaç."
+
+#: pages/admin.py:51
+msgid "Core content"
+msgstr "Contingut"
+
+#: pages/admin.py:66
+msgid "SEO"
+msgstr "SEO"
+
+#: pages/admin.py:68
+msgid ""
+"SEO fields control previews in search engines and social metadata; they do "
+"not replace the public abstract."
+msgstr ""
+"Els camps SEO controlen les previsualitzacions als cercadors i les metadades "
+"socials; no substitueixen el resum públic."
+
+#: pages/admin.py:72
+msgid "Publishing"
+msgstr "Publicat"
+
+#: pages/admin.py:154
+msgid "Media library picker [es]"
+msgstr "Selector de biblioteca multimèdia [es]"
+
+#: pages/admin.py:158
+msgid "Spanish"
+msgstr "Espanyol"
+
+#: pages/admin.py:161
+msgid "Media library picker [en]"
+msgstr "Selector de biblioteca multimèdia [en]"
+
+#: pages/admin.py:165 tvt/settings.py:428
+msgid "English"
+msgstr "Anglès"
+
+#: pages/admin.py:168
+msgid "Media library picker [ca]"
+msgstr "Selector de biblioteca multimèdia [ca]"
+
+#: pages/admin.py:172
+msgid "Catalan"
+msgstr "Català"
+
+#: pages/admin.py:270
+msgid "Section"
+msgstr "Ubicació"
+
+#: pages/admin.py:276
+msgid "Widgets and layout"
+msgstr "Ginys i disposició"
+
+#: pages/admin.py:284 pages/models.py:192
+msgid "Internal Title"
+msgstr "Títol del Menú"
+
+#: pages/models.py:15 posts/models.py:118
+msgid "Draft"
+msgstr "Esborrany"
+
+#: pages/models.py:16 posts/models.py:119
+msgid "Published"
+msgstr "Publicat"
+
+#: pages/models.py:20
+msgid "Slug (URL friendly)"
+msgstr "Slug (URL amigable)"
+
+#: pages/models.py:24 publications/models.py:38
+#: publications/templates/publications/publication_detail.html:103
+msgid "Abstract"
+msgstr "Resum / abstract"
+
+#: pages/models.py:28
+msgid "Keywords"
+msgstr "Paraules clau"
+
+#: pages/models.py:29
+msgid "Optional comma-separated keywords."
+msgstr "Una llista separada per coma d’etiquetes."
+
+#: pages/models.py:36 posts/models.py:107
+#: posts/templates/posts/post_detail.html:401 testimonials/models.py:8
+msgid "Author"
+msgstr "Autor"
+
+#: pages/models.py:48
+msgid "Is Homepage?"
+msgstr "És la pàgina d'inici?"
+
+#: pages/models.py:49
+msgid ""
+"Mark only one page with this option. If multiple are marked, the most recent "
+"one will be used."
+msgstr ""
+"Marca només una pàgina amb aquesta opció. Si n’hi ha diverses marcades, "
+"s’utilitzarà la més recent."
+
+#: pages/models.py:52
+msgid "Creation Date"
+msgstr "Data de Creació"
+
+#: pages/models.py:53
+msgid "Last Updated"
+msgstr "Última Actualització"
+
+#: pages/models.py:57
+msgid "Importance Order"
+msgstr "Ordre d’importació"
+
+#: pages/models.py:58
+msgid ""
+"A lower number means higher priority in search results. E.g., 1 for 'About "
+"Us', 2 for 'Contact', 99 for others."
+msgstr ""
+"Un número més petit significa més prioritat als resultats de cerca. Per "
+"exemple, 1 per a «Qui som», 2 per a «Contacte» i 99 per a la resta."
+
+#: pages/models.py:67
+msgid "Featured image (library, default column)"
+msgstr "Imatge destacada (biblioteca, columna predeterminada)"
+
+#: pages/models.py:68
+msgid ""
+"Optional gallery row for the unsuffixed featured_image column (usually "
+"default locale)."
+msgstr ""
+"Fila opcional de galeria per a la columna featured_image sense sufix "
+"(normalment la configuració regional predeterminada)."
+
+#: pages/models.py:76
+msgid "Featured image (library, ES)"
+msgstr "Imatge Destacada"
+
+#: pages/models.py:84
+msgid "Featured image (library, EN)"
+msgstr "Imatge Destacada"
+
+#: pages/models.py:92
+msgid "Featured image (library, CA)"
+msgstr "Imatge Destacada"
+
+#: pages/models.py:96
+msgid "page"
+msgstr "pàgina"
+
+#: pages/models.py:97
+msgid "pages"
+msgstr "pàgines"
+
+#: pages/models.py:184 site_settings/models.py:227
+msgid "Default"
+msgstr "Predeterminat"
+
+#: pages/models.py:185
+msgid "Muted"
+msgstr "Suau"
+
+#: pages/models.py:186
+msgid "Notice"
+msgstr "Avís"
+
+#: pages/models.py:187
+msgid "Surface"
+msgstr "Superfície"
+
+#: pages/models.py:193
+msgid "Internal name for organizing this home section in the admin."
+msgstr "Nom intern per organitzar aquesta secció d’inici a l’admin."
+
+#: pages/models.py:198
+msgid "Optional HTML/WYSIWYG content shown for this section."
+msgstr "Contingut HTML/WYSIWYG opcional que es mostra en aquesta secció."
+
+#: pages/models.py:201
+msgid "Enabled"
+msgstr "Habilitat"
+
+#: pages/models.py:209
+msgid "Widget Zone After Content"
+msgstr "Zona Widget"
+
+#: pages/models.py:210
+msgid "Optional widget zone rendered after this section content."
+msgstr ""
+"Zona de ginys opcional que es renderitza després del contingut d’aquesta "
+"secció."
+
+#: pages/models.py:214
+msgid "Show Separator After"
+msgstr "Mostra separador després"
+
+#: pages/models.py:215
+msgid "Displays a separator after this section."
+msgstr "Mostra un separador després d’aquesta secció."
+
+#: pages/models.py:221
+msgid "Background Style"
+msgstr "Estil de fons"
+
+#: pages/models.py:225
+msgid "Full Width"
+msgstr "Amplada completa"
+
+#: pages/models.py:226
+msgid "If enabled, the section content can span the full content column width."
+msgstr ""
+"Si s’activa, el contingut de la secció pot ocupar tota l’amplada de la "
+"columna de contingut."
+
+#: pages/models.py:231
+msgid "Home Section"
+msgstr "Ubicació"
+
+#: pages/models.py:232
+msgid "Home Sections"
+msgstr "Seccions d’inici"
+
+#: pages/templates/pages/page_detail.html:19
+#: pages/templates/pages/page_detail.html:232 reporte_completo.txt:1816
+msgid "Welcome to Tavata CMS!"
+msgstr "Benvingut a Tavata CMS!"
+
+#: pages/templates/pages/page_detail.html:28 reporte_completo.txt:1738
+msgid "Welcome"
+msgstr "Benvingut!"
+
+#: pages/templates/pages/page_detail.html:37
+#: pages/templates/pages/page_detail.html:233 reporte_completo.txt:1747
+#: reporte_completo.txt:1817
+msgid ""
+"Content is being prepared. An administrator needs to configure a homepage "
+"from the admin panel."
+msgstr ""
+"El contingut s’està preparant. Un administrador ha de configurar una pàgina "
+"d’inici des del tauler d’administració."
+
+#: pages/templates/pages/page_detail.html:130
+#, python-format
+msgid ""
+"\n"
+"                            By %(author)s | Last updated: %(updated_date)s\n"
+"                        "
+msgstr ""
+"\n"
+"                            Per %(author)s | Darrera actualització: "
+"%(updated_date)s\n"
+"                        "
+
+#: pages/templates/pages/page_directory.html:8
+msgid "Pages by Category"
+msgstr "Pàgines per categoria"
+
+#: pages/templates/pages/page_directory.html:24
+msgid "There are no pages with categories to display."
+msgstr "No hi ha pàgines amb categories per mostrar."
+
+#: pages/templates/pages/pages_by_category.html:7
+#, python-format
+msgid "Pages in %(category_name)s"
+msgstr "Pàgines a %(category_name)s"
+
+#: pages/templates/pages/pages_by_category.html:20
+msgid "Pages in category:"
+msgstr "Pàgines a la categoria:"
+
+#: pages/templates/pages/pages_by_category.html:42 reporte_completo.txt:1689
+#, python-format
+msgid ""
+"\n"
+"                            Updated on %(updated_date)s\n"
+"                            "
+msgstr ""
+"\n"
+"                            Actualitzat el %(updated_date)s\n"
+"                            "
+
+#: pages/templates/pages/pages_by_category.html:53 reporte_completo.txt:1700
+msgid "There are currently no published pages in this category."
+msgstr "Actualment no hi ha pàgines publicades en aquesta categoria."
+
+#: pages/views.py:44 pages/views.py:102
+msgid "Pages"
+msgstr "Pàgines"
+
+#: posts/admin.py:40 posts/admin.py:53
+msgid "Post author"
+msgstr "Autor del post"
+
+#: posts/admin.py:66
+msgid "Assigned Tag"
+msgstr "Assignat a"
+
+#: posts/admin.py:67
+msgid "Assigned Tags"
+msgstr "Assignat a"
+
+#: posts/admin.py:274 publications/admin.py:292
+msgid "Featured image — media library"
+msgstr "Imatge destacada — biblioteca multimèdia"
+
+#: posts/admin.py:441
+msgid "7d Views"
+msgstr "Vistes 7d"
+
+#: posts/admin.py:445
+msgid "Points Today"
+msgstr "Punts avui"
+
+#: posts/admin.py:449
+msgid "7d Points"
+msgstr "Punts 7d"
+
+#: posts/admin.py:453
+msgid "Community Score"
+msgstr "Puntuacio comunitaria"
+
+#: posts/admin.py:457
+msgid "Approved Comments"
+msgstr "Comentaris aprovats automàticament"
+
+#: posts/admin.py:472
+msgid "Editorial Readiness"
+msgstr "Qualificació de l'editor"
+
+#: posts/admin.py:475 posts/models.py:65
+msgid "Summary"
+msgstr "Resum"
+
+#: posts/admin.py:476
+msgid "Featured Image"
+msgstr "Imatge Destacada"
+
+#: posts/admin.py:477
+msgid "Social Image"
+msgstr "Imatge social"
+
+#: posts/admin.py:478 posts/admin.py:490 posts/models.py:151
+#: posts/templates/posts/post_detail.html:367
+#: posts/templates/posts/post_detail.html:592 reporte_completo.txt:5440
+#: tags/models.py:32
+msgid "Tags"
+msgstr "Etiquetes"
+
+#: posts/forms.py:8 posts/models.py:285
+msgid "Points"
+msgstr ""
+
+#: posts/models.py:66
+msgid "Short text used as the social sharing description."
+msgstr "Text breu utilitzat com a descripció per compartir a les xarxes."
+
+#: posts/models.py:89 publications/models.py:141
+msgid "Featured image (library)"
+msgstr "Imatge Destacada"
+
+#: posts/models.py:90
+msgid ""
+"Optional gallery row for the featured image; overrides the upload below when "
+"set."
+msgstr ""
+"Fila opcional de galeria per a la imatge destacada; quan es defineix, "
+"substitueix la càrrega de sota."
+
+#: posts/models.py:99
+msgid ""
+"Optional gallery row for the square social image; overrides the upload below "
+"when set."
+msgstr ""
+"Fila opcional de galeria per a la imatge social quadrada; quan es defineix, "
+"substitueix la càrrega de sota."
+
+#: posts/models.py:112
+msgid "Published Date"
+msgstr "Data de Publicació"
+
+#: posts/models.py:125
+msgid "View Count"
+msgstr "Veure comte"
+
+#: posts/models.py:128
+msgid "Editor's Rating"
+msgstr "Qualificació de l'editor"
+
+#: posts/models.py:129
+msgid ""
+"A score from 0-100. Higher numbers can be used for ordering or editor’s "
+"picks."
+msgstr ""
+"Puntuació de 0 a 100. Els valors alts es poden utilitzar per ordenar o per a "
+"seleccions editorials."
+
+#: posts/models.py:134
+msgid "Show in Post Grids"
+msgstr "Mostra a les quadrícules de publicacions"
+
+#: posts/models.py:135
+msgid ""
+"Controls whether this post can appear in homepage/category grid widgets."
+msgstr ""
+"Controla si aquesta publicació pot aparèixer als ginys de quadrícula de la "
+"pàgina d’inici o de categoria."
+
+#: posts/models.py:140
+msgid "Migrated"
+msgstr "Migrat"
+
+#: posts/models.py:141
+msgid ""
+"Internal admin flag used to avoid exporting or importing this post more than "
+"once."
+msgstr ""
+"Indicador intern de l’administració utilitzat per evitar exportar o importar "
+"aquesta publicació més d’una vegada."
+
+#: posts/models.py:153
+msgid "Tags assigned to this post. Managed via TaggedPost intermediate model."
+msgstr ""
+"Etiquetes assignades a aquesta publicació. Es gestionen mitjançant el model "
+"intermedi TaggedPost."
+
+#: posts/models.py:171
+msgid "(No title)"
+msgstr "(Sense títol)"
+
+#: posts/models.py:250 posts/models.py:281 tags/models.py:91
+msgid "Date"
+msgstr "Data"
+
+#: posts/models.py:251
+msgid "Daily View Count"
+msgstr "Veure comte"
+
+#: posts/models.py:254
+msgid "Post Daily Metric"
+msgstr "Mètrica diària de publicació"
+
+#: posts/models.py:255
+msgid "Post Daily Metrics"
+msgstr "Mètriques diàries de publicacions"
+
+#: posts/models.py:291
+#, fuzzy
+#| msgid "Posts in category:"
+msgid "Post point allocation"
+msgstr "Posts a la categoria:"
+
+#: posts/models.py:292
+#, fuzzy
+#| msgid "Posts in category:"
+msgid "Post point allocations"
+msgstr "Posts a la categoria:"
+
+#: posts/models.py:325
+#, fuzzy
+#| msgid "Post author"
+msgid "Post favorite"
+msgstr "Autor del post"
+
+#: posts/models.py:326
+#, fuzzy
+#| msgid "Posts"
+msgid "Post favorites"
+msgstr "Posts"
+
+#: posts/selectors.py:15
+msgid "The newest published posts."
+msgstr "Les publicacions més recents."
+
+#: posts/selectors.py:19
+msgid "Posts published today."
+msgstr "Publicacions fetes avui."
+
+#: posts/selectors.py:23
+msgid "Posts with the most active discussion threads."
+msgstr "Publicacions amb els fils de debat més actius."
+
+#: posts/selectors.py:27
+msgid "Posts with the most activity in the last 7 days."
+msgstr "Publicacions amb més activitat en els últims 7 dies."
+
+#: posts/selectors.py:31
+msgid "Editorially recommended posts."
+msgstr "Publicacions recomanades editorialment."
+
+#: posts/selectors.py:34
+msgid "Community Picks"
+msgstr "Seleccions de la comunitat"
+
+#: posts/selectors.py:35
+msgid "Posts highlighted by the community and refined by editorial curation."
+msgstr ""
+"Publicacions destacades per la comunitat i afinades per la curadoria "
+"editorial."
+
+#: posts/services.py:37
+msgid "Post points are disabled right now."
+msgstr ""
+
+#: posts/services.py:40
+#, fuzzy
+#| msgid "You need to log in to leave a comment."
+msgid "You need to log in to assign points to posts."
+msgstr "Cal iniciar sessió per deixar un comentari."
+
+#: posts/services.py:44
+msgid "You cannot assign points to your own post."
+msgstr ""
+
+#: posts/services.py:47
+msgid "Only published posts can receive points."
+msgstr ""
+
+#: posts/services.py:56
+#, python-format
+msgid "You can start assigning points after %(days)s day(s) on the site."
+msgstr "Podras començar a assignar punts despres de %(days)s dia(es) al lloc."
+
+#: posts/services.py:110
+msgid "You need to log in to favorite posts."
+msgstr "Cal iniciar sessio per marcar posts com a favorits."
+
+#: posts/services.py:131
+msgid "Points cannot be negative."
+msgstr ""
+
+#: posts/services.py:134
+#, python-format
+msgid "You can assign at most %(points)s point(s) to the same post per day."
+msgstr ""
+
+#: posts/services.py:153
+#, python-format
+msgid "You only have %(points)s point(s) left for today."
+msgstr ""
+
+#: posts/templates/posts/post_detail.html:331
+#, python-format
+msgid ""
+"\n"
+"      Published on %(published_date)s by %(author)s\n"
+"    "
+msgstr ""
+"\n"
+"      Publicat el %(published_date)s per %(author)s\n"
+"    "
+
+#: posts/templates/posts/post_detail.html:443
+#, fuzzy
+#| msgid "Delete this item"
+msgid "Vote this post"
+msgstr "Eliminar aquest element"
+
+#: posts/templates/posts/post_detail.html:457
+#, fuzzy
+#| msgid "Save Changes"
+msgid "Decrease points"
+msgstr "Desa els canvis"
+
+#: posts/templates/posts/post_detail.html:462
+#: posts/templates/posts/post_detail.html:505
+#: posts/templates/posts/post_detail.html:537
+#, fuzzy
+#| msgid "Save Changes"
+msgid "Give points"
+msgstr "Desa els canvis"
+
+#: posts/templates/posts/post_detail.html:464
+#, fuzzy
+#| msgid "Save Changes"
+msgid "Increase points"
+msgstr "Desa els canvis"
+
+#: posts/templates/posts/post_detail.html:475
+#, fuzzy
+#| msgid "Save Changes"
+msgid "Save points"
+msgstr "Desa els canvis"
+
+#: posts/templates/posts/post_detail.html:493
+#: posts/templates/posts/post_detail.html:525
+#: posts/templates/posts/post_detail.html:966
+msgid "Favorited"
+msgstr "Als favorits"
+
+#: posts/templates/posts/post_detail.html:495
+#: posts/templates/posts/post_detail.html:527
+#: posts/templates/posts/post_detail.html:547
+#: posts/templates/posts/post_detail.html:967
+msgid "Add to favorites"
+msgstr "Afegir als favorits"
+
+#: posts/templates/posts/post_detail.html:542
+msgid "Log in to assign points"
+msgstr ""
+
+#: posts/templates/posts/post_detail.html:553
+#, fuzzy
+#| msgid "Posts published today."
+msgid "Points received today:"
+msgstr "Publicacions fetes avui."
+
+#: posts/templates/posts/post_detail.html:558
+#, fuzzy
+#| msgid "Log in here"
+msgid "Your points here:"
+msgstr "Inicieu la sessió aquí"
+
+#: posts/templates/posts/post_detail.html:561
+msgid "Left today:"
+msgstr ""
+
+#: posts/templates/posts/post_detail.html:564
+msgid "Daily budget:"
+msgstr ""
+
+#: posts/templates/posts/post_detail.html:567
+#, fuzzy
+#| msgid "7d Views"
+msgid "Views:"
+msgstr "Vistes 7d"
+
+#: posts/templates/posts/post_detail.html:570
+#, fuzzy
+#| msgid "Comments"
+msgid "Comments:"
+msgstr "comentaris"
+
+#: posts/templates/posts/post_detail.html:573
+msgid "Favorites:"
+msgstr "Favorits:"
+
+#: posts/templates/posts/post_detail.html:608 reporte_completo.txt:5457
+#, python-format
+msgid "%(count)s Comment"
+msgid_plural "%(count)s Comments"
+msgstr[0] "%(count)s Comentari"
+msgstr[1] "%(count)s Comentaris"
+
+#: posts/templates/posts/post_detail.html:625
+#, python-format
+msgid "Comment in %(language)s"
+msgstr "Comentari en %(language)s"
+
+#: posts/templates/posts/post_detail.html:634
+#: posts/templates/posts/post_detail.html:1180
+msgid "View original"
+msgstr "Veure original"
+
+#: posts/templates/posts/post_detail.html:642
+#: posts/templates/posts/post_detail.html:1187
+msgid "View translation"
+msgstr "Veure traducció"
+
+#: posts/templates/posts/post_detail.html:651
+msgid "Translate"
+msgstr "Traduir"
+
+#: posts/templates/posts/post_detail.html:660
+msgid "Suggest translation"
+msgstr "Sugerir traducció"
+
+#: posts/templates/posts/post_detail.html:681
+#: posts/templates/posts/post_detail.html:690
+#, fuzzy
+#| msgid "View original"
+msgid "Original"
+msgstr "Veure original"
+
+#: posts/templates/posts/post_detail.html:717
+msgid "Submit translation"
+msgstr "Envia la traducció"
+
+#: posts/templates/posts/post_detail.html:719
+msgid "Your version will be linked to this comment."
+msgstr "La teva versió quedarà vinculada a aquest comentari."
+
+#: posts/templates/posts/post_detail.html:728 reporte_completo.txt:5476
+msgid "Reply"
+msgstr "Respon"
+
+#: posts/templates/posts/post_detail.html:730
+msgid "Log in to reply"
+msgstr "Inicieu la sessió aquí"
+
+#: posts/templates/posts/post_detail.html:760 reporte_completo.txt:5507
+msgid "Leave a Comment"
+msgstr "Deixa un comentari"
+
+#: posts/templates/posts/post_detail.html:771 reporte_completo.txt:5529
+msgid "Submit Comment"
+msgstr "Envieu comentari"
+
+#: posts/templates/posts/post_detail.html:775
+msgid "You need to log in to leave a comment."
+msgstr "Cal iniciar sessió per deixar un comentari."
+
+#: posts/templates/posts/post_detail.html:776
+msgid "Log in"
+msgstr "Iniciar sessió"
+
+#: posts/templates/posts/post_detail.html:884 posts/views.py:626
+msgid "Please choose a valid number of points."
+msgstr ""
+
+#: posts/templates/posts/post_detail.html:962
+msgid "The favorite action could not be completed."
+msgstr "L'accio de favorits no s'ha pogut completar."
+
+#: posts/templates/posts/post_detail.html:1008
+msgid "The follow action could not be completed."
+msgstr "L'accio de seguiment no s'ha pogut completar."
+
+#: posts/templates/posts/post_detail.html:1081 reporte_completo.txt:5560
+msgid "Cancel Reply"
+msgstr "Cancel·la la resposta"
+
+#: posts/templates/posts/post_detail.html:1089 reporte_completo.txt:5569
+msgid "Reply to"
+msgstr "Respon a"
+
+#: posts/templates/posts/post_list.html:6
+#: posts/templates/posts/post_list.html:8
+#: posts/templates/posts/post_list.html:19 posts/views.py:81 tags/admin.py:66
+msgid "Published Posts"
+msgstr "📚 Publicacions publicades"
+
+#: posts/templates/posts/post_list.html:7
+msgid "Latest updates and insights from the Tavata project."
+msgstr "Notícies, articles i idees del nostre equip."
+
+#: posts/templates/posts/post_list.html:24 posts/views.py:85
+msgid "Latest news and articles from the Tavata platform."
+msgstr "Últimes notícies i articles de la plataforma Tavata."
+
+#: posts/templates/posts/post_list.html:45
+#: posts/templates/posts/posts_by_category.html:45
+#: posts/templates/posts/posts_by_tag.html:47
+#, python-format
+msgid ""
+"\n"
+"                  Published on %(published_date)s by %(author)s\n"
+"                "
+msgstr ""
+"\n"
+"                  Publicat el %(published_date)s per %(author)s\n"
+"                "
+
+#: posts/templates/posts/post_list.html:52
+#, python-format
+msgid "%(points)s community point(s) in the last period"
+msgstr "%(points)s punt(s) de la comunitat en l'ultim periode"
+
+#: posts/templates/posts/post_list.html:57
+#: widgets/templates/widgets/partials/_post_grid.html:56
+#, python-format
+msgid "Community score %(score)s · Editorial rating %(rating)s"
+msgstr "Puntuacio comunitaria %(score)s · Valoracio editorial %(rating)s"
+
+#: posts/templates/posts/post_list.html:61
+#: posts/templates/posts/posts_by_category.html:50
+#: posts/templates/posts/posts_by_category.html:86
+#: posts/templates/posts/posts_by_tag.html:52
+#: posts/templates/posts/posts_by_tag.html:83 reporte_completo.txt:5354
+#: reporte_completo.txt:5627 reporte_completo.txt:5700
+#: reporte_completo.txt:6428 reporte_completo.txt:6560
+#: reporte_completo.txt:6614
+#: widgets/templates/widgets/partials/_post_carousel.html:38
+#: widgets/templates/widgets/partials/_post_carousel.html:49
+#: widgets/templates/widgets/partials/_post_carousel.html:59
+#: widgets/templates/widgets/partials/_post_grid.html:60
+msgid "Read More"
+msgstr "Llegir Més"
+
+#: posts/templates/posts/post_list.html:69
+msgid "There are no posts yet. Come back soon!"
+msgstr "Encara no hi ha entrades al blog. Torna aviat!"
+
+#: posts/templates/posts/posts_by_category.html:11
+#, python-format
+msgid "Posts in %(category_name)s"
+msgstr "Entrades a %(category_name)s"
+
+#: posts/templates/posts/posts_by_category.html:22
+msgid "Posts in category:"
+msgstr "Posts a la categoria:"
+
+#: posts/templates/posts/posts_by_category.html:57 reporte_completo.txt:5362
+msgid "There are currently no published posts in this category."
+msgstr "Actualment no hi ha entrades publicades en aquesta categoria."
+
+#: posts/templates/posts/posts_by_category.html:66
+#: posts/templates/posts/posts_by_tag.html:63
+msgid "You might be interested in these recent posts:"
+msgstr "Et podrien interessar aquestes publicacions recents:"
+
+#: posts/templates/posts/posts_by_category.html:81
+#, python-format
+msgid ""
+"\n"
+"                  Published on %(published_date)s\n"
+"                "
+msgstr ""
+"\n"
+"                  Publicat el %(published_date)s\n"
+"                "
+
+#: posts/templates/posts/posts_by_category.html:92
+msgid "No suggestions available."
+msgstr "No hi ha usuaris disponibles."
+
+#: posts/templates/posts/posts_by_tag.html:7
+#, python-format
+msgid "Explore all posts tagged with \"%(tag_name)s\" on Tavata CMS."
+msgstr "Llista de totes les publicacions etiquetades amb \"%(tag_name)s\"."
+
+#: posts/templates/posts/posts_by_tag.html:8
+#, python-format
+msgid "Posts tagged with \"%(tag_name)s\""
+msgstr "Publicacions etiquetades amb \"%(tag_name)s\""
+
+#: posts/templates/posts/posts_by_tag.html:18
+#, python-format
+msgid "Posts tagged with <span class=\"text-primary\">“%(tag_label)s”</span>"
+msgstr ""
+"Publicacions etiquetades amb <span class=\"text-primary\">“%(tag_label)s”</"
+"span>"
+
+#: posts/templates/posts/posts_by_tag.html:23 reporte_completo.txt:5678
+msgid "Explore content related to this tag."
+msgstr "Exploreu contingut relacionat amb aquesta etiqueta."
+
+#: posts/templates/posts/posts_by_tag.html:59
+msgid "There are currently no posts tagged with this label."
+msgstr "Actualment no hi ha pàgines publicades en aquesta categoria."
+
+#: posts/templates/posts/posts_by_tag.html:78
+#, python-format
+msgid ""
+"\n"
+"                        Published on %(published_date)s\n"
+"                      "
+msgstr ""
+"\n"
+"                        Publicat el %(published_date)s\n"
+"                      "
+
+#: posts/views.py:57
+msgid "Post list not found."
+msgstr "No s'han trobat publicacions publicades."
+
+#: posts/views.py:142
+msgid "Latest posts from authors you follow."
+msgstr "Ultimes publicacions dels autors que segueixes."
+
+#: posts/views.py:192
+msgid "Posts you saved to revisit later."
+msgstr "Posts que has desat per tornar-hi mes tard."
+
+#: posts/views.py:215 posts/views.py:380 posts/views.py:589
+msgid "Post not found."
+msgstr "No s'han trobat publicacions publicades."
+
+#: posts/views.py:247
+msgid "You added this post to your favorites."
+msgstr "Has afegit aquest post als teus favorits."
+
+#: posts/views.py:249
+msgid "You removed this post from your favorites."
+msgstr "Has tret aquest post dels teus favorits."
+
+#: posts/views.py:396 posts/views.py:397
+msgid "Post not available in this language"
+msgstr "Publicació no disponible en aquest idioma"
+
+#: posts/views.py:399
+msgid ""
+"This post exists, but it has not been translated into the selected language "
+"yet."
+msgstr ""
+"This post exists, but it has not been translated into the selected language "
+"yet."
+
+#: posts/views.py:454
+msgid "Please log in to leave a comment."
+msgstr "Inicia sessió per deixar un comentari."
+
+#: posts/views.py:509
+msgid "✅ Thank you! Your comment has been published."
+msgstr "Gràcies! El vostre comentari ha estat publicat."
+
+#: posts/views.py:511
+msgid "🕓 Thank you! Your comment awaits moderation."
+msgstr "🕓 Gràcies! El teu comentari està pendent de moderació."
+
+#: posts/views.py:615
+msgid "Please log in to assign points to this post."
+msgstr ""
+
+#: posts/views.py:646
+#, python-format
+msgid "You assigned %(points)s point(s) to this post for today."
+msgstr ""
+
+#: publications/admin.py:112
+msgid ""
+"Basic identification and summary of the publication. The abstract should "
+"summarize objectives, methods, and key findings."
+msgstr ""
+"Basic identification and summary of the publication. The abstract should "
+"summarize objectives, methods, and key findings."
+
+#: publications/admin.py:116
+msgid "Scientific Structure"
+msgstr "Scientific Structure"
+
+#: publications/admin.py:129
+msgid "Structured scientific sections replacing the old full content field."
+msgstr "Structured scientific sections replacing the old full content field."
+
+#: publications/admin.py:132
+msgid "Metadata & SEO"
+msgstr "Meta Títol (SEO)"
+
+#: publications/admin.py:147
+msgid ""
+"Only users marked as researchers in their profile can be selected as authors."
+msgstr ""
+"Només es poden seleccionar com a autors els usuaris marcats com a "
+"investigadors al seu perfil."
+
+#: publications/models.py:29
+msgid "Recommended length: 5–15 words."
+msgstr "Recommended length: 5–15 words."
+
+#: publications/models.py:39
+msgid ""
+"Summarize objectives, methods, and key findings. Recommended length: 150–250 "
+"words."
+msgstr ""
+"Summarize objectives, methods, and key findings. Recommended length: 150–250 "
+"words."
+
+#: publications/models.py:49 publications/views.py:170
+msgid "Introduction"
+msgstr "Institució"
+
+#: publications/models.py:51
+msgid ""
+"Contextualize the problem, justify the study, and introduce the research "
+"topic. Recommended length: 300–800 words."
+msgstr ""
+"Contextualize the problem, justify the study, and introduce the research "
+"topic. Recommended length: 300–800 words."
+
+#: publications/models.py:57 publications/views.py:174
+msgid "Theoretical framework"
+msgstr "Theoretical framework"
+
+#: publications/models.py:59
+msgid ""
+"Develop the conceptual foundation, key authors, theories, and relevant prior "
+"work. Recommended length: 500–1000 words."
+msgstr ""
+"Develop the conceptual foundation, key authors, theories, and relevant prior "
+"work. Recommended length: 500–1000 words."
+
+#: publications/models.py:65 publications/views.py:178
+msgid "Objectives and hypotheses"
+msgstr "Objectives and hypotheses"
+
+#: publications/models.py:67
+msgid ""
+"Define research questions, objectives, and hypotheses. Recommended length: "
+"100–200 words."
+msgstr ""
+"Define research questions, objectives, and hypotheses. Recommended length: "
+"100–200 words."
+
+#: publications/models.py:73 publications/views.py:182
+msgid "Methodology"
+msgstr "Methodology"
+
+#: publications/models.py:75
+msgid ""
+"Describe the research design, sample, instruments, data collection, and "
+"analysis techniques. Recommended length: 300–600 words."
+msgstr ""
+"Describe the research design, sample, instruments, data collection, and "
+"analysis techniques. Recommended length: 300–600 words."
+
+#: publications/models.py:81 publications/views.py:186
+msgid "Results"
+msgstr "Results"
+
+#: publications/models.py:83
+msgid ""
+"Present findings, data, tables, figures, categories, or statistical results. "
+"Recommended length: 300–700 words."
+msgstr ""
+"Present findings, data, tables, figures, categories, or statistical results. "
+"Recommended length: 300–700 words."
+
+#: publications/models.py:89 publications/views.py:190
+msgid "Discussion"
+msgstr "Discussion"
+
+#: publications/models.py:91
+msgid ""
+"Interpret findings, compare them with the literature, and discuss "
+"implications and limitations. Recommended length: 400–800 words."
+msgstr ""
+"Interpret findings, compare them with the literature, and discuss "
+"implications and limitations. Recommended length: 400–800 words."
+
+#: publications/models.py:97 publications/views.py:194
+msgid "Conclusions"
+msgstr "Conclusions"
+
+#: publications/models.py:99
+msgid ""
+"Answer the research questions and highlight the main contributions. "
+"Recommended length: 100–200 words."
+msgstr ""
+"Answer the research questions and highlight the main contributions. "
+"Recommended length: 100–200 words."
+
+#: publications/models.py:105 publications/views.py:198
+msgid "References / Bibliography"
+msgstr "References / Bibliography"
+
+#: publications/models.py:107
+msgid ""
+"List all cited sources, books, academic articles, reports, DOI links, or "
+"URLs. Recommended: 5–20 sources when applicable."
+msgstr ""
+"List all cited sources, books, academic articles, reports, DOI links, or "
+"URLs. Recommended: 5–20 sources when applicable."
+
+#: publications/models.py:113 publications/views.py:202
+msgid "Annexes"
+msgstr "Annexes"
+
+#: publications/models.py:115
+msgid ""
+"Optional supplementary material such as questionnaires, raw data, "
+"transcripts, or software used."
+msgstr ""
+"Optional supplementary material such as questionnaires, raw data, "
+"transcripts, or software used."
+
+#: publications/models.py:142
+msgid "Primary publication cover image from Media Library."
+msgstr ""
+"Imatge principal de portada de la publicació des de la biblioteca multimèdia."
+
+#: publications/models.py:151
+msgid ""
+"Square or social-preview image from Media Library, used near the abstract "
+"and in cards/previews."
+msgstr ""
+"Square or social-preview image from Media Library, used near the abstract "
+"and in cards/previews."
+
+#: publications/models.py:204
+msgid "Publication"
+msgstr "Publicació"
+
+#: publications/models.py:205
+#: publications/templates/publications/publication_list.html:5
+#: publications/views.py:70 publications/views.py:80 publications/views.py:158
+#: publications/views.py:251
+msgid "Publications"
+msgstr "Publicacions"
+
+#: publications/templates/publications/publication_detail.html:17
+msgid "Back to publications"
+msgstr "Correu electrònic públic"
+
+#: publications/templates/publications/publication_detail.html:23
+msgid "Scientific publication"
+msgstr "Certificació"
+
+#: publications/templates/publications/publication_detail.html:138
+msgid "Document"
+msgstr "Document"
+
+#: publications/templates/publications/publication_detail.html:141
+msgid "This publication includes a document that can be read online."
+msgstr "Aquesta publicació inclou un document que es pot llegir en línia."
+
+#: publications/templates/publications/publication_detail.html:149
+msgid "View document"
+msgstr "Veure document"
+
+#: publications/templates/publications/publication_list.html:12
+#: publications/views.py:81
+msgid "Scientific Publications"
+msgstr "Correu electrònic públic"
+
+#: publications/templates/publications/publication_list.html:15
+#: publications/views.py:83
+msgid ""
+"Research, essays, reports, and structured scientific documents published by "
+"TVTente."
+msgstr ""
+"Research, essays, reports, and structured scientific documents published by "
+"TVTente."
+
+#: publications/templates/publications/publication_list.html:82
+msgid "Read publication"
+msgstr "Correu electrònic públic"
+
+#: publications/templates/publications/publication_list.html:93
+msgid "Publications pagination"
+msgstr "Paginació de publicacions"
+
+#: publications/templates/publications/publication_list.html:124
+msgid "There are no published scientific publications yet."
+msgstr "Actualment no hi ha pàgines publicades en aquesta categoria."
+
+#: publications/views.py:131
+msgid "Publication not found."
+msgstr "No s'han trobat publicacions publicades."
+
+#: publications/views.py:147 publications/views.py:148
+msgid "Publication not available in this language"
+msgstr "Publicació no disponible en aquest idioma"
+
+#: publications/views.py:150
+msgid ""
+"This publication exists, but it has not been translated into the selected "
+"language yet."
+msgstr "Aquesta publicació no està disponible en aquest idioma."
+
+#: publications/views.py:247
+msgid "Document not found."
+msgstr "No s'han trobat publicacions publicades."
+
+#: publications/views.py:253 publications/views.py:263
+#: publications/views.py:264
+msgid "Document viewer"
+msgstr "Visor de document"
+
+#: publications/views.py:265
+msgid "Read the publication document online."
+msgstr "Aquesta publicació inclou un document que es pot llegir en línia."
+
+#: reporte_completo.txt:1655
+#, fuzzy, python-format
+#| msgid "Pages in %(category_name)s"
+msgid "Pages in %(category.name)s"
+msgstr "Pàgines a %(category_name)s"
+
+#: reporte_completo.txt:1665
+#, fuzzy, python-format
+#| msgid ""
+#| "\n"
+#| "                Pages in category: <span class=\"text-"
+#| "primary\">%(category_name)s</span>\n"
+#| "            "
+msgid ""
+"\n"
+"                Pages in category: <span class=\"text-"
+"primary\">%(category.name)s</span>\n"
+"            "
+msgstr ""
+"\n"
+"                Pàgines de la categoria: <span class=\"text-"
+"primary\">%(category_name)s</span>\n"
+"            "
+
+#: reporte_completo.txt:1729
+msgid "Welcome to TAVATA!"
+msgstr "Benvingut a Tavata CMS!"
+
+#: reporte_completo.txt:1776
+#, python-format
+msgid ""
+"\n"
+"                        By %(author)s | Last updated: %(updated_date)s\n"
+"                    "
+msgstr ""
+"\n"
+"                        Per %(author)s | Darrera actualització: "
+"%(updated_date)s\n"
+"                    "
+
+#: reporte_completo.txt:2834 search/templates/search/search_results.html:9
+msgid "Search results for:"
+msgstr "Resultats de la cerca per a:"
+
+#: reporte_completo.txt:2839 search/templates/search/search_results.html:14
+msgid "1 result found."
+msgstr "1 resultat trobat."
+
+#: reporte_completo.txt:2841 search/templates/search/search_results.html:16
+#, python-format
+msgid "%(count)s results found."
+msgstr "%(count)s resultats trobats."
+
+#: reporte_completo.txt:2848 search/templates/search/search_results.html:23
+msgid "Please enter a term in the search bar above."
+msgstr "Si us plau, introdueix un terme a la barra de cerca."
+
+#: reporte_completo.txt:2856 search/templates/search/search_results.html:60
+msgid "Pages Found"
+msgstr "Pàgines Trobades"
+
+#: reporte_completo.txt:2874 search/templates/search/search_results.html:30
+msgid "Blog Posts Found"
+msgstr "Entrades de Blog Trobades"
+
+#: reporte_completo.txt:5310
+#, fuzzy, python-format
+#| msgid "Posts in %(category_name)s"
+msgid "Posts in %(category.name)s"
+msgstr "Entrades a %(category_name)s"
+
+#: reporte_completo.txt:5320
+#, fuzzy, python-format
+#| msgid ""
+#| "\n"
+#| "                Posts in category: <span class=\"text-"
+#| "primary\">%(category_name)s</span>\n"
+#| "            "
+msgid ""
+"\n"
+"                Posts in category: <span class=\"text-"
+"primary\">%(category.name)s</span>\n"
+"            "
+msgstr ""
+"\n"
+"                Publicacions de la categoria: <span class=\"text-"
+"primary\">%(category_name)s</span>\n"
+"            "
+
+#: reporte_completo.txt:5348 reporte_completo.txt:5622
+#: reporte_completo.txt:5695
+#, python-format
+msgid ""
+"\n"
+"                                    Published on %(published_date)s by "
+"%(author)s\n"
+"                                "
+msgstr ""
+"\n"
+"                                    Publicat el %(published_date)s per "
+"%(author)s\n"
+"                                "
+
+#: reporte_completo.txt:5423
+#, python-format
+msgid ""
+"\n"
+"                Published on %(published_date)s by %(author)s\n"
+"            "
+msgstr ""
+"\n"
+"                Publicat el %(published_date)s per %(author)s\n"
+"            "
+
+#: reporte_completo.txt:5590 reporte_completo.txt:5592
+#: reporte_completo.txt:5600
+msgid "Our Blog"
+msgstr "El Nostre Blog"
+
+#: reporte_completo.txt:5591
+msgid ""
+"Latest articles and updates on Computer Vision, Natural Language Processing, "
+"and more from the Tavata team."
+msgstr ""
+"Últims articles i actualitzacions sobre Visió per Computador, Processament "
+"del Llenguatge Natural i més de l’equip de Tavata."
+
+#: reporte_completo.txt:5601
+msgid "News, articles, and insights from our team."
+msgstr "Notícies, articles i idees del nostre equip."
+
+#: reporte_completo.txt:5635
+msgid "There are no blog posts yet. Come back soon!"
+msgstr "Encara no hi ha entrades al blog. Torna aviat!"
+
+#: reporte_completo.txt:5670
+msgid "Posts tagged with"
+msgstr "Publicacions etiquetades amb"
+
+#: reporte_completo.txt:5671
+msgid "Browse all blog posts related to"
+msgstr "Consulteu totes les publicacions del bloc relacionades amb"
+
+#: reporte_completo.txt:5671
+msgid "on Tavata CMS."
+msgstr "a Tavata CMS!"
+
+#: reporte_completo.txt:5672
+msgid "Posts by tag"
+msgstr "Publicacions per etiqueta"
+
+#: reporte_completo.txt:5677
+msgid "Posts Tagged With"
+msgstr "Publicacions etiquetades amb"
+
+#: reporte_completo.txt:5706
+msgid "No posts found for this tag yet."
+msgstr "Encara no s'han trobat publicacions per a aquesta etiqueta."
+
+#: reporte_completo.txt:5750 reporte_completo.txt:5767 templates/404.html:4
+#: templates/404.html:15
+msgid "Page Not Found"
+msgstr "Pàgina no trobada"
+
+#: reporte_completo.txt:5771
+msgid ""
+"Oops! It seems the page you were looking for doesn't exist or has been moved."
+msgstr "Vaja! Sembla que la pàgina que buscaves no existeix ni s’ha mogut."
+
+#: reporte_completo.txt:5777 templates/404.html:22
+msgid "Go to Homepage"
+msgstr "Vés a la pàgina d'inici"
+
+#: reporte_completo.txt:6387 widgets/templates/widgets/render_zone.html:44
+#, python-format
+msgid ""
+"\n"
+"                <strong>Widget Error:</strong> Template for widget type "
+"\"%(widget_type)s\" not found in the dispatcher.\n"
+"            "
+msgstr ""
+"\n"
+"                <strong>Error de giny:</strong> La plantilla per al tipus de "
+"giny \"%(widget_type)s\" no s’ha trobat al despatxador.\n"
+"            "
+
+#: reporte_completo.txt:6445 reporte_completo.txt:6579
+#: widgets/templates/widgets/partials/_post_carousel.html:81
+msgid "No posts available for the carousel."
+msgstr "No hi ha publicacions disponibles per al carrusel."
+
+#: reporte_completo.txt:6484
+#: widgets/templates/widgets/partials/_blog_categories_widget.html:37
+msgid "No categories with posts available."
+msgstr "No hi ha categories disponibles."
+
+#: reporte_completo.txt:6521
+#: widgets/templates/widgets/partials/_posts_widget.html:33
+msgid "No items to display."
+msgstr "No hi ha articles a mostrar."
+
+#: reporte_completo.txt:6609
+#: widgets/templates/widgets/partials/_post_grid.html:40
+#, python-format
+msgid ""
+"\n"
+"                                Published on %(date)s\n"
+"                            "
+msgstr ""
+"\n"
+"                                Publicat el %(date)s\n"
+"                            "
+
+#: reporte_completo.txt:7098
+#, python-format
+msgid ""
+"&copy; %(year)s Tavata.art - Built with Django and <i class=\"fas fa-bee\"></"
+"i> by Gustavo and Tavata."
+msgstr ""
+"&copy; %(year)s Tavata.art - Fet amb Django i <i class=\"fas fa-bee\"></i> "
+"per Gustavo i Tavata."
+
+#: shop/models.py:13
+msgid "Pending payment"
+msgstr "Pendent de pagament"
+
+#: shop/models.py:15
+msgid "Paid"
+msgstr "Pagat"
+
+#: shop/models.py:16
+msgid "Cancelled"
+msgstr "Cancel·lat"
+
+#: shop/models.py:22
+msgid "Reference"
+msgstr "Referència"
+
+#: shop/models.py:62
+msgid "Total"
+msgstr "Total"
+
+#: shop/models.py:76
+msgid "Orders"
+msgstr "Comandes"
+
+#: shop/models.py:99
+msgid "Book title"
+msgstr "Títol del llibre"
+
+#: shop/models.py:104
+msgid "Book subtitle"
+msgstr "Subtítol del llibre"
+
+#: shop/models.py:114
+msgid "Unit price"
+msgstr "Preu unitari"
+
+#: shop/models.py:120
+msgid "Line total"
+msgstr "Total de línia"
+
+#: shop/models.py:124
+msgid "Order item"
+msgstr "Article de la comanda"
+
+#: shop/templates/shop/my_orders.html:16 shop/views.py:25
+msgid "Review the orders you have created from the checkout flow."
+msgstr "Revisa les comandes que has creat des del flux de checkout."
+
+#: shop/templates/shop/my_orders.html:34
+msgid "Created"
+msgstr "Creat"
+
+#: shop/templates/shop/my_orders.html:65
+msgid "Continue with this order"
+msgstr "Continuar amb aquesta comanda"
+
+#: shop/templates/shop/my_orders.html:74
+msgid "You have not created any orders yet."
+msgstr "Encara no has creat cap comanda."
+
+#: shop/templates/shop/my_orders.html:76
+msgid "Once you create a provisional order from checkout, it will appear here."
+msgstr "Quan creïs una comanda provisional des del checkout, apareixerà aquí."
+
+#: site_settings/admin.py:26
+msgid ""
+"How many posts appear in blog and category lists before pagination is shown."
+msgstr ""
+"Quantes publicacions apareixen a les llistes del blog i de categories abans "
+"que es mostri la paginació."
+
+#: site_settings/admin.py:27
+msgid "How many page results are shown in the Pages section of search results."
+msgstr ""
+"Quants resultats de pàgines es mostren a la secció Pàgines dels resultats de "
+"cerca."
+
+#: site_settings/admin.py:28
+msgid "How many post results are shown in the Posts section of search results."
+msgstr ""
+"Quants resultats de publicacions es mostren a la secció Publicacions dels "
+"resultats de cerca."
+
+#: site_settings/admin.py:29
+msgid ""
+"General fallback for paginated search sections. Keep it close to the page/"
+"post values."
+msgstr ""
+"Valor general de reserva per a les seccions de cerca paginades. Mantén-lo "
+"proper als valors de pàgines/publicacions."
+
+#: site_settings/admin.py:30
+msgid ""
+"How many high-priority pages are promoted before regular search matches."
+msgstr ""
+"Quantes pàgines d’alta prioritat es promocionen abans dels resultats normals "
+"de cerca."
+
+#: site_settings/admin.py:31
+msgid ""
+"Horizontal indentation used for nested comments in the admin. Larger values "
+"make replies more visually nested."
+msgstr ""
+"Sagnat horitzontal utilitzat per als comentaris niats a l’admin. Valors més "
+"grans fan que les respostes es vegin més niades."
+
+#: site_settings/admin.py:32
+msgid ""
+"When enabled, comments become public immediately. Leave disabled if "
+"moderation is important."
+msgstr ""
+"Quan s’activa, els comentaris es fan públics immediatament. Deixa-ho "
+"desactivat si la moderació és important."
+
+#: site_settings/admin.py:33
+msgid "Turns the daily post-points system on or off across the public site."
+msgstr ""
+
+#: site_settings/admin.py:34
+msgid ""
+"How many points each authenticated user receives per day to distribute "
+"across posts."
+msgstr ""
+
+#: site_settings/admin.py:35
+msgid ""
+"Maximum number of points the same user may assign to one post during a "
+"single day."
+msgstr ""
+
+#: site_settings/admin.py:36
+msgid ""
+"Lets authors spend their daily points on their own published posts. Leave "
+"disabled for stricter editorial neutrality."
+msgstr ""
+"Permet que els autors gastin els seus punts diaris en les seves propies "
+"entrades publicades. Deixa-ho desactivat per a una neutralitat editorial mes "
+"estricta."
+
+#: site_settings/admin.py:37
+msgid ""
+"How old an account must be before it can assign post points. Useful to "
+"reduce drive-by abuse or fresh-account manipulation."
+msgstr ""
+"Quant de temps ha d'existir un compte abans de poder assignar punts a les "
+"entrades. Es util per reduir abusos rapids o manipulacio amb comptes acabats "
+"de crear."
+
+#: site_settings/admin.py:38
+msgid ""
+"How long menus stay cached. Use 0 only while editing/testing menus; higher "
+"values are better for production."
+msgstr ""
+"Quant temps romanen en memòria cau els menús. Utilitza 0 només mentre edites "
+"o proves menús; valors més alts són millors en producció."
+
+#: site_settings/admin.py:39
+msgid ""
+"After this number of approved comments, a user can be treated as trusted for "
+"future comment approval."
+msgstr ""
+"Després d’aquest nombre de comentaris aprovats, un usuari es pot considerar "
+"de confiança per a l’aprovació futura de comentaris."
+
+#: site_settings/admin.py:40
+msgid ""
+"How long the category tree stays cached. High values are recommended because "
+"category trees change rarely."
+msgstr ""
+"Quant temps roman en memòria cau l’arbre de categories. Es recomanen valors "
+"alts perquè canvia poques vegades."
+
+#: site_settings/admin.py:41
+msgid "How many images appear per page in the public Media/Gallery view."
+msgstr ""
+"Quantes imatges apareixen per pàgina a la vista pública de mitjans/galeria."
+
+#: site_settings/admin.py:42
+msgid "How many posts/comments appear per page in public user profiles."
+msgstr ""
+"Quantes publicacions o comentaris apareixen per pàgina als perfils públics "
+"d’usuari."
+
+#: site_settings/admin.py:43
+msgid "How many users appear per page on the public user directory listing."
+msgstr "Quants usuaris apareixen per pàgina al directori públic d’usuaris."
+
+#: site_settings/admin.py:47
+msgid ""
+"Internal name for this visual template. Use a clear name so it is easy to "
+"identify in the admin."
+msgstr ""
+"Nom intern d’aquesta plantilla visual. Utilitza un nom clar perquè sigui "
+"fàcil d’identificar a l’admin."
+
+#: site_settings/admin.py:48
+msgid ""
+"When enabled, this template becomes the active theme. Only one template "
+"should be chosen at a time."
+msgstr ""
+"Quan s’activa, aquesta plantilla es converteix en el tema actiu. Només "
+"s’hauria de triar una plantilla alhora."
+
+#: site_settings/admin.py:49
+msgid ""
+"Main logo shown in the top bar/header. Its displayed height is controlled by "
+"Logo Height."
+msgstr ""
+"Logotip principal mostrat a la barra superior/capçalera. La seva alçada "
+"visible es controla amb l’Altura del logotip."
+
+#: site_settings/admin.py:50
+msgid ""
+"Small browser icon shown in tabs, bookmarks, and shortcuts. Square images "
+"work best."
+msgstr ""
+"Petita icona del navegador que es mostra a pestanyes, adreces d’interès i "
+"dreceres. Les imatges quadrades funcionen millor."
+
+#: site_settings/admin.py:51
+msgid ""
+"Short phrase shown beside or near the logo, depending on the active header "
+"layout."
+msgstr ""
+"Frase breu mostrada al costat o prop del logotip, segons el disseny actiu de "
+"la capçalera."
+
+#: site_settings/admin.py:52
+msgid ""
+"Optional image displayed in the top bar. Use it for a slim banner, not for "
+"large hero images."
+msgstr ""
+"Imatge opcional mostrada a la barra superior. Utilitza-la com a bàner "
+"estret, no com a imatge principal gran."
+
+#: site_settings/admin.py:53
+msgid ""
+"Destination URL when the top bar banner is clicked. Leave blank if the "
+"banner should not link anywhere."
+msgstr ""
+"URL de destinació quan es fa clic al bàner de la barra superior. Deixa-ho en "
+"blanc si el bàner no ha d’enllaçar enlloc."
+
+#: site_settings/admin.py:54
+#, python-brace-format
+msgid ""
+"Text shown in the footer. Use {year} to insert the current year "
+"automatically."
+msgstr ""
+"Text mostrat al peu de pàgina. Utilitza {year} per inserir automàticament "
+"l’any actual."
+
+#: site_settings/admin.py:55
+msgid ""
+"Main accent color. Used by buttons, highlights, separators, and theme "
+"accents."
+msgstr ""
+"Color d’accent principal. S’utilitza en botons, ressaltats, separadors i "
+"accents del tema."
+
+#: site_settings/admin.py:56
+msgid ""
+"Dark theme color. Used by dark header areas, strong contrast elements, and "
+"dark buttons."
+msgstr ""
+"Color fosc del tema. S’utilitza en àrees fosques de la capçalera, elements "
+"de fort contrast i botons foscos."
+
+#: site_settings/admin.py:57
+msgid "Light theme color. Used by light backgrounds and subtle contrast areas."
+msgstr ""
+"Color clar del tema. S’utilitza en fons clars i zones de contrast subtil."
+
+#: site_settings/admin.py:58
+msgid ""
+"Main page background color. This affects the overall feel of the whole site."
+msgstr ""
+"Color de fons principal de la pàgina. Afecta la sensació general de tot el "
+"lloc."
+
+#: site_settings/admin.py:59
+msgid ""
+"Default text color across public pages. Keep strong contrast against the "
+"body background."
+msgstr ""
+"Color de text predeterminat a les pàgines públiques. Mantingues un bon "
+"contrast amb el fons del cos."
+
+#: site_settings/admin.py:60
+msgid "Background for cards, widget boxes, and grouped content areas."
+msgstr "Fons per a targetes, caixes de ginys i àrees de contingut agrupades."
+
+#: site_settings/admin.py:61
+msgid ""
+"Border color for cards and boxed areas. Use a subtle color to avoid visual "
+"noise."
+msgstr ""
+"Color de vora per a targetes i àrees emmarcades. Utilitza un color subtil "
+"per evitar soroll visual."
+
+#: site_settings/admin.py:62
+msgid "Background for highlighted notice/CTA sections on the homepage."
+msgstr "Fons per a les seccions destacades d’avís/CTA a la pàgina d’inici."
+
+#: site_settings/admin.py:63
+msgid ""
+"Text color inside homepage notice/CTA sections. Keep it readable against the "
+"notice background."
+msgstr ""
+"Color del text dins de les seccions d’avís/CTA de la pàgina d’inici. Mantén-"
+"lo llegible sobre el seu fons."
+
+#: site_settings/admin.py:64
+msgid ""
+"Main CSS font stack used across the site. Use valid CSS font-family syntax."
+msgstr ""
+"Pila principal de fonts CSS utilitzada a tot el lloc. Utilitza una sintaxi "
+"vàlida de font-family."
+
+#: site_settings/admin.py:65
+msgid "Base text size in pixels. This affects most body text across the site."
+msgstr "Mida base del text en píxels. Afecta la major part del text del lloc."
+
+#: site_settings/admin.py:66
+msgid ""
+"Slogan text size in pixels. Increase only if the slogan has enough "
+"horizontal space."
+msgstr ""
+"Mida del text de l’eslògan en píxels. Augmenta-la només si l’eslògan té prou "
+"espai horitzontal."
+
+#: site_settings/admin.py:67
+msgid ""
+"Displayed logo height in pixels in the top/header area. Example: 40 keeps "
+"the logo compact."
+msgstr ""
+"Alçada mostrada del logotip en píxels a l’àrea superior/capçalera. Exemple: "
+"40 manté el logotip compacte."
+
+#: site_settings/admin.py:68
+msgid ""
+"Maximum banner image height in pixels in the top bar. Keeps banners from "
+"pushing the layout down."
+msgstr ""
+"Alçada màxima de la imatge del bàner en píxels a la barra superior. Evita "
+"que els bàners facin baixar el disseny."
+
+#: site_settings/admin.py:69
+msgid ""
+"Corner rounding in pixels for buttons, cards, images, and panels that follow "
+"the theme."
+msgstr ""
+"Arrodoniment de cantonades en píxels per a botons, targetes, imatges i "
+"panells que segueixen el tema."
+
+#: site_settings/admin.py:70
+msgid ""
+"Maximum page width in pixels. Larger values make content spread more on wide "
+"screens."
+msgstr ""
+"Amplada màxima de la pàgina en píxels. Valors més grans fan que el contingut "
+"s’estengui més en pantalles amples."
+
+#: site_settings/admin.py:71
+msgid ""
+"Horizontal padding in pixels around the main layout. Helps content breathe "
+"on small screens."
+msgstr ""
+"Farciment horitzontal en píxels al voltant del disseny principal. Ajuda que "
+"el contingut respiri en pantalles petites."
+
+#: site_settings/admin.py:72
+msgid "Central content column width percentage on desktop layouts."
+msgstr ""
+"Percentatge d’amplada de la columna central de contingut en dissenys "
+"d’escriptori."
+
+#: site_settings/admin.py:73
+msgid ""
+"Left sidebar width percentage on desktop layouts. Works together with "
+"content and right sidebar widths."
+msgstr ""
+"Percentatge d’amplada de la barra lateral esquerra en dissenys d’escriptori. "
+"Funciona juntament amb l’amplada del contingut i de la barra lateral dreta."
+
+#: site_settings/admin.py:74
+msgid ""
+"Right sidebar width percentage on desktop layouts. Works together with "
+"content and left sidebar widths."
+msgstr ""
+"Percentatge d’amplada de la barra lateral dreta en dissenys d’escriptori. "
+"Funciona juntament amb l’amplada del contingut i de la barra lateral "
+"esquerra."
+
+#: site_settings/admin.py:75
+msgid ""
+"Maximum width in pixels for category tree widgets and category navigation "
+"blocks."
+msgstr ""
+"Amplada màxima en píxels per als ginys d’arbre de categories i els blocs de "
+"navegació per categories."
+
+#: site_settings/admin.py:76
+msgid "Background color for category tree widgets."
+msgstr "Color de fons per als ginys d’arbre de categories."
+
+#: site_settings/admin.py:77
+msgid "Border color for category tree widgets."
+msgstr "Color de la vora per als ginys d’arbre de categories."
+
+#: site_settings/admin.py:78
+msgid "Base inner padding in pixels for category tree widgets."
+msgstr "Farciment interior base en píxels per als ginys d’arbre de categories."
+
+#: site_settings/admin.py:79
+msgid "Indentation step in pixels for each nested category level."
+msgstr "Pas de sagnat en píxels per a cada nivell niat de categoria."
+
+#: site_settings/admin.py:80
+msgid "Vertical padding in pixels for each category tree row."
+msgstr "Farciment vertical en píxels per a cada fila de l’arbre de categories."
+
+#: site_settings/admin.py:87
+msgid "Content pagination"
+msgstr "Paginació del contingut"
+
+#: site_settings/admin.py:89
+msgid ""
+"Controls how many items are shown before pagination appears in public lists."
+msgstr ""
+"Controla quants elements es mostren abans que aparegui la paginació a les "
+"llistes públiques."
+
+#: site_settings/admin.py:100
+msgid ""
+"Controls search result density and how many important pages are promoted "
+"before regular results."
+msgstr ""
+"Controla la densitat dels resultats de cerca i quantes pàgines importants es "
+"promocionen abans dels resultats normals."
+
+#: site_settings/admin.py:111
+msgid ""
+"Controls moderation behavior and how nested conversations are displayed in "
+"the admin."
+msgstr ""
+"Controla el comportament de la moderació i com es mostren les converses "
+"niades a l’admin."
+
+#: site_settings/admin.py:119
+#, fuzzy
+#| msgid "Posts"
+msgid "Post points"
+msgstr "Posts"
+
+#: site_settings/admin.py:121
+msgid ""
+"Controls the daily community points that authenticated users can assign to "
+"posts."
+msgstr ""
+
+#: site_settings/admin.py:131
+msgid "Cache"
+msgstr "Memòria cau"
+
+#: site_settings/admin.py:133
+msgid ""
+"Controls how long expensive menu and category tree queries are cached. Use 0 "
+"only while testing."
+msgstr ""
+"Controla durant quant de temps s’emmagatzemen en memòria cau les consultes "
+"costoses de menús i arbres de categories. Utilitza 0 només durant les proves."
+
+#: site_settings/admin.py:163
+msgid "Template identity"
+msgstr "Identitat de la plantilla"
+
+#: site_settings/admin.py:165
+msgid ""
+"Only one template should be marked as chosen. The chosen template provides "
+"the active visual theme."
+msgstr ""
+"Només una plantilla s’hauria de marcar com a escollida. La plantilla "
+"escollida proporciona el tema visual actiu."
+
+#: site_settings/admin.py:169
+msgid "Branding"
+msgstr "Identitat visual"
+
+#: site_settings/admin.py:171
+msgid ""
+"Images and short text used in the top area of the site. Logo, favicon, and "
+"banner are independent files."
+msgstr ""
+"Imatges i text breu utilitzats a la part superior del lloc. El logotip, el "
+"favicon i el bàner són fitxers independents."
+
+#: site_settings/admin.py:175
+msgid "Footer"
+msgstr "Peu de pàgina"
+
+#: site_settings/admin.py:177
+#, python-brace-format
+msgid ""
+"Footer text shown at the bottom of the site. Use {year} to insert the "
+"current year automatically."
+msgstr ""
+"Text del peu mostrat a la part inferior del lloc. Utilitza {year} per "
+"inserir automàticament l’any actual."
+
+#: site_settings/admin.py:181
+msgid "Colors"
+msgstr "Colors"
+
+#: site_settings/admin.py:183
+msgid ""
+"Use the color selector to open the browser palette. Colors are saved as "
+"hexadecimal values, for example #ffc107."
+msgstr ""
+"Utilitza el selector de color per obrir la paleta del navegador. Els colors "
+"es desen com a valors hexadecimals, per exemple #ffc107."
+
+#: site_settings/admin.py:197
+msgid "Typography and Sizes"
+msgstr "Tipografia i mides"
+
+#: site_settings/admin.py:199
+msgid ""
+"Controls base typography and common visual sizes. Numeric values are "
+"interpreted as pixels."
+msgstr ""
+"Controla la tipografia base i les mides visuals comunes. Els valors numèrics "
+"s’interpreten com a píxels."
+
+#: site_settings/admin.py:203
+msgid "Layout"
+msgstr "Disseny"
+
+#: site_settings/admin.py:205
+msgid ""
+"Controls the maximum width and the proportion of content versus sidebars. "
+"Percent fields should add up sensibly."
+msgstr ""
+"Controla l’amplada màxima i la proporció entre contingut i barres laterals. "
+"Els camps de percentatge haurien de sumar de manera raonable."
+
+#: site_settings/admin.py:209
+msgid "Category Tree"
+msgstr "Categoria"
+
+#: site_settings/admin.py:211
+msgid ""
+"Controls the category tree container, indentation, spacing, and colors used "
+"by category widgets."
+msgstr ""
+"Controla el contenidor de l’arbre de categories, el sagnat, l’espaiat i els "
+"colors utilitzats pels ginys de categories."
+
+#: site_settings/admin.py:220 site_settings/models.py:143
+msgid "Site Slogan"
+msgstr "Lloc Slegà"
+
+#: site_settings/admin.py:235
+#, python-format
+msgid ""
+"%(description)s Click the color box to open the palette. The value is stored "
+"as hexadecimal color."
+msgstr ""
+"%(description)s Fes clic a la caixa de color per obrir la paleta. El valor "
+"es desa com a color hexadecimal."
+
+#: site_settings/admin.py:239 site_settings/models.py:165
+msgid "Primary Color"
+msgstr "Color principal"
+
+#: site_settings/admin.py:243 site_settings/models.py:166
+msgid "Dark Color"
+msgstr "Color fosc"
+
+#: site_settings/models.py:15
+msgid "Items per Page in Blog/Category lists"
+msgstr "Articles per pàgina a llistes de blocs / categories"
+
+#: site_settings/models.py:16
+msgid "Number of posts to show on the main blog page and on category pages."
+msgstr ""
+"Nombre de publicacions a mostrar a la pàgina principal del blog i a les "
+"pàgines de categories."
+
+#: site_settings/models.py:20
+msgid "Pages per Page in Search Results"
+msgstr "Pàgines per pàgina en resultats de cerca"
+
+#: site_settings/models.py:24
+msgid "Posts per Page in Search Results"
+msgstr "Publicacions per pàgina en resultats de cerca"
+
+#: site_settings/models.py:28
+msgid "Results per Page in Search"
+msgstr "Resultats per pàgina a la cerca"
+
+#: site_settings/models.py:29
+msgid ""
+"Number of items to show per section (Pages/Posts) on the search results page."
+msgstr ""
+"Nombre d’elements a mostrar per secció (Pàgines/Publicacions) a la pàgina de "
+"resultats de cerca."
+
+#: site_settings/models.py:34
+msgid "Number of 'Important' Pages to show first in search"
+msgstr "Nombre de pàgines «importants» que s’han de mostrar primer a la cerca"
+
+#: site_settings/models.py:35
+msgid "How many top-priority pages to display before regular search results."
+msgstr ""
+"Quantes pàgines de màxima prioritat s’han de mostrar abans dels resultats "
+"normals de cerca."
+
+#: site_settings/models.py:41
+msgid "Comment Indentation (in pixels)"
+msgstr "Indentació del comentari ( en píxels )"
+
+#: site_settings/models.py:42
+msgid "Controls the visual indentation for nested comments in the admin."
+msgstr "Controla el sagnat visual dels comentaris niats a l’admin."
+
+#: site_settings/models.py:48
+msgid "Auto-approve comments"
+msgstr "Comentaris aprovats automàticament"
+
+#: site_settings/models.py:49
+msgid ""
+"If checked, new comments will be published immediately without moderation."
+msgstr ""
+"Si es marca, els nous comentaris es publicaran immediatament sense moderació."
+
+#: site_settings/models.py:53
+#, fuzzy
+#| msgid "Table of contents"
+msgid "Enable post points"
+msgstr "Contingut"
+
+#: site_settings/models.py:54
+msgid ""
+"Allows authenticated users to distribute a limited number of points to posts "
+"each day."
+msgstr ""
+
+#: site_settings/models.py:58
+msgid "Daily post points budget"
+msgstr ""
+
+#: site_settings/models.py:59
+msgid ""
+"How many points each authenticated user can distribute across posts per day."
+msgstr ""
+
+#: site_settings/models.py:63
+msgid "Max points per post per day"
+msgstr ""
+
+#: site_settings/models.py:64
+msgid "Upper limit a user can assign to a single post within the same day."
+msgstr ""
+
+#: site_settings/models.py:68
+msgid "Allow authors to rate their own posts"
+msgstr "Permetre que els autors valorin les seves propies entrades"
+
+#: site_settings/models.py:69
+msgid ""
+"If enabled, authors may spend their daily points on their own published "
+"posts."
+msgstr ""
+"Si s'activa, els autors podran gastar els seus punts diaris en les seves "
+"propies entrades publicades."
+
+#: site_settings/models.py:73
+msgid "Minimum account age for post points"
+msgstr "Antiguitat minima del compte per puntuar entrades"
+
+#: site_settings/models.py:74
+msgid ""
+"Number of days a user account must exist before it can assign points to "
+"posts. Use 0 to disable this restriction."
+msgstr ""
+"Nombre de dies que ha d'existir un compte abans de poder assignar punts a "
+"les entrades. Fes servir 0 per desactivar aquesta restriccio."
+
+#: site_settings/models.py:80
+msgid "Menu Cache Timeout (in seconds)"
+msgstr "Cache Timeout (en segons)"
+
+#: site_settings/models.py:81
+msgid ""
+"How long the site menus should be stored in cache. Set to 0 to disable menu "
+"caching (not recommended)."
+msgstr ""
+"Quant de temps s’han d’emmagatzemar en memòria cau els menús del lloc. "
+"Estableix 0 per desactivar la memòria cau dels menús (no recomanat)."
+
+#: site_settings/models.py:85
+msgid "Trusted Commenter Threshold"
+msgstr "Llindar de comentarista rusat"
+
+#: site_settings/models.py:86
+msgid ""
+"The number of approved comments a user needs to post before their future "
+"comments are auto-approved."
+msgstr ""
+"El nombre de comentaris aprovats que un usuari ha de publicar abans que els "
+"seus comentaris futurs s’aprovin automàticament."
+
+#: site_settings/models.py:90
+msgid "Category Tree Cache Timeout (in seconds)"
+msgstr "Temps de velocitat de la categoria Tree (en segons)"
+
+#: site_settings/models.py:91
+msgid ""
+"How long the full category tree should be stored in cache. High values are "
+"recommended."
+msgstr ""
+"Quant de temps s’ha d’emmagatzemar en memòria cau l’arbre complet de "
+"categories. Es recomanen valors alts."
+
+#: site_settings/models.py:95
+msgid "Items per Page in Gallery"
+msgstr "Articles per pàgina a la galeria"
+
+#: site_settings/models.py:96
+msgid "Number of images to show on the image gallery page."
+msgstr "Nombre d’imatges que s’han de mostrar a la pàgina de galeria."
+
+#: site_settings/models.py:100
+msgid "Items per Page on Public Profile"
+msgstr "Articles per pàgina al perfil públic"
+
+#: site_settings/models.py:101
+msgid "Number of posts/comments to show per page on a user's public profile."
+msgstr ""
+"Nombre de publicacions o comentaris que s’han de mostrar per pàgina al "
+"perfil públic d’un usuari."
+
+#: site_settings/models.py:105
+msgid "Items per Page in User Directory"
+msgstr "Articles per pàgina a la galeria"
+
+#: site_settings/models.py:106
+msgid "Number of users listed per page on the public user directory."
+msgstr "Nombre d’usuaris llistats per pàgina al directori públic d’usuaris."
+
+#: site_settings/models.py:110 site_settings/models.py:111
+#: site_settings/models.py:114
+msgid "Site Configuration"
+msgstr "Configuració del lloc"
+
+#: site_settings/models.py:122
+msgid "Template Name"
+msgstr "Nom de visualització"
+
+#: site_settings/models.py:123
+msgid "Chosen"
+msgstr "Escollit"
+
+#: site_settings/models.py:130
+msgid "The main logo displayed in the top bar."
+msgstr "El logotip principal que es mostra a la barra superior."
+
+#: site_settings/models.py:136
+msgid "Favicon"
+msgstr "Favicon"
+
+#: site_settings/models.py:137
+msgid "Small icon used by browser tabs, bookmarks, and shortcuts."
+msgstr ""
+"Petita icona utilitzada per les pestanyes del navegador, els marcadors i les "
+"dreceres."
+
+#: site_settings/models.py:144
+msgid "A short tagline displayed next to the logo."
+msgstr "Una breu etiqueta que es mostra al costat del logotip."
+
+#: site_settings/models.py:148
+msgid "Footer Copyright Text"
+msgstr "Text de copyright del peu de pàgina"
+
+#: site_settings/models.py:149
+#, python-brace-format
+msgid ""
+"Optional footer copyright text. Use {year} where the current year should "
+"appear."
+msgstr ""
+"Text opcional de copyright del peu de pàgina. Utilitza {year} on hagi "
+"d’aparèixer l’any actual."
+
+#: site_settings/models.py:156
+msgid "Top Bar Banner Image"
+msgstr "Imatge de Banner de barres superiors"
+
+#: site_settings/models.py:157
+msgid "An optional banner image displayed in the top bar."
+msgstr "Una imatge de pancarta opcional que es mostra a la barra superior."
+
+#: site_settings/models.py:162
+msgid "Top Bar Banner Link"
+msgstr "Enllaç de banner de barres superiors"
+
+#: site_settings/models.py:163
+msgid "The URL the banner image will link to."
+msgstr "L’URL a la qual s’enllaçarà la imatge de la pancarta."
+
+#: site_settings/models.py:167
+msgid "Light Color"
+msgstr "Color clar"
+
+#: site_settings/models.py:168
+msgid "Body Background Color"
+msgstr "Color de fons del cos"
+
+#: site_settings/models.py:169
+msgid "Body Text Color"
+msgstr "Color del text del cos"
+
+#: site_settings/models.py:170
+msgid "Card Box Background Color"
+msgstr "Color de fons de caixes i targetes"
+
+#: site_settings/models.py:171
+msgid "Card Box Border Color"
+msgstr "Color de la vora de caixes i targetes"
+
+#: site_settings/models.py:172
+msgid "Home Notice Background Color"
+msgstr "Color de fons de l’avís de la pàgina inicial"
+
+#: site_settings/models.py:173
+msgid "Home Notice Text Color"
+msgstr "Color del text de l’avís de la pàgina inicial"
+
+#: site_settings/models.py:178
+msgid "Font Family"
+msgstr "Font Family"
+
+#: site_settings/models.py:180
+msgid "Base Font Size"
+msgstr "Base Font Size"
+
+#: site_settings/models.py:181
+msgid "Slogan Font Size"
+msgstr "Slogan Font Size"
+
+#: site_settings/models.py:182
+msgid "Logo Height"
+msgstr "Logo Height"
+
+#: site_settings/models.py:183
+msgid "Banner Max Height"
+msgstr "Banner Max Height"
+
+#: site_settings/models.py:184
+msgid "Border Radius"
+msgstr "Border Radius"
+
+#: site_settings/models.py:185
+msgid "Layout Max Width"
+msgstr "Layout Max Width"
+
+#: site_settings/models.py:186
+msgid "Layout Horizontal Padding"
+msgstr "Layout Horizontal Padding"
+
+#: site_settings/models.py:187
+msgid "Content Width Percent"
+msgstr "Content Width Percent"
+
+#: site_settings/models.py:188
+msgid "Left Sidebar Width Percent"
+msgstr "Left Sidebar Width Percent"
+
+#: site_settings/models.py:189
+msgid "Right Sidebar Width Percent"
+msgstr "Right Sidebar Width Percent"
+
+#: site_settings/models.py:190
+msgid "Category Tree Max Width"
+msgstr "Category Tree Max Width"
+
+#: site_settings/models.py:191
+msgid "Category Tree Background Color"
+msgstr "Temps de velocitat de la categoria Tree (en segons)"
+
+#: site_settings/models.py:192
+msgid "Category Tree Border Color"
+msgstr "Category Tree Border Color"
+
+#: site_settings/models.py:193
+msgid "Category Tree Base Padding"
+msgstr "Category Tree Base Padding"
+
+#: site_settings/models.py:194
+msgid "Category Tree Indent Step"
+msgstr "Category Tree Indent Step"
+
+#: site_settings/models.py:195
+msgid "Category Tree Row Vertical Padding"
+msgstr "Category Tree Row Vertical Padding"
+
+#: site_settings/models.py:199
+msgid "Site Template"
+msgstr "Site Template"
+
+#: site_settings/models.py:200
+msgid "Site Templates"
+msgstr "Site Templates"
+
+#: site_settings/models.py:203
+msgid "chosen"
+msgstr "chosen"
+
+#: site_settings/models.py:203
+msgid "available"
+msgstr "No hi ha usuaris disponibles."
+
+#: tags/admin.py:70
+msgid "Last Used"
+msgstr "Última Actualització"
+
+#: tags/admin.py:74
+msgid "Reset click score for selected tags"
+msgstr "Reset click score for selected tags"
+
+#: tags/admin.py:79
+#, python-format
+msgid "Click score reset for %(count)d selected tags."
+msgstr "Click score reset for %(count)d selected tags."
+
+#: tags/admin.py:82
+msgid "Reset click score for all tags"
+msgstr "Reset click score for all tags"
+
+#: tags/admin.py:88
+#, python-format
+msgid "Click score reset for all %(count)d tags."
+msgstr "Click score reset for all %(count)d tags."
+
+#: tags/models.py:18
+msgid "Slug for this Language"
+msgstr "Slug for this Language"
+
+#: tags/models.py:19
+msgid "Optional language-specific slug. Falls back to the global slug."
+msgstr "Optional language-specific slug. Falls back to the global slug."
+
+#: tags/models.py:26
+msgid "Tag Click Score"
+msgstr "Tag Click Score"
+
+#: tags/models.py:27
+msgid "Increases by 1 when visitors open this tag from a tag link."
+msgstr "Increases by 1 when visitors open this tag from a tag link."
+
+#: tags/models.py:31 tags/models.py:58 tags/models.py:89
+msgid "Tag"
+msgstr "Etiqueta"
+
+#: tags/models.py:65
+msgid "Language of the post translation where this tag applies."
+msgstr "Language of the post translation where this tag applies."
+
+#: tags/models.py:70
+msgid "Relevance Score"
+msgstr "Puntuació rellevància"
+
+#: tags/models.py:71
+msgid "Optional score from 0 to 100 indicating tag relevance."
+msgstr "Puntuació opcional de 0 a 100 indicant rellevància de les etiquetes."
+
+#: tags/models.py:73
+msgid "Assigned At"
+msgstr "Assignat a"
+
+#: tags/models.py:77
+msgid "Tagged Post"
+msgstr "Publicació etiquetada"
+
+#: tags/models.py:78
+msgid "Tagged Posts"
+msgstr "Publicacions etiquetades"
+
+#: tags/models.py:92
+msgid "Daily Click Score"
+msgstr "Daily Click Score"
+
+#: tags/models.py:95
+msgid "Tag Daily Metric"
+msgstr "Tag Daily Metric"
+
+#: tags/models.py:96
+msgid "Tag Daily Metrics"
+msgstr "Tag Daily Metrics"
+
+#: templates/404.html:5
+msgid "The requested page could not be found."
+msgstr "The requested page could not be found."
+
+#: templates/404.html:14
+msgid "Error 404"
+msgstr "Error 404"
+
+#: templates/404.html:17
+msgid ""
+"The page you are looking for does not exist, was moved, or is no longer "
+"available."
+msgstr "Vaja! Sembla que la pàgina que buscaves no existeix ni s’ha mogut."
+
+#: templates/404.html:25
+msgid "View Posts"
+msgstr "Veure comte"
+
+#: templates/admin/gallery/image/change_list.html:81
+msgid "List"
+msgstr "List"
+
+#: templates/admin/gallery/image/change_list.html:84
+msgid "Grid"
+msgstr "Grid"
+
+#: templates/admin/gallery/image/change_list.html:112
+msgid "No images found."
+msgstr "Pàgines Trobades"
+
+#: templates/socialaccount/login.html:19
+#, python-format
+msgid "Connect %(provider)s"
+msgstr "Connect %(provider)s"
+
+#: templates/socialaccount/login.html:22
+#, python-format
+msgid "You are about to connect your %(provider)s account to TVTente."
+msgstr "You are about to connect your %(provider)s account to TVTente."
+
+#: templates/socialaccount/login.html:26
+#, python-format
+msgid "Continue with %(provider)s"
+msgstr "Continue with %(provider)s"
+
+#: templates/socialaccount/login.html:29
+#, python-format
+msgid "You are about to sign in to TVTente using your %(provider)s account."
+msgstr "You are about to sign in to TVTente using your %(provider)s account."
+
+#: templates/socialaccount/login.html:37
+msgid "Continue"
+msgstr "Contingut"
+
+#: templates/socialaccount/login.html:40
+msgid "Cancel"
+msgstr "Cancel·la la resposta"
+
+#: testimonials/models.py:7
+msgid "Quote"
+msgstr "Citeu"
+
+#: testimonials/models.py:9
+msgid "Title or Role"
+msgstr "Títol o paper"
+
+#: testimonials/models.py:12
+msgid "Photo"
+msgstr "Foto"
+
+#: testimonials/models.py:13
+msgid "Visible"
+msgstr "Visible"
+
+#: testimonials/models.py:17
+msgid "Testimonial"
+msgstr "Testimonial"
+
+#: testimonials/models.py:18
+#: testimonials/templates/testimonials/testimonial_list.html:4
+#: testimonials/templates/testimonials/testimonial_list.html:5
+#: testimonials/views.py:10 widgets/models.py:55
+msgid "Testimonials"
+msgstr "Testimonis"
+
+#: testimonials/templates/testimonials/testimonial_list.html:6
+#: testimonials/templates/testimonials/testimonial_list.html:14
+msgid "What our users are saying"
+msgstr "Què diuen els nostres usuaris"
+
+#: tvt/settings.py:427
+msgid "Español"
+msgstr "Castellano"
+
+#: tvt/settings.py:429
+msgid "Català"
+msgstr "Català"
+
+#: widgets/admin.py:42
+msgid "Number of Widgets"
+msgstr "Nombre de widgets"
+
+#: widgets/admin.py:87 widgets/models.py:75
+msgid "Widget Title"
+msgstr "Títol de l'idget"
+
+#: widgets/admin.py:91 widgets/models.py:82
+msgid "Section Title (Optional)"
+msgstr "Títol de la secció (Opcional)"
+
+#: widgets/admin.py:95 widgets/models.py:89
+msgid "View All Link Text"
+msgstr "Veure tot el text d’enllaç"
+
+#: widgets/models.py:12
+msgid "Zone Name"
+msgstr "Nom de la zona"
+
+#: widgets/models.py:13
+msgid "Slug (used in templates)"
+msgstr "Slug (utilitzat en plantilla)"
+
+#: widgets/models.py:16 widgets/models.py:65
+msgid "Widget Zone"
+msgstr "Zona Widget"
+
+#: widgets/models.py:17
+msgid "Widget Zones"
+msgstr "Zonas Widget"
+
+#: widgets/models.py:29
+msgid "Recent Blog Posts"
+msgstr "Publicacions recents de blocs"
+
+#: widgets/models.py:30
+msgid "Most Viewed Blog Posts"
+msgstr "La majoria de publicacions de blocs vistos"
+
+#: widgets/models.py:31
+msgid "Most Commented Blog Posts"
+msgstr "Publicacions de blocs més comentades"
+
+#: widgets/models.py:32
+msgid "Blog Category List"
+msgstr "Llista de categories de blocs"
+
+#: widgets/models.py:33
+msgid "Featured Tags"
+msgstr "Imatge Destacada"
+
+#: widgets/models.py:34
+msgid "Editor's Picks (Blog Posts)"
+msgstr "Picks de l'editor (Publicacions de blocs)"
+
+#: widgets/models.py:37
+msgid "Post Grid: Recent Posts"
+msgstr "Post Grid: publicacions recents"
+
+#: widgets/models.py:38
+msgid "Post Grid: Category"
+msgstr "Posts a la categoria:"
+
+#: widgets/models.py:39
+msgid "Post Grid: Most Viewed"
+msgstr "Post Grid: La majoria vistosa"
+
+#: widgets/models.py:40
+msgid "Post Grid: Most Commented"
+msgstr "Post Grid: El més comentat"
+
+#: widgets/models.py:41
+msgid "Post Grid: Editor's Picks"
+msgstr "Post Grid: Picks de l'editor"
+
+#: widgets/models.py:42
+#, fuzzy
+#| msgid "Post Grid: Category"
+msgid "Post Grid: Top Rated Today"
+msgstr "Posts a la categoria:"
+
+#: widgets/models.py:43
+#, fuzzy
+#| msgid "Post Grid: Most Viewed"
+msgid "Post Grid: Top Rated This Week"
+msgstr "Post Grid: La majoria vistosa"
+
+#: widgets/models.py:44
+#, fuzzy
+#| msgid "Post Grid: Most Viewed"
+msgid "Post Grid: Most Favorited"
+msgstr "Post Grid: La majoria vistosa"
+
+#: widgets/models.py:45
+msgid "Post Grid: Community Picks"
+msgstr "Post Grid: Seleccions de la comunitat"
+
+#: widgets/models.py:46
+msgid "Intent: For Reflection"
+msgstr "Intent: For Reflection"
+
+#: widgets/models.py:47
+msgid "Intent: Quick Reads"
+msgstr "Intent: Quick Reads"
+
+#: widgets/models.py:48
+msgid "Intent: Well-being"
+msgstr "Intent: Well-being"
+
+#: widgets/models.py:49
+msgid "Intent: Debate Starters"
+msgstr "Intent: Debate Starters"
+
+#: widgets/models.py:51
+msgid "Post Carousel"
+msgstr "Publica Carrusel"
+
+#: widgets/models.py:52
+msgid "Post Carousel: Most Commented"
+msgstr "Post Grid: El més comentat"
+
+#: widgets/models.py:53
+msgid "Post Carousel: Most Viewed"
+msgstr "Post Grid: La majoria vistosa"
+
+#: widgets/models.py:70
+msgid "Widget Type"
+msgstr "Tipus de widget"
+
+#: widgets/models.py:76
+msgid "The title that will be displayed above the widget."
+msgstr "El títol que es mostrarà per sobre del widget."
+
+#: widgets/models.py:83
+msgid ""
+"A main title for this grid section (e.g., 'Latest Posts', 'Our Bestsellers')."
+msgstr ""
+"Un títol principal per a aquesta secció de quadrícules (per exemple, "
+"\"Latest Posts\", \"Els nostres best-sellers\")."
+
+#: widgets/models.py:90
+msgid "Text for the 'View All' link below the grid (e.g., 'View All Posts')."
+msgstr ""
+"Text per a l'enllaç \"Veure tot\" per sota de la graella (per exemple, "
+"\"Veure totes les publicacions\")."
+
+#: widgets/models.py:101
+msgid "Number of items to show"
+msgstr "Nombre d’articles a mostrar"
+
+#: widgets/models.py:103
+msgid ""
+"Used by widgets that display a list of items, like 'Recent Posts' or 'Blog "
+"Categories'."
+msgstr ""
+"Utilitzat per widgets que mostren una llista d’elements, com ara “Postes "
+"recents” o “categories de blocs”'."
+
+#: widgets/models.py:108
+msgid "Cache Timeout (in seconds)"
+msgstr "Cache Timeout (en segons)"
+
+#: widgets/models.py:109
+msgid ""
+"How long the results of this widget should be stored in cache. 0 to disable "
+"caching for this widget."
+msgstr ""
+"Quant de temps s’han d’emmagatzemar els resultats d’aquest widget a la "
+"memòria cau. 0 per desactivar la memòria cau per a aquest widget."
+
+#: widgets/models.py:116
+msgid "Filter by Category (optional)"
+msgstr "Filtre per categoria (opcional)"
+
+#: widgets/models.py:117
+msgid ""
+"If selected, the widget will only show items from this specific category."
+msgstr ""
+"Si es selecciona, el widget només mostrarà articles d'aquesta categoria "
+"específica."
+
+#: widgets/models.py:123
+msgid "Column Count"
+msgstr "Nombre de columnes"
+
+#: widgets/models.py:124
+msgid "Number of columns for grid display (e.g., 2, 3, 4)."
+msgstr ""
+"Nombre de columnes per a la visualització de quadrícules (per exemple, 2, 3, "
+"4)."
+
+#: widgets/models.py:130
+msgid "View All Link URL"
+msgstr "Veure tot l’URL d’enllaç"
+
+#: widgets/models.py:131
+msgid "URL for the 'View All' link (e.g., '/blog/')."
+msgstr "URL per a l'enllaç \"Veure tot\" (per exemple, '/blog /')."
+
+#: widgets/models.py:135
+msgid "Carousel Interval (ms)"
+msgstr "Interval Carrusel (ms)"
+
+#: widgets/models.py:136
+msgid "Time in milliseconds between slides for 'Post Carousel' widget."
+msgstr ""
+"Temps en mil·lisegons entre diapositives per al widget \"Post Carousel\"."
+
+#: widgets/models.py:141
+msgid "Widget"
+msgstr "Widget"
+
+#: widgets/models.py:142
+msgid "Widgets"
+msgstr "Widgets"
+
+#: widgets/templates/widgets/partials/_featured_tags_widget.html:26
+msgid "No featured tags available."
+msgstr "No hi ha usuaris disponibles."
+
+#: widgets/templates/widgets/partials/_post_grid.html:46
+#, python-format
+msgid "%(points)s community point(s)"
+msgstr ""
+
+#: widgets/templates/widgets/partials/_post_grid.html:51
+#, fuzzy, python-format
+#| msgid "Posts"
+msgid "%(favorites)s favorite(s)"
+msgstr "Posts"
+
+#: widgets/templates/widgets/partials/_user_directory.html:31
+msgid "No users available."
+msgstr "No hi ha usuaris disponibles."
+
+#, fuzzy
+#~| msgid "Daily View Count"
+#~ msgid "Daily post points"
+#~ msgstr "Veure comte"
+
+#~ msgid "Payment gateway not available yet."
+#~ msgstr "La passarel·la de pagament encara no està disponible."
+
+#~ msgid "The full edition will be available soon."
+#~ msgstr "L’edició completa estarà disponible aviat."
+
+#: accounts/templates/accounts/_public_profile_cv_content.html:129
+#: accounts/templates/accounts/_public_profile_cv_content.html:371
+#: accounts/templates/registration/profile_cv_edit.html:73
+#: accounts/templates/registration/profile_cv_edit.html:474
+msgid "Technical and Methodological Knowledge"
+msgstr "Coneixements tècnics i metodològics"
+
+#: accounts/templates/accounts/_public_profile_cv_content.html:137
+#: accounts/templates/accounts/_public_profile_cv_content.html:398
+#: accounts/templates/registration/profile_cv_edit.html:81
+#: accounts/templates/registration/profile_cv_edit.html:568
+msgid "Transversal Competencies"
+msgstr "Competències transversals"
+
+#: accounts/templates/accounts/_public_profile_cv_content.html:145
+#: accounts/templates/accounts/_public_profile_cv_content.html:423
+#: accounts/templates/registration/profile_cv_edit.html:662
+msgid "Academic and Professional Links"
+msgstr "Enllaços acadèmics i professionals"
+
+#: accounts/templates/accounts/_public_profile_cv_content.html:123
+msgid "Research and Professional Profile"
+msgstr "Perfil de recerca i professional"
+
+#: accounts/templates/accounts/_public_profile_cv_content.html:125
+msgid ""
+"This overview highlights the lines of work, methodological resources, and "
+"public references that structure the profile."
+msgstr ""
+"Aquesta visió destaca les línies de treball, els recursos metodològics i "
+"les referències públiques que estructuren el perfil."
+
+#: accounts/templates/accounts/_public_profile_cv_content.html:149
+msgid "Public References"
+msgstr "Referències públiques"
+
+#: accounts/templates/accounts/_public_profile_cv_content.html:153
+msgid "internal publication(s)"
+msgstr "publicació(ns) internes"
+
+#: accounts/templates/accounts/_public_profile_cv_content.html:157
+msgid "external publication(s)"
+msgstr "publicació(ns) externes"
+
+#: accounts/templates/accounts/_public_profile_cv_content.html:165
+msgid "Highlighted methods and tools"
+msgstr "Mètodes i eines destacats"
+
+#: accounts/templates/accounts/_public_profile_cv_content.html:179
+msgid "Working style"
+msgstr "Estil de treball"
+
+#: accounts/templates/registration/profile_cv_edit.html:21
+msgid ""
+"Structure your public academic and professional CV with education, "
+"experience, methods, links, and publications."
+msgstr ""
+"Estructura el teu CV públic acadèmic i professional amb formació, "
+"experiència, mètodes, enllaços i publicacions."
+
+#: accounts/templates/registration/profile_cv_edit.html:475
+msgid ""
+"Document tools, methods, platforms, or technical areas that support your "
+"research and professional practice."
+msgstr ""
+"Documenta eines, mètodes, plataformes o àrees tècniques que sostenen la "
+"teva pràctica investigadora i professional."
+
+#: accounts/templates/registration/profile_cv_edit.html:569
+msgid ""
+"Highlight analytical, collaborative, and communication strengths that shape "
+"your way of working."
+msgstr ""
+"Destaca fortaleses analítiques, col·laboratives i comunicatives que "
+"defineixen la teva manera de treballar."
+
+#: accounts/templates/registration/profile_cv_edit.html:663
+msgid ""
+"Add institutional pages, academic profiles, repositories, portfolios, or "
+"other relevant public references."
+msgstr ""
+"Afegeix pàgines institucionals, perfils acadèmics, repositoris, portafolis "
+"o altres referències públiques rellevants."
+
+#: accounts/templates/registration/profile_cv_edit.html:745
+msgid ""
+"Register books, articles, chapters, essays, or other publications published "
+"outside TVTente."
+msgstr ""
+"Registra llibres, articles, capítols, assajos o altres publicacions "
+"publicades fora de TVTente."

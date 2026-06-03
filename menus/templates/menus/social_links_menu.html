@@ -1,0 +1,10 @@
+<!-- File: menus/templates/menus/social_links_menu.html -->
+{% for item in menu_items %}
+    <a href="{{ item.get_url }}" target="_blank" rel="noopener noreferrer" class="text-secondary fs-5 mx-2" title="{{ item.translated_title }}">
+        {% if item.icon_class %}
+            <i class="{{ item.icon_class }}"></i>
+        {% else %}
+            {{ item.translated_title }} {# Fallback por si no hay icono #}
+        {% endif %}
+    </a>
+{% endfor %}

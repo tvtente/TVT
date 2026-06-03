@@ -1,0 +1,73 @@
+<!-- File: widgets/templates/widgets/partials/_post_grid.html -->
+{% load i18n %}
+{% load static %}
+
+{# This partial renders a responsive grid of blog posts. #}
+{# It is designed to be highly configurable via the Widget model. #}
+
+{# Container for the entire grid #}
+<div class="post-grid-section">
+    {# Optional: Section Title #}
+    {% if widget.translated_section_title %}
+        <h2 class="mb-4 text-center">{{ widget.translated_section_title }}</h2>
+    {% endif %}
+
+    {# Grid of Posts #}
+    <div class="row row-cols-1 {% if widget.column_count != 1 %}row-cols-sm-2{% endif %} {% if widget.column_count == 1 %}row-cols-md-1{% elif widget.column_count == 3 %}row-cols-md-3{% elif widget.column_count == 4 %}row-cols-md-4{% elif widget.column_count == 2 %}row-cols-md-2{% else %}row-cols-md-3{% endif %} g-4">
+        {% for item in items %}
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0">
+                    {% with post_image=item.widget_display_image %}
+                    {% if post_image %}
+                        <a href="{{ item.get_absolute_url }}">
+                            <img
+                                src="{{ post_image.url }}"
+                                class="card-img-top post-grid-image {% if image_format == 'square' %}post-grid-image-square{% endif %}"
+                                alt="{{ item.title }}"
+                                loading="lazy"
+                                style="aspect-ratio: {% if image_format == 'square' %}1 / 1{% elif image_format == 'mobile' %}9 / 16{% else %}16 / 10{% endif %}; object-fit: cover;"
+                            >
+                        </a>
+                    {% endif %}
+                    {% endwith %}
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ item.title }}</h5>
+                        <p class="card-text text-muted small">
+                            {% blocktranslate with date=item.published_date|date:"DATE_FORMAT" %}
+                                Published on {{ date }}
+                            {% endblocktranslate %}
+                        </p>
+          {% if item.total_points %}
+            <p class="card-text text-muted small mb-2">
+              {% blocktranslate with points=item.total_points %}{{ points }} community point(s){% endblocktranslate %}
+            </p>
+          {% endif %}
+          {% if item.total_favorites %}
+            <p class="card-text text-muted small mb-2">
+              {% blocktranslate with favorites=item.total_favorites %}{{ favorites }} favorite(s){% endblocktranslate %}
+            </p>
+          {% endif %}
+          {% if item.community_score %}
+            <p class="card-text text-muted small mb-2">
+              {% blocktranslate with score=item.community_score rating=item.editor_rating %}Community score {{ score }} · Editorial rating {{ rating }}{% endblocktranslate %}
+            </p>
+          {% endif %}
+                        <p class="card-text">{{ item.content|striptags|truncatechars:100 }}</p>
+                        <a href="{{ item.get_absolute_url }}" class="btn btn-sm btn-primary mt-auto">{% translate "Read More" %}</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {# Optional: "View All" Link #}
+    {% if widget.translated_view_all_link_text and widget.view_all_link_url %}
+        <div class="text-center mt-4">
+            <a href="{{ widget.view_all_link_url }}" class="btn btn-outline-secondary">{{ widget.translated_view_all_link_text }}</a>
+        </div>
+    {% endif %}
+
+    {# Note: Pagination for grids is often handled differently. If this widget is paginated, #}
+    {# it would need to receive a paginated object directly, not a list of items. #}
+    {# For now, this is a simple grid displaying up to widget.item_count items. #}
+</div>

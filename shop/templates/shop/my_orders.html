@@ -1,0 +1,83 @@
+{% extends "core/base.html" %}
+{% load i18n %}
+
+{% block seo_title %}{{ meta_title|default:title }}{% endblock %}
+{% block seo_description %}{{ meta_description }}{% endblock %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-4 p-lg-5">
+            <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
+                <div>
+                    <h1 class="display-6 fw-semibold mb-2">{% translate "My orders" %}</h1>
+                    <p class="text-muted mb-0">
+                        {% translate "Review the orders you have created from the checkout flow." %}
+                    </p>
+                </div>
+                <a href="{% url 'cart_detail' %}" class="btn btn-outline-dark">
+                    <i class="fas fa-cart-shopping me-1"></i>
+                    {% translate "View shopping cart" %}
+                </a>
+            </div>
+
+            {% if orders %}
+                <div class="d-grid gap-4">
+                    {% for order in orders %}
+                        <div class="card border-0 bg-light shadow-sm">
+                            <div class="card-body p-4">
+                                <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-3">
+                                    <div>
+                                        <h2 class="h5 mb-1">{{ order.reference }}</h2>
+                                        <p class="text-muted small mb-0">
+                                            {% translate "Created" %}: {{ order.created_at|date:"SHORT_DATETIME_FORMAT" }}
+                                        </p>
+                                    </div>
+                                    <div class="text-md-end">
+                                        <span class="badge text-bg-dark mb-2">{{ order.get_status_display }}</span>
+                                        <div class="fw-semibold">{{ order.total }} {{ order.currency }}</div>
+                                    </div>
+                                </div>
+
+                                <h3 class="h6 mb-3">{% translate "Order items" %}</h3>
+                                <div class="list-group">
+                                    {% for item in order.items.all %}
+                                        <div class="list-group-item">
+                                            <div class="d-flex justify-content-between align-items-start gap-3">
+                                                <div>
+                                                    <strong class="d-block">{{ item.title_snapshot }}</strong>
+                                                    {% if item.subtitle_snapshot %}
+                                                        <span class="text-muted small d-block">{{ item.subtitle_snapshot }}</span>
+                                                    {% endif %}
+                                                    <span class="text-muted small">
+                                                        {% translate "Quantity" %}: {{ item.quantity }}
+                                                    </span>
+                                                </div>
+                                                <strong>{{ item.line_total }} {{ order.currency }}</strong>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+
+                                <div class="d-flex flex-wrap justify-content-end gap-2 mt-3">
+                                    <a href="{% url 'checkout_order_pending' reference=order.reference %}" class="btn btn-dark">
+                                        {% translate "Continue with this order" %}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-info border-0 mb-0">
+                    <p class="mb-1">{% translate "You have not created any orders yet." %}</p>
+                    <p class="mb-0 small">
+                        {% translate "Once you create a provisional order from checkout, it will appear here." %}
+                    </p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

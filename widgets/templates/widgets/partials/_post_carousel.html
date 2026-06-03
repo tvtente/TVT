@@ -1,0 +1,77 @@
+<!-- File: widgets/templates/widgets/partials/_post_carousel.html -->
+{% load i18n %}
+{% load static %}
+
+{# This partial renders a responsive carousel of blog posts. #}
+{# It is designed to be highly configurable via the Widget model. #}
+
+{# Container for the entire carousel section #}
+<div class="post-carousel-section">
+    {# Optional: Section Title #}
+    {% if widget.translated_section_title %}
+        <h2 class="mb-4 text-center">{{ widget.translated_section_title }}</h2>
+    {% endif %}
+
+    {# Ensure there are items to prevent Bootstrap carousel errors #}
+    {% if items %}
+        <div id="carousel-{{ widget.id }}" class="carousel slide" data-bs-ride="carousel" data-bs-interval="{{ widget.carousel_interval_ms|default:5000 }}">
+            {# Carousel Indicators #}
+            <div class="carousel-indicators">
+                {% for forloop_item in items %}
+                    <button type="button" data-bs-target="#carousel-{{ widget.id }}" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active" aria-current="true"{% endif %} aria-label="Slide {{ forloop.counter }}"></button>
+                {% endfor %}
+            </div>
+
+            {# Carousel Inner #}
+            <div class="carousel-inner">
+                {% for item in items %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                        {% with display_image=item.widget_display_image %}
+                        {% if display_image %}
+                            <img
+                                src="{{ display_image.url }}"
+                                class="zoomable w-100 carousel-img"
+                                alt="{{ item.title }}"
+                                style="{% if item.widget_image_format == 'square' %}aspect-ratio: 1 / 1; object-fit: cover;{% elif item.widget_image_format == 'mobile' %}aspect-ratio: 9 / 16; object-fit: cover;{% else %}aspect-ratio: 16 / 9; object-fit: cover;{% endif %}"
+                            >
+                            <div class="carousel-caption d-none d-md-block">
+                                <div class="post-carousel-caption-box">
+                                    <h5>{{ item.title }}</h5>
+                                    {% if item.summary %}
+                                        <p>{% if item.summary|length > 280 %}{{ item.summary|slice:":280" }}...{% else %}{{ item.summary }}{% endif %}</p>
+                                    {% endif %}
+                                    <a href="{{ item.get_absolute_url }}" class="btn btn-sm btn-light">{% translate "Read More" %}</a>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="post-carousel-empty-frame" style="{% if item.widget_image_format == 'square' %}aspect-ratio: 1 / 1;{% elif item.widget_image_format == 'mobile' %}aspect-ratio: 9 / 16;{% else %}aspect-ratio: 16 / 9;{% endif %}">
+                                <div class="post-carousel-caption-box">
+                                    <h5>{{ item.title }}</h5>
+                                    {% if item.summary %}
+                                        <p>{% if item.summary|length > 280 %}{{ item.summary|slice:":280" }}...{% else %}{{ item.summary }}{% endif %}</p>
+                                    {% endif %}
+                                    <a href="{{ item.get_absolute_url }}" class="btn btn-sm btn-light">{% translate "Read More" %}</a>
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% endwith %}
+                    </div>
+                {% empty %}
+                    {# This empty block is generally not reached if 'items' check above is successful #}
+                {% endfor %}
+            </div>
+
+            {# Carousel Controls #}
+            <button class="carousel-control-prev" type="button" data-bs-target="#carousel-{{ widget.id }}" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">{% translate "Previous" %}</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carousel-{{ widget.id }}" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">{% translate "Next" %}</span>
+            </button>
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center">{% translate "No posts available for the carousel." %}</div>
+    {% endif %}
+</div>

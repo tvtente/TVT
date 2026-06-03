@@ -1,0 +1,42 @@
+<!-- File: menus/templates/menus/partials/_navbar_recursive.html -->
+{% load i18n %}
+{% load mptt_tags %} {# Needed for recursetree #}
+
+{% recursetree nodes %}
+    {# Check if this item IS a dropdown (has static children OR dynamic children) #}
+    {% with has_children=not node.is_leaf_node or node.dynamic_children %}
+
+        {% if has_children %}
+            {# This node is a dropdown (has direct MPTT children or dynamic children) #}
+            <li class="{% if node.level == 0 %}dropdown{% else %}dropend{% endif %}">
+                <a class="dropdown-item {% if not node.parent %}nav-link{% endif %} dropdown-toggle" 
+                   href="{{ node.get_url }}"
+                   id="{% if node.level == 0 %}navbar-item-{% else %}submenu-item-{% endif %}{{ node.id }}" 
+                   role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    {% if node.icon_class %}<i class="{{ node.icon_class }} me-1"></i>{% endif %}
+                    {{ node.translated_title }}
+                </a>
+                <ul class="dropdown-menu {% if node.level > 0 %}dropdown-submenu{% endif %}" 
+                    aria-labelledby="{% if node.level == 0 %}navbar-item-{% else %}submenu-item-{% endif %}{{ node.id }}">
+                    
+                    {# Render STATIC MPTT Children #}
+                    {# {{ children }} is provided by recursetree for MPTT children #}
+                    {{ children }}
+
+                    {# Render DYNAMIC Children #}
+                    {% for dynamic_child in node.dynamic_children %}
+                        <li><a class="dropdown-item" href="{{ dynamic_child.get_absolute_url }}">{{ dynamic_child.name|default:dynamic_child.translated_title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% else %}
+            {# This node is a simple link (no children) #}
+            <li>
+                <a class="dropdown-item" href="{{ node.get_url }}">
+                    {% if node.icon_class %}<i class="{{ node.icon_class }} me-1"></i>{% endif %}
+                    {{ node.translated_title }}
+                </a>
+            </li>
+        {% endif %}
+    {% endwith %}
+{% endfor %}

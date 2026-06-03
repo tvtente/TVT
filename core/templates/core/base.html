@@ -1,0 +1,264 @@
+{% load static %}
+{% load settings_tags %}
+{% get_active_site_template as site_template %}
+<!doctype html>
+{# The language code is dynamically set by Django's LocaleMiddleware #}
+<html lang="{{ LANGUAGE_CODE }}">
+    
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {# --- SEO and Browser Tab Title Blocks --- #}
+    {# These blocks can be overridden by child templates for specific pages. #}
+    <title>{% block seo_title %}{% block title %}Tavata.art{% endblock %}{% endblock seo_title %}</title>
+    <meta name="description" content="{% block seo_description %}Default site description. Provide a more specific one for better SEO.{% endblock %}">
+    <meta property="og:title" content="{% block og_title %}Tavata.art{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Default site description. Provide a more specific one for better SEO.{% endblock %}">
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+    {% block og_image %}{% endblock %}
+    <meta name="twitter:card" content="{% block twitter_card %}summary{% endblock %}">
+    <meta name="twitter:title" content="{% block twitter_title %}Tavata.art{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}Default site description. Provide a more specific one for better SEO.{% endblock %}">
+    {% block twitter_image %}{% endblock %}
+    {% if site_template.favicon %}
+    <link rel="icon" href="{{ site_template.favicon.url }}">
+    <link rel="shortcut icon" href="{{ site_template.favicon.url }}">
+    {% endif %}
+
+    {# --- CSS Stylesheets --- #}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{% static 'css/theme.css' %}">
+    <style>
+        :root {
+            --tavata-yellow: {{ site_template.primary_color|default:"#ffc107" }};
+            --tavata-dark: {{ site_template.dark_color|default:"#212529" }};
+            --tavata-light: {{ site_template.light_color|default:"#f8f9fa" }};
+            --tavata-body-bg: {{ site_template.body_background_color|default:"#f8f9fa" }};
+            --tavata-body-color: {{ site_template.body_text_color|default:"#212529" }};
+            --tavata-card-box-bg: {{ site_template.card_box_background_color|default:"#f1f3f5" }};
+            --tavata-card-box-border: {{ site_template.card_box_border_color|default:"#dee2e6" }};
+            --tavata-home-notice-bg: {{ site_template.home_notice_background_color|default:"#eef2f5" }};
+            --tavata-home-notice-color: {{ site_template.home_notice_text_color|default:"#495057" }};
+            --tavata-font-family: {{ site_template.font_family|default:"system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }};
+            --tavata-base-font-size: {{ site_template.base_font_size|default:16 }}px;
+            --tavata-slogan-font-size: {{ site_template.slogan_font_size|default:28 }}px;
+            --tavata-logo-height: {{ site_template.logo_height|default:50 }}px;
+            --tavata-banner-max-height: {{ site_template.banner_max_height|default:50 }}px;
+            --tavata-border-radius: {{ site_template.border_radius|default:4 }}px;
+            --tavata-layout-max-width: {{ site_template.layout_max_width|default:1440 }}px;
+            --tavata-layout-horizontal-padding: {{ site_template.layout_horizontal_padding|default:16 }}px;
+            --tavata-content-width: {{ site_template.content_width_percent|default:64 }}%;
+            --tavata-left-sidebar-width: {{ site_template.left_sidebar_width_percent|default:18 }}%;
+            --tavata-right-sidebar-width: {{ site_template.right_sidebar_width_percent|default:18 }}%;
+            --tavata-category-tree-max-width: {{ site_template.category_tree_max_width|default:860 }}px;
+            --tavata-category-tree-bg: {{ site_template.category_tree_background_color|default:"#ffffff" }};
+            --tavata-category-tree-border: {{ site_template.category_tree_border_color|default:"#dee2e6" }};
+            --tavata-category-tree-base-padding: {{ site_template.category_tree_base_padding|default:8 }}px;
+            --tavata-category-tree-indent-step: {{ site_template.category_tree_indent_step|default:24 }}px;
+            --tavata-category-tree-row-padding-y: {{ site_template.category_tree_row_padding_y|default:8 }}px;
+        }
+    </style>
+    
+    {# Block for extra, page-specific CSS #}
+    {% block extra_css %}{% endblock %}
+</head>
+
+{# These body classes use Flexbox to ensure the footer sticks to the bottom on short pages #}
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+    {# --- TOP BAR FOR BRANDING AND SOCIALS --- #}
+    {# This is the new top section for the site's main identity. #}
+    {% include 'core/partials/_topbar.html' %}
+    {# --- END TOP BAR --- #}
+
+    {# --- MAIN HEADER / NAVBAR --- #}
+    {# This includes the main navigation menu. #}
+    {% include 'core/partials/_header.html' %}
+    {# --- END MAIN HEADER --- #}
+
+    {# --- NEW: LANGUAGE SELECTOR BAR --- #}
+    {# {% include 'core/partials/_language_selector_bar.html' %} #}
+    {# --- END NEW --- #}
+
+    {% block breadcrumbs %}
+    <div class="breadcrumb-wrapper mt-3 mb-3">
+        <div class="container-xl px-4">
+            {% include "core/partials/_breadcrumbs.html" %}
+        </div>
+    </div>
+    {% endblock %}
+
+    {# --- MAIN CONTENT AREA --- #}
+    <main class="site-main-layout flex-grow-1 pt-0 pb-4">
+        <div class="site-content-grid">
+
+            {# Left Sidebar: Hidden on small screens, appears on medium and larger screens #}
+            <aside class="site-sidebar site-sidebar-left">
+                {% block sidebar_left %}{% endblock sidebar_left %}
+            </aside>
+
+            {# Central Content Column: This is where the main content of each page will go #}
+            <div class="site-content-column">
+                
+                {# --- FLASH MESSAGES BLOCK --- #}
+                {% block messages %}
+                    {% if messages %}
+                        <div class="messages-container">
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endblock messages %}
+                
+                {# Main content block, which child templates will override #}
+                <div class="{% block content_wrapper_class %}mt-4{% endblock %}">
+                    {% block content %}{% endblock content %}
+                </div>
+            </div>
+
+            {# Right Sidebar: Hidden on small/medium screens, appears on large screens #}
+            <aside class="site-sidebar site-sidebar-right">
+                {% block sidebar_right %}{% endblock sidebar_right %}
+            </aside>
+
+        </div>
+    </main>
+
+    
+    {# --- BEGIN FOOTER AREA --- #}
+    <hr class="py-2 my-0 bg-tavata-primary" style="border: none; height: 4px;"> 
+    {# --- FOOTER NAVIGATION --- #}
+    {% include 'core/partials/_footer_nav.html' %}
+    {# --- END FOOTER NAVIGATION --- #}
+    <hr class="py-2 my-0 bg-tavata-primary" style="border: none; height: 4px;"> 
+
+    {# --- COPYRIGHT BAR --- #}
+    {% include 'core/partials/_footer.html' %}
+    {# --- END COPYRIGHT BAR --- #}
+
+    {# --- END FOOTER AREA --- #}
+
+    
+
+    {# --- JAVASCRIPTS --- #}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="{% static 'js/local-links.js' %}"></script>
+    
+    {# Block for extra, page-specific JavaScript #}
+    {% block extra_js %}{% endblock %}
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const desktopMenuQuery = window.matchMedia("(min-width: 992px)");
+    const navbarCollapseWrapper = document.querySelector(".navbar-collapse-wrapper");
+    const mainNavbarMenu = document.querySelector(".main-navbar-menu");
+    const navbarRightActions = document.querySelector(".navbar-right-actions");
+
+    function syncNavbarRows() {
+        if (!navbarCollapseWrapper || !mainNavbarMenu || !navbarRightActions) {
+            return;
+        }
+
+        if (!desktopMenuQuery.matches) {
+            navbarCollapseWrapper.classList.remove("navbar-two-level");
+            return;
+        }
+
+        navbarCollapseWrapper.classList.remove("navbar-two-level");
+
+        const wrapperWidth = navbarCollapseWrapper.clientWidth;
+        const menuWidth = mainNavbarMenu.scrollWidth;
+        const actionsWidth = navbarRightActions.scrollWidth;
+        const totalWidth = menuWidth + actionsWidth + 24;
+
+        if (totalWidth > wrapperWidth) {
+            navbarCollapseWrapper.classList.add("navbar-two-level");
+        }
+    }
+
+    document.querySelectorAll(".main-navbar-menu .dropdown").forEach(function(dropdown) {
+        const toggle = dropdown.querySelector(":scope > .dropdown-toggle");
+        const menu = dropdown.querySelector(":scope > .dropdown-menu");
+
+        if (!toggle || !menu) {
+            return;
+        }
+
+        function showDropdown() {
+            if (!desktopMenuQuery.matches) {
+                return;
+            }
+            toggle.classList.add("show");
+            toggle.setAttribute("aria-expanded", "true");
+            menu.classList.add("show");
+            dropdown.classList.add("show");
+        }
+
+        function hideDropdown() {
+            if (!desktopMenuQuery.matches) {
+                return;
+            }
+            toggle.classList.remove("show");
+            toggle.setAttribute("aria-expanded", "false");
+            menu.classList.remove("show");
+            dropdown.classList.remove("show");
+        }
+
+        dropdown.addEventListener("mouseenter", showDropdown);
+        dropdown.addEventListener("mouseleave", hideDropdown);
+        dropdown.addEventListener("focusin", showDropdown);
+        dropdown.addEventListener("focusout", function(event) {
+            if (!dropdown.contains(event.relatedTarget)) {
+                hideDropdown();
+            }
+        });
+
+    });
+
+    document.querySelectorAll(".main-navbar-menu .dropdown-toggle").forEach(function(toggle) {
+        toggle.addEventListener("click", function(event) {
+            const href = toggle.getAttribute("href");
+            if (href && href !== "#") {
+                event.preventDefault();
+                event.stopPropagation();
+                event.stopImmediatePropagation();
+                window.location.assign(href);
+            }
+        }, true);
+    });
+
+    document.querySelectorAll("img.zoomable").forEach(function(img) {
+        img.addEventListener("click", function() {
+        const overlay = document.createElement("div");
+        overlay.classList.add("image-modal-overlay");
+
+        const modalImg = document.createElement("img");
+        modalImg.src = this.src;
+        modalImg.alt = this.alt || "";
+
+        overlay.appendChild(modalImg);
+        document.body.appendChild(overlay);
+
+        overlay.addEventListener("click", function () {
+            overlay.remove();
+        });
+        });
+    });
+
+    // Initialize Bootstrap tooltips for navbar buttons
+    document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function(element) {
+        new bootstrap.Tooltip(element);
+    });
+
+    syncNavbarRows();
+    window.addEventListener("resize", syncNavbarRows);
+    desktopMenuQuery.addEventListener("change", syncNavbarRows);
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!-- Archivo: core/templates/core/partials/_pagination.html -->
+{% load i18n %}
+
+{% if page_obj.has_other_pages %}
+<nav aria-label="Page navigation" class="mt-5">
+    <ul class="pagination justify-content-center">
+
+        {# Parameter name. Defaults to 'page' if not provided. #}
+        {% with p_name=param_name|default:'page' %}
+
+            <!-- Previous Button -->
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link"
+                       href="?{{ p_name }}={{ page_obj.previous_page_number }}{% for key, value in request.GET.items %}{% if key != p_name %}&{{ key }}={{ value }}{% endif %}{% endfor %}{% if anchor %}#{{ anchor }}{% endif %}">
+                        {% translate "Previous" %}
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">{% translate "Previous" %}</span>
+                </li>
+            {% endif %}
+
+            <!-- Page Numbers -->
+            {% for i in page_obj.paginator.page_range %}
+                {% if page_obj.number == i %}
+                    <li class="page-item active">
+                        <span class="page-link">{{ i }}</span>
+                    </li>
+                {% else %}
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="?{{ p_name }}={{ i }}{% for key, value in request.GET.items %}{% if key != p_name %}&{{ key }}={{ value }}{% endif %}{% endfor %}{% if anchor %}#{{ anchor }}{% endif %}">
+                            {{ i }}
+                        </a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+
+            <!-- Next Button -->
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link"
+                       href="?{{ p_name }}={{ page_obj.next_page_number }}{% for key, value in request.GET.items %}{% if key != p_name %}&{{ key }}={{ value }}{% endif %}{% endfor %}{% if anchor %}#{{ anchor }}{% endif %}">
+                        {% translate "Next" %}
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">{% translate "Next" %}</span>
+                </li>
+            {% endif %}
+
+        {% endwith %}
+    </ul>
+</nav>
+{% endif %}

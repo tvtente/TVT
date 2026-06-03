@@ -1,0 +1,75 @@
+<!-- accounts/templates/registration/signup.html -->
+{% extends 'core/base.html' %}
+{% load i18n %}
+{% load socialaccount %}
+
+{% block title %}{% translate "Sign Up" %}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4 p-md-5">
+                <h2 class="card-title text-center mb-4">{% translate "Create an Account" %}</h2>
+
+                {% if GOOGLE_AUTH_ENABLED %}
+                    <div class="d-grid mb-3">
+                        <a href="{% provider_login_url 'google' process='login' %}" class="btn btn-outline-dark btn-lg">
+                            <i class="fa-brands fa-google me-2"></i>{% translate "Sign up with Google" %}
+                        </a>
+                    </div>
+
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <hr class="flex-grow-1">
+                        <span class="text-muted small">{% translate "or" %}</span>
+                        <hr class="flex-grow-1">
+                    </div>
+                {% endif %}
+                
+                {# The 'novalidate' attribute tells the browser not to use its native validation, #}
+                {# allowing our Django error messages to always be displayed. #}
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    
+                    {# Display any non-field errors (e.g., "password mismatch") at the top. #}
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger p-2" role="alert">
+                            {{ form.non_field_errors|striptags }}
+                        </div>
+                    {% endif %}
+
+                    {# Username Field #}
+                    <div class="mb-3">
+                        <label for="{{ form.username.id_for_label }}" class="form-label">{{ form.username.label }}</label>
+                        {{ form.username }}
+                        <div id="usernameHelp" class="form-text">{% translate "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only." %}</div>
+                        {% if form.username.errors %}<div class="invalid-feedback d-block">{{ form.username.errors|striptags }}</div>{% endif %}
+                    </div>
+
+                    {# Password Field #}
+                    <div class="mb-3">
+                        <label for="{{ form.password1.id_for_label }}" class="form-label">{{ form.password1.label }}</label>
+                        {{ form.password1 }}
+                        <div id="passwordHelp" class="form-text">{% translate "Your password must contain at least 8 characters." %}</div>
+                        {% if form.password1.errors %}<div class="invalid-feedback d-block">{{ form.password1.errors|striptags }}</div>{% endif %}
+                    </div>
+
+                    {# Password Confirmation Field #}
+                    <div class="mb-3">
+                        <label for="{{ form.password2.id_for_label }}" class="form-label">{{ form.password2.label }}</label>
+                        {{ form.password2 }}
+                        {% if form.password2.errors %}<div class="invalid-feedback d-block">{{ form.password2.errors|striptags }}</div>{% endif %}
+                    </div>
+
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg">{% translate "Sign Up" %}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <p class="text-center mt-3">
+            {% translate "Already have an account?" %} <a href="{% url 'login' %}">{% translate "Log in here" %}</a>.
+        </p>
+    </div>
+</div>
+{% endblock %}

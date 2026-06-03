@@ -1,0 +1,48 @@
+<!-- File: menus/templates/menus/partials/_navbar_recursive_children.html -->
+{% load menu_tags %} 
+{% load i18n %}
+
+{# This partial renders the *visible immediate children* of a dropdown menu item. #}
+{# Children are filtered by allowed_groups in menu_tags.py before this template is rendered. #}
+{# It's designed to be called recursively for deeper levels. #}
+
+{% for node in children %}
+    {# Check if this child node also has visible children (static MPTT children OR dynamic children) #}
+    {% if node.visible_children or node.dynamic_children %}
+        <li class="dropend"> 
+            <a class="dropdown-item dropdown-toggle"
+               href="{{ node.get_url }}"
+               id="submenu-item-{{ node.id }}"
+               role="button"
+               data-bs-toggle="dropdown"
+               aria-expanded="false">
+                {% if node.icon_class %}<i class="{{ node.icon_class }} me-1"></i>{% endif %}
+                {{ node.translated_title }}
+            </a>
+
+            <ul class="dropdown-menu dropdown-submenu" aria-labelledby="submenu-item-{{ node.id }}">
+                {# RECURSION: Call this same partial again for this node's visible children #}
+                {% if node.visible_children %}
+                    {% include "menus/partials/_navbar_recursive_children.html" with children=node.visible_children %}
+                {% endif %}
+
+                {# Render dynamic children for this node after static visible children #}
+                {% for dynamic_child in node.dynamic_children %}
+                    <li>
+                        <a class="dropdown-item" href="{{ dynamic_child.menu_url|default:dynamic_child.get_absolute_url }}">
+                            {{ dynamic_child.name|default:dynamic_child.translated_title }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </li>
+    {% else %}
+        {# Simple link within a dropdown #}
+        <li>
+            <a class="dropdown-item" href="{{ node.get_url }}">
+                {% if node.icon_class %}<i class="{{ node.icon_class }} me-1"></i>{% endif %}
+                {{ node.translated_title }}
+            </a>
+        </li>
+    {% endif %}
+{% endfor %}

@@ -1,0 +1,10 @@
+<li>
+  <a href="{{ item.get_url }}">{{ item.translated_title }}</a>
+  {% if item.children.exists %}
+    <ul>
+      {% for child in item.children.all %}
+        {% include "menus/partials/_menu_item.html" with item=child %}
+      {% endfor %}
+    </ul>
+  {% endif %}
+</li>

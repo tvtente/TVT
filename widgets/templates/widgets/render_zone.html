@@ -1,0 +1,61 @@
+{% load i18n %}
+{# File: widgets/templates/widgets/render_zone.html #}
+{# This template acts as a dispatcher. It receives the processed widget data #}
+{# and decides which partial template to include based on the widget's type. #}
+
+{% for data in processed_widgets %}
+
+    {# --- WIDGET TYPE DISPATCHER --- #}
+
+    {# Case 1: The widget is any type that displays a list of posts #}
+    {% if data.widget.widget_type == 'recent_posts' or data.widget.widget_type == 'most_viewed_posts' or data.widget.widget_type == 'most_commented_posts' or data.widget.widget_type == 'editor_picks_posts' %}
+        
+        {% include 'widgets/partials/_posts_widget.html' with widget=data.widget items=data.items request=request %}
+
+    {# Case 2: The widget is for displaying blog categories #}
+    {% elif data.widget.widget_type == 'blog_categories' %}
+        
+        {% include 'widgets/partials/_blog_categories_widget.html' with widget=data.widget items=data.items request=request %}
+
+    {% elif data.widget.widget_type == 'featured_tags' %}
+        
+        {% include 'widgets/partials/_featured_tags_widget.html' with widget=data.widget items=data.items request=request %}
+    
+    {# --- WXISTING CASES FOR POST GRIDS --- #}
+    {% elif data.widget.widget_type == 'post_grid_recent' or data.widget.widget_type == 'post_grid_category' or data.widget.widget_type == 'post_grid_popular' or data.widget.widget_type == 'post_grid_commented' or data.widget.widget_type == 'post_grid_editor' or data.widget.widget_type == 'post_grid_top_rated_today' or data.widget.widget_type == 'post_grid_top_rated_week' or data.widget.widget_type == 'post_grid_most_favorited' or data.widget.widget_type == 'post_grid_community_picks' or data.widget.widget_type == 'post_intent_reflection' or data.widget.widget_type == 'post_intent_quick_reads' or data.widget.widget_type == 'post_intent_wellbeing' or data.widget.widget_type == 'post_intent_debate' %}
+        {% include 'widgets/partials/_post_grid.html' with widget=data.widget items=data.items request=request prefer_square_image=data.prefer_square_image image_format=data.image_format %}
+    
+    {# --- CASE FOR POST CAROUSEL --- #}
+    {% elif data.widget.widget_type == 'post_carousel' or data.widget.widget_type == 'post_carousel_commented' or data.widget.widget_type == 'post_carousel_viewed' %}
+        {% include 'widgets/partials/_post_carousel.html' with widget=data.widget items=data.items request=request %}
+
+    {% elif data.widget.widget_type == 'hero_carousel' %}
+        {% include 'widgets/partials/_hero_carousel.html' with widget=data.widget items=data.items request=request %}
+
+    {% elif data.widget.widget_type == 'book_grid_recent' %}
+        {% include 'widgets/partials/_book_grid.html' with widget=data.widget items=data.items request=request %}
+
+    {% elif data.widget.widget_type == 'publication_grid_recent' %}
+        {% include 'widgets/partials/_publication_grid.html' with widget=data.widget items=data.items request=request %}
+
+    {# --- CASE FOR USER DIRECTORY --- #}
+    {% elif data.widget.widget_type == 'user_directory' %}
+        {% include 'widgets/partials/_user_directory.html' with widget=data.widget items=data.items request=request %}
+
+    {# --- CASE FOR TESTIMONIALS --- #}
+    {% elif data.widget.widget_type == 'testimonials' %}
+        {% include 'widgets/partials/_testimonials.html' with widget=data.widget items=data.items request=request %}
+
+    {# You can add more 'elif' blocks here for future widget types, like 'page_list', etc. #}
+    {# Default Case: If the widget type is not recognized, show a helpful debug message. #}
+    {% else %}
+        <div class="alert alert-warning small">
+            {% blocktranslate with widget_type=data.widget.widget_type %}
+                <strong>Widget Error:</strong> Template for widget type "{{ widget_type }}" not found in the dispatcher.
+            {% endblocktranslate %}
+        </div>
+    {% endif %}
+    
+    {# --- END WIDGET TYPE DISPATCHER --- #}
+
+{% endfor %}

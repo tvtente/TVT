@@ -1,0 +1,14 @@
+<!-- File: menus/templates/menus/partials/_social_links_partial.html -->
+{% load i18n %}
+
+{# This partial renders a list of social media links without dropdowns #}
+{% for node in nodes %}
+    <a href="{{ node.get_url }}" target="_blank" rel="noopener noreferrer" class="text-secondary fs-5 mx-2" title="{{ node.translated_title }}">
+        {% if node.icon_class %}
+            <i class="{{ node.icon_class }}"></i>
+        {% else %}
+            {# Fallback to title if no icon is specified #}
+            {{ node.translated_title }} 
+        {% endif %}
+    </a>
+{% endfor %}

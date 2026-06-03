@@ -1,0 +1,24 @@
+{# File: widgets/templates/widgets/partials/_testimonials.html #}
+{% load i18n %}
+{% if items %}
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-body">
+        <h5 class="card-title">{{ widget.translated_title }}</h5>
+        {% for testimonial in items %}
+            <div class="mb-3">
+                {% if testimonial.photo %}
+                    <img src="{{ testimonial.photo.url }}" class="rounded-circle float-start me-3" style="width:48px;height:48px;object-fit:cover;" alt="{{ testimonial.author_name }}">
+                {% endif %}
+                <blockquote class="blockquote">
+                    <p class="mb-1">“{{ testimonial.quote }}”</p>
+                    <footer class="blockquote-footer">
+                        {{ testimonial.author_name }}
+                        {% if testimonial.author_title %}<small class="text-muted">, {{ testimonial.author_title }}</small>{% endif %}
+                    </footer>
+                </blockquote>
+                <div class="clearfix"></div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}

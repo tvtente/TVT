@@ -1,0 +1,11 @@
+<!-- File: core/templates/core/partials/_footer_nav.html -->
+{% load i18n %}
+{% load menu_tags %} 
+
+<div class="footer-nav-bar bg-dark py-3"> {# Un fondo oscuro y padding #}
+    <div class="container d-flex justify-content-center align-items-center flex-wrap">
+        <ul class="nav">
+            {% show_simple_menu 'footer-menu' %}
+        </ul>
+    </div>
+</div>

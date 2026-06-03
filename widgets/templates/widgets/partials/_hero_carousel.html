@@ -1,0 +1,78 @@
+{% load i18n %}
+
+<div class="hero-carousel-section">
+    {% if widget.translated_section_title %}
+        <h2 class="mb-4 text-center">{{ widget.translated_section_title }}</h2>
+    {% endif %}
+
+    {% if items %}
+        <div
+            id="hero-carousel-{{ widget.id }}"
+            class="carousel slide hero-carousel"
+            data-bs-ride="carousel"
+            data-bs-interval="{{ widget.carousel_interval_ms|default:5000 }}"
+        >
+            <div class="carousel-indicators">
+                {% for item in items %}
+                    <button
+                        type="button"
+                        data-bs-target="#hero-carousel-{{ widget.id }}"
+                        data-bs-slide-to="{{ forloop.counter0 }}"
+                        {% if forloop.first %}class="active" aria-current="true"{% endif %}
+                        aria-label="{% blocktranslate with slide_number=forloop.counter %}Slide {{ slide_number }}{% endblocktranslate %}"
+                    ></button>
+                {% endfor %}
+            </div>
+
+            <div class="carousel-inner rounded-4 overflow-hidden shadow-sm">
+                {% for item in items %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                        {% with display_image=item.widget_display_image %}
+                            {% if display_image %}
+                                <img
+                                    src="{{ display_image.url }}"
+                                    class="d-block w-100 zoomable"
+                                    alt="{{ item.title }}"
+                                    style="{% if item.widget_image_format == 'square' %}aspect-ratio: 1 / 1; object-fit: cover;{% elif item.widget_image_format == 'mobile' %}aspect-ratio: 9 / 16; max-height: 80vh; object-fit: cover;{% else %}min-height: 320px; max-height: 520px; object-fit: cover;{% endif %}"
+                                >
+                            {% else %}
+                                <div class="bg-dark text-white d-flex align-items-end" style="{% if item.widget_image_format == 'square' %}aspect-ratio: 1 / 1;{% elif item.widget_image_format == 'mobile' %}aspect-ratio: 9 / 16; max-height: 80vh;{% else %}min-height: 320px;{% endif %}">
+                                    <div class="p-4 p-md-5">
+                                        <span class="badge text-bg-warning mb-3">{% translate "Featured" %}</span>
+                                        <h3 class="display-6 fw-semibold">{{ item.title }}</h3>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endwith %}
+
+                        <div class="carousel-caption text-start">
+                            <div class="rounded-4 p-3 p-md-4 d-inline-block" style="max-width: 40rem; background-color: rgba(17, 24, 39, 0.5);">
+                                <span class="badge text-bg-warning mb-3">{% translate "Featured" %}</span>
+                                <h3 class="h2">{{ item.title }}</h3>
+                                {% if item.summary %}
+                                    <p class="mb-3">{{ item.summary|striptags|truncatewords:28 }}</p>
+                                {% elif item.content %}
+                                    <p class="mb-3">{{ item.content|striptags|truncatewords:28 }}</p>
+                                {% endif %}
+                                <a href="{{ item.get_absolute_url }}" class="btn btn-light">
+                                    {% translate "Explore article" %}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#hero-carousel-{{ widget.id }}" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">{% translate "Previous" %}</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#hero-carousel-{{ widget.id }}" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">{% translate "Next" %}</span>
+            </button>
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center">{% translate "No featured items available for the hero carousel." %}</div>
+    {% endif %}
+</div>

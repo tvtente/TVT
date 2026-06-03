@@ -1,0 +1,42 @@
+{% extends 'core/base.html' %}
+{% load i18n %}
+{% block breadcrumbs %}
+  {% include "core/partials/_breadcrumbs.html" %}
+{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <h1 class="mb-4 text-center">{% trans "Image Gallery" %}</h1>
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+    {% for img in images %}
+      <div class="col">
+        <div class="card h-100 shadow-sm">
+          <a href="{{ img.detail_url }}">
+            <img src="{{ img.image_url }}" class="card-img-top" alt="{{ img.title }}">
+          </a>
+          <div class="card-body">
+            <h5 class="card-title">{{ img.title }}</h5>
+            {% if img.description %}
+              <p class="card-text">{{ img.description }}</p>
+              <a href="{{ img.detail_url }}" class="btn btn-primary btn-sm">
+                {% trans "Read more" %}
+              </a>
+            {% endif %}
+            <p class="card-text mt-2">
+              <small class="text-muted">
+                {% blocktrans with date=img.date|date:"d M Y H:i" %}
+                  Uploaded: {{ date }}
+                {% endblocktrans %}
+              </small>
+            </p>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <div class="col">
+        <p>{% trans "No images in the gallery." %}</p>
+      </div>
+    {% endfor %}
+  </div>
+  {% include "core/partials/_pagination.html" with page_obj=images %}
+</div>
+{% endblock %}

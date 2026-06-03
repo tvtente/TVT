@@ -1,0 +1,44 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+env/
+.venv/
+.venv
+.cursor_test_venv/
+.env/
+.env
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# PyInstaller
+*.spec
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# VS Code settings
+.vscode/
+.codex
+.agents/
+
+# SQLite database
+db.sqlite3
+categories_export.json
+data_exports/
+
+# Archivos generados por Django (estáticos y media)
+staticfiles/
+media/
+media/*   # <--- ¡ESTA ES LA LÍNEA QUE NECESITAS!
+logs/*
+*.log
+!logs/.gitkeep
+django-summernote/

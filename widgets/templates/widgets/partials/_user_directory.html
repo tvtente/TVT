@@ -1,0 +1,35 @@
+{% load i18n %}
+{% load avatar_tags %}
+<div class="card mb-4 user-directory-widget shadow-sm">
+  {% if widget.translated_title %}
+    <div class="card-header bg-light">
+      <strong>{{ widget.translated_title }}</strong>
+    </div>
+  {% endif %}
+  <ul class="list-group list-group-flush">
+    {% for user in items %}
+      <li class="list-group-item">
+        <div class="d-flex align-items-start">
+          <img src="{{ user|avatar_url }}" alt="{{ user.username }}"
+              class="rounded-circle me-3"
+              style="width: 48px; height: 48px; object-fit: cover;">
+
+          <div class="flex-grow-1">
+            <a href="{% url 'accounts:public_profile' user.username %}" class="fw-semibold">
+              {{ user.get_full_name|default:user.username }}
+            </a>
+            {% if user|safe_bio %}
+              <p class="text-muted small mb-0">
+                {{ user|safe_bio|truncatechars:80 }}
+              </p>
+            {% endif %}
+          </div>
+        </div>
+      </li>
+    {% empty %}
+      <li class="list-group-item text-muted">
+        {% trans "No users available." %}
+      </li>
+    {% endfor %}
+  </ul>
+</div>

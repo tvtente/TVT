@@ -1,0 +1,317 @@
+/* File: static/accounts/css/profile_cv.css */
+
+.profile-cv-page {
+    color: var(--tavata-body-color);
+}
+
+.profile-cv-page .cv-export-sheet {
+    background: var(--tavata-body-bg);
+}
+
+.profile-cv-page .cv-download-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+}
+
+.profile-cv-page .cv-avatar {
+    width: 128px;
+    height: 128px;
+    object-fit: cover;
+}
+
+.profile-cv-page .cv-export-sheet a,
+.profile-cv-page .cv-section a,
+.profile-cv-page .cv-hero a {
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+    text-decoration-skip-ink: auto;
+}
+
+/* Main hero */
+.profile-cv-page .cv-hero {
+    background:
+        linear-gradient(
+            135deg,
+            color-mix(in srgb, var(--tavata-yellow) 18%, transparent),
+            var(--tavata-card-box-bg)
+        );
+    border: 1px solid var(--tavata-card-box-border);
+    border-radius: calc(var(--tavata-border-radius) * 2);
+}
+
+.profile-cv-page .cv-hero h1 {
+    color: var(--tavata-dark);
+    font-weight: 750;
+}
+
+.profile-cv-page .cv-hero p {
+    color: var(--tavata-home-notice-color);
+}
+
+/* Summary cards */
+.profile-cv-page .cv-stat {
+    background: var(--tavata-card-box-bg);
+    border: 1px solid var(--tavata-card-box-border) !important;
+    border-radius: calc(var(--tavata-border-radius) * 2);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.profile-cv-page .cv-stat:hover {
+    transform: translateY(-2px);
+}
+
+.profile-cv-page .cv-stat .small {
+    color: var(--tavata-home-notice-color);
+}
+
+.profile-cv-page .cv-stat .fs-4 {
+    color: var(--tavata-dark);
+}
+
+/* CV sections */
+.profile-cv-page .cv-section {
+    background: #fff;
+    border: 1px solid var(--tavata-card-box-border) !important;
+    border-radius: calc(var(--tavata-border-radius) * 2);
+    overflow: hidden;
+    break-inside: avoid;
+    page-break-inside: avoid;
+}
+
+.profile-cv-page .cv-section .card-header {
+    background:
+        linear-gradient(
+            90deg,
+            color-mix(in srgb, var(--tavata-yellow) 14%, white),
+            white
+        ) !important;
+    border-bottom: 1px solid var(--tavata-card-box-border) !important;
+}
+
+.profile-cv-page .cv-section h2 {
+    color: var(--tavata-dark);
+    font-weight: 750;
+}
+
+.profile-cv-page .cv-section h3 {
+    letter-spacing: 0.04em;
+}
+
+.profile-cv-page .cv-section .text-muted {
+    color: var(--tavata-home-notice-color) !important;
+}
+
+.profile-cv-page .cv-focus-card {
+    background: linear-gradient(
+        145deg,
+        color-mix(in srgb, var(--tavata-yellow) 12%, white),
+        white
+    );
+    border: 1px solid var(--tavata-card-box-border);
+    border-radius: calc(var(--tavata-border-radius) * 1.7);
+    padding: 1rem 1.1rem;
+}
+
+.profile-cv-page .cv-focus-label {
+    color: var(--tavata-home-notice-color);
+    font-size: 0.82rem;
+    font-weight: 650;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.profile-cv-page .cv-focus-value {
+    color: var(--tavata-dark);
+    font-size: 1.85rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-top: 0.45rem;
+}
+
+.profile-cv-page .cv-focus-pill {
+    background: color-mix(in srgb, var(--tavata-yellow) 20%, white);
+    border: 1px solid color-mix(in srgb, var(--tavata-yellow) 48%, white);
+    border-radius: 999px;
+    color: var(--tavata-dark);
+    display: inline-flex;
+    font-size: 0.92rem;
+    font-weight: 600;
+    line-height: 1.2;
+    padding: 0.5rem 0.85rem;
+}
+
+.profile-cv-page .cv-focus-pill-soft {
+    background: color-mix(in srgb, var(--tavata-card-box-bg) 65%, white);
+    border-color: var(--tavata-card-box-border);
+}
+
+.profile-cv-page .cv-focus-entry {
+    background: color-mix(in srgb, var(--tavata-yellow) 7%, white);
+    border: 1px solid var(--tavata-card-box-border);
+    border-radius: calc(var(--tavata-border-radius) * 1.4);
+    padding: 0.9rem 1rem;
+}
+
+/* Individual form cards */
+.profile-cv-page .cv-item {
+    background: var(--tavata-light);
+    border: 1px solid var(--tavata-card-box-border) !important;
+    border-radius: calc(var(--tavata-border-radius) * 1.7);
+    break-inside: avoid;
+    page-break-inside: avoid;
+}
+
+.profile-cv-page .cv-item .card-body {
+    padding: 1.25rem;
+}
+
+/* Labels and fields */
+.profile-cv-page label.form-label {
+    color: var(--tavata-dark);
+    font-weight: 650;
+    margin-bottom: 0.35rem;
+}
+
+.profile-cv-page input.form-control,
+.profile-cv-page select.form-select,
+.profile-cv-page textarea.form-control {
+    border-color: var(--tavata-card-box-border);
+    border-radius: calc(var(--tavata-border-radius) * 1.4);
+    color: var(--tavata-body-color);
+    min-height: 44px;
+}
+
+.profile-cv-page textarea.form-control {
+    min-height: 110px;
+}
+
+.profile-cv-page input.form-control:focus,
+.profile-cv-page select.form-select:focus,
+.profile-cv-page textarea.form-control:focus {
+    border-color: var(--tavata-yellow);
+    box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--tavata-yellow) 25%, transparent);
+}
+
+/* Checkboxes */
+.profile-cv-page .form-check-input:checked {
+    background-color: var(--tavata-yellow);
+    border-color: var(--tavata-yellow);
+}
+
+.profile-cv-page .form-check-label.text-danger {
+    font-weight: 600;
+}
+
+/* Buttons */
+.profile-cv-page .btn {
+    border-radius: calc(var(--tavata-border-radius) * 1.4);
+}
+
+.profile-cv-page .btn-primary {
+    background-color: var(--tavata-yellow);
+    border-color: var(--tavata-yellow);
+    color: var(--tavata-dark);
+    font-weight: 700;
+}
+
+.profile-cv-page .btn-primary:hover {
+    filter: brightness(0.95);
+    color: var(--tavata-dark);
+}
+
+.profile-cv-page .btn-outline-primary {
+    border-color: var(--tavata-yellow);
+    color: var(--tavata-dark);
+    font-weight: 650;
+}
+
+.profile-cv-page .btn-outline-primary:hover {
+    background-color: var(--tavata-yellow);
+    border-color: var(--tavata-yellow);
+    color: var(--tavata-dark);
+}
+
+.profile-cv-page .btn-outline-secondary {
+    border-color: var(--tavata-card-box-border);
+    color: var(--tavata-body-color);
+}
+
+/* Save bar */
+.profile-cv-page .cv-save-bar {
+    background: var(--tavata-home-notice-bg);
+    border: 1px solid var(--tavata-card-box-border) !important;
+    border-radius: calc(var(--tavata-border-radius) * 2);
+    position: sticky;
+    bottom: 1rem;
+    z-index: 20;
+}
+
+.profile-cv-page .cv-save-bar h3 {
+    color: var(--tavata-dark);
+    font-weight: 750;
+}
+
+.profile-cv-page .cv-save-bar p {
+    color: var(--tavata-home-notice-color);
+}
+
+/* Error messages */
+.profile-cv-page .invalid-feedback,
+.profile-cv-page .text-danger.small {
+    font-weight: 600;
+}
+
+/* Profile edit page refinement */
+.profile-cv-page .cv-hero .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    white-space: nowrap;
+}
+
+/* Give account cards the same soft shape as the CV editor */
+.profile-cv-page > .row .card {
+    border-radius: calc(var(--tavata-border-radius) * 2);
+    border: 1px solid var(--tavata-card-box-border);
+}
+
+.profile-cv-page > .row .card-header {
+    background: color-mix(in srgb, var(--tavata-yellow) 10%, white);
+    border-bottom: 1px solid var(--tavata-card-box-border);
+}
+
+/* Prevent breadcrumbs from looking visually clipped */
+.breadcrumb,
+.breadcrumb-area,
+.breadcrumb-wrapper,
+.breadcrumb-container,
+nav[aria-label="breadcrumb"] {
+    overflow: visible !important;
+}
+
+.breadcrumb {
+    margin-bottom: 1rem;
+    white-space: normal;
+}
+
+.profile-cv-page .is-exporting-pdf a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+/* Mobile */
+@media (max-width: 767.98px) {
+    .profile-cv-page .cv-save-bar {
+        position: static;
+    }
+
+    .profile-cv-page .cv-item .card-body {
+        padding: 1rem;
+    }
+}

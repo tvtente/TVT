@@ -1,0 +1,32 @@
+{% load i18n %}
+
+<nav aria-label="breadcrumb" class="breadcrumb-wrapper">
+  <ol class="breadcrumb">
+    {% if breadcrumbs %}
+      {% for crumb in breadcrumbs %}
+        {% if not forloop.last %}
+          <li class="breadcrumb-item">
+            <a href="{{ crumb.url }}">{{ crumb.label }}</a>
+          </li>
+        {% else %}
+          <li class="breadcrumb-item active" aria-current="page">{{ crumb.label }}</li>
+        {% endif %}
+      {% endfor %}
+    {% else %}
+      {% firstof breadcrumb_title page.title post.title category.name tag.label menu.title menu.name view_title as fallback_breadcrumb_label %}
+
+      {% if request.resolver_match.url_name == "home" %}
+        <li class="breadcrumb-item active" aria-current="page">
+          {% if fallback_breadcrumb_label %}{{ fallback_breadcrumb_label }}{% else %}{% translate "Home" %}{% endif %}
+        </li>
+      {% elif fallback_breadcrumb_label %}
+        <li class="breadcrumb-item">
+          <a href="{% url 'home' %}">{% translate "Home" %}</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">{{ fallback_breadcrumb_label }}</li>
+      {% else %}
+        <li class="breadcrumb-item active" aria-current="page">{% translate "Home" %}</li>
+      {% endif %}
+    {% endif %}
+  </ol>
+</nav>

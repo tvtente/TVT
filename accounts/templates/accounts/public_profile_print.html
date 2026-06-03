@@ -1,0 +1,196 @@
+{% load i18n %}
+{% load static %}
+<!doctype html>
+<html lang="{{ LANGUAGE_CODE|default:'en' }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ profile.get_display_name }} {% translate "CV" %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="{% static 'accounts/css/profile_cv.css' %}">
+    <style>
+        :root {
+            --tavata-yellow: {{ site_template.primary_color|default:"#ffc107" }};
+            --tavata-dark: {{ site_template.dark_color|default:"#212529" }};
+            --tavata-light: {{ site_template.light_color|default:"#f8f9fa" }};
+            --tavata-body-bg: {{ site_template.body_background_color|default:"#f8f9fa" }};
+            --tavata-body-color: {{ site_template.body_text_color|default:"#212529" }};
+            --tavata-card-box-bg: {{ site_template.card_box_background_color|default:"#f1f3f5" }};
+            --tavata-card-box-border: {{ site_template.card_box_border_color|default:"#dee2e6" }};
+            --tavata-home-notice-bg: {{ site_template.home_notice_background_color|default:"#eef2f5" }};
+            --tavata-home-notice-color: {{ site_template.home_notice_text_color|default:"#495057" }};
+            --tavata-border-radius: {{ site_template.border_radius|default:4 }}px;
+        }
+
+        body {
+            background: var(--tavata-body-bg);
+        }
+
+        .profile-print-page {
+            padding: 1.25rem 0;
+        }
+
+        .profile-print-page .container {
+            max-width: 980px;
+        }
+
+        .profile-print-page .cv-export-sheet {
+            background: transparent;
+        }
+
+        .profile-print-page .cv-avatar {
+            width: 128px;
+            height: 128px;
+            object-fit: cover;
+        }
+
+        .profile-print-page .cv-hero {
+            background: linear-gradient(
+                135deg,
+                #fffdf7,
+                var(--tavata-card-box-bg)
+            );
+        }
+
+        .profile-print-page a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .profile-print-page .badge,
+        .profile-print-page .bg-primary,
+        .profile-print-page .bg-secondary,
+        .profile-print-page .bg-tavata-primary {
+            display: inline-block !important;
+            padding: 0.28rem 0.5rem !important;
+            border-radius: 999px !important;
+            background: var(--tavata-yellow) !important;
+            color: var(--tavata-dark) !important;
+            border: 1px solid rgba(0, 0, 0, 0.04) !important;
+            font-weight: 700 !important;
+            line-height: 1.1 !important;
+            white-space: nowrap !important;
+            vertical-align: middle !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
+        @page {
+            size: A4;
+            margin: 12mm;
+        }
+
+        @media print {
+            body {
+                background: var(--tavata-body-bg) !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .profile-print-page * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            .profile-print-page {
+                padding: 0;
+            }
+
+            .profile-print-page .container {
+                max-width: none;
+                width: 100%;
+            }
+
+            .profile-print-page .cv-hero {
+                background: linear-gradient(
+                    135deg,
+                    #fffdf7,
+                    var(--tavata-card-box-bg)
+                ) !important;
+                background-image: linear-gradient(
+                    135deg,
+                    #fffdf7,
+                    var(--tavata-card-box-bg)
+                ) !important;
+            }
+
+            .profile-print-page .row.g-4 {
+                display: flex !important;
+                flex-wrap: nowrap !important;
+                align-items: flex-start;
+            }
+
+            .profile-print-page .row.g-4 > .col-md-6 {
+                flex: 0 0 50%;
+                max-width: 50%;
+                width: 50%;
+            }
+
+            .profile-print-page .h-100,
+            .profile-print-page .cv-section.card,
+            .profile-print-page section.cv-section {
+                height: auto !important;
+                min-height: 0 !important;
+            }
+
+            .profile-print-page .cv-hero,
+            .profile-print-page .cv-item {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+
+            .profile-print-page .cv-section,
+            .profile-print-page .row {
+                break-inside: auto;
+                page-break-inside: auto;
+            }
+
+            .profile-print-page .col-md-6 {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+
+            .profile-print-page .cv-section {
+                overflow: visible !important;
+            }
+
+            .profile-print-page .cv-section .card-body,
+            .profile-print-page .cv-section .card-header {
+                overflow: visible !important;
+            }
+
+            .profile-print-page .cv-section .card-body,
+            .profile-print-page .cv-item .card-body,
+            .profile-print-page p,
+            .profile-print-page span,
+            .profile-print-page strong {
+                overflow-wrap: anywhere;
+                word-break: normal;
+            }
+
+            .profile-print-page .d-flex.flex-wrap.gap-2 {
+                display: block !important;
+            }
+
+            .profile-print-page .d-flex.flex-wrap.gap-2 .badge {
+                margin-right: 0.35rem;
+                margin-bottom: 0.35rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="profile-print-page">
+        <div class="container profile-cv-page">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="cv-export-sheet">
+                        {% include "accounts/_public_profile_cv_content.html" %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

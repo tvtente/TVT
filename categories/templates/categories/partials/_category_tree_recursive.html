@@ -1,0 +1,29 @@
+<!-- File: categories/templates/categories/partials/_category_tree_recursive.html -->
+{% load i18n %}
+
+{# This template snippet receives a 'nodes' variable and renders them. #}
+{# It's designed to be called recursively. #}
+
+{% for node in nodes %}
+    {# Render the current category item #}
+    <a href="{{ node.get_absolute_url }}" 
+       class="list-group-item list-group-item-action"
+       {# We need to manually calculate the indent level #}
+       style="padding-left: {{ padding|default:1 }}rem;">
+        {{ node.name }}
+    </a>
+
+    {# --- THE RECURSION --- #}
+    {# Check if the current node has children #}
+    {% with children=node.children.all %}
+        {% if children %}
+            {# If it has children, include this VERY SAME TEMPLATE again, #}
+            {# passing the list of children to it. #}
+            {% include "categories/partials/_category_tree_recursive.html" with nodes=children padding=padding|add:1.5 %}
+        {% endif %}
+    {% endwith %}
+
+{% endfor %}
+
+{# Note: The 'padding' variable is used to control the indentation level of child categories. #}
+{# It should be passed from the parent template or view when this snippet is included. #}

@@ -1,0 +1,109 @@
+{% extends 'core/base.html' %}
+{% load i18n %}
+{% load widget_tags %}
+
+{# --- SEO --- #}
+{% block seo_title %}{{ category.meta_title|default:category.name }}{% endblock %}
+{% block seo_description %}{{ category.meta_description|default:"" }}{% endblock %}
+
+{# --- Título en pestaña del navegador --- #}
+{% block title %}
+  {% blocktranslate with category_name=category.name %}Posts in {{ category_name }}{% endblocktranslate %}
+{% endblock %}
+
+{% block breadcrumbs %}
+  {% include "core/partials/_breadcrumbs.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="category-header mb-5 text-center">
+  <h1 class="display-4">
+    {% translate "Posts in category:" %} <span class="text-primary">{{ category_label }}</span>
+  </h1>
+  {% if category.description %}
+    <p class="lead text-muted">{{ category.description }}</p>
+  {% endif %}
+</div>
+
+  <div class="row">
+    {% for post in posts %}
+      <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card h-100 shadow-sm border-0">
+          {% with featured_image=post.get_featured_image %}
+          {% if featured_image %}
+            <a href="{{ post.get_absolute_url }}">
+              <img src="{{ featured_image.url }}" class="card-img-top" loading="lazy" alt="{{ post.title }}">
+            </a>
+          {% endif %}
+          {% endwith %}
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">{{ post.title }}</h5>
+            <p class="card-text text-muted">
+              {% firstof post.author.profile.get_display_name post.author.username as author_name %}
+              <small>
+                {% blocktranslate with published_date=post.published_date|date:"DATE_FORMAT" author=author_name %}
+                  Published on {{ published_date }} by {{ author }}
+                {% endblocktranslate %}
+              </small>
+            </p>
+            <a href="{{ post.get_absolute_url }}" class="btn btn-primary mt-auto">{% translate "Read More" %}</a>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info text-center" role="alert">
+              {% translate "There are currently no published posts in this category." %}
+            </div>
+        </div>
+    {% endfor %}
+  </div>
+
+  {% include 'core/partials/_pagination.html' with page_obj=posts %}
+
+  <div class="mt-5">
+    <h5 class="text-center">{% translate "You might be interested in these recent posts:" %}</h5>
+    <div class="row mt-4">
+      {% for fallback_post in fallback_posts %}
+        <div class="col-md-6 col-lg-4 mb-4">
+          <div class="card h-100 shadow-sm border-0">
+            {% with featured_image=fallback_post.get_featured_image %}
+            {% if featured_image %}
+              <a href="{{ fallback_post.get_absolute_url }}">
+                <img src="{{ featured_image.url }}" class="card-img-top" loading="lazy" alt="{{ fallback_post.title }}">
+              </a>
+            {% endif %}
+            {% endwith %}
+            <div class="card-body d-flex flex-column">
+              <h6 class="card-title">{{ fallback_post.title }}</h6>
+              <p class="card-text small text-muted">
+                {% blocktranslate with published_date=fallback_post.published_date|date:"DATE_FORMAT" %}
+                  Published on {{ published_date }}
+                {% endblocktranslate %}
+              </p>
+              <a href="{{ fallback_post.get_absolute_url }}" class="btn btn-sm btn-outline-primary mt-auto">
+                {% translate "Read More" %}
+              </a>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <p class="text-center text-muted">{% translate "No suggestions available." %}</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block sidebar_left %}
+  <div class="sticky-top pt-5">
+    {% show_widget_zone 'blog-sidebar-left' %}
+  </div>
+{% endblock %}
+
+{% block sidebar_right %}
+  <div class="sticky-top pt-5">
+    {% show_widget_zone 'blog-sidebar-right' %}
+  </div>
+{% endblock %}

@@ -1,0 +1,19 @@
+<!-- File: core/templates/core/partials/_footer.html -->
+{# Loads the custom template tags for i18n and menus #}
+{% load i18n %}
+{% load menu_tags %} {# Aunque ya no lo uses directamente aquí, si lo usas en el partial del menú del pie, cargar aquí es seguro #}
+{% load custom_filters %}
+ 
+<footer class="bg-dark text-white text-center py-3"> {# padding vertical #}
+    {# Copyright notice. The 'year' variable is passed to the translation block. #}
+    <p class="mb-0">
+        {% now "Y" as year %}
+        {% if site_template.translated_footer_copyright_text %}
+            {{ site_template.translated_footer_copyright_text|replace_year:year }}
+        {% else %}
+            {% blocktranslate with year=year trimmed %}
+                &copy; {{ year }} TVTMente.
+            {% endblocktranslate %}
+        {% endif %}
+    </p>
+</footer>

@@ -1,0 +1,890 @@
+{% extends "core/base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% trans "Edit CV" %}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'accounts/css/profile_cv.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container py-4 profile-cv-page">
+
+    <!-- Hero / header -->
+    <div class="cv-hero card shadow-sm border-0 mb-4">
+        <div class="card-body p-4">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+                <div>
+                    <h1 class="h3 mb-2">{% trans "Edit Your CV" %}</h1>
+                    <p class="text-muted mb-0">
+                        {% trans "Structure your public academic and professional CV with education, experience, methods, links, and publications." %}
+                    </p>
+                </div>
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="{% url 'accounts:profile_edit' %}" class="btn btn-outline-secondary">
+                        {% trans "Basic profile" %}
+                    </a>
+                    <a href="{% url 'accounts:public_profile' username=request.user.username %}" class="btn btn-outline-primary">
+                        {% trans "View public profile" %}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick summary -->
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3 col-xl">
+            <div class="cv-stat card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="small text-muted">{% trans "Education" %}</div>
+                    <div class="fs-4 fw-bold">{{ education_formset.initial_form_count }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3 col-xl">
+            <div class="cv-stat card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="small text-muted">{% trans "Experience" %}</div>
+                    <div class="fs-4 fw-bold">{{ experience_formset.initial_form_count }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3 col-xl">
+            <div class="cv-stat card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="small text-muted">{% trans "Certifications" %}</div>
+                    <div class="fs-4 fw-bold">{{ certification_formset.initial_form_count }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3 col-xl">
+            <div class="cv-stat card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="small text-muted">{% trans "Languages" %}</div>
+                    <div class="fs-4 fw-bold">{{ language_formset.initial_form_count }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3 col-xl">
+            <div class="cv-stat card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="small text-muted">{% trans "Technical and Methodological Knowledge" %}</div>
+                    <div class="fs-4 fw-bold">{{ skill_formset.initial_form_count }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3 col-xl">
+            <div class="cv-stat card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="small text-muted">{% trans "Transversal Competencies" %}</div>
+                    <div class="fs-4 fw-bold">{{ competency_formset.initial_form_count }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3 col-xl">
+            <div class="cv-stat card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="small text-muted">{% trans "Professional Links" %}</div>
+                    <div class="fs-4 fw-bold">{{ link_formset.initial_form_count }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3 col-xl">
+            <div class="cv-stat card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="small text-muted">{% trans "External Publications" %}</div>
+                    <div class="fs-4 fw-bold">{{ external_publication_formset.initial_form_count }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form method="post" novalidate>
+        {% csrf_token %}
+
+        <!-- EDUCATION -->
+        <section class="cv-section card shadow-sm border-0 mb-4">
+            <div class="card-header bg-white border-0 pt-4 px-4">
+                <h2 class="h5 mb-1">{% trans "Education" %}</h2>
+                <p class="text-muted small mb-0">{% trans "Add your academic background, degrees, and institutions." %}</p>
+            </div>
+            <div class="card-body px-4 pb-4">
+                {{ education_formset.management_form }}
+
+                {% if education_formset.non_form_errors %}
+                    <div class="alert alert-danger">{{ education_formset.non_form_errors }}</div>
+                {% endif %}
+
+                <div class="cv-formset" data-formset-container="education">
+                    {% for form in education_formset %}
+                        <div class="cv-item card border mb-3">
+                            <div class="card-body">
+                                {% if form.non_field_errors %}
+                                    <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+                                {% endif %}
+
+                                {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
+
+                                <div class="row g-3">
+                                    {% for field in form.visible_fields %}
+                                        {% if field.name == "DELETE" %}
+                                            <div class="col-12">
+                                                <div class="form-check mt-2">
+                                                    {{ field }}
+                                                    <label class="form-check-label text-danger ms-2" for="{{ field.id_for_label }}">
+                                                        {% trans "Delete this item" %}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        {% elif field.name == "description" %}
+                                            <div class="col-12">
+                                                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                                {{ field }}
+                                                {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+                                                {% for error in field.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                            </div>
+                                        {% else %}
+                                            <div class="col-md-6">
+                                                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                                {{ field }}
+                                                {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+                                                {% for error in field.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <template id="empty-form-education">
+                    <div class="cv-item card border mb-3">
+                        <div class="card-body">
+                            {% for hidden in education_formset.empty_form.hidden_fields %}{{ hidden }}{% endfor %}
+                            <div class="row g-3">
+                                {% for field in education_formset.empty_form.visible_fields %}
+                                    {% if field.name == "DELETE" %}
+                                        <div class="col-12">
+                                            <div class="form-check mt-2">
+                                                {{ field }}
+                                                <label class="form-check-label text-danger ms-2" for="{{ field.id_for_label }}">
+                                                    {% trans "Delete this item" %}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    {% elif field.name == "description" %}
+                                        <div class="col-12">
+                                            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                            {{ field }}
+                                        </div>
+                                    {% else %}
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                            {{ field }}
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </template>
+
+                <button type="button" class="btn btn-outline-primary btn-sm js-add-form" data-prefix="education">
+                    + {% trans "Add another" %}
+                </button>
+            </div>
+        </section>
+
+        <!-- EXPERIENCE -->
+        <section class="cv-section card shadow-sm border-0 mb-4">
+            <div class="card-header bg-white border-0 pt-4 px-4">
+                <h2 class="h5 mb-1">{% trans "Experience" %}</h2>
+                <p class="text-muted small mb-0">{% trans "List positions, organizations, and dates relevant to your professional path." %}</p>
+            </div>
+            <div class="card-body px-4 pb-4">
+                {{ experience_formset.management_form }}
+
+                {% if experience_formset.non_form_errors %}
+                    <div class="alert alert-danger">{{ experience_formset.non_form_errors }}</div>
+                {% endif %}
+
+                <div class="cv-formset" data-formset-container="experience">
+                    {% for form in experience_formset %}
+                        <div class="cv-item card border mb-3">
+                            <div class="card-body">
+                                {% if form.non_field_errors %}
+                                    <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+                                {% endif %}
+
+                                {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
+
+                                <div class="row g-3">
+                                    {% for field in form.visible_fields %}
+                                        {% if field.name == "DELETE" %}
+                                            <div class="col-12">
+                                                <div class="form-check mt-2">
+                                                    {{ field }}
+                                                    <label class="form-check-label text-danger ms-2" for="{{ field.id_for_label }}">
+                                                        {% trans "Delete this item" %}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        {% elif field.name == "description" %}
+                                            <div class="col-12">
+                                                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                                {{ field }}
+                                                {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+                                                {% for error in field.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                            </div>
+                                        {% else %}
+                                            <div class="col-md-6">
+                                                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                                {{ field }}
+                                                {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+                                                {% for error in field.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <template id="empty-form-experience">
+                    <div class="cv-item card border mb-3">
+                        <div class="card-body">
+                            {% for hidden in experience_formset.empty_form.hidden_fields %}{{ hidden }}{% endfor %}
+                            <div class="row g-3">
+                                {% for field in experience_formset.empty_form.visible_fields %}
+                                    {% if field.name == "DELETE" %}
+                                        <div class="col-12">
+                                            <div class="form-check mt-2">
+                                                {{ field }}
+                                                <label class="form-check-label text-danger ms-2" for="{{ field.id_for_label }}">
+                                                    {% trans "Delete this item" %}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    {% elif field.name == "description" %}
+                                        <div class="col-12">
+                                            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                            {{ field }}
+                                        </div>
+                                    {% else %}
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                            {{ field }}
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </template>
+
+                <button type="button" class="btn btn-outline-primary btn-sm js-add-form" data-prefix="experience">
+                    + {% trans "Add another" %}
+                </button>
+            </div>
+        </section>
+
+        <!-- CERTIFICATIONS -->
+        <section class="cv-section card shadow-sm border-0 mb-4">
+            <div class="card-header bg-white border-0 pt-4 px-4">
+                <h2 class="h5 mb-1">{% trans "Certifications" %}</h2>
+                <p class="text-muted small mb-0">{% trans "Add certifications, issuing institutions, and credential links." %}</p>
+            </div>
+            <div class="card-body px-4 pb-4">
+                {{ certification_formset.management_form }}
+
+                {% if certification_formset.non_form_errors %}
+                    <div class="alert alert-danger">{{ certification_formset.non_form_errors }}</div>
+                {% endif %}
+
+                <div class="cv-formset" data-formset-container="certifications">
+                    {% for form in certification_formset %}
+                        <div class="cv-item card border mb-3">
+                            <div class="card-body">
+                                {% if form.non_field_errors %}
+                                    <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+                                {% endif %}
+
+                                {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
+
+                                <div class="row g-3">
+                                    {% for field in form.visible_fields %}
+                                        {% if field.name == "DELETE" %}
+                                            <div class="col-12">
+                                                <div class="form-check mt-2">
+                                                    {{ field }}
+                                                    <label class="form-check-label text-danger ms-2" for="{{ field.id_for_label }}">
+                                                        {% trans "Delete this item" %}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        {% elif field.name == "description" %}
+                                            <div class="col-12">
+                                                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                                {{ field }}
+                                                {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+                                                {% for error in field.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                            </div>
+                                        {% else %}
+                                            <div class="col-md-6">
+                                                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                                {{ field }}
+                                                {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+                                                {% for error in field.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <template id="empty-form-certifications">
+                    <div class="cv-item card border mb-3">
+                        <div class="card-body">
+                            {% for hidden in certification_formset.empty_form.hidden_fields %}{{ hidden }}{% endfor %}
+                            <div class="row g-3">
+                                {% for field in certification_formset.empty_form.visible_fields %}
+                                    {% if field.name == "DELETE" %}
+                                        <div class="col-12">
+                                            <div class="form-check mt-2">
+                                                {{ field }}
+                                                <label class="form-check-label text-danger ms-2" for="{{ field.id_for_label }}">
+                                                    {% trans "Delete this item" %}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    {% elif field.name == "description" %}
+                                        <div class="col-12">
+                                            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                            {{ field }}
+                                        </div>
+                                    {% else %}
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                            {{ field }}
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </template>
+
+                <button type="button" class="btn btn-outline-primary btn-sm js-add-form" data-prefix="certifications">
+                    + {% trans "Add another" %}
+                </button>
+            </div>
+        </section>
+
+        <!-- LANGUAGES -->
+        <section class="cv-section card shadow-sm border-0 mb-4">
+            <div class="card-header bg-white border-0 pt-4 px-4">
+                <h2 class="h5 mb-1">{% trans "Languages" %}</h2>
+                <p class="text-muted small mb-0">{% trans "Specify languages and your level in each one." %}</p>
+            </div>
+            <div class="card-body px-4 pb-4">
+                {{ language_formset.management_form }}
+
+                {% if language_formset.non_form_errors %}
+                    <div class="alert alert-danger">{{ language_formset.non_form_errors }}</div>
+                {% endif %}
+
+                <div class="cv-formset" data-formset-container="languages">
+                    {% for form in language_formset %}
+                        <div class="cv-item card border mb-3">
+                            <div class="card-body">
+                                {% if form.non_field_errors %}
+                                    <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+                                {% endif %}
+
+                                {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
+
+                                <div class="row g-3">
+                                    {% for field in form.visible_fields %}
+                                        {% if field.name == "DELETE" %}
+                                            <div class="col-12">
+                                                <div class="form-check mt-2">
+                                                    {{ field }}
+                                                    <label class="form-check-label text-danger ms-2" for="{{ field.id_for_label }}">
+                                                        {% trans "Delete this item" %}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        {% else %}
+                                            <div class="col-md-6">
+                                                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                                {{ field }}
+                                                {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+                                                {% for error in field.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <template id="empty-form-languages">
+                    <div class="cv-item card border mb-3">
+                        <div class="card-body">
+                            {% for hidden in language_formset.empty_form.hidden_fields %}{{ hidden }}{% endfor %}
+                            <div class="row g-3">
+                                {% for field in language_formset.empty_form.visible_fields %}
+                                    {% if field.name == "DELETE" %}
+                                        <div class="col-12">
+                                            <div class="form-check mt-2">
+                                                {{ field }}
+                                                <label class="form-check-label text-danger ms-2" for="{{ field.id_for_label }}">
+                                                    {% trans "Delete this item" %}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                            {{ field }}
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </template>
+
+                <button type="button" class="btn btn-outline-primary btn-sm js-add-form" data-prefix="languages">
+                    + {% trans "Add another" %}
+                </button>
+            </div>
+        </section>
+
+        <!-- SKILLS -->
+        <section class="cv-section card shadow-sm border-0 mb-4">
+            <div class="card-header bg-white border-0 pt-4 px-4">
+                <h2 class="h5 mb-1">{% trans "Technical and Methodological Knowledge" %}</h2>
+                <p class="text-muted small mb-0">{% trans "Document tools, methods, platforms, or technical areas that support your research and professional practice." %}</p>
+            </div>
+            <div class="card-body px-4 pb-4">
+                {{ skill_formset.management_form }}
+
+                {% if skill_formset.non_form_errors %}
+                    <div class="alert alert-danger">{{ skill_formset.non_form_errors }}</div>
+                {% endif %}
+
+                <div class="cv-formset" data-formset-container="skills">
+                    {% for form in skill_formset %}
+                        <div class="cv-item card border mb-3">
+                            <div class="card-body">
+                                {% if form.non_field_errors %}
+                                    <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+                                {% endif %}
+
+                                {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
+
+                                <div class="row g-3">
+                                    {% for field in form.visible_fields %}
+                                        {% if field.name == "DELETE" %}
+                                            <div class="col-12">
+                                                <div class="form-check mt-2">
+                                                    {{ field }}
+                                                    <label class="form-check-label text-danger ms-2" for="{{ field.id_for_label }}">
+                                                        {% trans "Delete this item" %}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        {% elif field.name == "description" %}
+                                            <div class="col-12">
+                                                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                                {{ field }}
+                                                {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+                                                {% for error in field.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                            </div>
+                                        {% else %}
+                                            <div class="col-md-6">
+                                                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                                {{ field }}
+                                                {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+                                                {% for error in field.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <template id="empty-form-skills">
+                    <div class="cv-item card border mb-3">
+                        <div class="card-body">
+                            {% for hidden in skill_formset.empty_form.hidden_fields %}{{ hidden }}{% endfor %}
+                            <div class="row g-3">
+                                {% for field in skill_formset.empty_form.visible_fields %}
+                                    {% if field.name == "DELETE" %}
+                                        <div class="col-12">
+                                            <div class="form-check mt-2">
+                                                {{ field }}
+                                                <label class="form-check-label text-danger ms-2" for="{{ field.id_for_label }}">
+                                                    {% trans "Delete this item" %}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    {% elif field.name == "description" %}
+                                        <div class="col-12">
+                                            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                            {{ field }}
+                                        </div>
+                                    {% else %}
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                            {{ field }}
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </template>
+
+                <button type="button" class="btn btn-outline-primary btn-sm js-add-form" data-prefix="skills">
+                    + {% trans "Add another" %}
+                </button>
+            </div>
+        </section>
+
+        <!-- COMPETENCIES -->
+        <section class="cv-section card shadow-sm border-0 mb-4">
+            <div class="card-header bg-white border-0 pt-4 px-4">
+                <h2 class="h5 mb-1">{% trans "Transversal Competencies" %}</h2>
+                <p class="text-muted small mb-0">{% trans "Highlight analytical, collaborative, and communication strengths that shape your way of working." %}</p>
+            </div>
+            <div class="card-body px-4 pb-4">
+                {{ competency_formset.management_form }}
+
+                {% if competency_formset.non_form_errors %}
+                    <div class="alert alert-danger">{{ competency_formset.non_form_errors }}</div>
+                {% endif %}
+
+                <div class="cv-formset" data-formset-container="competencies">
+                    {% for form in competency_formset %}
+                        <div class="cv-item card border mb-3">
+                            <div class="card-body">
+                                {% if form.non_field_errors %}
+                                    <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+                                {% endif %}
+
+                                {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
+
+                                <div class="row g-3">
+                                    {% for field in form.visible_fields %}
+                                        {% if field.name == "DELETE" %}
+                                            <div class="col-12">
+                                                <div class="form-check mt-2">
+                                                    {{ field }}
+                                                    <label class="form-check-label text-danger ms-2" for="{{ field.id_for_label }}">
+                                                        {% trans "Delete this item" %}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        {% elif field.name == "description" %}
+                                            <div class="col-12">
+                                                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                                {{ field }}
+                                                {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+                                                {% for error in field.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                            </div>
+                                        {% else %}
+                                            <div class="col-md-6">
+                                                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                                {{ field }}
+                                                {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+                                                {% for error in field.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <template id="empty-form-competencies">
+                    <div class="cv-item card border mb-3">
+                        <div class="card-body">
+                            {% for hidden in competency_formset.empty_form.hidden_fields %}{{ hidden }}{% endfor %}
+                            <div class="row g-3">
+                                {% for field in competency_formset.empty_form.visible_fields %}
+                                    {% if field.name == "DELETE" %}
+                                        <div class="col-12">
+                                            <div class="form-check mt-2">
+                                                {{ field }}
+                                                <label class="form-check-label text-danger ms-2" for="{{ field.id_for_label }}">
+                                                    {% trans "Delete this item" %}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    {% elif field.name == "description" %}
+                                        <div class="col-12">
+                                            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                            {{ field }}
+                                        </div>
+                                    {% else %}
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                            {{ field }}
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </template>
+
+                <button type="button" class="btn btn-outline-primary btn-sm js-add-form" data-prefix="competencies">
+                    + {% trans "Add another" %}
+                </button>
+            </div>
+        </section>
+
+        <!-- LINKS -->
+        <section class="cv-section card shadow-sm border-0 mb-4">
+            <div class="card-header bg-white border-0 pt-4 px-4">
+                <h2 class="h5 mb-1">{% trans "Academic and Professional Links" %}</h2>
+                <p class="text-muted small mb-0">{% trans "Add institutional pages, academic profiles, repositories, portfolios, or other relevant public references." %}</p>
+            </div>
+            <div class="card-body px-4 pb-4">
+                {{ link_formset.management_form }}
+
+                {% if link_formset.non_form_errors %}
+                    <div class="alert alert-danger">{{ link_formset.non_form_errors }}</div>
+                {% endif %}
+
+                <div class="cv-formset" data-formset-container="links">
+                    {% for form in link_formset %}
+                        <div class="cv-item card border mb-3">
+                            <div class="card-body">
+                                {% if form.non_field_errors %}
+                                    <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+                                {% endif %}
+
+                                {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
+
+                                <div class="row g-3">
+                                    {% for field in form.visible_fields %}
+                                        {% if field.name == "DELETE" %}
+                                            <div class="col-12">
+                                                <div class="form-check mt-2">
+                                                    {{ field }}
+                                                    <label class="form-check-label text-danger ms-2" for="{{ field.id_for_label }}">
+                                                        {% trans "Delete this item" %}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        {% else %}
+                                            <div class="col-md-6">
+                                                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                                {{ field }}
+                                                {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+                                                {% for error in field.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <template id="empty-form-links">
+                    <div class="cv-item card border mb-3">
+                        <div class="card-body">
+                            {% for hidden in link_formset.empty_form.hidden_fields %}{{ hidden }}{% endfor %}
+                            <div class="row g-3">
+                                {% for field in link_formset.empty_form.visible_fields %}
+                                    {% if field.name == "DELETE" %}
+                                        <div class="col-12">
+                                            <div class="form-check mt-2">
+                                                {{ field }}
+                                                <label class="form-check-label text-danger ms-2" for="{{ field.id_for_label }}">
+                                                    {% trans "Delete this item" %}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                            {{ field }}
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </template>
+
+                <button type="button" class="btn btn-outline-primary btn-sm js-add-form" data-prefix="links">
+                    + {% trans "Add another" %}
+                </button>
+            </div>
+        </section>
+
+        <!-- EXTERNAL PUBLICATIONS -->
+        <section class="cv-section card shadow-sm border-0 mb-4">
+            <div class="card-header bg-white border-0 pt-4 px-4">
+                <h2 class="h5 mb-1">{% trans "External Publications" %}</h2>
+                <p class="text-muted small mb-0">{% trans "Register books, articles, chapters, essays, or other publications published outside TVTente." %}</p>
+            </div>
+            <div class="card-body px-4 pb-4">
+                {{ external_publication_formset.management_form }}
+
+                {% if external_publication_formset.non_form_errors %}
+                    <div class="alert alert-danger">{{ external_publication_formset.non_form_errors }}</div>
+                {% endif %}
+
+                <div class="cv-formset" data-formset-container="external_publications">
+                    {% for form in external_publication_formset %}
+                        <div class="cv-item card border mb-3">
+                            <div class="card-body">
+                                {% if form.non_field_errors %}
+                                    <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+                                {% endif %}
+
+                                {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
+
+                                <div class="row g-3">
+                                    {% for field in form.visible_fields %}
+                                        {% if field.name == "DELETE" %}
+                                            <div class="col-12">
+                                                <div class="form-check mt-2">
+                                                    {{ field }}
+                                                    <label class="form-check-label text-danger ms-2" for="{{ field.id_for_label }}">
+                                                        {% trans "Delete this item" %}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        {% elif field.name == "description" %}
+                                            <div class="col-12">
+                                                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                                {{ field }}
+                                                {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+                                                {% for error in field.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                            </div>
+                                        {% else %}
+                                            <div class="col-md-6">
+                                                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                                {{ field }}
+                                                {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+                                                {% for error in field.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <template id="empty-form-external_publications">
+                    <div class="cv-item card border mb-3">
+                        <div class="card-body">
+                            {% for hidden in external_publication_formset.empty_form.hidden_fields %}{{ hidden }}{% endfor %}
+                            <div class="row g-3">
+                                {% for field in external_publication_formset.empty_form.visible_fields %}
+                                    {% if field.name == "DELETE" %}
+                                        <div class="col-12">
+                                            <div class="form-check mt-2">
+                                                {{ field }}
+                                                <label class="form-check-label text-danger ms-2" for="{{ field.id_for_label }}">
+                                                    {% trans "Delete this item" %}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    {% elif field.name == "description" %}
+                                        <div class="col-12">
+                                            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                            {{ field }}
+                                        </div>
+                                    {% else %}
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                            {{ field }}
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </template>
+
+                <button type="button" class="btn btn-outline-primary btn-sm js-add-form" data-prefix="external_publications">
+                    + {% trans "Add another" %}
+                </button>
+            </div>
+        </section>
+
+        <!-- Save bar -->
+        <div class="cv-save-bar card border-0 shadow-sm mb-4">
+            <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+                <div>
+                    <h3 class="h6 mb-1">{% trans "Ready to save your CV?" %}</h3>
+                    <p class="text-muted small mb-0">{% trans "Review the information and save your changes." %}</p>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg">
+                    {% trans "Save CV" %}
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    function updateFormIndexes(fragment, prefix, index) {
+        const regex = new RegExp(prefix + "-__prefix__", "g");
+        return fragment.replace(regex, prefix + "-" + index);
+    }
+
+    document.querySelectorAll(".js-add-form").forEach(function (button) {
+        button.addEventListener("click", function () {
+            const prefix = button.dataset.prefix;
+            const totalFormsInput = document.querySelector("#id_" + prefix + "-TOTAL_FORMS");
+            const container = document.querySelector('[data-formset-container="' + prefix + '"]');
+            const template = document.querySelector("#empty-form-" + prefix);
+
+            if (!totalFormsInput || !container || !template) {
+                console.warn("Missing formset pieces for:", prefix);
+                return;
+            }
+
+            const currentIndex = parseInt(totalFormsInput.value, 10);
+            const newHtml = updateFormIndexes(template.innerHTML, prefix, currentIndex);
+
+            container.insertAdjacentHTML("beforeend", newHtml);
+            totalFormsInput.value = currentIndex + 1;
+
+            const addedForms = container.querySelectorAll(".cv-item");
+            const newForm = addedForms[addedForms.length - 1];
+
+            if (newForm) {
+                newForm.scrollIntoView({ behavior: "smooth", block: "center" });
+
+                const firstInput = newForm.querySelector("input:not([type='hidden']), select, textarea");
+                if (firstInput) {
+                    firstInput.focus({ preventScroll: true });
+                }
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,39 @@
+<!-- File: core/templates/core/partials/_language_selector_bar.html -->
+{% load i18n %}
+{% load url_utils %}
+{% get_available_languages as available_languages %}
+
+{% if compact %}
+    <div class="topbar-language-switcher d-flex align-items-center gap-1">
+{% else %}
+    <div class="language-bar bg-light py-2 shadow-sm">
+        <div class="container d-flex justify-content-end align-items-center">
+            <div class="btn-group" role="group" aria-label="{% translate 'Language selector' %}">
+{% endif %}
+
+    {% for language in available_languages %}
+        {% get_translated_url translatable_object language.0 as next_url %}
+        <form action="{% url 'set_language' %}" method="post" class="{% if compact %}m-0{% else %}d-inline-block{% if not forloop.last %} me-2{% endif %}{% endif %}">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next_url }}">
+            <button
+                type="submit"
+                name="language"
+                value="{{ language.0 }}"
+                title="{{ language.1 }}"
+                aria-label="{% blocktranslate with language_name=language.1 %}Switch to {{ language_name }}{% endblocktranslate %}"
+                class="btn btn-sm {% if compact %}{% if LANGUAGE_CODE == language.0 %}btn-dark active{% else %}btn-outline-dark{% endif %}{% else %}{% if LANGUAGE_CODE == language.0 %}btn-primary{% else %}btn-outline-secondary{% endif %}{% endif %}"
+            >
+                {% if not compact %}<i class="fas fa-globe flag-icon-fa"></i>{% endif %}
+                {{ language.0|upper }}
+            </button>
+        </form>
+    {% endfor %}
+
+{% if compact %}
+    </div>
+{% else %}
+            </div>
+        </div>
+    </div>
+{% endif %}

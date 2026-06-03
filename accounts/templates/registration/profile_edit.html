@@ -1,0 +1,378 @@
+<!-- File: accounts/templates/registration/profile_edit.html -->
+{% extends 'core/base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% translate "Edit Profile" %}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'accounts/css/profile_cv.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container my-5 profile-cv-page">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <div class="cv-hero card shadow-sm border-0 mb-4">
+                <div class="card-body p-4">
+                    <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+                        <div>
+                            <h1 class="display-5 mb-1">{% translate "Edit Your Profile" %}</h1>
+                            <p class="text-muted mb-0">
+                                {% if can_edit_professional_profile %}
+                                    {% translate "Manage your public and professional profile information." %}
+                                {% else %}
+                                    {% translate "Manage your basic account profile information." %}
+                                {% endif %}
+                            </p>
+                        </div>
+
+                        <div class="d-flex flex-wrap gap-2">
+                            {% if can_edit_cv %}
+                                <a href="{% url 'accounts:profile_cv_edit' %}" class="btn btn-outline-primary">
+                                    <i class="fas fa-id-card me-1"></i>
+                                    {% translate "Edit CV" %}
+                                </a>
+                            {% endif %}
+
+                            {% if can_list_public_profile %}
+                                <a href="{% url 'accounts:public_profile' username=request.user.username %}" class="btn btn-outline-secondary">
+                                    <i class="fas fa-eye me-1"></i>
+                                    {% translate "View public profile" %}
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <!-- USER DETAILS CARD -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">{% translate "User Information" %}</h5>
+                    </div>
+                    <div class="card-body">
+                        {% for field in user_form %}
+                            <div class="mb-3">
+                                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                                {{ field }}
+
+                                {% if field.help_text %}
+                                    <div class="form-text">{{ field.help_text|safe }}</div>
+                                {% endif %}
+
+                                {% if field.errors %}
+                                    <div class="invalid-feedback d-block">{{ field.errors|striptags }}</div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- PROFILE DETAILS CARD -->
+                <div class="card shadow-sm">
+                    <div class="card-header">
+                        <h5 class="mb-0">{% translate "Profile Details" %}</h5>
+                    </div>
+
+                    <div class="card-body">
+
+                        {# DISPLAY NAME #}
+                        <div class="mb-3">
+                            <label for="{{ profile_form.display_name.id_for_label }}" class="form-label">
+                                {{ profile_form.display_name.label }}
+                            </label>
+                            {{ profile_form.display_name }}
+
+                            {% if profile_form.display_name.help_text %}
+                                <div class="form-text">{{ profile_form.display_name.help_text|safe }}</div>
+                            {% endif %}
+
+                            {% if profile_form.display_name.errors %}
+                                <div class="invalid-feedback d-block">{{ profile_form.display_name.errors|striptags }}</div>
+                            {% endif %}
+                        </div>
+
+                        {# PROFESSIONAL FIELDS ONLY FOR USERS WITH PERMISSION #}
+                        {% if can_edit_professional_profile %}
+
+                            <div class="mb-3">
+                                <label for="{{ profile_form.professional_title.id_for_label }}" class="form-label">
+                                    {{ profile_form.professional_title.label }}
+                                </label>
+                                {{ profile_form.professional_title }}
+
+                                {% if profile_form.professional_title.help_text %}
+                                    <div class="form-text">{{ profile_form.professional_title.help_text|safe }}</div>
+                                {% endif %}
+
+                                {% if profile_form.professional_title.errors %}
+                                    <div class="invalid-feedback d-block">{{ profile_form.professional_title.errors|striptags }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="{{ profile_form.headline.id_for_label }}" class="form-label">
+                                    {{ profile_form.headline.label }}
+                                </label>
+                                {{ profile_form.headline }}
+
+                                {% if profile_form.headline.help_text %}
+                                    <div class="form-text">{{ profile_form.headline.help_text|safe }}</div>
+                                {% endif %}
+
+                                {% if profile_form.headline.errors %}
+                                    <div class="invalid-feedback d-block">{{ profile_form.headline.errors|striptags }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="{{ profile_form.institution.id_for_label }}" class="form-label">
+                                    {{ profile_form.institution.label }}
+                                </label>
+                                {{ profile_form.institution }}
+
+                                {% if profile_form.institution.help_text %}
+                                    <div class="form-text">{{ profile_form.institution.help_text|safe }}</div>
+                                {% endif %}
+
+                                {% if profile_form.institution.errors %}
+                                    <div class="invalid-feedback d-block">{{ profile_form.institution.errors|striptags }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ profile_form.country.id_for_label }}" class="form-label">
+                                        {{ profile_form.country.label }}
+                                    </label>
+                                    {{ profile_form.country }}
+
+                                    {% if profile_form.country.errors %}
+                                        <div class="invalid-feedback d-block">{{ profile_form.country.errors|striptags }}</div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ profile_form.city.id_for_label }}" class="form-label">
+                                        {{ profile_form.city.label }}
+                                    </label>
+                                    {{ profile_form.city }}
+
+                                    {% if profile_form.city.errors %}
+                                        <div class="invalid-feedback d-block">{{ profile_form.city.errors|striptags }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="{{ profile_form.orcid.id_for_label }}" class="form-label">
+                                    {{ profile_form.orcid.label }}
+                                </label>
+                                {{ profile_form.orcid }}
+
+                                {% if profile_form.orcid.help_text %}
+                                    <div class="form-text">{{ profile_form.orcid.help_text|safe }}</div>
+                                {% endif %}
+
+                                {% if profile_form.orcid.errors %}
+                                    <div class="invalid-feedback d-block">{{ profile_form.orcid.errors|striptags }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="{{ profile_form.areas_of_interest.id_for_label }}" class="form-label">
+                                    {{ profile_form.areas_of_interest.label }}
+                                </label>
+                                {{ profile_form.areas_of_interest }}
+
+                                {% if profile_form.areas_of_interest.help_text %}
+                                    <div class="form-text">{{ profile_form.areas_of_interest.help_text|safe }}</div>
+                                {% endif %}
+
+                                {% if profile_form.areas_of_interest.errors %}
+                                    <div class="invalid-feedback d-block">{{ profile_form.areas_of_interest.errors|striptags }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3 form-check">
+                                    {{ profile_form.is_researcher }}
+                                    <label class="form-check-label" for="{{ profile_form.is_researcher.id_for_label }}">
+                                        {{ profile_form.is_researcher.label }}
+                                    </label>
+
+                                    {% if profile_form.is_researcher.help_text %}
+                                        <div class="form-text">{{ profile_form.is_researcher.help_text|safe }}</div>
+                                    {% endif %}
+
+                                    {% if profile_form.is_researcher.errors %}
+                                        <div class="invalid-feedback d-block">{{ profile_form.is_researcher.errors|striptags }}</div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="col-md-6 mb-3 form-check">
+                                    {{ profile_form.is_contributor }}
+                                    <label class="form-check-label" for="{{ profile_form.is_contributor.id_for_label }}">
+                                        {{ profile_form.is_contributor.label }}
+                                    </label>
+
+                                    {% if profile_form.is_contributor.help_text %}
+                                        <div class="form-text">{{ profile_form.is_contributor.help_text|safe }}</div>
+                                    {% endif %}
+
+                                    {% if profile_form.is_contributor.errors %}
+                                        <div class="invalid-feedback d-block">{{ profile_form.is_contributor.errors|striptags }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                        {% endif %}
+
+                        {# BIO #}
+                        <div class="mb-3">
+                            <label for="{{ profile_form.bio.id_for_label }}" class="form-label">
+                                {{ profile_form.bio.label }}
+                            </label>
+                            {{ profile_form.bio }}
+
+                            {% if profile_form.bio.help_text %}
+                                <div class="form-text">{{ profile_form.bio.help_text|safe }}</div>
+                            {% endif %}
+
+                            {% if profile_form.bio.errors %}
+                                <div class="invalid-feedback d-block">{{ profile_form.bio.errors|striptags }}</div>
+                            {% endif %}
+                        </div>
+
+                        {# LOCATION #}
+                        <div class="mb-3">
+                            <label for="{{ profile_form.location.id_for_label }}" class="form-label">
+                                {{ profile_form.location.label }}
+                            </label>
+                            {{ profile_form.location }}
+
+                            {% if profile_form.location.help_text %}
+                                <div class="form-text">{{ profile_form.location.help_text|safe }}</div>
+                            {% endif %}
+
+                            {% if profile_form.location.errors %}
+                                <div class="invalid-feedback d-block">{{ profile_form.location.errors|striptags }}</div>
+                            {% endif %}
+                        </div>
+
+                        {# WEBSITE URL #}
+                        <div class="mb-3">
+                            <label for="{{ profile_form.website_url.id_for_label }}" class="form-label">
+                                {{ profile_form.website_url.label }}
+                            </label>
+                            {{ profile_form.website_url }}
+
+                            {% if profile_form.website_url.help_text %}
+                                <div class="form-text">{{ profile_form.website_url.help_text|safe }}</div>
+                            {% endif %}
+
+                            {% if profile_form.website_url.errors %}
+                                <div class="invalid-feedback d-block">{{ profile_form.website_url.errors|striptags }}</div>
+                            {% endif %}
+                        </div>
+
+                        {# AVATAR FIELD SECTION #}
+                        <div class="mb-3">
+                            <label for="{{ profile_form.avatar.id_for_label }}" class="form-label">
+                                {{ profile_form.avatar.label }}
+                            </label>
+
+                            <div class="mb-2">
+                                <img
+                                    src="{{ profile_form.instance.get_avatar_url }}"
+                                    alt="{% translate 'Current Avatar' %}"
+                                    class="img-thumbnail"
+                                    style="max-width: 150px; height: auto;"
+                                >
+                            </div>
+
+                            {{ profile_form.avatar }}
+
+                            {% if profile_form.avatar.help_text %}
+                                <div class="form-text">{{ profile_form.avatar.help_text|safe }}</div>
+                            {% endif %}
+
+                            {% if profile_form.avatar.errors %}
+                                <div class="invalid-feedback d-block">{{ profile_form.avatar.errors|striptags }}</div>
+                            {% endif %}
+                        </div>
+
+                        {# DEFAULT AVATAR CHOICE #}
+                        {% if profile_form.default_avatar_choice %}
+                            <div class="mb-3">
+                                <label for="{{ profile_form.default_avatar_choice.id_for_label }}" class="form-label">
+                                    {{ profile_form.default_avatar_choice.label }}
+                                </label>
+                                {{ profile_form.default_avatar_choice }}
+
+                                {% if profile_form.default_avatar_choice.help_text %}
+                                    <div class="form-text">{{ profile_form.default_avatar_choice.help_text|safe }}</div>
+                                {% endif %}
+
+                                {% if profile_form.default_avatar_choice.errors %}
+                                    <div class="invalid-feedback d-block">{{ profile_form.default_avatar_choice.errors|striptags }}</div>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+
+                        {# USE DEFAULT AVATAR #}
+                        {% if profile_form.use_default_avatar %}
+                            <div class="mb-3 form-check">
+                                {{ profile_form.use_default_avatar }}
+                                <label class="form-check-label" for="{{ profile_form.use_default_avatar.id_for_label }}">
+                                    {{ profile_form.use_default_avatar.label }}
+                                </label>
+
+                                {% if profile_form.use_default_avatar.help_text %}
+                                    <div class="form-text">{{ profile_form.use_default_avatar.help_text|safe }}</div>
+                                {% endif %}
+
+                                {% if profile_form.use_default_avatar.errors %}
+                                    <div class="invalid-feedback d-block">{{ profile_form.use_default_avatar.errors|striptags }}</div>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+
+                        {# PUBLIC LISTING ONLY FOR USERS WITH PERMISSION #}
+                        {% if can_list_public_profile and profile_form.is_listed_publicly %}
+                            <div class="mb-3 form-check">
+                                {{ profile_form.is_listed_publicly }}
+                                <label class="form-check-label" for="{{ profile_form.is_listed_publicly.id_for_label }}">
+                                    {{ profile_form.is_listed_publicly.label }}
+                                </label>
+
+                                {% if profile_form.is_listed_publicly.help_text %}
+                                    <div class="form-text">{{ profile_form.is_listed_publicly.help_text|safe }}</div>
+                                {% endif %}
+
+                                {% if profile_form.is_listed_publicly.errors %}
+                                    <div class="invalid-feedback d-block">{{ profile_form.is_listed_publicly.errors|striptags }}</div>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+
+                    </div>
+                </div>
+
+                <!-- SUBMIT BUTTON -->
+                <div class="d-grid mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        {% translate "Save Changes" %}
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

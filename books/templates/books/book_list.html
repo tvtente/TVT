@@ -1,0 +1,166 @@
+{% extends "core/base.html" %}
+{% load i18n %}
+
+{% block seo_title %}{{ meta_title|default:title }}{% endblock %}
+{% block seo_description %}{{ meta_description }}{% endblock %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .book-card {
+        background: var(--tavata-card-box-bg);
+        border: 1px solid var(--tavata-card-box-border);
+        border-radius: 1rem;
+    }
+
+    .book-card-cover {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+        border-bottom: 1px solid var(--tavata-card-box-border);
+    }
+
+    .book-category-chip {
+        background: var(--tavata-yellow);
+        color: #212529;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <header class="mb-5">
+        <h1 class="display-5 fw-semibold mb-2">{% translate "Books" %}</h1>
+        <p class="text-muted mb-0">
+            {% translate "Books, editorial works, and stable publications published by TVTente." %}
+        </p>
+    </header>
+
+    {% if books %}
+        <div class="row g-4">
+            {% for book in books %}
+                <div class="col-md-6 col-xl-4">
+                    <article class="card h-100 shadow-sm book-card">
+                        {% with social_image=book.get_social_image %}
+                            {% if social_image %}
+                                <img
+                                    src="{{ social_image.url }}"
+                                    class="book-card-cover"
+                                    alt="{{ book.title }}"
+                                >
+                            {% else %}
+                                {% with cover_image=book.get_cover_image %}
+                                    {% if cover_image %}
+                                        <img
+                                            src="{{ cover_image.url }}"
+                                            class="book-card-cover"
+                                            alt="{{ book.title }}"
+                                        >
+                                    {% endif %}
+                                {% endwith %}
+                            {% endif %}
+                        {% endwith %}
+
+                        <div class="card-body d-flex flex-column">
+                            <h2 class="h4 mb-2">
+                                <a href="{{ book.get_absolute_url }}" class="text-decoration-none text-dark">
+                                    {{ book.title }}
+                                </a>
+                            </h2>
+
+                            {% if book.subtitle %}
+                                <p class="text-muted mb-3">{{ book.subtitle }}</p>
+                            {% endif %}
+
+                            {% if book.get_authors_display %}
+                                <p class="small text-muted mb-2">
+                                    <i class="fas fa-user-pen me-1"></i>
+                                    {{ book.get_authors_display }}
+                                </p>
+                            {% endif %}
+
+                            {% if book.excerpt %}
+                                <div class="text-muted mb-3">
+                                    {{ book.excerpt|striptags|truncatewords:32|safe }}
+                                </div>
+                            {% endif %}
+
+                            {% if book.categories.exists %}
+                                <div class="mb-3">
+                                    {% for category in book.categories.all %}
+                                        <span class="badge me-1 mb-1 book-category-chip">{{ category.name }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+
+                            {% if book.price and book.requires_purchase %}
+                                <p class="fw-semibold mb-3">{{ book.price }} {{ book.currency }}</p>
+                            {% endif %}
+
+                            {% if book.requires_purchase and not book.is_available_for_purchase %}
+                                <div class="alert alert-warning border-0 py-2 px-3 small mb-3">
+                                    <strong class="d-block">{% translate "Coming soon" %}</strong>
+                                    {% if book.available_from %}
+                                        {% blocktranslate with available_date=book.available_from|date:"DATE_FORMAT" %}
+                                            Available from {{ available_date }}.
+                                        {% endblocktranslate %}
+                                    {% else %}
+                                        {% translate "Available soon." %}
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+
+                            <div class="mt-auto">
+                                <div class="d-flex flex-wrap gap-2">
+                                    <a href="{{ book.get_absolute_url }}" class="btn btn-outline-dark">
+                                        {% translate "View book" %}
+                                    </a>
+                                    {% if book.requires_purchase and book.is_available_for_purchase %}
+                                        <form action="{% url 'books:cart_add' book_id=book.id %}" method="post" class="m-0">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                                            <button type="submit" class="btn btn-dark">
+                                                {% translate "Add to cart" %}
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            {% endfor %}
+        </div>
+
+        {% if page_obj.has_other_pages %}
+            <nav class="mt-5" aria-label="{% translate 'Books pagination' %}">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+                                {% translate "Previous" %}
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    <li class="page-item active">
+                        <span class="page-link">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+                    </li>
+
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+                                {% translate "Next" %}
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% endif %}
+    {% else %}
+        <div class="alert alert-info">
+            {% translate "There are no published books yet." %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

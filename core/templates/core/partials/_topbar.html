@@ -1,0 +1,75 @@
+<!-- File: core/templates/core/partials/_topbar.html -->
+{% load static %}
+{% load i18n %}
+{% load settings_tags %}
+{% load menu_tags %}
+
+{% get_active_site_template as site_template %}
+
+<div class="top-bar bg-tavata-primary py-2 shadow-sm">
+    <div class="container d-flex justify-content-between align-items-center gap-3">
+
+        <!-- Left Side: Logo and Slogan -->
+        <div class="brand-identity me-auto d-flex align-items-center">
+            <a href="{% url 'home' %}" class="text-decoration-none d-flex align-items-center">
+                {% if site_template.site_logo and site_template.site_logo.url %}
+                    <img
+                        src="{{ site_template.site_logo.url }}"
+                        alt="{% translate 'Site Logo' %}"
+                        class="img-fluid me-2"
+                        style="height: var(--tavata-logo-height); object-fit: contain;"
+                    >
+                {% else %}
+                    <span class="me-2" style="font-size: 2rem; line-height: 1;">🐝</span>
+                {% endif %}
+
+                <div>
+                    {% if site_template.translated_site_slogan %}
+                        <span class="d-block text-dark fw-normal topbar-slogan">
+                            {{ site_template.translated_site_slogan }}
+                        </span>
+                    {% endif %}
+                </div>
+            </a>
+        </div>
+
+        <!-- Center: Banner/Ad (optional) -->
+        <div class="top-bar-banner mx-lg-auto me-3 me-lg-0">
+            {% if site_template.top_bar_banner_image and site_template.top_bar_banner_image.url %}
+                {% if site_template.top_bar_banner_link %}
+                    <a href="{{ site_template.top_bar_banner_link }}" target="_blank" rel="noopener noreferrer">
+                        <img
+                            src="{{ site_template.top_bar_banner_image.url }}"
+                            alt="{% translate 'Advertisement' %}"
+                            class="img-fluid"
+                            style="max-height: var(--tavata-banner-max-height); object-fit: contain;"
+                        >
+                    </a>
+                {% else %}
+                    <img
+                        src="{{ site_template.top_bar_banner_image.url }}"
+                        alt="{% translate 'Advertisement' %}"
+                        class="img-fluid"
+                        style="max-height: var(--tavata-banner-max-height); object-fit: contain;"
+                    >
+                {% endif %}
+            {% endif %}
+        </div>
+
+        <!-- Right Side: Social Media Links + Language Switcher -->
+        <div class="topbar-actions ms-auto d-flex align-items-center gap-2">
+
+            <!-- Social Media Links -->
+            <div class="social-links d-flex align-items-center">
+                {% show_social_links_menu %}
+            </div>
+
+            <!-- Language Switcher -->
+            {% include 'core/partials/_language_selector_bar.html' with compact=True %}
+
+        </div>
+
+    </div>
+</div>
+
+<hr class="my-0">

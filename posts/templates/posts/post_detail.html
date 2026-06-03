@@ -1,0 +1,1293 @@
+{% extends 'core/base.html' %}
+{% load static i18n mptt_tags widget_tags custom_filters %}
+
+{# --- SEO --- #}
+{% block seo_title %}{{ post.meta_title|default:post.title }}{% endblock %}
+{% block seo_description %}{{ post.summary|default:post.meta_description|default:"" }}{% endblock %}
+{% block og_title %}{{ post.meta_title|default:post.title }}{% endblock %}
+{% block og_description %}{{ post.summary|default:post.meta_description|default:"" }}{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block twitter_card %}{% if post.get_social_image %}summary_large_image{% else %}summary{% endif %}{% endblock %}
+{% block twitter_title %}{{ post.meta_title|default:post.title }}{% endblock %}
+{% block twitter_description %}{{ post.summary|default:post.meta_description|default:"" }}{% endblock %}
+{% block og_image %}
+  {% with featured_image=post.get_featured_image %}
+  {% if featured_image %}
+    <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ featured_image.url }}">
+  {% endif %}
+  {% endwith %}
+{% endblock %}
+{% block twitter_image %}
+  {% with social_image=post.get_social_image %}
+  {% if social_image %}
+    <meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{{ social_image.url }}">
+  {% endif %}
+  {% endwith %}
+{% endblock %}
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block extra_css %}
+  {{ block.super }}
+  <style>
+    @media (min-width: 576px) {
+      .post-summary-social-image {
+        width: 140px !important;
+      }
+    }
+
+    .comment-body-card {
+      background: linear-gradient(180deg, rgba(248, 249, 250, 0.96), rgba(255, 255, 255, 0.98));
+      border: 1px solid rgba(33, 37, 41, 0.08);
+      border-radius: 1rem;
+      padding: 0.95rem 1rem;
+      box-shadow: 0 0.5rem 1rem rgba(33, 37, 41, 0.04);
+    }
+
+    .comment-translation-meta {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin-bottom: 0.65rem;
+    }
+
+    .comment-translation-meta .badge {
+      font-weight: 500;
+      letter-spacing: 0.01em;
+    }
+
+    .comment-body-card p:last-child {
+      margin-bottom: 0;
+    }
+
+    .comment-translation-credit {
+      font-size: 0.82rem;
+      color: rgba(33, 37, 41, 0.62);
+    }
+
+    .comment-suggest-error,
+    .comment-translation-error {
+      border-radius: 0.75rem;
+      padding: 0.55rem 0.7rem;
+      background: rgba(248, 249, 250, 0.9);
+      border: 1px solid rgba(33, 37, 41, 0.08);
+    }
+
+    .post-points-card {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 249, 250, 0.96));
+      border: 1px solid rgba(33, 37, 41, 0.08);
+      border-radius: 1.25rem;
+      box-shadow: 0 1rem 2rem rgba(33, 37, 41, 0.06);
+    }
+
+    .post-author-strip {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.1rem;
+      margin-bottom: 0.9rem;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 249, 250, 0.96));
+      border: 1px solid rgba(33, 37, 41, 0.08);
+      border-radius: 1rem;
+      box-shadow: 0 0.75rem 1.5rem rgba(33, 37, 41, 0.05);
+    }
+
+    .post-author-strip__avatar {
+      width: 4rem;
+      height: 4rem;
+      border-radius: 1rem;
+      object-fit: cover;
+      flex-shrink: 0;
+      box-shadow: 0 0.5rem 1rem rgba(33, 37, 41, 0.08);
+    }
+
+    .post-author-strip__name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--tavata-dark);
+      text-decoration: none;
+    }
+
+    .post-author-strip__meta {
+      color: rgba(33, 37, 41, 0.62);
+      font-size: 0.92rem;
+    }
+
+    .post-author-strip__stats {
+      color: rgba(33, 37, 41, 0.56);
+      font-size: 0.83rem;
+      margin-top: 0.25rem;
+    }
+
+    .post-author-strip__actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      margin-left: auto;
+    }
+
+    .author-follow-feedback {
+      font-size: 0.83rem;
+      color: rgba(33, 37, 41, 0.62);
+    }
+
+    .post-points-shell {
+      max-width: 44rem;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .post-points-kicker {
+      font-size: 0.95rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(33, 37, 41, 0.52);
+      margin-bottom: 1.2rem;
+    }
+
+    .post-points-control {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1.1rem;
+      flex-wrap: wrap;
+    }
+
+    .post-points-circle {
+      width: 10.5rem;
+      height: 10.5rem;
+      border-radius: 999px;
+      background: radial-gradient(
+        circle at 30% 30%,
+        color-mix(in srgb, var(--tavata-yellow) 74%, white) 0%,
+        var(--tavata-yellow) 46%,
+        color-mix(in srgb, var(--tavata-yellow) 72%, var(--tavata-dark)) 100%
+      );
+      color: var(--tavata-dark);
+      box-shadow: 0 1rem 2rem color-mix(in srgb, var(--tavata-yellow) 32%, transparent);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+    }
+
+    .post-points-value {
+      font-size: clamp(2.3rem, 5vw, 3.25rem);
+      line-height: 1;
+      font-weight: 300;
+    }
+
+    .post-points-label {
+      margin-top: 0.35rem;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      opacity: 0.82;
+    }
+
+    .post-points-stepper {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 999px;
+      border: 1px solid rgba(33, 37, 41, 0.18);
+      background: #fff;
+      color: var(--tavata-dark);
+      font-size: 1.65rem;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0.35rem 0.8rem rgba(33, 37, 41, 0.06);
+    }
+
+    .post-points-stepper:hover {
+      border-color: color-mix(in srgb, var(--tavata-yellow) 60%, var(--tavata-dark));
+      background: color-mix(in srgb, var(--tavata-yellow) 16%, white);
+      color: var(--tavata-dark);
+    }
+
+    .post-points-received {
+      display: inline-block;
+      padding: 0.45rem 0.8rem;
+      border-radius: 0.65rem;
+      background: rgba(248, 249, 250, 0.98);
+      border: 1px solid rgba(33, 37, 41, 0.08);
+      font-size: 0.92rem;
+      color: rgba(33, 37, 41, 0.76);
+      margin-bottom: 1rem;
+    }
+
+    .post-points-received strong {
+      color: color-mix(in srgb, var(--tavata-yellow) 65%, var(--tavata-dark));
+    }
+
+    .post-points-stats {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1rem 1.5rem;
+      padding-top: 0.9rem;
+      border-top: 1px solid rgba(33, 37, 41, 0.08);
+      color: rgba(33, 37, 41, 0.62);
+      font-size: 0.92rem;
+    }
+
+    .post-points-stat strong {
+      color: rgba(33, 37, 41, 0.86);
+      font-weight: 600;
+    }
+
+    .post-points-save {
+      min-width: 8.5rem;
+    }
+
+    .post-favorite-button {
+      min-width: 10rem;
+    }
+
+    .post-favorite-button.is-active {
+      background: color-mix(in srgb, var(--tavata-yellow) 78%, white);
+      border-color: color-mix(in srgb, var(--tavata-yellow) 58%, var(--tavata-dark));
+      color: var(--tavata-dark);
+    }
+
+    .post-points-feedback {
+      max-width: 28rem;
+      margin: 0 auto 1rem;
+      border-radius: 0.85rem;
+      padding: 0.7rem 0.9rem;
+      font-size: 0.92rem;
+      background: rgba(248, 249, 250, 0.95);
+      border: 1px solid rgba(33, 37, 41, 0.08);
+      color: rgba(33, 37, 41, 0.72);
+    }
+
+    .post-points-feedback.is-success {
+      color: #0f5132;
+      background: rgba(209, 231, 221, 0.55);
+      border-color: rgba(25, 135, 84, 0.22);
+    }
+
+    .post-points-feedback.is-error {
+      color: #842029;
+      background: rgba(248, 215, 218, 0.55);
+      border-color: rgba(220, 53, 69, 0.18);
+    }
+
+    .post-points-circle.is-busy {
+      transform: scale(0.98);
+      opacity: 0.88;
+    }
+
+    .post-points-circle.is-saved {
+      animation: postPointsPulse 0.45s ease;
+    }
+
+    .post-points-stepper:disabled,
+    .post-points-save:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    @keyframes postPointsPulse {
+      0% { transform: scale(0.96); }
+      60% { transform: scale(1.04); }
+      100% { transform: scale(1); }
+    }
+  </style>
+{% endblock %}
+
+{% block breadcrumbs %}
+  {% include "core/partials/_breadcrumbs.html" %}
+{% endblock %}
+
+{# --- Optional left sidebar --- #}
+{% block sidebar_left %}
+  <div class="sticky-top pt-5">
+    {% show_widget_zone 'blog-sidebar-left' %}
+  </div>
+{% endblock %}
+
+{% block content %}
+<div class="post-detail-container">
+  {# Featured Image #}
+  {% with featured_image=post.get_featured_image %}
+  {% if featured_image %}
+    <img src="{{ featured_image.url }}"
+         alt="{{ post.title }}"
+         class="zoomable img-fluid rounded mb-4 shadow">
+  {% endif %}
+  {% endwith %}
+
+  {# Post Title and Metadata #}
+  <h1 class="fw-bold">{{ post.title }}</h1>
+  <p class="text-muted small">
+    {% firstof post.author.profile.get_display_name post.author.username as author_name %}
+    {% blocktranslate with published_date=post.published_date|date:"DATE_FORMAT" author=author_name %}
+      Published on {{ published_date }} by {{ author }}
+    {% endblocktranslate %}
+  </p>
+
+  {% if post.summary %}
+    {% if post.has_dedicated_square_image %}
+      <div class="d-flex flex-column flex-sm-row align-items-center align-items-sm-start gap-3 mb-3">
+        <img src="{{ post.get_social_image.url }}"
+             alt="{{ post.title }}"
+             class="post-summary-social-image zoomable rounded shadow-sm flex-shrink-0"
+             loading="lazy"
+             style="width: min(100%, 220px); aspect-ratio: 1 / 1; object-fit: cover;">
+        <p class="lead mb-0">{{ post.summary }}</p>
+      </div>
+    {% else %}
+      <p class="lead">{{ post.summary }}</p>
+    {% endif %}
+  {% endif %}
+
+  {# Categories #}
+  {% if post.categories.exists %}
+    <div class="mb-3">
+      <strong>{% translate "Categories" %}:</strong>
+      {% for category in post.categories.all %}
+        <a href="{{ category.get_absolute_url }}" class="badge bg-primary text-dark text-decoration-none">
+          {{ category.name }}
+        </a>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {# Tags #}
+  {% with post_tags=post.get_tags_for_language %}
+  {% if post_tags %}
+    <div class="mb-3">
+      <strong>{% trans "Tags" %}:</strong>
+      {% for tag in post_tags %}
+        <a href="{{ tag.get_absolute_url }}" class="badge bg-info text-white text-decoration-none">
+          {{ tag.label }}
+        </a>
+      {% endfor %}
+    </div>
+  {% endif %}
+  {% endwith %}
+
+  <hr class="my-4">
+
+  {# Content #}
+  <div class="post-content fs-5">
+    {{ post.content|add_zoom_class_to_images|safe }}
+  </div>
+
+  {% if post_points_enabled %}
+    <div class="post-author-strip">
+      <img
+        src="{{ post.author.profile.get_avatar_url }}"
+        alt="{{ post.author.profile.get_display_name }}"
+        class="post-author-strip__avatar"
+      >
+      <div class="min-w-0">
+        {% firstof post.author.profile.get_display_name post.author.username as author_display_name %}
+        {% if post.author.profile.is_listed_publicly %}
+          <a href="{% url 'accounts:public_profile' username=post.author.username %}" class="post-author-strip__name">
+            {{ author_display_name }}
+          </a>
+        {% else %}
+          <div class="post-author-strip__name">{{ author_display_name }}</div>
+        {% endif %}
+        <div class="post-author-strip__meta">
+          {% firstof post.author.profile.professional_title post.author.profile.headline post.author.profile.institution _("Author") %}
+        </div>
+        {% if author_profile %}
+          <div class="post-author-strip__stats">
+            <span data-author-followers-count>{{ author_profile.followers_count }}</span> {% trans "followers" %}
+            <span class="mx-1">|</span>
+            <span>{{ author_profile.published_posts_count }}</span> {% trans "posts" %}
+          </div>
+        {% endif %}
+      </div>
+      <div class="post-author-strip__actions">
+        {% if can_follow_author %}
+          <form
+            method="post"
+            action="{% url 'accounts:toggle_follow' username=post.author.username %}"
+            class="author-follow-form"
+          >
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.get_full_path }}">
+            <button
+              type="submit"
+              class="btn btn-sm {% if is_following_author %}btn-outline-dark{% else %}btn-warning text-dark{% endif %}"
+              data-follow-button
+            >
+              {% if is_following_author %}
+                {% trans "Following" %}
+              {% else %}
+                {% trans "Follow" %}
+              {% endif %}
+            </button>
+          </form>
+          <div class="author-follow-feedback d-none" data-follow-feedback></div>
+        {% elif not user.is_authenticated %}
+          <a href="{% url 'login' %}?next={{ request.get_full_path|urlencode }}" class="btn btn-sm btn-outline-dark">
+            {% trans "Follow" %}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="post-points-card p-4 my-4" id="post-points">
+      <div class="post-points-shell">
+        <div class="post-points-kicker">{% trans "Vote this post" %}</div>
+
+        {% if user.is_authenticated and post_points_access.allowed %}
+          <form
+            method="post"
+            action="{% url 'posts:assign_post_points' year=post.published_date.year month=post.published_date.month day=post.published_date.day slug=post.slug %}"
+            class="post-points-form"
+            data-max-points="{{ post_points_max_per_post }}"
+            data-current-points="{{ post_points_summary.current_post_points }}"
+            data-remaining-points="{{ post_points_summary.remaining }}"
+          >
+            {% csrf_token %}
+            <div class="post-points-feedback d-none" data-points-feedback></div>
+            <div class="post-points-control">
+              <button type="button" class="post-points-stepper" data-direction="down" aria-label="{% trans 'Decrease points' %}">
+                −
+              </button>
+              <div class="post-points-circle" data-points-circle>
+                <div class="post-points-value" data-points-display>{{ post_points_summary.current_post_points }}</div>
+                <div class="post-points-label">{% trans "Give points" %}</div>
+              </div>
+              <button type="button" class="post-points-stepper" data-direction="up" aria-label="{% trans 'Increase points' %}">
+                +
+              </button>
+            </div>
+
+            <div class="d-none">
+              {{ post_points_form.points }}
+            </div>
+
+            <div class="mb-3">
+              <button type="submit" class="btn btn-sm btn-warning text-dark fw-semibold post-points-save">
+                {% trans "Save points" %}
+              </button>
+            </div>
+          </form>
+          <div class="mb-3">
+            <form
+              method="post"
+              action="{% url 'posts:toggle_post_favorite' year=post.published_date.year month=post.published_date.month day=post.published_date.day slug=post.slug %}"
+              class="post-favorite-form"
+            >
+              {% csrf_token %}
+              <input type="hidden" name="next" value="{{ request.get_full_path }}">
+              <button
+                type="submit"
+                class="btn btn-sm btn-outline-dark fw-semibold post-favorite-button {% if is_favorited_post %}is-active{% endif %}"
+                data-favorite-button
+              >
+                {% if is_favorited_post %}
+                  {% trans "Favorited" %}
+                {% else %}
+                  {% trans "Add to favorites" %}
+                {% endif %}
+              </button>
+              <div class="post-points-feedback d-none mt-3" data-favorite-feedback></div>
+            </form>
+          </div>
+        {% elif user.is_authenticated %}
+          <div class="post-points-control">
+            <div class="post-points-circle">
+              <div class="post-points-value">{{ post_points_summary.current_post_points }}</div>
+              <div class="post-points-label">{% trans "Give points" %}</div>
+            </div>
+          </div>
+          <div class="post-points-feedback is-error">
+            {{ post_points_access.reason }}
+          </div>
+          <div class="mb-3">
+            <form
+              method="post"
+              action="{% url 'posts:toggle_post_favorite' year=post.published_date.year month=post.published_date.month day=post.published_date.day slug=post.slug %}"
+              class="post-favorite-form"
+            >
+              {% csrf_token %}
+              <input type="hidden" name="next" value="{{ request.get_full_path }}">
+              <button
+                type="submit"
+                class="btn btn-sm btn-outline-dark fw-semibold post-favorite-button {% if is_favorited_post %}is-active{% endif %}"
+                data-favorite-button
+              >
+                {% if is_favorited_post %}
+                  {% trans "Favorited" %}
+                {% else %}
+                  {% trans "Add to favorites" %}
+                {% endif %}
+              </button>
+              <div class="post-points-feedback d-none mt-3" data-favorite-feedback></div>
+            </form>
+          </div>
+        {% else %}
+          <div class="post-points-control">
+            <div class="post-points-circle">
+              <div class="post-points-value">?</div>
+              <div class="post-points-label">{% trans "Give points" %}</div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <a href="{{ post_points_login_url }}" class="btn btn-sm btn-outline-dark">
+              {% trans "Log in to assign points" %}
+            </a>
+          </div>
+          <div class="mb-3">
+            <a href="{% url 'login' %}?next={{ request.get_full_path|urlencode }}" class="btn btn-sm btn-outline-dark post-favorite-button">
+              {% trans "Add to favorites" %}
+            </a>
+          </div>
+        {% endif %}
+
+        <div class="post-points-received">
+          {% trans "Points received today:" %} <strong data-points-total>{{ post_points_today_total }}</strong>
+        </div>
+
+        <div class="post-points-stats">
+          <span class="post-points-stat">
+            {% trans "Your points here:" %} <strong data-points-current>{{ post_points_summary.current_post_points }}</strong>
+          </span>
+          <span class="post-points-stat">
+            {% trans "Left today:" %} <strong data-points-remaining>{{ post_points_summary.remaining }}</strong>
+          </span>
+          <span class="post-points-stat">
+            {% trans "Daily budget:" %} <strong data-points-budget>{{ post_points_summary.budget }}</strong>
+          </span>
+          <span class="post-points-stat">
+            {% trans "Views:" %} <strong>{{ post.views_count }}</strong>
+          </span>
+          <span class="post-points-stat">
+            {% trans "Comments:" %} <strong>{{ comments.count }}</strong>
+          </span>
+          <span class="post-points-stat">
+            {% trans "Favorites:" %} <strong data-favorites-total>{{ post_favorites_total }}</strong>
+          </span>
+        </div>
+      </div>
+      {% if messages %}
+        <div class="mt-3">
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} mb-2" role="alert">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  {% with post_tags=post.get_tags_for_language %}
+  {% if post_tags %}
+    <div class="post-tags-list mt-4">
+      <h5 class="mb-3">{% trans "Tags" %}</h5>
+      <div class="d-flex flex-wrap gap-2">
+        {% for tag in post_tags %}
+          <a href="{{ tag.get_absolute_url }}" class="badge bg-info text-white text-decoration-none">
+            {{ tag.label }}
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+  {% endwith %}
+
+  {# Comments Section #}
+  <hr class="my-5">
+  <div class="comments-section">
+    <h3 class="mb-4" id="comments-section">
+      {% blocktranslate count count=comments.count %}{{ count }} Comment{% plural %}{{ count }} Comments{% endblocktranslate %}
+    </h3>
+
+    <ul class="list-unstyled">
+      {% recursetree comments %}
+        <li class="comment-item mb-4" id="comment-{{ node.id }}">
+          <div class="d-flex">
+            <div class="flex-shrink-0">
+              <img src="{{ node.get_author_avatar_url }}" alt="{{ node.get_author_name }}'s Avatar"
+                   class="rounded-circle me-3"
+                   style="width: 48px; height: 48px; object-fit: cover;">
+            </div>
+            <div class="flex-grow-1">
+              <h6 class="mt-0 fw-bold">{{ node.get_author_name }}</h6>
+              {% if node.language and node.language != LANGUAGE_CODE %}
+                <div class="mb-2">
+                  <span class="badge bg-secondary-subtle text-secondary-emphasis border">
+                    {% blocktranslate with language=node.get_language_label %}Comment in {{ language }}{% endblocktranslate %}
+                  </span>
+                  {% if node.has_translation_for %}
+                    <a
+                      href="#"
+                      class="comment-translation-toggle small text-decoration-none ms-2"
+                      data-comment-id="{{ node.id }}"
+                      data-mode="original"
+                    >
+                      {% trans "View original" %}
+                    </a>
+                    <a
+                      href="#"
+                      class="comment-translation-toggle small text-decoration-none ms-2 d-none"
+                      data-comment-id="{{ node.id }}"
+                      data-mode="translation"
+                    >
+                      {% trans "View translation" %}
+                    </a>
+                  {% else %}
+                    <a
+                      href="#"
+                      class="comment-translate-trigger btn btn-sm btn-outline-secondary ms-2 py-0 px-2 align-baseline"
+                      data-comment-id="{{ node.id }}"
+                      data-url="{% url 'comments:translate_comment' comment_id=node.id %}"
+                    >
+                      {% trans "Translate" %}
+                    </a>
+                  {% endif %}
+                  {% if user.is_authenticated %}
+                    <a
+                      href="#"
+                      class="comment-suggest-toggle small text-decoration-none ms-2"
+                      data-comment-id="{{ node.id }}"
+                    >
+                      {% trans "Suggest translation" %}
+                    </a>
+                  {% endif %}
+                </div>
+              {% endif %}
+              <div class="comment-content-wrapper" data-comment-id="{{ node.id }}">
+                {% if node.has_translation_for %}
+                  <div class="comment-content-translated comment-body-card">
+                    <div class="comment-translation-meta">
+                      <span class="badge rounded-pill bg-info-subtle text-info-emphasis border">
+                        {{ node.get_translation_source_label }}
+                      </span>
+                      {% if node.get_translation_credit_label %}
+                        <span class="comment-translation-credit">{{ node.get_translation_credit_label }}</span>
+                      {% endif %}
+                    </div>
+                    <div class="comment-content-text">{{ node.get_display_content|linebreaks }}</div>
+                  </div>
+                  <div class="comment-content-original comment-body-card d-none">
+                    <div class="comment-translation-meta">
+                      <span class="badge rounded-pill bg-light text-body-secondary border">
+                        {% trans "Original" %}
+                      </span>
+                    </div>
+                    <div class="comment-content-text">{{ node.get_original_content|linebreaks }}</div>
+                  </div>
+                {% else %}
+                  <div class="comment-content-original comment-body-card">
+                    <div class="comment-translation-meta">
+                      <span class="badge rounded-pill bg-light text-body-secondary border">
+                        {% trans "Original" %}
+                      </span>
+                    </div>
+                    <div class="comment-content-text">{{ node.get_original_content|linebreaks }}</div>
+                  </div>
+                  <div class="comment-content-translated comment-body-card d-none"></div>
+                  <div class="comment-translation-error small text-danger mt-2 d-none"></div>
+                {% endif %}
+              </div>
+              {% if node.language and node.language != LANGUAGE_CODE and user.is_authenticated %}
+                <div class="comment-suggest-form-container mt-2 d-none" data-comment-id="{{ node.id }}">
+                  <form
+                    method="post"
+                    class="comment-suggest-form"
+                    data-comment-id="{{ node.id }}"
+                    data-url="{% url 'comments:suggest_comment_translation' comment_id=node.id %}"
+                  >
+                    {% csrf_token %}
+                    <input type="hidden" name="language" value="{{ LANGUAGE_CODE }}">
+                    <textarea
+                      name="content"
+                      rows="3"
+                      class="form-control form-control-sm mb-2"
+                      placeholder="{% trans 'Suggest a better translation...' %}"
+                    ></textarea>
+                    <div class="d-flex align-items-center gap-2">
+                      <button type="submit" class="btn btn-sm btn-primary">
+                        {% trans "Submit translation" %}
+                      </button>
+                      <small class="text-muted">{% trans "Your version will be linked to this comment." %}</small>
+                    </div>
+                    <div class="comment-suggest-error small mt-2 d-none"></div>
+                  </form>
+                </div>
+              {% endif %}
+              <small class="text-muted">
+                {{ node.created_at|timesince }} {% translate "ago" %} –
+                {% if user.is_authenticated %}
+                  <a href="#comment-form" class="reply-link text-decoration-none" data-comment-id="{{ node.id }}">{% trans "Reply" %}</a>
+                {% else %}
+                  <a href="{{ comments_login_url }}" class="text-decoration-none">{% trans "Log in to reply" %}</a>
+                {% endif %}
+              </small>
+            </div>
+          </div>
+          {% if not node.is_leaf_node %}
+            <ul class="list-unstyled ms-5 mt-3">
+              {{ children }}
+            </ul>
+          {% endif %}
+        </li>
+      {% endrecursetree %}
+    </ul>
+  </div>
+
+  {# Comment Form #}
+  <hr class="my-5">
+  <div class="comment-form-section card shadow-sm border-0" id="comment-form">
+    <div class="card-body p-4 p-md-5">
+      {% if messages %}
+        <div class="local-messages-container mb-3">
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <h4 class="card-title" id="comment-form-title">{% trans "Leave a Comment" %}</h4>
+      {% if user.is_authenticated %}
+        <form method="post" action="">
+          {% csrf_token %}
+          <div class="mb-3">
+            {{ comment_form.content }}
+            {% if comment_form.content.errors %}
+              <div class="invalid-feedback d-block">{{ comment_form.content.errors|striptags }}</div>
+            {% endif %}
+          </div>
+          {{ comment_form.parent }}
+          <button type="submit" class="btn btn-primary">{% trans "Submit Comment" %}</button>
+        </form>
+      {% else %}
+        <div class="alert alert-info mb-0" role="alert">
+          {% trans "You need to log in to leave a comment." %}
+          <a href="{{ comments_login_url }}" class="alert-link">{% trans "Log in" %}</a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block sidebar_right %}
+  <div class="sticky-top pt-5">
+    {% show_widget_zone 'blog-sidebar-right' %}
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.post-points-form').forEach(form => {
+    const select = form.querySelector('select[name="points"]');
+    const display = form.querySelector('[data-points-display]');
+    const circle = form.querySelector('[data-points-circle]');
+    const feedback = form.querySelector('[data-points-feedback]');
+    const totalNode = document.querySelector('[data-points-total]');
+    const currentNode = document.querySelector('[data-points-current]');
+    const remainingNode = document.querySelector('[data-points-remaining]');
+    const budgetNode = document.querySelector('[data-points-budget]');
+    const maxPoints = Number(form.dataset.maxPoints || 0);
+    let currentPoints = Number(form.dataset.currentPoints || 0);
+    let remainingPoints = Number(form.dataset.remainingPoints || 0);
+
+    if (!select || !display) {
+      return;
+    }
+
+    const getEffectiveMax = () => Math.min(maxPoints, currentPoints + remainingPoints);
+
+    const syncDisplay = () => {
+      display.textContent = select.value;
+      if (currentNode) {
+        currentNode.textContent = select.value;
+      }
+      updateButtons();
+    };
+
+    const stepButtons = form.querySelectorAll('.post-points-stepper');
+    const submitButton = form.querySelector('.post-points-save');
+
+    const updateButtons = () => {
+      const value = Number(select.value || 0);
+      const effectiveMax = getEffectiveMax();
+      stepButtons.forEach(button => {
+        const direction = button.dataset.direction;
+        button.disabled = direction === 'down' ? value <= 0 : value >= effectiveMax;
+      });
+      if (submitButton) {
+        submitButton.disabled = value === currentPoints;
+      }
+    };
+
+    const showFeedback = (message, kind) => {
+      if (!feedback) {
+        return;
+      }
+      feedback.textContent = message;
+      feedback.classList.remove('d-none', 'is-success', 'is-error');
+      if (kind === 'success') {
+        feedback.classList.add('is-success');
+      } else if (kind === 'error') {
+        feedback.classList.add('is-error');
+      }
+    };
+
+    stepButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const direction = button.dataset.direction;
+        const current = Number(select.value || 0);
+        const effectiveMax = getEffectiveMax();
+        const next = direction === 'up'
+          ? Math.min(current + 1, effectiveMax)
+          : Math.max(current - 1, 0);
+        select.value = String(next);
+        syncDisplay();
+      });
+    });
+
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
+      if (submitButton) {
+        submitButton.disabled = true;
+      }
+      if (circle) {
+        circle.classList.add('is-busy');
+      }
+      if (feedback) {
+        feedback.classList.add('d-none');
+      }
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+          },
+        });
+        const payload = await response.json();
+
+        if (!response.ok || !payload.ok) {
+          throw new Error(payload.error || '{% trans "Please choose a valid number of points." %}');
+        }
+
+        currentPoints = Number(payload.assigned_points || 0);
+        remainingPoints = Number(payload.remaining_points || 0);
+        form.dataset.currentPoints = String(currentPoints);
+        form.dataset.remainingPoints = String(remainingPoints);
+        select.value = String(currentPoints);
+
+        if (totalNode) {
+          totalNode.textContent = payload.post_points_today_total;
+        }
+        if (remainingNode) {
+          remainingNode.textContent = payload.remaining_points;
+        }
+        if (budgetNode) {
+          budgetNode.textContent = payload.budget;
+        }
+        syncDisplay();
+        showFeedback(payload.message, 'success');
+
+        if (circle) {
+          circle.classList.remove('is-saved');
+          void circle.offsetWidth;
+          circle.classList.add('is-saved');
+        }
+      } catch (error) {
+        showFeedback(error.message, 'error');
+      } finally {
+        if (circle) {
+          circle.classList.remove('is-busy');
+        }
+        updateButtons();
+      }
+    });
+
+    syncDisplay();
+  });
+
+  document.querySelectorAll('.post-favorite-form').forEach(form => {
+    const button = form.querySelector('[data-favorite-button]');
+    const feedback = form.querySelector('[data-favorite-feedback]');
+    const totalNode = document.querySelector('[data-favorites-total]');
+
+    const showFeedback = (message, kind) => {
+      if (!feedback) {
+        return;
+      }
+      feedback.textContent = message;
+      feedback.classList.remove('d-none', 'is-success', 'is-error');
+      if (kind === 'success') {
+        feedback.classList.add('is-success');
+      } else if (kind === 'error') {
+        feedback.classList.add('is-error');
+      }
+    };
+
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
+      if (!button) {
+        return;
+      }
+      button.disabled = true;
+      if (feedback) {
+        feedback.classList.add('d-none');
+      }
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+          },
+        });
+        const payload = await response.json();
+
+        if (!response.ok || !payload.ok) {
+          throw new Error(payload.error || '{% trans "The favorite action could not be completed." %}');
+        }
+
+        button.textContent = payload.is_favorited
+          ? '{% trans "Favorited" %}'
+          : '{% trans "Add to favorites" %}';
+        button.classList.toggle('is-active', payload.is_favorited);
+
+        if (totalNode) {
+          totalNode.textContent = payload.favorites_total;
+        }
+
+        showFeedback(payload.message, 'success');
+      } catch (error) {
+        showFeedback(error.message, 'error');
+      } finally {
+        button.disabled = false;
+      }
+    });
+  });
+
+  document.querySelectorAll('.author-follow-form').forEach(form => {
+    const button = form.querySelector('[data-follow-button]');
+    const container = form.closest('.post-author-strip');
+    const feedback = container ? container.querySelector('[data-follow-feedback]') : null;
+    const followersNode = container ? container.querySelector('[data-author-followers-count]') : null;
+
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
+      if (!button) {
+        return;
+      }
+
+      button.disabled = true;
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+          },
+        });
+        const payload = await response.json();
+
+        if (!response.ok || !payload.ok) {
+          throw new Error(payload.error || '{% trans "The follow action could not be completed." %}');
+        }
+
+        button.textContent = payload.is_following
+          ? '{% trans "Following" %}'
+          : '{% trans "Follow" %}';
+        button.classList.toggle('btn-warning', !payload.is_following);
+        button.classList.toggle('text-dark', !payload.is_following);
+        button.classList.toggle('btn-outline-dark', payload.is_following);
+
+        if (followersNode) {
+          followersNode.textContent = payload.follower_count;
+        }
+        if (feedback) {
+          feedback.textContent = payload.message;
+          feedback.classList.remove('d-none');
+        }
+      } catch (error) {
+        if (feedback) {
+          feedback.textContent = error.message;
+          feedback.classList.remove('d-none');
+        }
+      } finally {
+        button.disabled = false;
+      }
+    });
+  });
+
+  const automaticTranslationLabel = '{% trans "Automatic translation" %}';
+  const communityTranslationLabel = '{% trans "Community translation" %}';
+  const translatedByCommunityLabel = '{% trans "Translated by community" %}';
+
+  function getTranslationBadgeLabel(source) {
+    return source === 'machine' ? automaticTranslationLabel : communityTranslationLabel;
+  }
+
+  function getTranslationCreditLabel(source) {
+    return source === 'human' ? translatedByCommunityLabel : '';
+  }
+
+  function renderTranslationCard(element, content, source) {
+    if (!element) {
+      return;
+    }
+
+    const creditLabel = getTranslationCreditLabel(source);
+    const creditMarkup = creditLabel
+      ? `<span class="comment-translation-credit">${creditLabel}</span>`
+      : '';
+
+    element.innerHTML = `
+      <div class="comment-translation-meta">
+        <span class="badge rounded-pill bg-info-subtle text-info-emphasis border">${getTranslationBadgeLabel(source)}</span>
+        ${creditMarkup}
+      </div>
+      <div class="comment-content-text">
+        <p class="mb-0"></p>
+      </div>
+    `;
+    element.querySelector('p').textContent = content;
+  }
+
+  const replyLinks = document.querySelectorAll('.reply-link');
+  const parentIdInput = document.querySelector('input[name="parent"]');
+  const formTitle = document.getElementById('comment-form-title');
+  if (replyLinks.length && parentIdInput && formTitle) {
+    const originalFormTitle = formTitle.textContent;
+    const contentTextarea = document.getElementById('id_content');
+
+    const cancelButton = document.createElement('button');
+    cancelButton.type = 'button';
+    cancelButton.id = 'cancel-reply';
+    cancelButton.className = 'btn btn-sm btn-secondary ms-3';
+    cancelButton.textContent = '{% translate "Cancel Reply" %}';
+
+    replyLinks.forEach(link => {
+      link.addEventListener('click', function(event) {
+        event.preventDefault();
+        const commentId = this.getAttribute('data-comment-id');
+        const authorName = this.closest('.comment-item').querySelector('.fw-bold').textContent.trim();
+        parentIdInput.value = commentId;
+        formTitle.textContent = `{% trans "Reply to" %} ${authorName}`;
+        if (!document.getElementById('cancel-reply')) {
+          formTitle.appendChild(cancelButton);
+        }
+        if (contentTextarea) {
+          contentTextarea.focus();
+        }
+      });
+    });
+
+    cancelButton.addEventListener('click', function() {
+      parentIdInput.value = '';
+      formTitle.textContent = originalFormTitle;
+    });
+  }
+
+  document.querySelectorAll('.comment-translation-toggle').forEach(link => {
+    link.addEventListener('click', function(event) {
+      event.preventDefault();
+      const commentId = this.getAttribute('data-comment-id');
+      const mode = this.getAttribute('data-mode');
+      const wrapper = document.querySelector('.comment-content-wrapper[data-comment-id="' + commentId + '"]');
+      if (!wrapper) {
+        return;
+      }
+
+      const translated = wrapper.querySelector('.comment-content-translated');
+      const original = wrapper.querySelector('.comment-content-original');
+      const showOriginalLink = document.querySelector('.comment-translation-toggle[data-comment-id="' + commentId + '"][data-mode="original"]');
+      const showTranslationLink = document.querySelector('.comment-translation-toggle[data-comment-id="' + commentId + '"][data-mode="translation"]');
+
+      if (mode === 'original') {
+        translated.classList.add('d-none');
+        original.classList.remove('d-none');
+        showOriginalLink.classList.add('d-none');
+        showTranslationLink.classList.remove('d-none');
+      } else {
+        original.classList.add('d-none');
+        translated.classList.remove('d-none');
+        showTranslationLink.classList.add('d-none');
+        showOriginalLink.classList.remove('d-none');
+      }
+    });
+  });
+
+  document.querySelectorAll('.comment-translate-trigger').forEach(link => {
+    link.addEventListener('click', async function(event) {
+      event.preventDefault();
+      const commentId = this.getAttribute('data-comment-id');
+      const url = this.getAttribute('data-url') + '?language={{ LANGUAGE_CODE }}';
+      const wrapper = document.querySelector('.comment-content-wrapper[data-comment-id="' + commentId + '"]');
+      if (!wrapper) {
+        return;
+      }
+
+      const translated = wrapper.querySelector('.comment-content-translated');
+      const original = wrapper.querySelector('.comment-content-original');
+      const errorBox = wrapper.querySelector('.comment-translation-error');
+
+      this.classList.add('disabled');
+      this.setAttribute('aria-disabled', 'true');
+
+      try {
+        const response = await fetch(url, {
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+          },
+        });
+        const payload = await response.json();
+
+        if (!response.ok || !payload.ok) {
+          throw new Error(payload.error || '{% trans "The requested translation could not be generated." %}');
+        }
+
+        renderTranslationCard(translated, payload.content, payload.source);
+        translated.classList.remove('d-none');
+        original.classList.add('d-none');
+
+        if (errorBox) {
+          errorBox.classList.add('d-none');
+          errorBox.textContent = '';
+        }
+
+        const controls = this.parentElement;
+        this.remove();
+
+        const viewOriginal = document.createElement('a');
+        viewOriginal.href = '#';
+        viewOriginal.className = 'comment-translation-toggle small text-decoration-none ms-2';
+        viewOriginal.dataset.commentId = commentId;
+        viewOriginal.dataset.mode = 'original';
+        viewOriginal.textContent = '{% trans "View original" %}';
+
+        const viewTranslation = document.createElement('a');
+        viewTranslation.href = '#';
+        viewTranslation.className = 'comment-translation-toggle small text-decoration-none ms-2 d-none';
+        viewTranslation.dataset.commentId = commentId;
+        viewTranslation.dataset.mode = 'translation';
+        viewTranslation.textContent = '{% trans "View translation" %}';
+
+        controls.appendChild(viewOriginal);
+        controls.appendChild(viewTranslation);
+
+        [viewOriginal, viewTranslation].forEach(toggle => {
+          toggle.addEventListener('click', function(toggleEvent) {
+            toggleEvent.preventDefault();
+            const mode = this.getAttribute('data-mode');
+            if (mode === 'original') {
+              translated.classList.add('d-none');
+              original.classList.remove('d-none');
+              viewOriginal.classList.add('d-none');
+              viewTranslation.classList.remove('d-none');
+            } else {
+              original.classList.add('d-none');
+              translated.classList.remove('d-none');
+              viewTranslation.classList.add('d-none');
+              viewOriginal.classList.remove('d-none');
+            }
+          });
+        });
+      } catch (error) {
+        if (errorBox) {
+          errorBox.textContent = error.message;
+          errorBox.classList.remove('d-none');
+        }
+        this.classList.remove('disabled');
+        this.removeAttribute('aria-disabled');
+      }
+    });
+  });
+
+  document.querySelectorAll('.comment-suggest-toggle').forEach(link => {
+    link.addEventListener('click', function(event) {
+      event.preventDefault();
+      const commentId = this.getAttribute('data-comment-id');
+      const container = document.querySelector('.comment-suggest-form-container[data-comment-id="' + commentId + '"]');
+      if (!container) {
+        return;
+      }
+      container.classList.toggle('d-none');
+    });
+  });
+
+  document.querySelectorAll('.comment-suggest-form').forEach(form => {
+    form.addEventListener('submit', async function(event) {
+      event.preventDefault();
+      const commentId = this.getAttribute('data-comment-id');
+      const url = this.getAttribute('data-url');
+      const wrapper = document.querySelector('.comment-content-wrapper[data-comment-id="' + commentId + '"]');
+      const translated = wrapper ? wrapper.querySelector('.comment-content-translated') : null;
+      const original = wrapper ? wrapper.querySelector('.comment-content-original') : null;
+      const errorBox = this.querySelector('.comment-suggest-error');
+      const submitButton = this.querySelector('button[type="submit"]');
+      const formData = new FormData(this);
+
+      submitButton.disabled = true;
+
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+          },
+        });
+        const payload = await response.json();
+
+        if (!response.ok || !payload.ok) {
+          throw new Error(payload.error || '{% trans "Invalid translation content." %}');
+        }
+
+        if (errorBox) {
+          errorBox.classList.remove('d-none', 'text-danger', 'text-success', 'text-muted');
+          errorBox.textContent = payload.message || '';
+          errorBox.classList.add(payload.pending_review ? 'text-body-secondary' : 'text-success');
+        }
+
+        if (!payload.pending_review) {
+          if (translated) {
+            renderTranslationCard(translated, payload.content, payload.source);
+            translated.classList.remove('d-none');
+          }
+          if (original) {
+            original.classList.add('d-none');
+          }
+        }
+        const container = this.closest('.comment-suggest-form-container');
+        if (container) {
+          container.classList.add('d-none');
+        }
+        this.reset();
+      } catch (error) {
+        if (errorBox) {
+          errorBox.textContent = error.message;
+          errorBox.classList.remove('d-none', 'text-success', 'text-muted', 'text-body-secondary');
+          errorBox.classList.add('text-danger');
+        }
+      } finally {
+        submitButton.disabled = false;
+      }
+    });
+  });
+});
+</script>
+{% endblock %}

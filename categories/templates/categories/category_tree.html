@@ -1,0 +1,30 @@
+<!-- File: categories/templates/categories/category_tree.html -->
+{% extends 'core/base.html' %}
+{% load i18n %}
+{% load category_tags %} {# 1. Load our new custom template tags #}
+
+{% block title %}{% translate "All Categories" %}{% endblock %}
+
+{% block breadcrumbs %}
+  {% include "core/partials/_breadcrumbs.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10 category-tree-container">
+            
+            <div class="text-center mb-5">
+                <i class="fas fa-sitemap fa-3x text-primary mb-3"></i>
+                <h1 class="display-4">{% translate "Explore Our Topics" %}</h1>
+                <p class="lead text-muted">{% translate "Navigate through our content organized by category." %}</p>
+            </div>
+
+            {# 2. Simply call our universal and cached template tag #}
+            {# It handles everything: fetching data, caching, and rendering the tree. #}
+            {% render_category_tree %}
+            
+        </div>
+    </div>
+</div>
+{% endblock %}

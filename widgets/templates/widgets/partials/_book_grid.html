@@ -1,0 +1,58 @@
+{% load i18n %}
+
+<div class="book-grid-section">
+    {% if widget.translated_section_title %}
+        <h2 class="mb-4 text-center">{{ widget.translated_section_title }}</h2>
+    {% endif %}
+
+    <div class="row row-cols-1 {% if widget.column_count != 1 %}row-cols-sm-2{% endif %} {% if widget.column_count == 1 %}row-cols-md-1{% elif widget.column_count == 2 %}row-cols-md-2{% elif widget.column_count == 4 %}row-cols-md-4{% else %}row-cols-md-3{% endif %} g-4">
+        {% for item in items %}
+            <div class="col">
+                <article class="card h-100 shadow-sm border-0">
+                    {% with display_image=item.widget_display_image %}
+                        {% if display_image %}
+                            <a href="{{ item.get_absolute_url }}">
+                                <img
+                                    src="{{ display_image.url }}"
+                                    class="card-img-top"
+                                    alt="{{ item.title }}"
+                                    loading="lazy"
+                                    style="aspect-ratio: {% if item.widget_image_format == 'square' %}1 / 1{% elif item.widget_image_format == 'mobile' %}9 / 16{% else %}4 / 3{% endif %}; object-fit: cover;"
+                                >
+                            </a>
+                        {% endif %}
+                    {% endwith %}
+
+                    <div class="card-body d-flex flex-column">
+                        <p class="text-muted small mb-2">{{ item.publication_date|date:"DATE_FORMAT" }}</p>
+                        <h3 class="h5 card-title">{{ item.title }}</h3>
+
+                        {% if item.subtitle %}
+                            <p class="text-muted mb-2">{{ item.subtitle }}</p>
+                        {% endif %}
+
+                        {% if item.get_authors_display %}
+                            <p class="text-muted small mb-2">{{ item.get_authors_display }}</p>
+                        {% endif %}
+
+                        {% if item.excerpt %}
+                            <div class="text-muted mb-3">{{ item.excerpt|striptags|truncatewords:28|safe }}</div>
+                        {% elif item.description %}
+                            <div class="text-muted mb-3">{{ item.description|striptags|truncatewords:28|safe }}</div>
+                        {% endif %}
+
+                        <a href="{{ item.get_absolute_url }}" class="btn btn-outline-dark mt-auto">
+                            {% translate "View book" %}
+                        </a>
+                    </div>
+                </article>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if widget.translated_view_all_link_text and widget.view_all_link_url %}
+        <div class="text-center mt-4">
+            <a href="{{ widget.view_all_link_url }}" class="btn btn-outline-secondary">{{ widget.translated_view_all_link_text }}</a>
+        </div>
+    {% endif %}
+</div>

@@ -1,0 +1,59 @@
+<!-- File: accounts/templates/accounts/user_directory.html -->
+{% extends 'core/base.html' %}
+{% load i18n %}
+{% load static %}
+{% load avatar_tags %}
+
+{% block title %}{% translate "User Directory" %}{% endblock %}
+
+{% block breadcrumbs %}
+  {% include "core/partials/_breadcrumbs.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="mb-4 text-center">{% translate "Our Community Members" %}</h1>
+    <p class="lead text-muted text-center mb-5">{% translate "Explore profiles of users who are part of our community." %}</p>
+
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        {% for user_item in users %} {# 'users' is the paginated object `Page` #}
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0 text-center">
+                    <div class="card-body">
+                        <a href="{% url 'accounts:public_profile' username=user_item.username %}">
+                            <img src="{{ user_item|avatar_url }}" 
+                                 alt="{{ user_item|safe_display_name }}'s Avatar"
+                                 class="rounded-circle mb-3 border border-3 border-primary" 
+                                 style="width: 80px; height: 80px; object-fit: cover;">
+                        </a>
+                        <h5 class="card-title mb-1">
+                            <a href="{% url 'accounts:public_profile' username=user_item.username %}" class="text-decoration-none">
+                                {{ user_item|safe_display_name }}
+                            </a>
+                        </h5>
+                        {% if user_item.profile.professional_title %}
+                            <p class="card-text mb-1">{{ user_item.profile.professional_title }}</p>
+                        {% endif %}
+                        {% if user_item.profile.institution %}
+                            <p class="card-text text-muted mb-1"><small>{{ user_item.profile.institution }}</small></p>
+                        {% endif %}
+                        <p class="card-text text-muted">@{{ user_item.username }}</p>
+                        {% if user_item.profile.location %}
+                            <p class="card-text"><small class="text-muted"><i class="fas fa-map-marker-alt"></i> {{ user_item.profile.location }}</small></p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12">
+                <p class="text-center">{% translate "No users found in the directory." %}</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    {# --- PAGINATION --- #}
+    {% include 'core/partials/_pagination.html' with page_obj=users %}
+    {# --- END PAGINATION --- #}
+
+</div>
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends "core/base.html" %}
+{% load i18n %}
+
+{% block seo_title %}{{ meta_title|default:title }}{% endblock %}
+{% block seo_description %}{{ meta_description }}{% endblock %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row g-4">
+        <div class="col-lg-7">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body p-4 p-lg-5">
+                    <h1 class="display-6 fw-semibold mb-2">{% translate "Checkout" %}</h1>
+                    <p class="text-muted mb-4">
+                        {% translate "Review your order details before continuing to payment." %}
+                    </p>
+
+                    {% if cart_items %}
+                        <div class="list-group list-group-flush">
+                            {% for item in cart_items %}
+                                <div class="list-group-item px-0 py-3">
+                                    <div class="d-flex justify-content-between align-items-start gap-3">
+                                        <div>
+                                            <h2 class="h5 mb-1">{{ item.book.title }}</h2>
+                                            {% if item.book.subtitle %}
+                                                <p class="text-muted small mb-1">{{ item.book.subtitle }}</p>
+                                            {% endif %}
+                                            <p class="small text-muted mb-0">
+                                                {% translate "Quantity" %}: {{ item.quantity }}
+                                            </p>
+                                        </div>
+                                        <strong>{{ item.line_total }} {{ item.book.currency }}</strong>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info border-0 mb-0">
+                            {% translate "Your cart is empty. Add at least one book before continuing to checkout." %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-body p-4">
+                    <h2 class="h5 mb-3">{% translate "Buyer information" %}</h2>
+
+                    <div class="mb-3">
+                        <label class="form-label">{% translate "Full name" %}</label>
+                        <input type="text" class="form-control" value="{{ checkout_name }}" readonly>
+                    </div>
+
+                    <div class="mb-0">
+                        <label class="form-label">{% translate "Email" %}</label>
+                        <input type="email" class="form-control" value="{{ checkout_email }}" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <h2 class="h5 mb-3">{% translate "Order summary" %}</h2>
+
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span>{% translate "Items" %}</span>
+                        <span>{{ cart_count }}</span>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <strong>{% translate "Subtotal" %}</strong>
+                        <strong>{{ cart_subtotal }} {{ cart_currency|default:"EUR" }}</strong>
+                    </div>
+
+                    <div class="alert alert-warning border-0 small">
+                        {% translate "The payment gateway is not enabled yet. This checkout is ready up to the final payment step." %}
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <form action="{% url 'checkout_create_order' %}" method="post" class="m-0">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-dark w-100"{% if not cart_items %} disabled{% endif %}>
+                                {% translate "Create provisional order" %}
+                            </button>
+                        </form>
+                        <a href="{% url 'cart_detail' %}" class="btn btn-outline-dark">
+                            {% translate "Back to cart" %}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

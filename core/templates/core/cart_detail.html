@@ -1,0 +1,101 @@
+{% extends "core/base.html" %}
+{% load i18n %}
+
+{% block seo_title %}{{ meta_title|default:title }}{% endblock %}
+{% block seo_description %}{{ meta_description }}{% endblock %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-4 p-lg-5">
+            <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
+                <div>
+                    <h1 class="display-6 fw-semibold mb-2">{% translate "Shopping cart" %}</h1>
+                    <p class="text-muted mb-0">
+                        {% blocktranslate count total=cart_count %}
+                            You have {{ total }} item in your cart.
+                        {% plural %}
+                            You have {{ total }} items in your cart.
+                        {% endblocktranslate %}
+                    </p>
+                </div>
+                <a href="{% url 'books:book_list' %}" class="btn btn-outline-dark">
+                    <i class="fas fa-book me-1"></i>
+                    {% translate "Browse books" %}
+                </a>
+            </div>
+
+            {% if cart_items %}
+                <div class="list-group">
+                    {% for item in cart_items %}
+                        <div class="list-group-item">
+                            <div class="row g-3 align-items-center">
+                                <div class="col-md-8">
+                                    <div class="d-flex gap-3 align-items-start">
+                                        {% with cover_image=item.book.get_cover_image %}
+                                            {% if cover_image %}
+                                                <img
+                                                    src="{{ cover_image.url }}"
+                                                    alt="{{ item.book.title }}"
+                                                    style="width: 72px; height: 72px; object-fit: cover; border-radius: 0.75rem;"
+                                                >
+                                            {% endif %}
+                                        {% endwith %}
+                                        <div>
+                                            <h2 class="h5 mb-1">
+                                                <a href="{{ item.book.get_absolute_url }}" class="text-decoration-none text-dark">
+                                                    {{ item.book.title }}
+                                                </a>
+                                            </h2>
+                                            {% if item.book.subtitle %}
+                                                <p class="text-muted small mb-2">{{ item.book.subtitle }}</p>
+                                            {% endif %}
+                                            <p class="small text-muted mb-0">
+                                                {% translate "Quantity" %}: {{ item.quantity }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="d-flex flex-column flex-md-row justify-content-md-end align-items-md-center gap-2">
+                                        <span class="badge text-bg-dark rounded-pill px-3 py-2">
+                                            {{ item.line_total }} {{ item.book.currency }}
+                                        </span>
+                                        <form action="{% url 'books:cart_remove' book_id=item.book.id %}" method="post" class="m-0">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="next" value="{% url 'cart_detail' %}">
+                                            <button type="submit" class="btn btn-outline-dark btn-sm">
+                                                {% translate "Remove" %}
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mt-4 pt-3 border-top">
+                    <div>
+                        <strong class="d-block">{% translate "Subtotal" %}</strong>
+                        <span class="text-muted">{{ cart_subtotal }} {{ cart_currency|default:"EUR" }}</span>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <a href="{% url 'books:book_list' %}" class="btn btn-outline-dark">
+                            {% translate "Continue browsing" %}
+                        </a>
+                        <a href="{% url 'checkout_detail' %}" class="btn btn-dark">
+                            {% translate "Checkout" %}
+                        </a>
+                    </div>
+                </div>
+            {% else %}
+                <div class="alert alert-info border-0 mb-0">
+                    {% translate "Your cart is empty for now. From here users will be able to review selected books before continuing to checkout." %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

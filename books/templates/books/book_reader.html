@@ -1,0 +1,20 @@
+{% extends "core/base.html" %}
+{% load i18n %}
+
+{% block seo_title %}{{ meta_title|default:title }}{% endblock %}
+{% block seo_description %}{{ meta_description }}{% endblock %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid publication-document-page px-lg-4 px-0">
+    <div class="publication-document-viewer shadow-sm overflow-hidden">
+        <iframe
+            src="{{ document_file.url }}#toolbar=0&navpanes=0&scrollbar=1"
+            title="{{ book.title }}"
+            width="100%"
+            height="calc(100vh - 170px)"
+            style="border: 0;"
+        ></iframe>
+    </div>
+</div>
+{% endblock %}

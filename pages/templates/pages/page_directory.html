@@ -1,0 +1,26 @@
+{% extends "core/base.html" %}
+
+{% block breadcrumbs %}
+  {% include "core/partials/_breadcrumbs.html" %}
+{% endblock %}
+
+{% block content %}
+  <h1 class="mb-4">{{ _("Pages by Category") }}</h1>
+
+  {% if pages %}
+    <ul class="list-group">
+      {% for page in pages %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <a href="{{ page.get_absolute_url }}">{{ page.translated_title }}</a>
+          {% if page.categories.all %}
+            <small class="text-muted">
+              {{ page.categories.all|join:", " }}
+            </small>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>{{ _("There are no pages with categories to display.") }}</p>
+  {% endif %}
+{% endblock %}

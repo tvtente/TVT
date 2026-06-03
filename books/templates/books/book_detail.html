@@ -1,0 +1,229 @@
+{% extends "core/base.html" %}
+{% load i18n %}
+
+{% block seo_title %}{{ meta_title|default:title }}{% endblock %}
+{% block seo_description %}{{ meta_description }}{% endblock %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .book-detail-shell {
+        background: var(--tavata-category-tree-bg);
+        border: 1px solid var(--tavata-card-box-border);
+        border-radius: 1.5rem;
+    }
+
+    .book-detail-cover {
+        width: 100%;
+        border-radius: 1rem;
+        object-fit: cover;
+        box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.12);
+    }
+
+    .book-summary-social-image {
+        width: min(100%, 220px);
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+        border-radius: 1rem;
+        box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.12);
+    }
+
+    .book-meta-card {
+        background: var(--tavata-card-box-bg);
+        border: 1px solid var(--tavata-card-box-border);
+        border-radius: 1rem;
+    }
+
+    .book-category-chip {
+        background: var(--tavata-yellow);
+        color: #212529;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<article class="container my-5">
+    <div class="book-detail-shell p-4 p-lg-5">
+        <div class="mb-4">
+            <a href="{% url 'books:book_list' %}" class="text-decoration-none small">
+                <i class="fas fa-arrow-left me-1"></i>
+                {% translate "Back to books" %}
+            </a>
+        </div>
+
+        {% with cover_image=book.get_cover_image %}
+            {% if cover_image %}
+                <figure class="mb-4">
+                    <img
+                        src="{{ cover_image.url }}"
+                        alt="{{ book.title }}"
+                        class="book-detail-cover"
+                    >
+                </figure>
+            {% endif %}
+        {% endwith %}
+
+        <div class="mb-4">
+            <span class="badge mb-3 book-category-chip">{% translate "Editorial book" %}</span>
+            <h1 class="display-5 fw-semibold mb-3">{{ book.title }}</h1>
+
+            {% if book.subtitle %}
+                <p class="lead text-muted mb-0">{{ book.subtitle }}</p>
+            {% endif %}
+        </div>
+
+        <div class="book-meta-card p-3 p-lg-4 mb-5">
+            <div class="row g-3">
+                {% if book.get_authors_display %}
+                    <div class="col-md-6">
+                        <strong class="d-block mb-1">{% translate "Authors" %}</strong>
+                        <span class="text-muted">{{ book.get_authors_display }}</span>
+                    </div>
+                {% endif %}
+
+                <div class="col-md-6">
+                    <strong class="d-block mb-1">{% translate "Publication date" %}</strong>
+                    <span class="text-muted">{{ book.publication_date|date:"DATE_FORMAT" }}</span>
+                </div>
+
+                {% if book.isbn %}
+                    <div class="col-md-6">
+                        <strong class="d-block mb-1">{% translate "ISBN" %}</strong>
+                        <span class="text-muted">{{ book.isbn }}</span>
+                    </div>
+                {% endif %}
+
+                {% if book.price %}
+                    <div class="col-md-6">
+                        <strong class="d-block mb-1">{% translate "Price" %}</strong>
+                        <span class="text-muted">{{ book.price }} {{ book.currency }}</span>
+                    </div>
+                {% endif %}
+
+                {% if book.categories.exists %}
+                    <div class="col-12">
+                        <strong class="d-block mb-2">{% translate "Categories" %}</strong>
+                        {% for category in book.categories.all %}
+                            <span class="badge me-1 mb-1 book-category-chip">{{ category.name }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if book.excerpt %}
+            <section class="mb-5">
+                <div class="row g-4 align-items-start">
+                    <div class="col-lg-8">
+                        <h2 class="h3 mb-3">{% translate "Excerpt" %}</h2>
+                        <div class="text-muted">
+                            {{ book.excerpt|safe }}
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        {% with social_image=book.get_social_image %}
+                            {% if social_image %}
+                                <img
+                                    src="{{ social_image.url }}"
+                                    alt="{{ book.title }}"
+                                    class="img-fluid book-summary-social-image"
+                                >
+                            {% endif %}
+                        {% endwith %}
+                    </div>
+                </div>
+            </section>
+        {% endif %}
+
+        <section class="mb-5">
+            {% if book_is_purchasable %}
+                <form action="{% url 'books:cart_add' book_id=book.id %}" method="post" class="d-inline-block me-2 mb-2">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                    <button type="submit" class="btn btn-dark btn-lg">
+                        <i class="fas fa-cart-plus me-1"></i>
+                        {% translate "Add to cart" %}
+                    </button>
+                </form>
+            {% endif %}
+
+            {% if book.requires_purchase and book_is_coming_soon %}
+                <div class="alert alert-warning border-0 shadow-sm mb-3" role="alert">
+                    <strong class="d-block mb-2">{% translate "Coming soon" %}</strong>
+                    {% if book.available_from %}
+                        <p class="mb-0">
+                            {% blocktranslate with available_date=book.available_from|date:"DATE_FORMAT" %}
+                                This full edition will be available from {{ available_date }}.
+                            {% endblocktranslate %}
+                        </p>
+                    {% else %}
+                        <p class="mb-0">{% translate "Available soon." %}</p>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            {% if book.allow_free_preview and book.has_preview_pdf_in_any_language %}
+                <a href="{% url 'books:book_reader' slug=book.slug %}" class="btn btn-dark btn-lg me-2 mb-2">
+                    <i class="fas fa-book-open me-1"></i>
+                    {% translate "View preview edition" %}
+                </a>
+            {% endif %}
+
+            {% if can_access_full_book and book.has_full_pdf_in_any_language %}
+                <a href="{% url 'books:book_document' slug=book.slug %}" class="btn btn-outline-dark btn-lg mb-2">
+                    <i class="fas fa-file-pdf me-1"></i>
+                    {% translate "View full edition" %}
+                </a>
+            {% elif book.requires_purchase and book.has_full_pdf_in_any_language %}
+                <div class="alert alert-info border-0 shadow-sm mb-3" role="alert">
+                    <strong class="d-block mb-2">{% translate "Full edition available after purchase" %}</strong>
+                    <p class="mb-0">{% translate "The complete digital document is only enabled for users with a completed purchase." %}</p>
+                </div>
+            {% endif %}
+        </section>
+
+        {% if book.allow_free_preview and not current_preview_pdf and preview_language_editions %}
+            <div class="alert alert-warning border-0 shadow-sm mb-4" role="alert">
+                <strong class="d-block mb-2">{% translate "Preview not available in this language." %}</strong>
+                <p class="mb-2">{% translate "This book preview is available in these language editions:" %}</p>
+                <div class="d-flex flex-wrap gap-2">
+                    {% for item in preview_language_editions %}
+                        <a href="{{ item.url }}" class="btn btn-outline-dark btn-sm">{{ item.label }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        {% if not current_full_pdf and full_document_language_editions %}
+            <div class="alert alert-info border-0 shadow-sm mb-5" role="alert">
+                <strong class="d-block mb-2">{% translate "Full document not available in this language." %}</strong>
+                <p class="mb-2">{% translate "This book can be consulted in full in these language editions:" %}</p>
+                <div class="d-flex flex-wrap gap-2">
+                    {% for item in full_document_language_editions %}
+                        <a href="{{ item.url }}" class="btn btn-outline-dark btn-sm">{{ item.label }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        {% if book.description %}
+            <section class="mb-5">
+                <h2 class="h3 mb-3">{% translate "Description" %}</h2>
+                <div>
+                    {{ book.description|safe }}
+                </div>
+            </section>
+        {% endif %}
+
+        {% if book.table_of_contents %}
+            <section class="mb-0">
+                <h2 class="h3 mb-3">{% translate "Table of contents" %}</h2>
+                <div>
+                    {{ book.table_of_contents|safe }}
+                </div>
+            </section>
+        {% endif %}
+    </div>
+</article>
+{% endblock %}

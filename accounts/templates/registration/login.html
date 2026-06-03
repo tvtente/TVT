@@ -1,0 +1,67 @@
+<!-- File: accounts/templates/registration/login.html -->
+{% extends 'core/base.html' %}
+{% load i18n %}
+{% load socialaccount %}
+
+{% block title %}{% translate "Log In" %}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0"> {# Added border-0 for consistency #}
+            <div class="card-body p-4 p-md-5"> {# Added padding for better mobile appearance #}
+                <h2 class="card-title text-center mb-4">{% translate "Log In" %}</h2>
+
+                {% if GOOGLE_AUTH_ENABLED %}
+                    <div class="d-grid mb-3">
+                        <a href="{% provider_login_url 'google' process='login' %}" class="btn btn-outline-dark btn-lg">
+                            <i class="fa-brands fa-google me-2"></i>{% translate "Continue with Google" %}
+                        </a>
+                    </div>
+
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <hr class="flex-grow-1">
+                        <span class="text-muted small">{% translate "or" %}</span>
+                        <hr class="flex-grow-1">
+                    </div>
+                {% endif %}
+
+                {# Display form errors, if any #}
+                {% if form.errors %}
+                    <p class="text-danger text-center">{% translate "Your username and password didn't match. Please try again." %}</p>
+                {% endif %}
+
+                <form method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="{{ form.username.id_for_label }}" class="form-label">{% translate "Username" %}</label>
+                        <input type="text" name="username" class="form-control" id="{{ form.username.id_for_label }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="{{ form.password.id_for_label }}" class="form-label">{% translate "Password" %}</label>
+                        <input type="password" name="password" class="form-control" id="{{ form.password.id_for_label }}" required>
+                    </div>
+                    
+                    {# --- Forgot Password Link --- #}
+                    <div class="text-end mb-3">
+                        <a href="{% url 'password_reset' %}" class="small text-muted text-decoration-none">{% translate "Forgot password?" %}</a>
+                    </div>
+                    {# --- END NEW --- #}
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg">{% translate "Log In" %}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        {# Link to signup page #}
+        {# --- THE CORRECTION --- #}
+        {# 1. Generate the URL outside of blocktranslate, using 'as' #}
+        {% url 'accounts:signup' as signup_url %}
+        <p class="text-center mt-3">
+            {% blocktranslate %}Don't have an account? <a href="{{ signup_url }}">Sign up here</a>.{% endblocktranslate %}
+        </p>
+        {# --- END CORRECTION --- #}
+    </div>
+</div>
+{% endblock %}

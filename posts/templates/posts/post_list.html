@@ -1,0 +1,92 @@
+{% extends "core/base.html" %}
+{% load i18n %}
+{% load widget_tags %}
+
+{# --- SEO --- #}
+{% block seo_title %}{% if page_title %}{{ page_title }}{% else %}{% translate "Published Posts" %}{% endif %} | Tavata.art{% endblock %}
+{% block seo_description %}{% if page_description %}{{ page_description }}{% else %}{% translate "Latest updates and insights from the Tavata project." %}{% endif %}{% endblock %}
+{% block title %}{% if page_title %}{{ page_title }}{% else %}{% translate "Published Posts" %}{% endif %}{% endblock %}
+
+{# --- Breadcrumbs desde el contexto --- #}
+{% block breadcrumbs %}
+  {% include "core/partials/_breadcrumbs.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  
+  <div class="blog-header pb-3 mb-5 text-center border-bottom">
+      <h1 class="display-4">{% if page_title %}{{ page_title }}{% else %}{% translate "Published Posts" %}{% endif %}</h1>
+      <p class="lead text-muted">
+        {% if page_description %}
+          {{ page_description }}
+        {% else %}
+          {% translate "Latest news and articles from the Tavata platform." %}
+        {% endif %}
+      </p>
+  </div>
+
+  <div class="row">
+    {% for post in posts %}
+      <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card h-100 shadow-sm border-0">
+          {% with featured_image=post.get_featured_image %}
+          {% if featured_image %}
+            <a href="{{ post.get_absolute_url }}">
+              <img src="{{ featured_image.url }}" class="card-img-top" loading="lazy" alt="{{ post.title }}">
+            </a>
+          {% endif %}
+          {% endwith %}
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">{{ post.title }}</h5>
+            <p class="card-text text-muted">
+              {% firstof post.author.get_full_name post.author.username as author_name %}
+              <small>
+                {% blocktranslate with published_date=post.published_date|date:"DATE_FORMAT" author=author_name %}
+                  Published on {{ published_date }} by {{ author }}
+                {% endblocktranslate %}
+              </small>
+            </p>
+            {% if post.recent_points %}
+              <p class="card-text text-muted small mb-2">
+                {% blocktranslate with points=post.recent_points %}{{ points }} community point(s) in the last period{% endblocktranslate %}
+              </p>
+            {% endif %}
+            {% if post.community_score %}
+              <p class="card-text text-muted small mb-3">
+                {% blocktranslate with score=post.community_score rating=post.editor_rating %}Community score {{ score }} · Editorial rating {{ rating }}{% endblocktranslate %}
+              </p>
+            {% endif %}
+            <a href="{{ post.get_absolute_url }}" class="btn btn-primary mt-auto">
+              {% trans "Read More" %}
+            </a>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <div class="col">
+        <div class="alert alert-info">
+          {% translate "There are no posts yet. Come back soon!" %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  {# --- Paginación estándar centralizada --- #}
+  {% include 'core/partials/_pagination.html' with page_obj=posts %}
+
+</div>
+{% endblock %}
+
+{# --- Zonas de Widgets --- #}
+{% block sidebar_left %}
+  <div class="sticky-top pt-5">
+    {% show_widget_zone 'posts-sidebar-left' %}
+  </div>
+{% endblock %}
+
+{% block sidebar_right %}
+  <div class="sticky-top pt-5">
+    {% show_widget_zone 'posts-sidebar-right' %}
+  </div>
+{% endblock %}

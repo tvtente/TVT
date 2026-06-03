@@ -1,0 +1,16 @@
+<!-- File: menus/templates/menus/partials/_navbar_menu_children.html -->
+{% for node in nodes %}
+    {% with children=node.children.all %}
+        {% if children %}
+            <li class="dropend">
+                <a class="dropdown-item dropdown-toggle" href="#" id="submenu-{{ node.id }}" data-bs-toggle="dropdown" aria-expanded="false">{{ node.translated_title }}</a>
+                <ul class="dropdown-menu" aria-labelledby="submenu-{{ node.id }}">
+                    {# Recursion! #}
+                    {% include "menus/partials/_navbar_menu_children.html" with nodes=children %}
+                </ul>
+            </li>
+        {% else %}
+            <li><a class="dropdown-item" href="{{ node.get_url }}">{{ node.translated_title }}</a></li>
+        {% endif %}
+    {% endwith %}
+{% endfor %}

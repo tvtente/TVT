@@ -1,0 +1,37 @@
+# FileZilla no lee este archivo automaticamente.
+# Usalo como referencia para configurar filtros en:
+# View > Directory listing filters > Edit filter rules
+
+.git
+.github
+.vscode
+.codex
+
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+
+.venv
+venv
+env
+tvt_313_env
+tvt_313_env.bak_*
+tvt_311_env
+tvt_311_env.bak_*
+
+.env
+*.sqlite3
+db.sqlite3
+
+logs
+*.log
+passenger.log
+
+staticfiles
+
+requirements_backup.txt
+reporte_completo.txt
+
+.DS_Store
+Thumbs.db

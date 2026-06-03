@@ -1,0 +1,64 @@
+{% extends 'core/base.html' %}
+{% load i18n %}
+
+{# --- SEO and Browser Tab Title Blocks --- #}
+{% block seo_title %}{{ category.meta_title|default:category.name }}{% endblock %}
+{% block seo_description %}{{ category.meta_description|default:"" }}{% endblock %}
+{% block title %}{% blocktranslate with category_name=category.name %}Pages in {{ category_name }}{% endblocktranslate %}{% endblock %}
+
+{% block breadcrumbs %}
+  {% include "core/partials/_breadcrumbs.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+
+    {# --- Category Page Header --- #}
+    <div class="category-header mb-5 text-center">
+        <h1 class="display-4">
+            {# The main visible title of the page #}
+            {% translate "Pages in category:" %} <span class="text-primary">{{ category.name }}</span>
+        </h1>
+        {# Display the category description if it exists #}
+        {% if category.description %}
+            <p class="lead text-muted">{{ category.description }}</p>
+        {% endif %}
+    </div>
+
+    {# --- List of Pages --- #}
+    <div class="page-list">
+        {# Check if the pages_list (the paginated object) contains any items #}
+        {% if pages_list %} 
+            <ul class="list-group list-group-flush">
+                {# Loop through each page in the current page's list #}
+                {% for page in pages_list %}
+                <li class="list-group-item bg-transparent">
+                    <div class="d-flex w-100 justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <a href="{{ page.get_absolute_url }}" class="fs-4 text-decoration-none">{{ page.translated_title }}</a>
+                        </h5>
+                        <small class="text-muted">
+                            {# Displaying the 'last updated' date is often more relevant for static pages #}
+                            {% blocktranslate with updated_date=page.updated_at|date:"DATE_FORMAT" %}
+                            Updated on {{ updated_date }}
+                            {% endblocktranslate %}
+                        </small>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            {# This message is displayed when no pages are found in this category #}
+            <div class="alert alert-info" role="alert">
+                {% translate "There are currently no published pages in this category." %}
+            </div>
+        {% endif %}
+    </div>
+
+    {# --- PAGINATION --- #}
+    {# We include our single, centralized pagination component. #}
+    {# We must pass the paginated object `pages_list` to the component's `page_obj` variable. #}
+    {% include 'core/partials/_pagination.html' with page_obj=pages_list %}
+
+</div>
+{% endblock %}

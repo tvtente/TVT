@@ -1,0 +1,50 @@
+<!-- File: menus/templates/menus/partials/_navbar_main_level.html -->
+{% load menu_tags %}
+{% load i18n %}
+
+{# This template receives ONLY visible top-level MenuItem objects. #}
+{# Child visibility is prepared in menu_tags.py as node.visible_children. #}
+
+{% for node in nodes %}
+
+    {# Dropdown if it has visible static children or dynamic children. #}
+    {% if node.visible_children or node.dynamic_children %}
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle"
+               href="{{ node.get_url }}"
+               id="navbar-item-{{ node.id }}"
+               role="button"
+               data-bs-toggle="dropdown"
+               aria-expanded="false">
+                {% if node.icon_class %}<i class="{{ node.icon_class }} me-1"></i>{% endif %}
+                {{ node.translated_title }}
+            </a>
+
+            <ul class="dropdown-menu" aria-labelledby="navbar-item-{{ node.id }}">
+
+                {# Render visible static children only. #}
+                {% if node.visible_children %}
+                    {% include "menus/partials/_navbar_recursive_children.html" with children=node.visible_children %}
+                {% endif %}
+
+                {# Render dynamic children. #}
+                {% for dynamic_child in node.dynamic_children %}
+                    <li>
+                        <a class="dropdown-item" href="{{ dynamic_child.menu_url|default:dynamic_child.get_absolute_url }}">
+                            {{ dynamic_child.name|default:dynamic_child.translated_title }}
+                        </a>
+                    </li>
+                {% endfor %}
+
+            </ul>
+        </li>
+    {% else %}
+        <li class="nav-item">
+            <a class="nav-link" href="{{ node.get_url }}">
+                {% if node.icon_class %}<i class="{{ node.icon_class }} me-1"></i>{% endif %}
+                {{ node.translated_title }}
+            </a>
+        </li>
+    {% endif %}
+
+{% endfor %}

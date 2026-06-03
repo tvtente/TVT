@@ -1,0 +1,99 @@
+{# File: core/templates/core/translation_unavailable.html #}
+{% extends "core/base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Content not available in this language" %}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4 p-lg-5 text-center">
+
+                    <div class="mb-3" style="font-size: 3rem;">
+                        🐝
+                    </div>
+
+                    <h1 class="h3 mb-3">
+                        {% if content_kind == "post" %}
+                            {% translate "This post is not available in this language." %}
+                        {% elif content_kind == "book" %}
+                            {% translate "This book is not available in this language." %}
+                        {% elif content_kind == "publication" %}
+                            {% translate "This publication is not available in this language." %}
+                        {% elif content_kind == "profile" %}
+                            {% translate "This CV is not available in this language." %}
+                        {% else %}
+                            {% translate "This content is not available in this language." %}
+                        {% endif %}
+                    </h1>
+
+                    <p class="text-muted mb-4">
+                        {% if content_kind == "book" and unavailable_resource == "preview" %}
+                            {% translate "This book exists, but its preview PDF is not available in the selected language yet." %}
+                        {% elif content_kind == "book" and unavailable_resource == "full_document" %}
+                            {% translate "This book exists, but its full document is not available in the selected language yet." %}
+                        {% elif content_kind == "profile" %}
+                            {% translate "This profile exists, but its CV has not been entered in the selected language yet." %}
+                        {% else %}
+                            {% translate "The content exists, but it has not been translated into the selected language yet." %}
+                        {% endif %}
+                    </p>
+
+                    {% if available_translations %}
+                        <div class="mb-4">
+                            <p class="fw-semibold mb-2">
+                                {% if content_kind == "book" %}
+                                    {% translate "Available language editions:" %}
+                                {% else %}
+                                    {% translate "Available languages:" %}
+                                {% endif %}
+                            </p>
+
+                            {% if content_kind == "book" and unavailable_resource == "preview" %}
+                                <p class="small text-muted mb-3">
+                                    {% translate "You can open this book preview in the languages listed below." %}
+                                </p>
+                            {% elif content_kind == "book" and unavailable_resource == "full_document" %}
+                                <p class="small text-muted mb-3">
+                                    {% translate "You can open the full document of this book in the languages listed below." %}
+                                </p>
+                            {% elif content_kind == "book" %}
+                                <p class="small text-muted mb-3">
+                                    {% translate "This book is available in the languages listed below." %}
+                                </p>
+                            {% endif %}
+
+                            <div class="d-flex flex-wrap justify-content-center gap-2">
+                                {% for item in available_translations %}
+                                    <a href="{{ item.url }}" class="btn btn-outline-primary btn-sm">
+                                        {{ item.label }}
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    <p class="small text-muted mb-4">
+                        {% translate "If you think this content should be available in this language, please contact the administration." %}
+                    </p>
+
+                    <div class="d-flex flex-wrap justify-content-center gap-2">
+                        <a href="mailto:tvt.mente@gmail.com" class="btn btn-primary">
+                            {% translate "Contact administration" %}
+                        </a>
+
+                        <a href="{% url 'home' %}" class="btn btn-outline-secondary">
+                            {% translate "Go to home" %}
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

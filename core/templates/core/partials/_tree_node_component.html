@@ -1,0 +1,32 @@
+<!-- File: core/templates/core/partials/_tree_node_component.html -->
+{% load mptt_tags %}
+
+<div class="list-group list-group-flush">
+    {% recursetree nodes %}
+        {% widthratio node.level 1 category_tree_indent_step as node_indent %}
+        <div class="list-group-item border-0 category-tree-node" style="padding-left: calc({{ category_tree_base_padding }}px + {{ node_indent }}px);">
+
+            <div class="d-flex align-items-center">
+                {% if not node.is_leaf_node %}
+                    <a class="btn btn-link text-decoration-none text-body p-0 me-2" data-bs-toggle="collapse" href="#node-children-{{ node.id }}" ...>
+                        <i class="fas fa-chevron-down TAVATA-collapse-icon"></i>
+                    </a>
+                {% else %}
+                    <span class="me-2" style="width: 1.2rem;"></span>
+                {% endif %}
+
+                <a href="{{ node.get_absolute_url }}" class="text-decoration-none text-body flex-grow-1">
+                    <i class="far fa-folder me-2 text-primary"></i>
+                    {# Usamos el __str__ del objeto, que ya está formateado #}
+                    {{ node }}
+                </a>
+            </div>
+        </div>
+
+        {% if not node.is_leaf_node %}
+            <div class="collapse" id="node-children-{{ node.id }}">
+                {{ children }}
+            </div>
+        {% endif %}
+    {% endrecursetree %}
+</div>

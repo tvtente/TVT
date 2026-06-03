@@ -1,0 +1,592 @@
+{% load i18n %}
+{% load humanize %}
+
+{# --- PROFILE HEADER --- #}
+<div class="cv-hero card shadow-sm border-0 mb-4">
+    <div class="card-body p-4">
+        <div class="d-flex flex-column flex-md-row align-items-md-center gap-4">
+            <img src="{{ profile.get_avatar_url }}"
+                 alt="{{ profile.get_display_name }}"
+                 class="img-fluid rounded-circle shadow-sm cv-avatar">
+
+            <div class="flex-grow-1">
+                <div class="d-flex flex-column flex-lg-row justify-content-between gap-3">
+                    <div>
+                        <h1 class="display-5 mb-1">{{ profile.get_display_name }}</h1>
+                        <p class="lead text-muted mb-2">@{{ user_obj.username }}</p>
+                        <p class="small text-muted mb-2">
+                            <span>{{ profile.followers_count }}</span> {% translate "followers" %}
+                            <span class="mx-1">|</span>
+                            <span>{{ profile.published_posts_count }}</span> {% translate "posts" %}
+                        </p>
+
+                        {% if profile.professional_title %}
+                            <p class="mb-1">
+                                <strong>{{ profile.professional_title }}</strong>
+                            </p>
+                        {% endif %}
+
+                        {% if profile.headline %}
+                            <p class="text-muted mb-2">{{ profile.headline }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="d-flex flex-wrap align-items-start gap-2">
+                        {% if can_follow_profile %}
+                            <form method="post" action="{% url 'accounts:toggle_follow' username=user_obj.username %}" class="m-0">
+                                {% csrf_token %}
+                                <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                                <button type="submit" class="btn btn-sm {% if is_following_profile %}btn-outline-dark{% else %}btn-warning text-dark{% endif %}">
+                                    {% if is_following_profile %}
+                                        {% trans "Following" %}
+                                    {% else %}
+                                        {% trans "Follow" %}
+                                    {% endif %}
+                                </button>
+                            </form>
+                        {% endif %}
+                        {% if profile.is_researcher or profile.is_contributor %}
+                            {% if profile.is_researcher %}
+                                <span class="badge bg-primary">{% translate "Researcher" %}</span>
+                            {% endif %}
+                            {% if profile.is_contributor %}
+                                <span class="badge bg-secondary">{% translate "Contributor" %}</span>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="mt-3 small">
+                    {% if profile.institution %}
+                        <p class="mb-1">
+                            <i class="fas fa-building text-muted me-2"></i>{{ profile.institution }}
+                        </p>
+                    {% endif %}
+
+                    {% if profile.city or profile.country %}
+                        <p class="mb-1">
+                            <i class="fas fa-globe text-muted me-2"></i>
+                            {% if profile.city %}{{ profile.city }}{% endif %}
+                            {% if profile.city and profile.country %}, {% endif %}
+                            {% if profile.country %}{{ profile.country }}{% endif %}
+                        </p>
+                    {% endif %}
+
+                    {% if profile.location %}
+                        <p class="mb-1">
+                            <i class="fas fa-map-marker-alt text-muted me-2"></i>{{ profile.location }}
+                        </p>
+                    {% endif %}
+
+                    {% if profile.orcid %}
+                        <p class="mb-1">
+                            <i class="fas fa-id-badge text-muted me-2"></i>ORCID: {{ profile.orcid }}
+                        </p>
+                    {% endif %}
+
+                    {% if profile.website_url %}
+                        <p class="mb-1">
+                            <i class="fas fa-link text-muted me-2"></i>
+                            <a href="{{ profile.website_url }}" target="_blank" rel="noopener noreferrer">
+                                {{ profile.website_url }}
+                            </a>
+                        </p>
+                    {% endif %}
+
+                    {% if profile.public_email %}
+                        <p class="mb-0">
+                            <i class="fas fa-envelope text-muted me-2"></i>
+                            <a href="mailto:{{ profile.public_email }}">{{ profile.public_email }}</a>
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{# --- BIOGRAPHY / INTERESTS --- #}
+{% if profile.bio or profile.areas_of_interest %}
+    <div class="row g-4 mb-4">
+        {% if profile.bio %}
+            <div class="col-md-6">
+                <div class="cv-section card shadow-sm border-0 h-100">
+                    <div class="card-header bg-white border-0 pt-4 px-4">
+                        <h2 class="h5 mb-1">{% translate "About Me" %}</h2>
+                    </div>
+                    <div class="card-body px-4 pb-4">
+                        <p class="mb-0">{{ profile.bio|linebreaksbr }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if profile.areas_of_interest %}
+            <div class="col-md-6">
+                <div class="cv-section card shadow-sm border-0 h-100">
+                    <div class="card-header bg-white border-0 pt-4 px-4">
+                        <h2 class="h5 mb-1">{% translate "Areas of Interest" %}</h2>
+                    </div>
+                    <div class="card-body px-4 pb-4">
+                        <p class="mb-0">{{ profile.areas_of_interest|linebreaksbr }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endif %}
+
+{% if skill_items or competency_items or link_items or internal_publications or external_publication_items %}
+    <section class="cv-section card shadow-sm border-0 mb-4">
+        <div class="card-header bg-white border-0 pt-4 px-4">
+            <h2 class="h5 mb-1">{% translate "Research and Professional Profile" %}</h2>
+            <p class="text-muted small mb-0">
+                {% translate "This overview highlights the lines of work, methodological resources, and public references that structure the profile." %}
+            </p>
+        </div>
+        <div class="card-body px-4 pb-4">
+            <div class="row g-3 mb-4">
+                {% if skill_items %}
+                    <div class="col-sm-6 col-xl-4">
+                        <div class="cv-focus-card h-100">
+                            <div class="cv-focus-label">{% translate "Technical and Methodological Knowledge" %}</div>
+                            <div class="cv-focus-value">{{ skill_items|length }}</div>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if competency_items %}
+                    <div class="col-sm-6 col-xl-4">
+                        <div class="cv-focus-card h-100">
+                            <div class="cv-focus-label">{% translate "Transversal Competencies" %}</div>
+                            <div class="cv-focus-value">{{ competency_items|length }}</div>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if link_items or internal_publications or external_publication_items %}
+                    <div class="col-sm-6 col-xl-4">
+                        <div class="cv-focus-card h-100">
+                            <div class="cv-focus-label">{% translate "Public References" %}</div>
+                            <div class="cv-focus-value">{{ link_items|length }}</div>
+                            <div class="small text-muted mt-2">
+                                {% if internal_publications %}
+                                    {{ internal_publications|length }} {% translate "internal publication(s)" %}
+                                {% endif %}
+                                {% if external_publication_items %}
+                                    {% if internal_publications %}<span class="mx-1">|</span>{% endif %}
+                                    {{ external_publication_items|length }} {% translate "external publication(s)" %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+
+            {% if skill_items %}
+                <div class="mb-3">
+                    <h3 class="h6 text-uppercase text-muted mb-2">{% translate "Highlighted methods and tools" %}</h3>
+                    <div class="d-flex flex-wrap gap-2">
+                        {% for item in skill_items|slice:":8" %}
+                            {% if item.skill_type %}
+                                <span class="cv-focus-pill">
+                                    {{ item.skill_type }}{% if item.level %} · {{ item.level }}{% endif %}
+                                </span>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if competency_items %}
+                <div>
+                    <h3 class="h6 text-uppercase text-muted mb-2">{% translate "Working style" %}</h3>
+                    <div class="d-flex flex-wrap gap-2">
+                        {% for item in competency_items|slice:":6" %}
+                            {% if item.competency_type %}
+                                <span class="cv-focus-pill cv-focus-pill-soft">
+                                    {{ item.competency_type }}{% if item.level %} · {{ item.level }}{% endif %}
+                                </span>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+{% endif %}
+
+{# --- CV / RESUME SECTIONS --- #}
+{% if has_cv_items %}
+
+{% if experience_items %}
+    <section class="cv-section card shadow-sm border-0 mb-4">
+        <div class="card-header bg-white border-0 pt-4 px-4">
+            <h2 class="h5 mb-1">{% translate "Experience" %}</h2>
+        </div>
+        <div class="card-body px-4 pb-4">
+            {% for item in experience_items %}
+                <div class="cv-item card border mb-3">
+                    <div class="card-body">
+                        <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
+                            <div>
+                                <h3 class="h6 mb-1">{{ item.position }}</h3>
+                                <p class="mb-1">
+                                    {% if item.organization_url %}
+                                        <a href="{{ item.organization_url }}" target="_blank" rel="noopener noreferrer">
+                                            {{ item.organization }}
+                                        </a>
+                                    {% else %}
+                                        {{ item.organization }}
+                                    {% endif %}
+                                </p>
+                                {% if item.experience_type %}
+                                    <span class="badge bg-tavata-primary">{{ item.experience_type }}</span>
+                                {% endif %}
+                                {% if item.location %}
+                                    <p class="small text-muted mt-2 mb-0">
+                                        <i class="fas fa-location-dot me-1"></i>{{ item.location }}
+                                    </p>
+                                {% endif %}
+                            </div>
+                            <div class="small text-muted text-md-end">
+                                {% if item.start_date %}{{ item.start_date|date:"M Y" }}{% endif %}
+                                {% if item.start_date or item.end_date or item.is_current %} — {% endif %}
+                                {% if item.is_current %}
+                                    {% translate "Present" %}
+                                {% elif item.end_date %}
+                                    {{ item.end_date|date:"M Y" }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% if item.description %}
+                            <p class="mt-3 mb-0">{{ item.description|linebreaksbr }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+{% endif %}
+
+{% if education_items %}
+    <section class="cv-section card shadow-sm border-0 mb-4">
+        <div class="card-header bg-white border-0 pt-4 px-4">
+            <h2 class="h5 mb-1">{% translate "Education" %}</h2>
+        </div>
+        <div class="card-body px-4 pb-4">
+            {% for item in education_items %}
+                <div class="cv-item card border mb-3">
+                    <div class="card-body">
+                        <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
+                            <div>
+                                <h3 class="h6 mb-1">
+                                    {% if item.degree %}
+                                        {{ item.degree }}
+                                    {% else %}
+                                        {{ item.institution }}
+                                    {% endif %}
+                                </h3>
+
+                                <p class="mb-1">
+                                    {% if item.institution_url %}
+                                        <a href="{{ item.institution_url }}" target="_blank" rel="noopener noreferrer">
+                                            {{ item.institution }}
+                                        </a>
+                                    {% else %}
+                                        {{ item.institution }}
+                                    {% endif %}
+                                </p>
+
+                                {% if item.field_of_study %}
+                                    <p class="small text-muted mb-1">{{ item.field_of_study }}</p>
+                                {% endif %}
+
+                                {% if item.education_type %}
+                                    <span class="badge bg-tavata-primary">{{ item.education_type }}</span>
+                                {% endif %}
+                            </div>
+
+                            <div class="small text-muted text-md-end">
+                                {% if item.start_year %}{{ item.start_year }}{% endif %}
+                                {% if item.start_year or item.end_year or item.is_current %} — {% endif %}
+                                {% if item.is_current %}
+                                    {% translate "Present" %}
+                                {% elif item.end_year %}
+                                    {{ item.end_year }}
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        {% if item.description %}
+                            <p class="mt-3 mb-0">{{ item.description|linebreaksbr }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+{% endif %}
+
+{% if certification_items %}
+    <section class="cv-section card shadow-sm border-0 mb-4">
+        <div class="card-header bg-white border-0 pt-4 px-4">
+            <h2 class="h5 mb-1">{% translate "Certifications" %}</h2>
+        </div>
+        <div class="card-body px-4 pb-4">
+            {% for item in certification_items %}
+                <div class="cv-item card border mb-3">
+                    <div class="card-body">
+                        <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
+                            <div>
+                                <h3 class="h6 mb-1">{{ item.name }}</h3>
+                                {% if item.issuer %}
+                                    <p class="mb-1">{{ item.issuer }}</p>
+                                {% endif %}
+                                {% if item.certification_type %}
+                                    <span class="badge bg-tavata-primary">{{ item.certification_type }}</span>
+                                {% endif %}
+                            </div>
+
+                            <div class="small text-muted text-md-end">
+                                {% if item.issue_date %}
+                                    {{ item.issue_date|date:"M Y" }}
+                                {% endif %}
+                                {% if item.expiration_date %}
+                                    — {{ item.expiration_date|date:"M Y" }}
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        {% if item.credential_id %}
+                            <p class="small text-muted mt-2 mb-1">
+                                {% translate "Credential ID" %}: {{ item.credential_id }}
+                            </p>
+                        {% endif %}
+
+                        {% if item.credential_url %}
+                            <p class="mb-1">
+                                <a href="{{ item.credential_url }}" target="_blank" rel="noopener noreferrer">
+                                    {% translate "View credential" %}
+                                </a>
+                            </p>
+                        {% endif %}
+
+                        {% if item.description %}
+                            <p class="mt-3 mb-0">{{ item.description|linebreaksbr }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+{% endif %}
+
+<div class="row g-4 mb-4">
+    {% if language_items %}
+        <div class="col-md-6">
+            <section class="cv-section card shadow-sm border-0 h-100">
+                <div class="card-header bg-white border-0 pt-4 px-4">
+                    <h2 class="h5 mb-1">{% translate "Languages" %}</h2>
+                </div>
+                <div class="card-body px-4 pb-4">
+                    <div class="d-flex flex-wrap gap-2">
+                        {% for item in language_items %}
+                            <span class="badge bg-tavata-primary">
+                                {{ item.language }}{% if item.level %} · {{ item.level }}{% endif %}
+                            </span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>
+        </div>
+    {% endif %}
+
+    {% if skill_items %}
+        <div class="col-md-6">
+            <section class="cv-section card shadow-sm border-0 h-100">
+                <div class="card-header bg-white border-0 pt-4 px-4">
+                    <h2 class="h5 mb-1">{% translate "Technical and Methodological Knowledge" %}</h2>
+                </div>
+                <div class="card-body px-4 pb-4">
+                    {% for item in skill_items %}
+                        <div class="cv-focus-entry mb-3">
+                            <div class="d-flex flex-wrap gap-2 align-items-center mb-1">
+                                <strong>{{ item.skill_type }}</strong>
+                                {% if item.level %}
+                                    <span class="badge bg-tavata-primary">{{ item.level }}</span>
+                                {% endif %}
+                            </div>
+                            {% if item.description %}
+                                <p class="small text-muted mb-0 mt-1">{{ item.description }}</p>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+        </div>
+    {% endif %}
+</div>
+
+<div class="row g-4 mb-4">
+    {% if competency_items %}
+        <div class="col-md-6">
+            <section class="cv-section card shadow-sm border-0 h-100">
+                <div class="card-header bg-white border-0 pt-4 px-4">
+                    <h2 class="h5 mb-1">{% translate "Transversal Competencies" %}</h2>
+                </div>
+                <div class="card-body px-4 pb-4">
+                    {% for item in competency_items %}
+                        <div class="cv-focus-entry mb-3">
+                            <div class="d-flex flex-wrap gap-2 align-items-center mb-1">
+                                <strong>{{ item.competency_type }}</strong>
+                                {% if item.level %}
+                                    <span class="badge bg-tavata-primary">{{ item.level }}</span>
+                                {% endif %}
+                            </div>
+                            {% if item.description %}
+                                <p class="small text-muted mb-0 mt-1">{{ item.description }}</p>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+        </div>
+    {% endif %}
+
+    {% if link_items %}
+        <div class="col-md-6">
+            <section class="cv-section card shadow-sm border-0 h-100">
+                <div class="card-header bg-white border-0 pt-4 px-4">
+                    <h2 class="h5 mb-1">{% translate "Academic and Professional Links" %}</h2>
+                </div>
+                <div class="card-body px-4 pb-4">
+                    <div class="list-group list-group-flush">
+                        {% for item in link_items %}
+                            <a href="{{ item.url }}"
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                <span>
+                                    {% if item.link_type %}
+                                        <strong>{{ item.link_type }}</strong> ·
+                                    {% endif %}
+                                    {{ item.label }}
+                                </span>
+                                <i class="fas fa-arrow-up-right-from-square small"></i>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>
+        </div>
+    {% endif %}
+</div>
+
+{% if internal_publications %}
+    <section class="cv-section card shadow-sm border-0 mb-4">
+        <div class="card-header bg-white border-0 pt-4 px-4">
+            <h2 class="h5 mb-1">{% translate "TVTente Scientific Publications" %}</h2>
+        </div>
+
+        <div class="card-body px-4 pb-4">
+            {% for publication in internal_publications %}
+                <div class="cv-item card border mb-3">
+                    <div class="card-body">
+                        <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
+                            <div>
+                                <h3 class="h6 mb-1">
+                                    <a href="{{ publication.get_absolute_url }}">
+                                        {{ publication.title }}
+                                    </a>
+                                </h3>
+
+                                {% if publication.get_categories_display %}
+                                    <p class="small text-muted mb-1">
+                                        {{ publication.get_categories_display }}
+                                    </p>
+                                {% endif %}
+
+                                {% if publication.doi %}
+                                    <p class="small text-muted mt-2 mb-0">
+                                        DOI: {{ publication.doi }}
+                                    </p>
+                                {% endif %}
+                            </div>
+
+                            {% if publication.publication_date %}
+                                <div class="small text-muted text-md-end">
+                                    {{ publication.publication_date|date:"Y" }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        {% if publication.abstract %}
+                            <p class="mt-3 mb-0">
+                                {{ publication.abstract|striptags|truncatewords:32|safe }}
+                            </p>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+{% endif %}
+
+{% if external_publication_items %}
+    <section class="cv-section card shadow-sm border-0 mb-4">
+        <div class="card-header bg-white border-0 pt-4 px-4">
+            <h2 class="h5 mb-1">{% translate "External Publications" %}</h2>
+        </div>
+
+        <div class="card-body px-4 pb-4">
+            {% for item in external_publication_items %}
+                <div class="cv-item card border mb-3">
+                    <div class="card-body">
+                        <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
+                            <div>
+                                <h3 class="h6 mb-1">
+                                    {% if item.url %}
+                                        <a href="{{ item.url }}" target="_blank" rel="noopener noreferrer">
+                                            {{ item.title }}
+                                        </a>
+                                    {% else %}
+                                        {{ item.title }}
+                                    {% endif %}
+                                </h3>
+
+                                {% if item.publisher %}
+                                    <p class="mb-1">{{ item.publisher }}</p>
+                                {% endif %}
+
+                                {% if item.publication_type %}
+                                    <span class="badge bg-tavata-primary">
+                                        {{ item.publication_type }}
+                                    </span>
+                                {% endif %}
+
+                                {% if item.doi %}
+                                    <p class="small text-muted mt-2 mb-0">
+                                        DOI: {{ item.doi }}
+                                    </p>
+                                {% endif %}
+                            </div>
+
+                            {% if item.year %}
+                                <div class="small text-muted text-md-end">
+                                    {{ item.year }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        {% if item.description %}
+                            <p class="mt-3 mb-0">
+                                {{ item.description|linebreaksbr }}
+                            </p>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+{% endif %}
+
+{% endif %}

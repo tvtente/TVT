@@ -1,0 +1,177 @@
+<!-- File: core/templates/core/partials/_header.html -->
+{% load i18n %}
+{% load static %}
+{% load menu_tags %}
+{% load avatar_tags %}
+
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+
+            <!-- Site Brand/Logo -->
+            <a class="navbar-brand tavata-navbar-brand-icon" href="{% url 'home' %}" aria-label="{% trans 'Home' %}">
+                🐝
+            </a>
+
+            <!-- Mobile Navigation Toggle Button -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="{% translate 'Toggle navigation' %}">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Collapsible Navigation Container -->
+            <div class="collapse navbar-collapse navbar-collapse-wrapper" id="navbarNav">
+
+                <!-- Main Menu (Two-Line Layout) -->
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 main-navbar-menu">
+                    {% show_menu 'main-menu' %}
+                </ul>
+
+                <!-- Right Side: Search + User/Auth -->
+                <div class="d-flex align-items-center gap-2 navbar-right-actions">
+                        <a
+                            class="btn btn-warning btn-sm d-inline-flex align-items-center justify-content-center"
+                            href="{% url 'cart_detail' %}"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="bottom"
+                            data-bs-title="{% translate 'View shopping cart' %}"
+                            aria-label="{% translate 'View shopping cart' %}"
+                            style="width: 36px; height: 36px; padding: 0;"
+                        >
+                            <i class="fas fa-cart-shopping"></i>
+                            {% if cart_count %}<span class="position-absolute badge rounded-pill bg-dark" style="font-size: 0.6rem; top: -8px; right: -8px;">{{ cart_count }}</span>{% endif %}
+                        </a>
+
+                        <!-- Search Toggle -->
+                        <button
+                            class="btn btn-outline-warning btn-sm d-inline-flex align-items-center justify-content-center"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#navbarSearchCollapse"
+                            aria-controls="navbarSearchCollapse"
+                            aria-expanded="false"
+                            data-bs-toggle-tooltip="true"
+                            data-bs-placement="bottom"
+                            data-bs-title="{% translate 'Search' %}"
+                            style="width: 36px; height: 36px; padding: 0;"
+                        >
+                            <i class="fas fa-search"></i>
+                        </button>
+
+                        {% if user.is_authenticated %}
+                            <a
+                                class="btn btn-outline-warning btn-sm d-inline-flex align-items-center justify-content-center position-relative"
+                                href="{% url 'accounts:inbox' %}"
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="bottom"
+                                data-bs-title="{% translate 'Inbox' %}"
+                                style="width: 36px; height: 36px; padding: 0;"
+                            >
+                                <i class="fas fa-envelope"></i>
+                                {% if unread_notifications_count %}<span class="position-absolute badge rounded-pill bg-dark" style="font-size: 0.6rem; top: -8px; right: -8px;">{{ unread_notifications_count }}</span>{% endif %}
+                            </a>
+
+                            <a
+                                class="btn btn-outline-warning btn-sm d-inline-flex align-items-center justify-content-center"
+                                href="{% url 'posts:following_posts' %}"
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="bottom"
+                                data-bs-title="{% translate 'Following' %}"
+                                style="width: 36px; height: 36px; padding: 0;"
+                            >
+                                <i class="fas fa-heart"></i>
+                            </a>
+
+                            <a
+                                class="btn btn-outline-warning btn-sm d-inline-flex align-items-center justify-content-center"
+                                href="{% url 'posts:favorite_posts' %}"
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="bottom"
+                                data-bs-title="{% translate 'My favorites' %}"
+                                style="width: 36px; height: 36px; padding: 0;"
+                            >
+                                <i class="fas fa-star"></i>
+                            </a>
+
+                            <a
+                                class="btn btn-outline-warning btn-sm d-inline-flex align-items-center justify-content-center"
+                                href="{% url 'shop:my_orders' %}"
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="bottom"
+                                data-bs-title="{% translate 'My orders' %}"
+                                style="width: 36px; height: 36px; padding: 0;"
+                            >
+                                <i class="fas fa-bag-shopping"></i>
+                            </a>
+
+                            <!-- User Avatar -->
+                            <a
+                                href="{% url 'accounts:profile_edit' %}"
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="bottom"
+                                data-bs-title="{% translate 'Edit Profile' %}"
+                                style="display: inline-flex; align-items: center;"
+                            >
+                                <img src="{{ user|avatar_url }}"
+                                     alt="{{ user.username }}'s Avatar"
+                                     class="rounded-circle"
+                                     style="width: 36px; height: 36px; object-fit: cover;">
+                            </a>
+
+                            <!-- Logout Form -->
+                            <form
+                                id="logout-form"
+                                action="{% url 'logout' %}"
+                                method="post"
+                                class="m-0"
+                                style="display: inline-flex;"
+                            >
+                                {% csrf_token %}
+                                <button
+                                    type="submit"
+                                    class="btn btn-outline-warning btn-sm d-inline-flex align-items-center justify-content-center"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="bottom"
+                                    data-bs-title="{% translate 'Log Out' %}"
+                                    style="width: 36px; height: 36px; padding: 0;"
+                                >
+                                    <i class="fas fa-sign-out-alt"></i>
+                                </button>
+                            </form>
+
+                        {% else %}
+                            <!-- Login Link -->
+                            <a
+                                class="btn btn-outline-warning btn-sm"
+                                href="{% url 'login' %}"
+                            >
+                                {% translate "Log In" %}
+                            </a>
+                        {% endif %}
+
+                    </div>
+                    <!-- End Right Side -->
+                </div>
+                
+            </div>
+        </div>
+    </nav>
+
+    <!-- Collapsible Search Form -->
+    <div class="collapse tavata-navbar-search-strip" id="navbarSearchCollapse">
+        <div class="container">
+            <form class="tavata-navbar-search-form" role="search" action="{% url 'search:search_results' %}" method="get">
+                <input
+                    class="form-control tavata-navbar-search-input"
+                    type="search"
+                    name="q"
+                    value="{{ request.GET.q|default:'' }}"
+                    placeholder="{% translate 'Search...' %}"
+                    aria-label="{% translate 'Search' %}"
+                >
+                <button class="btn btn-primary tavata-navbar-search-button" type="submit">
+                    {% translate "Search" %}
+                </button>
+            </form>
+        </div>
+    </div>
+</header>

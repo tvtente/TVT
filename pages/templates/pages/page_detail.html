@@ -1,0 +1,531 @@
+<!-- File: pages/templates/pages/page_detail.html -->
+{% extends 'core/base.html' %}
+{% load i18n %}
+{% load static %}
+{% load custom_filters %}
+{% load widget_tags %} {# Ensure widget_tags is loaded for show_widget_zone #}
+
+{# This template is used to render single static pages and the dynamic homepage. #}
+{# It checks if a 'page' object exists in the context to handle both cases. #}
+
+
+{# --- SEO AND BROWSER TAB TITLE BLOCKS (CORRECTED) --- #}
+
+{% block title %}
+    {# The 'title' block is defined only ONCE. The conditional logic is inside. #}
+    {% if page %}
+        {{ page.translated_title }}
+    {% else %}
+        {% translate "Welcome to Tavata CMS!" %}
+    {% endif %}
+{% endblock title %}
+
+{% block seo_title %}
+    {# The 'seo_title' block is defined only ONCE. The conditional logic is inside. #}
+    {% if page %}
+        {{ page.translated_meta_title|default:page.translated_title }}
+    {% else %}
+        {% translate "Welcome" %} | Tavata.art 
+    {% endif %}
+{% endblock seo_title %}
+
+{% block seo_description %}
+    {# The 'seo_description' block is defined only ONCE. The conditional logic is inside. #}
+    {% if page %}
+        {{ page.translated_meta_description|default:"" }}
+    {% else %}
+        {% translate "Content is being prepared. An administrator needs to configure a homepage from the admin panel." %}
+    {% endif %}
+{% endblock seo_description %}
+
+{% block breadcrumbs %}
+    {% include "core/partials/_breadcrumbs.html" %}
+{% endblock %}
+
+{% block content_wrapper_class %}{% if uses_modular_sections %}mt-0{% else %}mt-4{% endif %}{% endblock %}
+
+{% block extra_css %}
+    {{ block.super }}
+    {% if uses_modular_sections %}
+    <style>
+        .breadcrumb {
+            margin-bottom: 0.25rem;
+        }
+
+        .homepage-main-content-display {
+            margin-top: 0;
+        }
+
+        .homepage-main-content-display .post-carousel-section {
+            margin-top: 0;
+        }
+
+        .home-section {
+            padding: 2.75rem 0;
+            border-block: 1px solid color-mix(in srgb, var(--tavata-card-box-border) 85%, white);
+        }
+
+        .home-section--muted {
+            background-color: var(--tavata-card-box-bg);
+        }
+
+        .home-section--notice {
+            background-color: var(--tavata-home-notice-bg);
+            color: var(--tavata-home-notice-color);
+        }
+
+        .home-section--surface {
+            background-color: var(--tavata-category-tree-bg);
+            border: 1px solid var(--tavata-category-tree-border);
+            border-radius: var(--tavata-border-radius);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.06);
+        }
+
+        .home-section--dark {
+            background-color: var(--tavata-dark);
+            color: var(--tavata-light);
+        }
+
+        .home-section + .home-section {
+            margin-top: 1.5rem;
+        }
+
+        .home-section-separator {
+            margin: 1.5rem 0;
+            opacity: 1;
+            border-top: 3px solid var(--tavata-yellow);
+        }
+
+        .home-section__inner {
+            max-width: 1040px;
+            margin-inline: auto;
+        }
+
+        .home-section__inner--full {
+            max-width: none;
+        }
+
+        .page-section-heading {
+            margin-bottom: 1rem;
+            font-size: clamp(1.7rem, 2.8vw, 2.4rem);
+            line-height: 1.08;
+            letter-spacing: -0.02em;
+        }
+
+        .page-section-button {
+            margin-top: 1.5rem;
+        }
+
+        .homepage-section-widgets--hero {
+            position: relative;
+        }
+
+        .homepage-section-widgets--hero .hero-carousel-section {
+            margin-inline: auto;
+            max-width: 1180px;
+        }
+
+        .homepage-section-widgets--hero .carousel-inner {
+            border-radius: calc(var(--tavata-border-radius) * 3);
+            box-shadow: 0 28px 64px rgba(15, 23, 42, 0.18);
+        }
+
+        .homepage-section-widgets--hero .carousel-caption {
+            inset-inline: 4.5%;
+            bottom: 2.2rem;
+        }
+
+        .homepage-section-widgets--hero .carousel-caption > div {
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 18px 32px rgba(0, 0, 0, 0.18);
+        }
+
+        .home-section--page {
+            position: relative;
+        }
+
+        .homepage-embedded-page {
+            background:
+                linear-gradient(135deg,
+                    color-mix(in srgb, var(--tavata-yellow) 10%, white),
+                    color-mix(in srgb, var(--tavata-card-box-bg) 92%, white)
+                );
+            border: 1px solid color-mix(in srgb, var(--tavata-card-box-border) 88%, var(--tavata-yellow));
+            border-left: 6px solid var(--tavata-yellow);
+            border-radius: calc(var(--tavata-border-radius) * 3);
+            box-shadow: 0 20px 48px rgba(33, 37, 41, 0.08);
+            overflow: hidden;
+        }
+
+        .homepage-embedded-page__intro {
+            padding: 1.25rem 1.25rem 0;
+        }
+
+        .homepage-embedded-page__inner {
+            display: grid;
+            gap: 1.5rem;
+            padding: 1.25rem;
+        }
+
+        .homepage-embedded-page__eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--tavata-home-notice-color);
+            margin-bottom: 0.85rem;
+        }
+
+        .homepage-embedded-page__eyebrow::before {
+            content: "";
+            width: 1.75rem;
+            height: 2px;
+            background: var(--tavata-yellow);
+        }
+
+        .homepage-embedded-page__title {
+            font-size: clamp(1.8rem, 3vw, 2.6rem);
+            line-height: 1.08;
+            margin-bottom: 0.85rem;
+            color: var(--tavata-dark);
+        }
+
+        .homepage-embedded-page__summary {
+            font-size: 1.05rem;
+            line-height: 1.65;
+            color: var(--tavata-home-notice-color);
+            margin-bottom: 1.1rem;
+        }
+
+        .homepage-embedded-page__body {
+            color: var(--tavata-body-color);
+        }
+
+        .homepage-embedded-page__body > *:last-child {
+            margin-bottom: 0;
+        }
+
+        .homepage-embedded-page__body {
+            display: -webkit-box;
+            -webkit-line-clamp: 7;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .homepage-embedded-page__media {
+            position: relative;
+        }
+
+        .homepage-embedded-page__image {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+            border-radius: calc(var(--tavata-border-radius) * 2.2);
+            box-shadow: 0 14px 36px rgba(33, 37, 41, 0.16);
+        }
+
+        .homepage-embedded-page__cta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.85rem;
+            align-items: center;
+            margin-top: 1.5rem;
+        }
+
+        .homepage-embedded-page__direct-link {
+            font-weight: 600;
+            color: var(--tavata-dark);
+            text-decoration: none;
+            border-bottom: 2px solid var(--tavata-yellow);
+            padding-bottom: 0.1rem;
+        }
+
+        .homepage-embedded-page__direct-link:hover,
+        .homepage-embedded-page__direct-link:focus {
+            color: var(--tavata-dark);
+            border-bottom-color: color-mix(in srgb, var(--tavata-yellow) 70%, var(--tavata-dark));
+        }
+
+        .homepage-modular-page .post-grid-section h2,
+        .homepage-modular-page .book-grid-section h2,
+        .homepage-modular-page .publication-grid-section h2 {
+            font-size: clamp(1.45rem, 2.2vw, 2rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.35rem;
+            text-wrap: balance;
+        }
+
+        .homepage-modular-page .post-grid-section .card,
+        .homepage-modular-page .book-grid-section .card,
+        .homepage-modular-page .publication-grid-section .card {
+            border-radius: calc(var(--tavata-border-radius) * 2.2);
+            overflow: hidden;
+            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+        }
+
+        .homepage-modular-page .post-grid-section .card:hover,
+        .homepage-modular-page .book-grid-section .card:hover,
+        .homepage-modular-page .publication-grid-section .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 24px 48px rgba(15, 23, 42, 0.12);
+        }
+
+        .homepage-modular-page .post-grid-section .card-title,
+        .homepage-modular-page .book-grid-section .card-title,
+        .homepage-modular-page .publication-grid-section .card-title {
+            line-height: 1.15;
+            letter-spacing: -0.015em;
+        }
+
+        .homepage-modular-page .book-grid-section .btn,
+        .homepage-modular-page .publication-grid-section .btn,
+        .homepage-modular-page .post-grid-section .btn {
+            border-radius: 999px;
+            padding-inline: 1rem;
+        }
+
+        @media (min-width: 992px) {
+            .homepage-embedded-page__inner {
+                grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.35fr);
+                align-items: start;
+                padding: 1.5rem;
+            }
+
+            .homepage-embedded-page__intro {
+                padding: 1.5rem 1.5rem 0;
+            }
+        }
+
+        @media (max-width: 991.98px) {
+            .home-section {
+                padding: 2rem 0;
+            }
+
+            .homepage-section-widgets--hero .carousel-caption {
+                position: static;
+                padding: 1rem 0 0;
+            }
+
+            .homepage-section-widgets--hero .carousel-caption > div {
+                max-width: none !important;
+            }
+        }
+    </style>
+    {% endif %}
+{% endblock %}
+
+{# --- MAIN CONTENT BLOCK --- #}
+{% block content %}
+<div class="{% if uses_modular_sections %}homepage-modular-page{% else %}container {% if page and page.is_homepage %}mt-0{% else %}mt-5{% endif %}{% endif %}">
+    {# If a valid page object was passed from the view, display its content. #}
+    {% if page %}
+
+        {# --- NEW: Widget Zone for Main Content Area on the Homepage --- #}
+        {# This section displays prominent content like a carousel or a grid, #}
+        {# only if the current page is the designated homepage. #}
+        {% if show_default_page_body %}
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+
+                    <!-- 1. Page Title -->
+                    <h1 class="fw-bold">{{ page.translated_title }}</h1>
+                    
+                    <!-- 2. Page Metadata (Author and Last Updated) -->
+                    <p class="text-muted small">
+                        {% firstof page.author.profile.get_display_name page.author.username as author_name %}
+                        {% blocktranslate with author=author_name updated_date=page.updated_at|date:"DATE_FORMAT" %}
+                            By {{ author }} | Last updated: {{ updated_date }}
+                        {% endblocktranslate %}
+                    </p>
+
+                    <!-- 3. Page Categories -->
+                    {% if page.categories.exists %}
+                        <div class="mb-3">
+                            <strong>{% translate "Categories" %}:</strong>
+                            {% for category in page.categories.all %}
+                                <a href="{{ category.get_absolute_url }}" class="badge bg-primary text-dark text-decoration-none">
+                                    {{ category.name }}
+                                </a>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <hr class="my-4">
+
+                    <!-- 4. Main Page Content (from WYSIWYG editor) -->
+                    <div class="page-content fs-5">
+                        {% with featured_image=page.get_featured_image %}
+                        {% with page_abstract=page.get_abstract %}
+                        {% if featured_image and page_abstract %}
+                        <div class="d-flex flex-column flex-md-row align-items-start gap-4 mb-4">
+                            <img src="{{ featured_image.url }}"
+                                alt="{{ page.translated_title }}"
+                                class="zoomable img-fluid rounded shadow flex-shrink-0"
+                                style="width: min(100%, 360px); aspect-ratio: 16 / 9; object-fit: cover;">
+                            <p class="lead mb-0">{{ page_abstract }}</p>
+                        </div>
+                        {% elif featured_image %}
+                        <img src="{{ featured_image.url }}"
+                             alt="{{ page.translated_title }}"
+                             class="zoomable img-fluid rounded mb-4 shadow">
+                        {% elif page_abstract %}
+                        <p class="lead">{{ page_abstract }}</p>
+                        {% endif %}
+                        {% endwith %}
+                        {% endwith %}
+                        {{ page.translated_content|add_zoom_class_to_images|safe }}
+                    </div>
+
+                </div>
+            </div>
+        {% endif %}
+
+
+        {% if has_page_sections %}
+            {% for section in page_sections %}
+                {% if not forloop.first %}
+                    <div class="container">
+                        <hr class="home-section-separator">
+                    </div>
+                {% endif %}
+                <section class="home-section home-section--{{ section.background_style }}{% if section.section_type == "page" and section.linked_page %} home-section--page{% endif %}">
+                    <div class="{% if not section.full_width %}container {% endif %}home-section__inner {% if section.full_width %}home-section__inner--full{% endif %}">
+                        {% if section.section_type == "hero" and section.widget_zone %}
+                            {% if section.translated_heading or section.translated_content or section.translated_button_text and section.translated_button_url %}
+                                <div class="row align-items-center g-5">
+                                    <div class="col-lg-7">
+                                        {% if section.embedded_page_heading %}
+                                            <h2 class="page-section-heading">{{ section.embedded_page_heading }}</h2>
+                                        {% endif %}
+                                        {% if section.translated_content %}
+                                            <div class="page-content fs-5">
+                                                {{ section.translated_content|add_zoom_class_to_images|safe }}
+                                            </div>
+                                        {% endif %}
+                                        {% if section.translated_button_text and section.translated_button_url %}
+                                            <a href="{{ section.translated_button_url }}" class="btn btn-primary page-section-button">
+                                                {{ section.translated_button_text }}
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-lg-5">
+                                        <div class="homepage-section-widgets mt-4 mt-lg-0">
+                                            {% show_widget_zone section.widget_zone.slug %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="homepage-section-widgets homepage-section-widgets--hero">
+                                    {% show_widget_zone section.widget_zone.slug %}
+                                </div>
+                            {% endif %}
+                        {% elif section.section_type == "page" and section.linked_page %}
+                            <article class="homepage-embedded-page">
+                                {% if section.translated_content %}
+                                    <div class="homepage-embedded-page__intro page-content fs-5">
+                                        {{ section.translated_content|add_zoom_class_to_images|safe }}
+                                    </div>
+                                {% endif %}
+                                <div class="homepage-embedded-page__inner">
+                                    {% with linked_featured_image=section.linked_page.get_featured_image %}
+                                    {% if linked_featured_image %}
+                                        <div class="homepage-embedded-page__media">
+                                            <img
+                                                src="{{ linked_featured_image.url }}"
+                                                alt="{{ section.linked_page.translated_title }}"
+                                                class="homepage-embedded-page__image zoomable"
+                                            >
+                                        </div>
+                                    {% endif %}
+                                    {% endwith %}
+                                    <div class="homepage-embedded-page__content">
+                                        <div class="homepage-embedded-page__eyebrow">
+                                            {{ section.translated_internal_title }}
+                                        </div>
+                                        {% if section.embedded_page_heading %}
+                                            <h2 class="homepage-embedded-page__title">{{ section.embedded_page_heading }}</h2>
+                                        {% endif %}
+                                        {% with linked_abstract=section.linked_page.get_abstract %}
+                                        {% if linked_abstract %}
+                                            <p class="homepage-embedded-page__summary">{{ linked_abstract }}</p>
+                                        {% endif %}
+                                        {% endwith %}
+                                        <div class="homepage-embedded-page__body page-content fs-5">
+                                            {{ section.linked_page.translated_content|add_zoom_class_to_images|truncatewords_html:130|safe }}
+                                        </div>
+                                        <div class="homepage-embedded-page__cta">
+                                            {% if section.translated_button_text and section.translated_button_url %}
+                                                <a href="{{ section.translated_button_url }}" class="btn btn-primary page-section-button mt-0">
+                                                    {{ section.translated_button_text }}
+                                                </a>
+                                            {% endif %}
+                                            <a href="{{ section.linked_page.get_absolute_url }}" class="homepage-embedded-page__direct-link">
+                                                {{ section.linked_page.translated_title }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </article>
+                        {% else %}
+                            {% if section.embedded_page_heading %}
+                                <h2 class="page-section-heading">{{ section.embedded_page_heading }}</h2>
+                            {% endif %}
+                            {% if section.translated_content %}
+                                <div class="page-content fs-5">
+                                    {{ section.translated_content|add_zoom_class_to_images|safe }}
+                                </div>
+                            {% endif %}
+                            {% if section.translated_button_text and section.translated_button_url %}
+                                <a href="{{ section.translated_button_url }}" class="btn btn-primary page-section-button">
+                                    {{ section.translated_button_text }}
+                                </a>
+                            {% endif %}
+                            {% if section.widget_zone %}
+                                <div class="{% if section.full_width %}container {% endif %}homepage-section-widgets mt-4">
+                                    {% show_widget_zone section.widget_zone.slug %}
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </section>
+            {% endfor %}
+        {% endif %}
+
+    {% else %}
+        {# If no page is configured as the homepage, show this friendly message. #}
+        <div class="text-center py-5">
+            <i class="fas fa-tools fa-4x text-muted mb-4"></i>
+            <h1 class="display-4">{% translate "Welcome to Tavata CMS!" %}</h1>
+            <p class="lead text-muted">{% translate "Content is being prepared. An administrator needs to configure a homepage from the admin panel." %}</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+
+{# --- LEFT SIDEBAR BLOCK (Conditional) --- #}
+{# This sidebar will only appear if we are rendering the designated homepage. #}
+{% block sidebar_left %}
+    {% if page and page.is_homepage %}
+        <div class="sticky-top pt-5">
+            {% show_widget_zone 'homepage-sidebar-left' %}
+        </div>
+    {% endif %}
+{% endblock sidebar_left %}
+
+
+{# --- RIGHT SIDEBAR BLOCK (Conditional) --- #}
+{# This sidebar will also only appear on the designated homepage. #}
+{% block sidebar_right %}
+    {% if page and page.is_homepage %}
+        <div class="sticky-top pt-5">
+            {% show_widget_zone 'homepage-sidebar-right' %}
+        </div>
+    {% endif %}
+{% endblock sidebar_right %}

@@ -1,0 +1,155 @@
+{# File: publications/templates/publications/publication_detail.html #}
+{% extends "core/base.html" %}
+{% load i18n %}
+
+{% block seo_title %}{{ meta_title|default:title }}{% endblock %}
+{% block seo_description %}{{ meta_description }}{% endblock %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<article class="container my-5 publication-detail">
+
+    <header class="publication-header mb-5">
+
+        <div class="mb-3">
+            <a href="{% url 'publications:publication_list' %}" class="text-decoration-none small">
+                <i class="fas fa-arrow-left me-1"></i>
+                {% translate "Back to publications" %}
+            </a>
+        </div>
+
+        <div class="text-center mb-4">
+            <span class="badge text-bg-warning mb-3">
+                {% translate "Scientific publication" %}
+            </span>
+
+            <h1 class="display-5 fw-semibold mb-3">
+                {{ publication.title }}
+            </h1>
+
+            {% if publication.abstract %}
+                <p class="lead text-muted mx-auto publication-subtitle">
+                    {{ publication.abstract|striptags|truncatewords:36|safe }}
+                </p>
+            {% endif %}
+        </div>
+
+        <div class="publication-meta card border-0 shadow-sm mb-4">
+            <div class="card-body">
+                <div class="row g-3 text-muted small">
+
+                    <div class="col-md-4">
+                        <strong class="text-dark d-block">{% translate "Publication date" %}</strong>
+                        <span>
+                            <i class="fas fa-calendar-alt me-1"></i>
+                            {{ publication.publication_date|date:"DATE_FORMAT" }}
+                        </span>
+                    </div>
+
+                    {% if publication.get_authors_display %}
+                        <div class="col-md-4">
+                            <strong class="text-dark d-block">{% translate "Authors" %}</strong>
+                            <span>
+                                <i class="fas fa-user-edit me-1"></i>
+                                {{ publication.get_authors_display }}
+                            </span>
+                        </div>
+                    {% endif %}
+
+                    {% if publication.doi %}
+                        <div class="col-md-4">
+                            <strong class="text-dark d-block">{% translate "DOI" %}</strong>
+                            <span>
+                                <i class="fas fa-fingerprint me-1"></i>
+                                {{ publication.doi }}
+                            </span>
+                        </div>
+                    {% endif %}
+
+                    {% if publication.get_categories_display %}
+                        <div class="col-12">
+                            <strong class="text-dark d-block mb-1">{% translate "Categories" %}</strong>
+                            {% for category in publication.categories.all %}
+                                <span class="badge text-bg-light border me-1">
+                                    {{ category.name }}
+                                </span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+
+        {% with publication_image=publication.get_featured_image %}
+            {% if publication_image %}
+                <figure class="publication-hero-image mb-4">
+                    <img
+                        src="{{ publication_image.url }}"
+                        alt="{{ publication.title }}"
+                        class="img-fluid rounded-4 shadow-sm w-100"
+                    >
+                </figure>
+            {% endif %}
+        {% endwith %}
+
+    </header>
+
+    {% if publication.abstract %}
+        <section class="publication-abstract-block mb-4">
+            <div class="row g-4 align-items-start">
+
+                <div class="col-lg-8">
+                    <h2>{% translate "Abstract" %}</h2>
+                    <div class="publication-section-body">
+                        {{ publication.abstract|safe }}
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    {% with social_image=publication.get_social_image %}
+                        {% if social_image %}
+                            <img
+                                src="{{ social_image.url }}"
+                                alt="{{ publication.title }}"
+                                class="img-fluid rounded-4 shadow-sm publication-social-image"
+                            >
+                        {% endif %}
+                    {% endwith %}
+                </div>
+
+            </div>
+        </section>
+    {% endif %}
+
+    {% for section in sections %}
+        {% if section.content %}
+            <section class="publication-section mb-4">
+                <h2>{{ section.title }}</h2>
+                <div class="publication-section-body">
+                    {{ section.content|safe }}
+                </div>
+            </section>
+        {% endif %}
+    {% endfor %}
+
+    {% if publication.attachment %}
+        <section class="publication-section mb-4">
+            <h2>{% translate "Document" %}</h2>
+
+            <p class="text-muted">
+                {% translate "This publication includes a document that can be read online." %}
+            </p>
+
+            <a
+                href="{% url 'publications:publication_document' slug=publication.slug %}"
+                class="btn btn-primary"
+            >
+                <i class="fas fa-book-open me-1"></i>
+                {% translate "View document" %}
+            </a>
+        </section>
+    {% endif %}
+
+</article>
+{% endblock %}
