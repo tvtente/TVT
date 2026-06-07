@@ -61,7 +61,6 @@ from site_settings.models import SiteConfiguration, SiteTemplate
 
 logger = logging.getLogger(__name__)
 User = get_user_model()
-CHROME_BINARY = shutil.which("google-chrome") or shutil.which("chromium") or shutil.which("chromium-browser")
 CURATED_COMPETENCY_SLUGS = (
     "analytical-thinking",
     "problem-solving",
@@ -99,6 +98,53 @@ PROFILE_ITEM_TRANSLATABLE_FIELDS = {
     "link_items": ("label",),
     "external_publication_items": ("title", "publisher", "description"),
 }
+
+
+def _resolve_chrome_binary():
+    configured_candidates = [
+        getattr(settings, "CHROME_BINARY", ""),
+        os.environ.get("CHROME_BINARY", ""),
+        os.environ.get("CHROMIUM_BINARY", ""),
+    ]
+
+    executable_names = (
+        "google-chrome",
+        "google-chrome-stable",
+        "chromium",
+        "chromium-browser",
+        "chrome",
+    )
+
+    absolute_path_candidates = (
+        "/usr/bin/google-chrome",
+        "/usr/bin/google-chrome-stable",
+        "/usr/bin/chromium",
+        "/usr/bin/chromium-browser",
+        "/snap/bin/chromium",
+        "/usr/local/bin/chromium",
+        "/usr/local/bin/google-chrome",
+    )
+
+    for candidate in configured_candidates:
+        candidate = (candidate or "").strip()
+        if not candidate:
+            continue
+        if os.path.isabs(candidate) and os.path.exists(candidate) and os.access(candidate, os.X_OK):
+            return candidate
+        resolved = shutil.which(candidate)
+        if resolved:
+            return resolved
+
+    for name in executable_names:
+        resolved = shutil.which(name)
+        if resolved:
+            return resolved
+
+    for candidate in absolute_path_candidates:
+        if os.path.exists(candidate) and os.access(candidate, os.X_OK):
+            return candidate
+
+    return None
 
 
 def _remove_previous_avatar_file_if_custom(profile):
@@ -1062,7 +1108,12 @@ def user_profile_public_pdf_view(request, username):
     """
     Generate a PDF using a real headless Chrome engine.
     """
-    if not CHROME_BINARY:
+    chrome_binary = _resolve_chrome_binary()
+    if not chrome_binary:
+        logger.error(
+            "Chrome/Chromium binary was not found for PDF generation. "
+            "Checked env/configured paths and common executable names."
+        )
         raise Http404(gettext("Chrome/Chromium is not available for PDF generation."))
 
     context = _build_public_profile_context(request, username)
@@ -1077,7 +1128,7 @@ def user_profile_public_pdf_view(request, username):
     with tempfile.TemporaryDirectory(prefix="profile-pdf-") as tmpdir:
         output_path = Path(tmpdir) / output_name
         command = [
-            CHROME_BINARY,
+            chrome_binary,
             "--headless=new",
             "--disable-gpu",
             "--no-sandbox",
