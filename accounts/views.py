@@ -3,11 +3,7 @@ from collections import OrderedDict
 from datetime import date
 import logging
 import os
-import shutil
-import subprocess
-import tempfile
 import uuid
-from pathlib import Path
 
 from django.conf import settings
 from django.contrib import messages
@@ -16,7 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
 from django.db.models import Prefetch
-from django.http import FileResponse, Http404, HttpResponseRedirect, JsonResponse
+from django.http import Http404, HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.utils.text import slugify
@@ -26,6 +22,7 @@ from django.utils.translation import get_language, gettext, override
 from core.pagination import get_site_config_int, paginate_queryset
 from publications.models import Publication
 
+from .reportlab_pdf import build_public_profile_pdf_bytes
 from .forms import (
     CustomUserCreationForm,
     UserUpdateForm,
@@ -98,53 +95,6 @@ PROFILE_ITEM_TRANSLATABLE_FIELDS = {
     "link_items": ("label",),
     "external_publication_items": ("title", "publisher", "description"),
 }
-
-
-def _resolve_chrome_binary():
-    configured_candidates = [
-        getattr(settings, "CHROME_BINARY", ""),
-        os.environ.get("CHROME_BINARY", ""),
-        os.environ.get("CHROMIUM_BINARY", ""),
-    ]
-
-    executable_names = (
-        "google-chrome",
-        "google-chrome-stable",
-        "chromium",
-        "chromium-browser",
-        "chrome",
-    )
-
-    absolute_path_candidates = (
-        "/usr/bin/google-chrome",
-        "/usr/bin/google-chrome-stable",
-        "/usr/bin/chromium",
-        "/usr/bin/chromium-browser",
-        "/snap/bin/chromium",
-        "/usr/local/bin/chromium",
-        "/usr/local/bin/google-chrome",
-    )
-
-    for candidate in configured_candidates:
-        candidate = (candidate or "").strip()
-        if not candidate:
-            continue
-        if os.path.isabs(candidate) and os.path.exists(candidate) and os.access(candidate, os.X_OK):
-            return candidate
-        resolved = shutil.which(candidate)
-        if resolved:
-            return resolved
-
-    for name in executable_names:
-        resolved = shutil.which(name)
-        if resolved:
-            return resolved
-
-    for candidate in absolute_path_candidates:
-        if os.path.exists(candidate) and os.access(candidate, os.X_OK):
-            return candidate
-
-    return None
 
 
 def _remove_previous_avatar_file_if_custom(profile):
@@ -1106,61 +1056,23 @@ def user_profile_public_print_view(request, username):
 
 def user_profile_public_pdf_view(request, username):
     """
-    Generate a PDF using a real headless Chrome engine.
+    Generate a PDF using ReportLab.
     """
-    chrome_binary = _resolve_chrome_binary()
-    if not chrome_binary:
-        logger.error(
-            "Chrome/Chromium binary was not found for PDF generation. "
-            "Checked env/configured paths and common executable names."
-        )
-        raise Http404(gettext("Chrome/Chromium is not available for PDF generation."))
-
     context = _build_public_profile_context(request, username)
     if not _profile_has_cv_in_language(context["profile"], get_language()):
         raise Http404(gettext("CV not available in this language."))
 
-    print_url = request.build_absolute_uri(
-        reverse("accounts:public_profile_print", kwargs={"username": username})
-    )
     output_name = f"{slugify(username)}-cv.pdf"
 
-    with tempfile.TemporaryDirectory(prefix="profile-pdf-") as tmpdir:
-        output_path = Path(tmpdir) / output_name
-        command = [
-            chrome_binary,
-            "--headless=new",
-            "--disable-gpu",
-            "--no-sandbox",
-            "--run-all-compositor-stages-before-draw",
-            "--virtual-time-budget=3000",
-            "--print-to-pdf-no-header",
-            f"--print-to-pdf={output_path}",
-            print_url,
-        ]
+    try:
+        pdf_bytes = build_public_profile_pdf_bytes(context)
+    except Exception:
+        logger.exception("ReportLab PDF generation failed for user '%s'.", username)
+        raise Http404(gettext("The PDF could not be generated at this time."))
 
-        try:
-            subprocess.run(
-                command,
-                check=True,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                text=True,
-            )
-        except subprocess.CalledProcessError as exc:
-            logger.error(
-                "Headless Chrome PDF generation failed for user '%s': %s",
-                username,
-                exc.stderr,
-            )
-            raise Http404(gettext("The PDF could not be generated at this time."))
-
-        return FileResponse(
-            output_path.open("rb"),
-            as_attachment=False,
-            filename=output_name,
-            content_type="application/pdf",
-        )
+    response = HttpResponse(pdf_bytes, content_type="application/pdf")
+    response["Content-Disposition"] = f'inline; filename="{output_name}"'
+    return response
 
 
 def user_directory_view(request):

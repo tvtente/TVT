@@ -1,5 +1,6 @@
 from datetime import date
 from types import SimpleNamespace
+from unittest.mock import patch
 
 from django.urls import reverse
 from django.contrib.auth.models import User
@@ -596,6 +597,18 @@ class ProfileCvPresentationTests(TestCase):
         )
         self.assertContains(response, "Technical and Methodological Knowledge")
         self.assertContains(response, "Academic and Professional Links")
+
+    @patch("accounts.views.build_public_profile_pdf_bytes", return_value=b"%PDF-1.7 test")
+    def test_public_profile_pdf_uses_reportlab_response(self, pdf_builder_mock):
+        response = self.client.get(
+            reverse("accounts:public_profile_pdf", kwargs={"username": self.user.username})
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response["Content-Type"], "application/pdf")
+        self.assertIn('inline; filename="cv-present-cv.pdf"', response["Content-Disposition"])
+        self.assertEqual(response.content, b"%PDF-1.7 test")
+        pdf_builder_mock.assert_called_once()
 
     def test_get_user_avatar_url_returns_static_fallback_when_profile_avatar_resolution_fails(self):
         class BrokenProfile:
