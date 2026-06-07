@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
+from django.utils.translation import get_language
 from django.templatetags.static import static 
 from django.core.exceptions import ObjectDoesNotExist, SuspiciousFileOperation, ValidationError
 from parler.models import TranslatableModel, TranslatedFields
@@ -86,6 +87,14 @@ class ProfileCompetencyLevel(ProfileCatalogBase):
         verbose_name_plural = _("Competency levels")
 
 class ProfileSkillType(ProfileCatalogBase):
+    parent = models.ForeignKey(
+        "self",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="children",
+        verbose_name=_("Parent category"),
+    )
     translations = TranslatedFields(
         name=models.CharField(max_length=120, verbose_name=_("Name")),
         description=models.TextField(blank=True, verbose_name=_("Description")),
@@ -94,6 +103,13 @@ class ProfileSkillType(ProfileCatalogBase):
     class Meta(ProfileCatalogBase.Meta):
         verbose_name = _("Skill type")
         verbose_name_plural = _("Skill types")
+        ordering = ["parent__order", "parent__slug", "order", "slug"]
+
+    @property
+    def hierarchy_label(self):
+        if self.parent_id:
+            return f"{self.parent.translated_name} / {self.translated_name}"
+        return self.translated_name
 
 
 class ProfileCompetencyType(ProfileCatalogBase):
@@ -480,6 +496,22 @@ class ProfileEducation(TranslatableModel):
         blank=True,
         verbose_name=_("Institution URL"),
     )
+    credit_hours = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        verbose_name=_("Number of credits"),
+        help_text=_("Total hours or credits completed for this course of study."),
+    )
+    start_date = models.DateField(
+        null=True,
+        blank=True,
+        verbose_name=_("Start date"),
+    )
+    end_date = models.DateField(
+        null=True,
+        blank=True,
+        verbose_name=_("End date"),
+    )
     start_year = models.PositiveIntegerField(
         null=True,
         blank=True,
@@ -522,12 +554,33 @@ class ProfileEducation(TranslatableModel):
     class Meta:
         verbose_name = _("Education")
         verbose_name_plural = _("Education")
-        ordering = ["order", "-start_year", "id"]
+        ordering = ["-end_date", "-end_year", "-start_date", "-start_year", "-id"]
 
     def __str__(self):
         if self.degree:
             return f"{self.institution} - {self.degree}"
         return self.institution
+
+    def clean(self):
+        super().clean()
+
+        if self.is_current:
+            self.end_date = timezone.localdate()
+
+        if self.start_date:
+            self.start_year = self.start_date.year
+
+        if self.end_date:
+            self.end_year = self.end_date.year
+        elif not self.is_current:
+            self.end_year = None
+
+        if self.start_date and self.end_date and self.end_date < self.start_date:
+            raise ValidationError({"end_date": _("End date cannot be earlier than start date.")})
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super().save(*args, **kwargs)
 
 
 class ProfileExperience(TranslatableModel):
@@ -583,17 +636,38 @@ class ProfileExperience(TranslatableModel):
         ),
         description=models.TextField(
             blank=True,
-            verbose_name=_("Description"),
+            verbose_name=_("Company description"),
+        ),
+        main_responsibilities=models.TextField(
+            blank=True,
+            verbose_name=_("Main responsibilities"),
+        ),
+        key_achievements=models.TextField(
+            blank=True,
+            verbose_name=_("Key achievements or projects"),
         ),
     )
 
     class Meta:
         verbose_name = _("Experience")
         verbose_name_plural = _("Experience")
-        ordering = ["order", "-start_date", "id"]
+        ordering = ["-end_date", "-start_date", "-id"]
 
     def __str__(self):
         return f"{self.position} at {self.organization}"
+
+    def clean(self):
+        super().clean()
+
+        if self.is_current:
+            self.end_date = timezone.localdate()
+
+        if self.start_date and self.end_date and self.end_date < self.start_date:
+            raise ValidationError({"end_date": _("End date cannot be earlier than start date.")})
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super().save(*args, **kwargs)
 
 
 class ProfileCertification(TranslatableModel):
@@ -620,10 +694,21 @@ class ProfileCertification(TranslatableModel):
         blank=True,
         verbose_name=_("Expiration date"),
     )
+    no_expiration = models.BooleanField(
+        default=False,
+        verbose_name=_("No expiration"),
+    )
+    credit_hours = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        verbose_name=_("Number of hours"),
+        help_text=_("Total hours completed for this certification, if applicable."),
+    )
     credential_id = models.CharField(
         max_length=120,
         blank=True,
-        verbose_name=_("Credential ID"),
+        verbose_name=_("Reference or record number"),
+        help_text=_("Internal reference, folio, or registration number associated with the credential."),
     )
     credential_url = models.URLField(
         max_length=300,
@@ -653,12 +738,25 @@ class ProfileCertification(TranslatableModel):
     class Meta:
         verbose_name = _("Certification")
         verbose_name_plural = _("Certifications")
-        ordering = ["order", "-issue_date", "id"]
+        ordering = ["-issue_date", "-id", "order"]
 
     def __str__(self):
         if self.issuer:
             return f"{self.name} - {self.issuer}"
         return self.name
+
+    def clean(self):
+        super().clean()
+
+        if self.no_expiration:
+            self.expiration_date = None
+
+        if self.expiration_date and self.issue_date and self.expiration_date < self.issue_date:
+            raise ValidationError({"expiration_date": _("Expiration date cannot be earlier than issue date.")})
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super().save(*args, **kwargs)
 
 
 class ProfileLanguage(TranslatableModel):
@@ -731,7 +829,7 @@ class ProfileSkill(TranslatableModel):
     class Meta:
         verbose_name = _("Skill")
         verbose_name_plural = _("Skills")
-        ordering = ["order", "skill_type__slug", "id"]
+        ordering = ["skill_type__parent__order", "skill_type__parent__slug", "skill_type__order", "skill_type__slug", "id"]
 
     def __str__(self):
         return str(self.skill_type) if self.skill_type else _("Skill")
@@ -803,6 +901,7 @@ class ProfileLink(TranslatableModel):
     translations = TranslatedFields(
         label=models.CharField(
             max_length=120,
+            blank=True,
             verbose_name=_("Label"),
         ),
     )
@@ -813,7 +912,20 @@ class ProfileLink(TranslatableModel):
         ordering = ["order", "id"]
 
     def __str__(self):
-        return self.label
+        return self.get_display_label()
+
+    def get_display_label(self):
+        if self.link_type_id:
+            return self.link_type.translated_name
+        return self.safe_translation_getter("label", any_language=True) or self.url
+
+    def save(self, *args, **kwargs):
+        language_code = (get_language() or "es").split("-")[0]
+        self.set_current_language(language_code)
+        current_label = self.safe_translation_getter("label", language_code=language_code, any_language=False) or ""
+        if not current_label.strip():
+            self.label = self.link_type.translated_name if self.link_type_id else self.url
+        super().save(*args, **kwargs)
 
 
 class ProfileExternalPublication(TranslatableModel):
@@ -830,10 +942,10 @@ class ProfileExternalPublication(TranslatableModel):
         on_delete=models.SET_NULL,
         verbose_name=_("Publication type"),
     )
-    year = models.PositiveIntegerField(
+    publication_date = models.DateField(
         null=True,
         blank=True,
-        verbose_name=_("Year"),
+        verbose_name=_("Publication date"),
     )
     url = models.URLField(
         max_length=300,
@@ -868,7 +980,7 @@ class ProfileExternalPublication(TranslatableModel):
     class Meta:
         verbose_name = _("External Publication")
         verbose_name_plural = _("External Publications")
-        ordering = ["order", "-year", "id"]
+        ordering = ["-publication_date", "-id", "order"]
 
     def __str__(self):
         return self.title

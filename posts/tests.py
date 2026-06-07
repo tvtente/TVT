@@ -1,15 +1,21 @@
 import tempfile
 from datetime import timedelta
 
+from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.core.files.base import ContentFile
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.forms import ModelForm
+from django.test import RequestFactory
 from django.test import TestCase, override_settings
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import override
 
 from gallery.models import Image
+from gallery.models import StagedUpload
 from accounts.models import UserFollow, UserNotification
+from posts.admin import PostAdmin
 from posts.models import Post, PostFavorite, PostPointAllocation
 from posts.selectors import get_posts_for_list_type
 from posts.services import get_post_points_summary
@@ -68,6 +74,51 @@ class PostGalleryAssetDualReadTests(TestCase):
         post.save()
 
         self.assertEqual(post.get_mobile_image().name, gmobile.image.name)
+
+    def test_post_admin_finalize_staged_png_persists_featured_asset(self):
+        request = RequestFactory().post(
+            "/admin/posts/post/add/",
+            {
+                "language": "es",
+                "featured_image_staging_id": "",
+                "social_image_staging_id": "",
+                "mobile_image_staging_id": "",
+            },
+        )
+        request.user = self.user
+
+        png_bytes = (
+            b"\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01"
+            b"\x08\x06\x00\x00\x00\x1f\x15\xc4\x89\x00\x00\x00\rIDATx\x9cc``\xf8\x0f"
+            b"\x00\x01\x05\x01\x02\xa7^\xab?\x00\x00\x00\x00IEND\xaeB`\x82"
+        )
+        staged = StagedUpload.objects.create(
+            file=SimpleUploadedFile("featured.png", png_bytes, content_type="image/png"),
+        )
+        request.POST = request.POST.copy()
+        request.POST["featured_image_staging_id"] = str(staged.pk)
+
+        post = Post(author=self.user, status="published")
+        post.set_current_language("es")
+
+        class DummyPostForm(ModelForm):
+            class Meta:
+                model = Post
+                fields = ()
+
+        form = DummyPostForm(instance=post)
+        form.cleaned_data = {
+            "title": "Post con imagen",
+            "slug": "post-con-imagen",
+            "summary": "Resumen",
+            "meta_description": "",
+        }
+
+        post_admin = PostAdmin(Post, admin.site)
+        post_admin._apply_gallery_asset_staging_to_cleaned_data(request, form)
+
+        self.assertIsNotNone(form.instance.featured_image_asset)
+        self.assertTrue(form.instance.featured_image_asset.image.name.endswith(".png"))
 
 
 @override_settings(MEDIA_ROOT=tempfile.mkdtemp(), LANGUAGES=(("es", "Español"), ("en", "English")))

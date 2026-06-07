@@ -581,6 +581,82 @@ msgstr "Data d’inici"
 msgid "End date"
 msgstr "Data de finalització"
 
+#: accounts/forms.py:297
+msgid "If checked, the system will record today's date as the current end date."
+msgstr "Si marques aquesta opció, el sistema registrarà la data d'avui com a data final actual."
+
+#: accounts/forms.py:307 accounts/models.py:541
+msgid "End date cannot be earlier than start date."
+msgstr "La data de finalització no pot ser anterior a la data d'inici."
+
+#: accounts/models.py:486 accounts/forms.py:335
+msgid "Number of credits"
+msgstr "Nombre de crèdits"
+
+#: accounts/models.py:487
+msgid "Total hours or credits completed for this course of study."
+msgstr "Total d'hores o crèdits completats en aquest estudi."
+
+#: accounts/templates/accounts/_public_profile_cv_content.html:309
+msgid "%(credits)s credit hours"
+msgstr "%(credits)s hores de crèdit"
+
+#: accounts/models.py:602 accounts/templates/accounts/_public_profile_cv_content.html:260
+msgid "Company description"
+msgstr "Descripció de l'empresa"
+
+#: accounts/models.py:606 accounts/templates/accounts/_public_profile_cv_content.html:266
+msgid "Main responsibilities"
+msgstr "Responsabilitats principals"
+
+#: accounts/models.py:610 accounts/templates/accounts/_public_profile_cv_content.html:272
+msgid "Key achievements or projects"
+msgstr "Assoliments o projectes destacats"
+
+#: accounts/forms.py:311 accounts/forms.py:366
+msgid "Start date is required."
+msgstr "La data d'inici és obligatòria."
+
+#: accounts/forms.py:316 accounts/forms.py:370
+msgid "End date is required unless the entry is marked as current."
+msgstr "La data de finalització és obligatòria tret que l'entrada estigui marcada com a actual."
+
+#: accounts/models.py:676 accounts/templates/accounts/_public_profile_cv_content.html:370
+msgid "No expiration"
+msgstr "Sense caducitat"
+
+#: accounts/models.py:682
+msgid "Number of hours"
+msgstr "Nombre d'hores"
+
+#: accounts/models.py:683
+msgid "Total hours completed for this certification, if applicable."
+msgstr "Total d'hores completades en aquesta certificació, si escau."
+
+#: accounts/models.py:689
+msgid "Reference or record number"
+msgstr "Referència o número de registre"
+
+#: accounts/models.py:690
+msgid "Internal reference, folio, or registration number associated with the credential."
+msgstr "Referència interna, foli o número de registre associat a la credencial."
+
+#: accounts/forms.py:397
+msgid "Check this if the certification does not expire."
+msgstr "Marca aquesta opció si la certificació no caduca."
+
+#: accounts/forms.py:407
+msgid "Expiration date is required unless the certification has no expiration."
+msgstr "La data de venciment és obligatòria tret que la certificació no tingui caducitat."
+
+#: accounts/forms.py:409 accounts/models.py:718
+msgid "Expiration date cannot be earlier than issue date."
+msgstr "La data de venciment no pot ser anterior a la data d'emissió."
+
+#: accounts/templates/accounts/_public_profile_cv_content.html:360
+msgid "%(hours)s hours"
+msgstr "%(hours)s hores"
+
 #: accounts/models.py:569
 msgid "Organization"
 msgstr "Organització"
@@ -5732,3 +5808,23 @@ msgid ""
 msgstr ""
 "Registra llibres, articles, capítols, assajos o altres publicacions "
 "publicades fora de TVTente."
+
+#: widgets/templates/widgets/partials/_hero_carousel.html:51
+msgid "Explore article"
+msgstr "Explora l'article"
+
+#: accounts/templates/accounts/_public_profile_cv_content.html:173
+msgid "N. Certifications"
+msgstr "N. certificacions"
+
+#: accounts/templates/accounts/_public_profile_cv_content.html:153
+msgid "Years of Experience"
+msgstr "Anys d'experiència"
+
+#: accounts/templates/accounts/_public_profile_cv_content.html:163
+msgid "Years of Education"
+msgstr "Anys de formació"
+
+#: accounts/templates/accounts/_public_profile_cv_content.html:177
+msgid "- %(hours)s hrs."
+msgstr "- %(hours)s hrs."

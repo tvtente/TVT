@@ -76,6 +76,10 @@ class Category(MPTTModel, TranslatableModel):
             parent_name = self.parent.safe_translation_getter("name", any_language=True) or str(_("Untitled"))
             return f"{parent_name} -> {name}"
         return name
+
+    @property
+    def translated_title(self):
+        return self.safe_translation_getter("name", any_language=True) or str(_("Untitled"))
     
     @property
     def is_blog_category(self):

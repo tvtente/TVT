@@ -1,4 +1,6 @@
 # File: accounts/views.py
+from collections import OrderedDict
+from datetime import date
 import logging
 import os
 import shutil
@@ -32,8 +34,6 @@ from .forms import (
     ProfileExperienceFormSet,
     ProfileCertificationFormSet,
     ProfileLanguageFormSet,
-    ProfileSkillFormSet,
-    ProfileCompetencyFormSet,
     ProfileLinkFormSet,
     ProfileExternalPublicationFormSet,
 )
@@ -45,7 +45,9 @@ from .models import (
     ProfileCertification,
     ProfileLanguage,
     ProfileSkill,
+    ProfileSkillType,
     ProfileCompetency,
+    ProfileCompetencyType,
     ProfileLink,
     ProfileExternalPublication,
     UserFollow,
@@ -60,6 +62,20 @@ from site_settings.models import SiteConfiguration, SiteTemplate
 logger = logging.getLogger(__name__)
 User = get_user_model()
 CHROME_BINARY = shutil.which("google-chrome") or shutil.which("chromium") or shutil.which("chromium-browser")
+CURATED_COMPETENCY_SLUGS = (
+    "analytical-thinking",
+    "problem-solving",
+    "continuous-learning",
+    "autonomy",
+    "technical-leadership",
+    "communication",
+    "teamwork",
+    "adaptability",
+    "attention-to-detail",
+    "decision-making",
+    "time-management",
+    "research-rigor",
+)
 
 PROFILE_TRANSLATABLE_FIELDS = (
     "display_name",
@@ -123,8 +139,6 @@ def _get_profile_cv_formset_definitions():
         ("experience_formset", gettext("Experience"), ProfileExperienceFormSet, "experience"),
         ("certification_formset", gettext("Certifications"), ProfileCertificationFormSet, "certifications"),
         ("language_formset", gettext("Languages"), ProfileLanguageFormSet, "languages"),
-        ("skill_formset", gettext("Skills"), ProfileSkillFormSet, "skills"),
-        ("competency_formset", gettext("Competencies"), ProfileCompetencyFormSet, "competencies"),
         ("link_formset", gettext("Professional Links"), ProfileLinkFormSet, "links"),
         ("external_publication_formset", gettext("External Publications"), ProfileExternalPublicationFormSet, "external_publications"),
     )
@@ -136,6 +150,247 @@ def _user_can_edit_professional_profile(user):
 
 def _user_can_edit_own_cv(user):
     return user.has_perm("accounts.edit_own_cv")
+
+
+def build_technical_skill_groups(skill_items):
+    groups = OrderedDict()
+
+    for item in skill_items:
+        skill_type = getattr(item, "skill_type", None)
+        if skill_type is None:
+            continue
+
+        category = skill_type.parent if skill_type.parent_id else skill_type
+        category_key = category.pk or category.slug
+        group = groups.setdefault(
+            category_key,
+            {
+                "category": category,
+                "category_name": category.translated_name,
+                "items": [],
+            },
+        )
+        group["items"].append(item)
+
+    return list(groups.values())
+
+
+def _coerce_period_bounds(item, start_attr="start_date", end_attr="end_date", start_year_attr="start_year", end_year_attr="end_year", current_attr="is_current"):
+    start_value = getattr(item, start_attr, None)
+    end_value = getattr(item, end_attr, None)
+
+    if start_value is None:
+        start_year = getattr(item, start_year_attr, None)
+        if start_year:
+            start_value = date(start_year, 1, 1)
+
+    if end_value is None:
+        if getattr(item, current_attr, False):
+            end_value = timezone.localdate()
+        else:
+            end_year = getattr(item, end_year_attr, None)
+            if end_year:
+                end_value = date(end_year, 12, 31)
+
+    if start_value is None or end_value is None or end_value < start_value:
+        return None, None
+
+    return start_value, end_value
+
+
+def _calculate_total_years(items, **kwargs):
+    total_days = 0
+    for item in items:
+        start_value, end_value = _coerce_period_bounds(item, **kwargs)
+        if start_value is None or end_value is None:
+            continue
+        total_days += (end_value - start_value).days + 1
+
+    if total_days <= 0:
+        return None
+
+    years = round(total_days / 365.25, 1)
+    if years.is_integer():
+        return str(int(years))
+    return f"{years:.1f}"
+
+
+def get_skill_category_catalog():
+    categories = (
+        ProfileSkillType.objects.filter(
+            parent__isnull=True,
+            is_active=True,
+        )
+        .prefetch_related("translations", "children__translations")
+        .order_by("order", "slug")
+    )
+
+    catalog = []
+    for category in categories:
+        children = [
+            child
+            for child in category.children.all()
+            if child.is_active
+        ]
+        if not children:
+            continue
+        children = sorted(children, key=lambda child: (child.order, child.slug))
+        catalog.append(
+            {
+                "id": category.pk,
+                "name": category.translated_name,
+                "technologies": [
+                    {
+                        "id": child.pk,
+                        "name": child.translated_name,
+                    }
+                    for child in children
+                ],
+            }
+        )
+    return catalog
+
+
+def get_competency_catalog():
+    competencies = (
+        ProfileCompetencyType.objects.filter(
+            is_active=True,
+            slug__in=CURATED_COMPETENCY_SLUGS,
+        )
+        .prefetch_related("translations")
+        .order_by("order", "slug")
+    )
+    return [
+        {
+            "id": competency.pk,
+            "name": competency.translated_name,
+            "description": competency.translated_description,
+        }
+        for competency in competencies
+    ]
+
+
+def build_skill_editor_rows(profile):
+    rows = []
+    for group in build_technical_skill_groups(profile.skill_items.select_related("skill_type", "skill_type__parent")):
+        category = group["category"]
+        rows.append(
+            {
+                "category_id": category.pk,
+                "technology_ids": [
+                    item.skill_type_id
+                    for item in group["items"]
+                    if item.skill_type_id
+                ],
+                "errors": [],
+            }
+        )
+    return rows
+
+
+def parse_skill_editor_rows(post_data, catalog):
+    try:
+        total_rows = int(post_data.get("skill_groups-TOTAL_FORMS", "0"))
+    except (TypeError, ValueError):
+        total_rows = 0
+
+    catalog_map = {str(item["id"]): item for item in catalog}
+    parsed_rows = []
+    errors = []
+
+    for index in range(total_rows):
+        category_id = (post_data.get(f"skill_groups-{index}-category") or "").strip()
+        technology_ids = [value.strip() for value in post_data.getlist(f"skill_groups-{index}-technologies") if value.strip()]
+
+        if not category_id and not technology_ids:
+            continue
+
+        row_errors = []
+        catalog_entry = catalog_map.get(category_id)
+        if not category_id:
+            row_errors.append(gettext("Choose a category."))
+        elif catalog_entry is None:
+            row_errors.append(gettext("Selected category is no longer available."))
+
+        valid_technology_ids = set()
+        if catalog_entry is not None:
+            valid_technology_ids = {str(item["id"]) for item in catalog_entry["technologies"]}
+
+        if not technology_ids:
+            row_errors.append(gettext("Select at least one technology in this category."))
+        elif not set(technology_ids).issubset(valid_technology_ids):
+            row_errors.append(gettext("One or more selected technologies do not belong to the chosen category."))
+
+        parsed_rows.append(
+            {
+                "category_id": int(category_id) if category_id.isdigit() else category_id,
+                "technology_ids": [int(value) for value in technology_ids if value.isdigit()],
+                "errors": row_errors,
+            }
+        )
+        errors.extend(row_errors)
+
+    selected_categories = [str(row["category_id"]) for row in parsed_rows if row["category_id"]]
+    if len(selected_categories) != len(set(selected_categories)):
+        duplicate_error = gettext("Each category can only be selected once.")
+        errors.append(duplicate_error)
+        seen = set()
+        for row in parsed_rows:
+            category_key = str(row["category_id"])
+            if not category_key:
+                continue
+            if category_key in seen:
+                row["errors"].append(duplicate_error)
+            seen.add(category_key)
+
+    return parsed_rows, errors
+
+
+def sync_profile_skills_from_rows(profile, rows):
+    ProfileSkill.objects.filter(profile=profile).delete()
+
+    order = 0
+    for row in rows:
+        for technology_id in row["technology_ids"]:
+            ProfileSkill.objects.create(
+                profile=profile,
+                skill_type_id=technology_id,
+                order=order,
+            )
+            order += 1
+
+
+def parse_competency_selection(post_data, catalog):
+    selected_ids = [value.strip() for value in post_data.getlist("competency_choices") if value.strip()]
+    valid_ids = {str(item["id"]) for item in catalog}
+    errors = []
+
+    unique_ids = []
+    seen = set()
+    for value in selected_ids:
+        if value in seen:
+            continue
+        seen.add(value)
+        unique_ids.append(value)
+
+    if len(unique_ids) > 5:
+        errors.append(gettext("You can select up to five transversal competencies."))
+
+    if not set(unique_ids).issubset(valid_ids):
+        errors.append(gettext("One or more selected transversal competencies are no longer available."))
+
+    return [int(value) for value in unique_ids if value.isdigit()], errors
+
+
+def sync_profile_competencies(profile, competency_ids):
+    ProfileCompetency.objects.filter(profile=profile).delete()
+
+    for order, competency_id in enumerate(competency_ids):
+        ProfileCompetency.objects.create(
+            profile=profile,
+            competency_type_id=competency_id,
+            order=order,
+        )
 
 
 def _user_can_list_public_profile(user):
@@ -175,6 +430,15 @@ def _translated_value(instance, field_name, language_code):
 
 def _has_text(value):
     return bool(str(value).strip()) if value is not None else False
+
+
+def _build_city_country_display(profile):
+    city = (profile.city or "").strip()
+    country = (profile.country or "").strip()
+
+    if city and country:
+        return f"{city}, {country}"
+    return city or country or ""
 
 
 def _is_ajax_request(request):
@@ -230,19 +494,19 @@ def _build_public_profile_context(request, username):
             Prefetch(
                 "education_items",
                 queryset=ProfileEducation.objects.select_related("education_type").prefetch_related("translations").order_by(
-                    "order", "-start_year", "id"
+                    "-end_date", "-end_year", "-start_date", "-start_year", "-id"
                 ),
             ),
             Prefetch(
                 "experience_items",
                 queryset=ProfileExperience.objects.select_related("experience_type").prefetch_related("translations").order_by(
-                    "order", "-start_date", "id"
+                    "-end_date", "-start_date", "-id"
                 ),
             ),
             Prefetch(
                 "certification_items",
                 queryset=ProfileCertification.objects.select_related("certification_type").prefetch_related("translations").order_by(
-                    "order", "-issue_date", "id"
+                    "-issue_date", "-id", "order"
                 ),
             ),
             Prefetch(
@@ -254,7 +518,11 @@ def _build_public_profile_context(request, username):
             Prefetch(
                 "skill_items",
                 queryset=ProfileSkill.objects.select_related("skill_type", "level").prefetch_related("translations").order_by(
-                    "order", "skill_type__slug"
+                    "skill_type__parent__order",
+                    "skill_type__parent__slug",
+                    "skill_type__order",
+                    "skill_type__slug",
+                    "id",
                 ),
             ),
             Prefetch(
@@ -272,7 +540,7 @@ def _build_public_profile_context(request, username):
             Prefetch(
                 "external_publication_items",
                 queryset=ProfileExternalPublication.objects.select_related("publication_type").prefetch_related("translations").order_by(
-                    "order", "-year", "id"
+                    "-publication_date", "-id", "order"
                 ),
             ),
         )
@@ -327,9 +595,20 @@ def _build_public_profile_context(request, username):
     certification_items = list(profile.certification_items.all())
     language_items = list(profile.language_items.all())
     skill_items = list(profile.skill_items.all())
+    technical_skill_groups = build_technical_skill_groups(skill_items)
     competency_items = list(profile.competency_items.all())
     link_items = list(profile.link_items.all())
     external_publication_items = list(profile.external_publication_items.all())
+    total_experience_years = _calculate_total_years(experience_items)
+    total_education_years = _calculate_total_years(education_items)
+    total_certification_hours = sum(item.credit_hours or 0 for item in certification_items)
+    full_name = (user_obj.get_full_name() or "").strip() or profile.get_display_name()
+    public_display_name = (profile.get_display_name() or "").strip()
+    profile_identity_label = public_display_name or user_obj.username
+    city_country_display = _build_city_country_display(profile)
+    raw_location = (profile.location or "").strip()
+    show_location_line = bool(raw_location) and raw_location != city_country_display
+    total_publications_count = internal_publications.count() + len(external_publication_items)
 
     has_cv_items = any([
         education_items,
@@ -337,6 +616,7 @@ def _build_public_profile_context(request, username):
         certification_items,
         language_items,
         skill_items,
+        technical_skill_groups,
         competency_items,
         link_items,
         external_publication_items,
@@ -354,14 +634,23 @@ def _build_public_profile_context(request, username):
         "can_follow_profile": request.user.is_authenticated and request.user != user_obj,
         "is_following_profile": profile.is_followed_by(request.user),
         "internal_publications": internal_publications,
+        "full_name": full_name,
+        "profile_identity_label": profile_identity_label,
+        "city_country_display": city_country_display,
+        "show_location_line": show_location_line,
+        "total_publications_count": total_publications_count,
         "education_items": education_items,
         "experience_items": experience_items,
         "certification_items": certification_items,
         "language_items": language_items,
         "skill_items": skill_items,
+        "technical_skill_groups": technical_skill_groups,
         "competency_items": competency_items,
         "link_items": link_items,
         "external_publication_items": external_publication_items,
+        "total_experience_years": total_experience_years,
+        "total_education_years": total_education_years,
+        "total_certification_hours": total_certification_hours,
         "has_cv_items": has_cv_items,
         "user_posts": paginated_user_posts,
         "user_comments": paginated_user_comments,
@@ -609,15 +898,31 @@ def profile_cv_edit_view(request):
 
     formset_definitions = _get_profile_cv_formset_definitions()
     formsets = {}
+    skill_category_catalog = get_skill_category_catalog()
+    skill_editor_rows = build_skill_editor_rows(profile)
+    skill_editor_errors = []
+    competency_catalog = get_competency_catalog()
+    selected_competency_ids = list(
+        profile.competency_items.exclude(competency_type__isnull=True)
+        .values_list("competency_type_id", flat=True)
+    )
+    competency_selection_errors = []
 
     if request.method == "POST":
         all_valid = True
 
         for context_key, _title, formset_class, prefix in formset_definitions:
+            formset_kwargs = {
+                "instance": profile,
+                "prefix": prefix,
+            }
+            if prefix == "experience":
+                formset_kwargs["queryset"] = ProfileExperience.objects.filter(profile=profile).order_by(
+                    "-end_date", "-start_date", "-id"
+                )
             formset = formset_class(
                 request.POST,
-                instance=profile,
-                prefix=prefix,
+                **formset_kwargs,
             )
             formsets[context_key] = formset
 
@@ -630,9 +935,25 @@ def profile_cv_edit_view(request):
                     formset.errors,
                 )
 
+        skill_editor_rows, skill_editor_errors = parse_skill_editor_rows(
+            request.POST,
+            skill_category_catalog,
+        )
+        if skill_editor_errors:
+            all_valid = False
+
+        selected_competency_ids, competency_selection_errors = parse_competency_selection(
+            request.POST,
+            competency_catalog,
+        )
+        if competency_selection_errors:
+            all_valid = False
+
         if all_valid:
             for formset in formsets.values():
                 formset.save()
+            sync_profile_skills_from_rows(profile, skill_editor_rows)
+            sync_profile_competencies(profile, selected_competency_ids)
 
             messages.success(request, gettext("Your CV has been updated successfully."))
             return redirect("accounts:profile_cv_edit")
@@ -641,10 +962,15 @@ def profile_cv_edit_view(request):
 
     else:
         for context_key, _title, formset_class, prefix in formset_definitions:
-            formsets[context_key] = formset_class(
-                instance=profile,
-                prefix=prefix,
-            )
+            formset_kwargs = {
+                "instance": profile,
+                "prefix": prefix,
+            }
+            if prefix == "experience":
+                formset_kwargs["queryset"] = ProfileExperience.objects.filter(profile=profile).order_by(
+                    "-end_date", "-start_date", "-id"
+                )
+            formsets[context_key] = formset_class(**formset_kwargs)
 
     breadcrumbs = [
         {"url": "/", "label": gettext("Home")},
@@ -664,6 +990,12 @@ def profile_cv_edit_view(request):
             for context_key, title, _formset_class, prefix in formset_definitions
         ],
         "breadcrumbs": breadcrumbs,
+        "skill_category_catalog": skill_category_catalog,
+        "skill_editor_rows": skill_editor_rows or [{"category_id": "", "technology_ids": [], "errors": []}],
+        "skill_editor_errors": skill_editor_errors,
+        "competency_catalog": competency_catalog,
+        "selected_competency_ids": selected_competency_ids,
+        "competency_selection_errors": competency_selection_errors,
     }
 
     # Expose each formset directly for the detailed CV editor template.

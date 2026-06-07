@@ -410,6 +410,14 @@ class PublicationAdmin(TranslatableAdmin):
             raise ValidationError(str(exc)) from exc
 
     def save_model(self, request, obj, form, change):
+        language = (
+            request.GET.get("language")
+            or request.POST.get("language")
+            or getattr(request, "LANGUAGE_CODE", None)
+            or "es"
+        )
+        obj.set_current_language(language)
+
         should_apply_featured, featured_asset = self._resolve_gallery_asset_from_post(
             request,
             form,

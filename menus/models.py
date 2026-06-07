@@ -61,6 +61,14 @@ class MenuItem(MPTTModel, TranslatableModel):
         HOME = 'home', _('Home Page')
         PAGE = 'page', _('Single Page')
         NOTEBOOK_LIST = 'notebook_list', _('Notebook List')
+        PROFILE_EDIT = 'profile_edit', _('Edit Profile')
+        PROFILE_CV = 'profile_cv', _('Edit CV')
+        PUBLIC_PROFILE = 'public_profile', _('Public Profile')
+        INBOX = 'inbox', _('Inbox')
+        FOLLOWING = 'following', _('Following Posts')
+        FAVORITES = 'favorites', _('Favorite Posts')
+        MY_ORDERS = 'my_orders', _('My Orders')
+        CHANGE_PASSWORD = 'change_password', _('Change Password')
         CATEGORY = 'category', _('Single Category')
         POST_LIST = 'post_list', _('Post List (Dropdown)')
         # These types are placeholders for dynamic content generation in the frontend.
@@ -202,6 +210,28 @@ class MenuItem(MPTTModel, TranslatableModel):
     def translated_title(self):
         return self.safe_translation_getter("title", any_language=True) or str(_("Untitled"))
 
+    @property
+    def is_account_management_menu(self):
+        """
+        Detect the legacy top-level account dropdown so the UI can relocate it
+        to the authenticated avatar menu without depending on translated titles.
+        """
+        if self.parent_id:
+            return False
+
+        account_url_suffixes = {
+            "/accounts/profile/edit/",
+            "/accounts/profile/cv/",
+        }
+
+        for child in self.children.all():
+            child_url = (child.get_url() or "").strip()
+            if not child_url:
+                continue
+            if any(child_url.endswith(suffix) for suffix in account_url_suffixes):
+                return True
+        return False
+
     def clean(self):
         super().clean()
 
@@ -228,6 +258,21 @@ class MenuItem(MPTTModel, TranslatableModel):
         - Allowed groups selected: visible only to authenticated users who belong
           to at least one selected group.
         """
+        if self.link_type in {
+            self.LinkType.PROFILE_EDIT,
+            self.LinkType.PROFILE_CV,
+            self.LinkType.PUBLIC_PROFILE,
+            self.LinkType.INBOX,
+            self.LinkType.FOLLOWING,
+            self.LinkType.FAVORITES,
+            self.LinkType.MY_ORDERS,
+            self.LinkType.CHANGE_PASSWORD,
+        }:
+            if not user or not user.is_authenticated:
+                return False
+            if self.link_type == self.LinkType.PUBLIC_PROFILE and not user.has_perm("accounts.list_public_profile"):
+                return False
+
         allowed_group_ids = self.allowed_groups.values_list("pk", flat=True)
 
         if not allowed_group_ids.exists():
@@ -238,7 +283,7 @@ class MenuItem(MPTTModel, TranslatableModel):
 
         return user.groups.filter(pk__in=allowed_group_ids).exists()
 
-    def get_url(self):
+    def get_url_for_user(self, user=None):
         """
         Generates the actual URL for the menu item based on its link_type.
         Returns a placeholder '#' if no valid URL is configured.
@@ -252,6 +297,32 @@ class MenuItem(MPTTModel, TranslatableModel):
         elif self.link_type == self.LinkType.NOTEBOOK_LIST:
             return reverse('notebooks:notebook_list')
 
+        elif self.link_type == self.LinkType.PROFILE_EDIT:
+            return reverse('accounts:profile_edit')
+
+        elif self.link_type == self.LinkType.PROFILE_CV:
+            return reverse('accounts:profile_cv_edit')
+
+        elif self.link_type == self.LinkType.PUBLIC_PROFILE:
+            if user and getattr(user, "is_authenticated", False):
+                return reverse('accounts:public_profile', kwargs={'username': user.username})
+            return "#"
+
+        elif self.link_type == self.LinkType.INBOX:
+            return reverse('accounts:inbox')
+
+        elif self.link_type == self.LinkType.FOLLOWING:
+            return reverse('posts:following_posts')
+
+        elif self.link_type == self.LinkType.FAVORITES:
+            return reverse('posts:favorite_posts')
+
+        elif self.link_type == self.LinkType.MY_ORDERS:
+            return reverse('shop:my_orders')
+
+        elif self.link_type == self.LinkType.CHANGE_PASSWORD:
+            return reverse('account_change_password')
+
         elif self.link_type == self.LinkType.CATEGORY and self.link_category:
             return self.link_category.get_posts_url()
 
@@ -263,7 +334,12 @@ class MenuItem(MPTTModel, TranslatableModel):
 
         elif self.link_type == self.LinkType.ALL_BLOG_CATEGORIES and self.link_category:
             return self.link_category.get_posts_url()
+        elif self.link_type == self.LinkType.ALL_BLOG_CATEGORIES:
+            return reverse("categories:category_list")
 
         # For dynamic link types the URL is often '#'
         # as clicking the top-level item expands the dropdown, not navigates.
         return "#"
+
+    def get_url(self):
+        return self.get_url_for_user()

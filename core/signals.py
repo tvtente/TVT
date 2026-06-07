@@ -21,10 +21,13 @@ FILE_REFERENCE_FIELDS = (
 GALLERY_REFERENCE_FIELDS = (
     (BookTranslation, "cover_image_asset"),
     (BookTranslation, "social_image_asset"),
+    (BookTranslation, "mobile_image_asset"),
     (PublicationTranslation, "featured_image_asset"),
     (PublicationTranslation, "social_image_asset"),
+    (PublicationTranslation, "mobile_image_asset"),
     (PostTranslation, "featured_image_asset"),
     (PostTranslation, "social_image_asset"),
+    (PostTranslation, "mobile_image_asset"),
 )
 
 
@@ -146,14 +149,14 @@ def remember_old_book_translation_media(sender, instance, **kwargs):
     _remember_old_values(
         instance,
         file_fields=("preview_pdf", "full_pdf"),
-        asset_fields=("cover_image_asset", "social_image_asset"),
+        asset_fields=("cover_image_asset", "social_image_asset", "mobile_image_asset"),
     )
 
 
 @receiver(post_save, sender=BookTranslation)
 def cleanup_replaced_book_translation_media(sender, instance, **kwargs):
     _cleanup_changed_files(instance, ("preview_pdf", "full_pdf"))
-    _cleanup_changed_assets(instance, ("cover_image_asset", "social_image_asset"))
+    _cleanup_changed_assets(instance, ("cover_image_asset", "social_image_asset", "mobile_image_asset"))
 
 
 @receiver(post_delete, sender=BookTranslation)
@@ -161,7 +164,7 @@ def cleanup_deleted_book_translation_media(sender, instance, **kwargs):
     _cleanup_deleted_instance_media(
         instance,
         file_fields=("preview_pdf", "full_pdf"),
-        asset_fields=("cover_image_asset", "social_image_asset"),
+        asset_fields=("cover_image_asset", "social_image_asset", "mobile_image_asset"),
     )
 
 
@@ -190,20 +193,20 @@ def cleanup_deleted_publication_media(sender, instance, **kwargs):
 def remember_old_publication_translation_assets(sender, instance, **kwargs):
     _remember_old_values(
         instance,
-        asset_fields=("featured_image_asset", "social_image_asset"),
+        asset_fields=("featured_image_asset", "social_image_asset", "mobile_image_asset"),
     )
 
 
 @receiver(post_save, sender=PublicationTranslation)
 def cleanup_replaced_publication_translation_assets(sender, instance, **kwargs):
-    _cleanup_changed_assets(instance, ("featured_image_asset", "social_image_asset"))
+    _cleanup_changed_assets(instance, ("featured_image_asset", "social_image_asset", "mobile_image_asset"))
 
 
 @receiver(post_delete, sender=PublicationTranslation)
 def cleanup_deleted_publication_translation_assets(sender, instance, **kwargs):
     _cleanup_deleted_instance_media(
         instance,
-        asset_fields=("featured_image_asset", "social_image_asset"),
+        asset_fields=("featured_image_asset", "social_image_asset", "mobile_image_asset"),
     )
 
 
@@ -211,18 +214,18 @@ def cleanup_deleted_publication_translation_assets(sender, instance, **kwargs):
 def remember_old_post_translation_assets(sender, instance, **kwargs):
     _remember_old_values(
         instance,
-        asset_fields=("featured_image_asset", "social_image_asset"),
+        asset_fields=("featured_image_asset", "social_image_asset", "mobile_image_asset"),
     )
 
 
 @receiver(post_save, sender=PostTranslation)
 def cleanup_replaced_post_translation_assets(sender, instance, **kwargs):
-    _cleanup_changed_assets(instance, ("featured_image_asset", "social_image_asset"))
+    _cleanup_changed_assets(instance, ("featured_image_asset", "social_image_asset", "mobile_image_asset"))
 
 
 @receiver(post_delete, sender=PostTranslation)
 def cleanup_deleted_post_translation_assets(sender, instance, **kwargs):
     _cleanup_deleted_instance_media(
         instance,
-        asset_fields=("featured_image_asset", "social_image_asset"),
+        asset_fields=("featured_image_asset", "social_image_asset", "mobile_image_asset"),
     )

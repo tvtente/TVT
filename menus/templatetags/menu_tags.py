@@ -57,3 +57,17 @@ def show_simple_menu(context, menu_slug):
         "nodes": visible_items,
         "user": user,
     }
+
+
+@register.inclusion_tag("menus/partials/_profile_links_partial.html", takes_context=True)
+def show_profile_menu(context, menu_slug="profile-menu"):
+    language_code = context.get("LANGUAGE_CODE", settings.LANGUAGE_CODE)
+    user = _get_context_user(context)
+    items = get_simple_menu_items(menu_slug, language_code)
+    visible_items = filter_visible_menu_items(items, user)
+    for item in visible_items:
+        item.resolved_url = item.get_url_for_user(user)
+    return {
+        "nodes": visible_items,
+        "user": user,
+    }

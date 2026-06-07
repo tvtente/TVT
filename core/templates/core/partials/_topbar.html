@@ -12,9 +12,9 @@
         <!-- Left Side: Logo and Slogan -->
         <div class="brand-identity me-auto d-flex align-items-center">
             <a href="{% url 'home' %}" class="text-decoration-none d-flex align-items-center">
-                {% if site_template.site_logo and site_template.site_logo.url %}
+                {% if site_template.site_logo_url %}
                     <img
-                        src="{{ site_template.site_logo.url }}"
+                        src="{{ site_template.site_logo_url }}"
                         alt="{% translate 'Site Logo' %}"
                         class="img-fluid me-2"
                         style="height: var(--tavata-logo-height); object-fit: contain;"
@@ -35,11 +35,11 @@
 
         <!-- Center: Banner/Ad (optional) -->
         <div class="top-bar-banner mx-lg-auto me-3 me-lg-0">
-            {% if site_template.top_bar_banner_image and site_template.top_bar_banner_image.url %}
+            {% if site_template.top_bar_banner_image_url %}
                 {% if site_template.top_bar_banner_link %}
                     <a href="{{ site_template.top_bar_banner_link }}" target="_blank" rel="noopener noreferrer">
                         <img
-                            src="{{ site_template.top_bar_banner_image.url }}"
+                            src="{{ site_template.top_bar_banner_image_url }}"
                             alt="{% translate 'Advertisement' %}"
                             class="img-fluid"
                             style="max-height: var(--tavata-banner-max-height); object-fit: contain;"
@@ -47,7 +47,7 @@
                     </a>
                 {% else %}
                     <img
-                        src="{{ site_template.top_bar_banner_image.url }}"
+                        src="{{ site_template.top_bar_banner_image_url }}"
                         alt="{% translate 'Advertisement' %}"
                         class="img-fluid"
                         style="max-height: var(--tavata-banner-max-height); object-fit: contain;"

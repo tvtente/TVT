@@ -12,12 +12,14 @@
             <div class="flex-grow-1">
                 <div class="d-flex flex-column flex-lg-row justify-content-between gap-3">
                     <div>
-                        <h1 class="display-5 mb-1">{{ profile.get_display_name }}</h1>
-                        <p class="lead text-muted mb-2">@{{ user_obj.username }}</p>
+                        <h1 class="display-5 mb-1">{{ full_name }}</h1>
+                        <p class="lead text-muted mb-2">{{ profile_identity_label }}</p>
                         <p class="small text-muted mb-2">
                             <span>{{ profile.followers_count }}</span> {% translate "followers" %}
-                            <span class="mx-1">|</span>
-                            <span>{{ profile.published_posts_count }}</span> {% translate "posts" %}
+                            {% if total_publications_count %}
+                                <span class="mx-1">|</span>
+                                <span>{{ total_publications_count }}</span> {% translate "Publications" %}
+                            {% endif %}
                         </p>
 
                         {% if profile.professional_title %}
@@ -63,16 +65,14 @@
                         </p>
                     {% endif %}
 
-                    {% if profile.city or profile.country %}
+                    {% if city_country_display %}
                         <p class="mb-1">
                             <i class="fas fa-globe text-muted me-2"></i>
-                            {% if profile.city %}{{ profile.city }}{% endif %}
-                            {% if profile.city and profile.country %}, {% endif %}
-                            {% if profile.country %}{{ profile.country }}{% endif %}
+                            {{ city_country_display }}
                         </p>
                     {% endif %}
 
-                    {% if profile.location %}
+                    {% if show_location_line %}
                         <p class="mb-1">
                             <i class="fas fa-map-marker-alt text-muted me-2"></i>{{ profile.location }}
                         </p>
@@ -136,7 +136,8 @@
     </div>
 {% endif %}
 
-{% if skill_items or competency_items or link_items or internal_publications or external_publication_items %}
+{% if total_experience_years or total_education_years or link_items or internal_publications or external_publication_items or skill_items or competency_items %}
+    <div class="cv-print-page-break" aria-hidden="true"></div>
     <section class="cv-section card shadow-sm border-0 mb-4">
         <div class="card-header bg-white border-0 pt-4 px-4">
             <h2 class="h5 mb-1">{% translate "Research and Professional Profile" %}</h2>
@@ -146,37 +147,41 @@
         </div>
         <div class="card-body px-4 pb-4">
             <div class="row g-3 mb-4">
-                {% if skill_items %}
+                {% if total_experience_years %}
                     <div class="col-sm-6 col-xl-4">
-                        <div class="cv-focus-card h-100">
-                            <div class="cv-focus-label">{% translate "Technical and Methodological Knowledge" %}</div>
-                            <div class="cv-focus-value">{{ skill_items|length }}</div>
-                        </div>
-                    </div>
-                {% endif %}
-                {% if competency_items %}
-                    <div class="col-sm-6 col-xl-4">
-                        <div class="cv-focus-card h-100">
-                            <div class="cv-focus-label">{% translate "Transversal Competencies" %}</div>
-                            <div class="cv-focus-value">{{ competency_items|length }}</div>
-                        </div>
-                    </div>
-                {% endif %}
-                {% if link_items or internal_publications or external_publication_items %}
-                    <div class="col-sm-6 col-xl-4">
-                        <div class="cv-focus-card h-100">
-                            <div class="cv-focus-label">{% translate "Public References" %}</div>
-                            <div class="cv-focus-value">{{ link_items|length }}</div>
-                            <div class="small text-muted mt-2">
-                                {% if internal_publications %}
-                                    {{ internal_publications|length }} {% translate "internal publication(s)" %}
-                                {% endif %}
-                                {% if external_publication_items %}
-                                    {% if internal_publications %}<span class="mx-1">|</span>{% endif %}
-                                    {{ external_publication_items|length }} {% translate "external publication(s)" %}
-                                {% endif %}
+                        <a href="#experience-section" class="text-decoration-none text-reset d-block h-100">
+                            <div class="cv-focus-card h-100">
+                                <div class="cv-focus-label">{% translate "Years of Experience" %}</div>
+                                <div class="cv-focus-value">{{ total_experience_years }}</div>
                             </div>
-                        </div>
+                        </a>
+                    </div>
+                {% endif %}
+                {% if total_education_years %}
+                    <div class="col-sm-6 col-xl-4">
+                        <a href="#education-section" class="text-decoration-none text-reset d-block h-100">
+                            <div class="cv-focus-card h-100">
+                                <div class="cv-focus-label">{% translate "Years of Education" %}</div>
+                                <div class="cv-focus-value">{{ total_education_years }}</div>
+                            </div>
+                        </a>
+                    </div>
+                {% endif %}
+                {% if certification_items %}
+                    <div class="col-sm-6 col-xl-4">
+                        <a href="#certifications-section" class="text-decoration-none text-reset d-block h-100">
+                            <div class="cv-focus-card h-100">
+                                <div class="cv-focus-label">{% translate "N. Certifications" %}</div>
+                                <div class="cv-focus-value">
+                                    {{ certification_items|length }}
+                                    {% if total_certification_hours %}
+                                        <span class="cv-focus-value-detail">
+                                            {% blocktranslate with hours=total_certification_hours %}- {{ hours }} hrs.{% endblocktranslate %}
+                                        </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </a>
                     </div>
                 {% endif %}
             </div>
@@ -188,7 +193,7 @@
                         {% for item in skill_items|slice:":8" %}
                             {% if item.skill_type %}
                                 <span class="cv-focus-pill">
-                                    {{ item.skill_type }}{% if item.level %} · {{ item.level }}{% endif %}
+                                    {{ item.skill_type.translated_name }}{% if item.level %} · {{ item.level }}{% endif %}
                                 </span>
                             {% endif %}
                         {% endfor %}
@@ -203,7 +208,7 @@
                         {% for item in competency_items|slice:":6" %}
                             {% if item.competency_type %}
                                 <span class="cv-focus-pill cv-focus-pill-soft">
-                                    {{ item.competency_type }}{% if item.level %} · {{ item.level }}{% endif %}
+                                    {{ item.competency_type.translated_name }}
                                 </span>
                             {% endif %}
                         {% endfor %}
@@ -218,7 +223,8 @@
 {% if has_cv_items %}
 
 {% if experience_items %}
-    <section class="cv-section card shadow-sm border-0 mb-4">
+    <div class="cv-print-page-break" aria-hidden="true"></div>
+    <section id="experience-section" class="cv-section card shadow-sm border-0 mb-4">
         <div class="card-header bg-white border-0 pt-4 px-4">
             <h2 class="h5 mb-1">{% translate "Experience" %}</h2>
         </div>
@@ -258,7 +264,22 @@
                             </div>
                         </div>
                         {% if item.description %}
-                            <p class="mt-3 mb-0">{{ item.description|linebreaksbr }}</p>
+                            <div class="mt-3">
+                                <h3 class="h6 text-uppercase text-muted mb-1">{% translate "Company description" %}</h3>
+                                <p class="mb-0">{{ item.description|linebreaksbr }}</p>
+                            </div>
+                        {% endif %}
+                        {% if item.main_responsibilities %}
+                            <div class="mt-3">
+                                <h3 class="h6 text-uppercase text-muted mb-1">{% translate "Main responsibilities" %}</h3>
+                                <p class="mb-0">{{ item.main_responsibilities|linebreaksbr }}</p>
+                            </div>
+                        {% endif %}
+                        {% if item.key_achievements %}
+                            <div class="mt-3">
+                                <h3 class="h6 text-uppercase text-muted mb-1">{% translate "Key achievements or projects" %}</h3>
+                                <p class="mb-0">{{ item.key_achievements|linebreaksbr }}</p>
+                            </div>
                         {% endif %}
                     </div>
                 </div>
@@ -268,7 +289,8 @@
 {% endif %}
 
 {% if education_items %}
-    <section class="cv-section card shadow-sm border-0 mb-4">
+    <div class="cv-print-page-break" aria-hidden="true"></div>
+    <section id="education-section" class="cv-section card shadow-sm border-0 mb-4">
         <div class="card-header bg-white border-0 pt-4 px-4">
             <h2 class="h5 mb-1">{% translate "Education" %}</h2>
         </div>
@@ -303,13 +325,24 @@
                                 {% if item.education_type %}
                                     <span class="badge bg-tavata-primary">{{ item.education_type }}</span>
                                 {% endif %}
+                                {% if item.credit_hours %}
+                                    <p class="small text-muted mt-2 mb-0">
+                                        {% blocktranslate with credits=item.credit_hours %}{{ credits }} credit hours{% endblocktranslate %}
+                                    </p>
+                                {% endif %}
                             </div>
 
                             <div class="small text-muted text-md-end">
-                                {% if item.start_year %}{{ item.start_year }}{% endif %}
-                                {% if item.start_year or item.end_year or item.is_current %} — {% endif %}
+                                {% if item.start_date %}
+                                    {{ item.start_date|date:"M Y" }}
+                                {% elif item.start_year %}
+                                    {{ item.start_year }}
+                                {% endif %}
+                                {% if item.start_date or item.start_year or item.end_date or item.end_year or item.is_current %} — {% endif %}
                                 {% if item.is_current %}
                                     {% translate "Present" %}
+                                {% elif item.end_date %}
+                                    {{ item.end_date|date:"M Y" }}
                                 {% elif item.end_year %}
                                     {{ item.end_year }}
                                 {% endif %}
@@ -327,7 +360,8 @@
 {% endif %}
 
 {% if certification_items %}
-    <section class="cv-section card shadow-sm border-0 mb-4">
+    <div class="cv-print-page-break" aria-hidden="true"></div>
+    <section id="certifications-section" class="cv-section card shadow-sm border-0 mb-4">
         <div class="card-header bg-white border-0 pt-4 px-4">
             <h2 class="h5 mb-1">{% translate "Certifications" %}</h2>
         </div>
@@ -344,13 +378,25 @@
                                 {% if item.certification_type %}
                                     <span class="badge bg-tavata-primary">{{ item.certification_type }}</span>
                                 {% endif %}
+                                {% if item.credit_hours %}
+                                    <p class="small text-muted mt-2 mb-0">
+                                        {% blocktranslate with hours=item.credit_hours %}{{ hours }} hours{% endblocktranslate %}
+                                    </p>
+                                {% endif %}
+                                {% if item.credential_id %}
+                                    <p class="small text-muted mt-2 mb-0">
+                                        {% translate "Reference" %}: {{ item.credential_id }}
+                                    </p>
+                                {% endif %}
                             </div>
 
                             <div class="small text-muted text-md-end">
                                 {% if item.issue_date %}
                                     {{ item.issue_date|date:"M Y" }}
                                 {% endif %}
-                                {% if item.expiration_date %}
+                                {% if item.no_expiration %}
+                                    — {% translate "Sin caducar" %}
+                                {% elif item.expiration_date %}
                                     — {{ item.expiration_date|date:"M Y" }}
                                 {% endif %}
                             </div>
@@ -380,108 +426,104 @@
     </section>
 {% endif %}
 
-<div class="row g-4 mb-4">
-    {% if language_items %}
-        <div class="col-md-6">
-            <section class="cv-section card shadow-sm border-0 h-100">
-                <div class="card-header bg-white border-0 pt-4 px-4">
-                    <h2 class="h5 mb-1">{% translate "Languages" %}</h2>
-                </div>
-                <div class="card-body px-4 pb-4">
-                    <div class="d-flex flex-wrap gap-2">
-                        {% for item in language_items %}
-                            <span class="badge bg-tavata-primary">
-                                {{ item.language }}{% if item.level %} · {{ item.level }}{% endif %}
-                            </span>
-                        {% endfor %}
+{% if language_items or link_items %}
+    <div class="cv-print-page-break" aria-hidden="true"></div>
+    <div class="row g-4 mb-4">
+        {% if language_items %}
+            <div class="col-md-6">
+                <section class="cv-section card shadow-sm border-0 h-100">
+                    <div class="card-header bg-white border-0 pt-4 px-4">
+                        <h2 class="h5 mb-1">{% translate "Languages" %}</h2>
                     </div>
-                </div>
-            </section>
-        </div>
-    {% endif %}
-
-    {% if skill_items %}
-        <div class="col-md-6">
-            <section class="cv-section card shadow-sm border-0 h-100">
-                <div class="card-header bg-white border-0 pt-4 px-4">
-                    <h2 class="h5 mb-1">{% translate "Technical and Methodological Knowledge" %}</h2>
-                </div>
-                <div class="card-body px-4 pb-4">
-                    {% for item in skill_items %}
-                        <div class="cv-focus-entry mb-3">
-                            <div class="d-flex flex-wrap gap-2 align-items-center mb-1">
-                                <strong>{{ item.skill_type }}</strong>
-                                {% if item.level %}
-                                    <span class="badge bg-tavata-primary">{{ item.level }}</span>
-                                {% endif %}
-                            </div>
-                            {% if item.description %}
-                                <p class="small text-muted mb-0 mt-1">{{ item.description }}</p>
-                            {% endif %}
-                        </div>
-                    {% endfor %}
-                </div>
-            </section>
-        </div>
-    {% endif %}
-</div>
-
-<div class="row g-4 mb-4">
-    {% if competency_items %}
-        <div class="col-md-6">
-            <section class="cv-section card shadow-sm border-0 h-100">
-                <div class="card-header bg-white border-0 pt-4 px-4">
-                    <h2 class="h5 mb-1">{% translate "Transversal Competencies" %}</h2>
-                </div>
-                <div class="card-body px-4 pb-4">
-                    {% for item in competency_items %}
-                        <div class="cv-focus-entry mb-3">
-                            <div class="d-flex flex-wrap gap-2 align-items-center mb-1">
-                                <strong>{{ item.competency_type }}</strong>
-                                {% if item.level %}
-                                    <span class="badge bg-tavata-primary">{{ item.level }}</span>
-                                {% endif %}
-                            </div>
-                            {% if item.description %}
-                                <p class="small text-muted mb-0 mt-1">{{ item.description }}</p>
-                            {% endif %}
-                        </div>
-                    {% endfor %}
-                </div>
-            </section>
-        </div>
-    {% endif %}
-
-    {% if link_items %}
-        <div class="col-md-6">
-            <section class="cv-section card shadow-sm border-0 h-100">
-                <div class="card-header bg-white border-0 pt-4 px-4">
-                    <h2 class="h5 mb-1">{% translate "Academic and Professional Links" %}</h2>
-                </div>
-                <div class="card-body px-4 pb-4">
-                    <div class="list-group list-group-flush">
-                        {% for item in link_items %}
-                            <a href="{{ item.url }}"
-                               target="_blank"
-                               rel="noopener noreferrer"
-                               class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                                <span>
-                                    {% if item.link_type %}
-                                        <strong>{{ item.link_type }}</strong> ·
-                                    {% endif %}
-                                    {{ item.label }}
+                    <div class="card-body px-4 pb-4">
+                        <div class="d-flex flex-wrap gap-2">
+                            {% for item in language_items %}
+                                <span class="badge bg-tavata-primary">
+                                    {{ item.language }}{% if item.level %} · {{ item.level }}{% endif %}
                                 </span>
-                                <i class="fas fa-arrow-up-right-from-square small"></i>
-                            </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </section>
+            </div>
+        {% endif %}
+
+        {% if link_items %}
+            <div class="col-md-6">
+                <section class="cv-section card shadow-sm border-0 h-100">
+                    <div class="card-header bg-white border-0 pt-4 px-4">
+                        <h2 class="h5 mb-1">{% translate "Academic and Professional Links" %}</h2>
+                    </div>
+                    <div class="card-body px-4 pb-4">
+                        <div class="list-group list-group-flush">
+                            {% for item in link_items %}
+                                <a href="{{ item.url }}"
+                                   target="_blank"
+                                   rel="noopener noreferrer"
+                                   class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                    <span>
+                                        <strong>{{ item.get_display_label }}</strong>
+                                        <span class="d-block small text-muted">{{ item.url }}</span>
+                                    </span>
+                                    <i class="fas fa-arrow-up-right-from-square small"></i>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </section>
+            </div>
+        {% endif %}
+    </div>
+{% endif %}
+
+{% if skill_items %}
+    <div class="cv-print-page-break" aria-hidden="true"></div>
+    <section class="cv-section card shadow-sm border-0 mb-4">
+        <div class="card-header bg-white border-0 pt-4 px-4">
+            <h2 class="h5 mb-1">{% translate "Technical and Methodological Knowledge" %}</h2>
+        </div>
+        <div class="card-body px-4 pb-4">
+            {% for group in technical_skill_groups %}
+                <div class="cv-focus-entry mb-4">
+                    <h3 class="h6 text-uppercase text-muted mb-2">{{ group.category_name }}</h3>
+                    <div class="d-flex flex-wrap gap-2">
+                        {% for item in group.items %}
+                            {% if item.skill_type %}
+                                <span class="cv-focus-pill">
+                                    {{ item.skill_type.translated_name }}{% if item.level %} · {{ item.level }}{% endif %}
+                                </span>
+                            {% endif %}
                         {% endfor %}
                     </div>
                 </div>
-            </section>
+            {% endfor %}
         </div>
-    {% endif %}
-</div>
+    </section>
+{% endif %}
+
+{% if competency_items %}
+    <div class="cv-print-page-break" aria-hidden="true"></div>
+    <section class="cv-section card shadow-sm border-0 mb-4">
+        <div class="card-header bg-white border-0 pt-4 px-4">
+            <h2 class="h5 mb-1">{% translate "Transversal Competencies" %}</h2>
+        </div>
+        <div class="card-body px-4 pb-4">
+            {% for item in competency_items %}
+                <div class="cv-focus-entry mb-3">
+                    <div class="d-flex flex-wrap gap-2 align-items-center mb-1">
+                        <strong>{{ item.competency_type.translated_name }}</strong>
+                    </div>
+                    {% if item.description or item.competency_type.translated_description %}
+                        <p class="small text-muted mb-0 mt-1">{{ item.description|default:item.competency_type.translated_description }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+{% endif %}
 
 {% if internal_publications %}
+    <div class="cv-print-page-break" aria-hidden="true"></div>
     <section class="cv-section card shadow-sm border-0 mb-4">
         <div class="card-header bg-white border-0 pt-4 px-4">
             <h2 class="h5 mb-1">{% translate "TVTente Scientific Publications" %}</h2>
@@ -532,6 +574,7 @@
 {% endif %}
 
 {% if external_publication_items %}
+    <div class="cv-print-page-break" aria-hidden="true"></div>
     <section class="cv-section card shadow-sm border-0 mb-4">
         <div class="card-header bg-white border-0 pt-4 px-4">
             <h2 class="h5 mb-1">{% translate "External Publications" %}</h2>
@@ -570,9 +613,9 @@
                                 {% endif %}
                             </div>
 
-                            {% if item.year %}
+                            {% if item.publication_date %}
                                 <div class="small text-muted text-md-end">
-                                    {{ item.year }}
+                                    {{ item.publication_date|date:"DATE_FORMAT" }}
                                 </div>
                             {% endif %}
                         </div>

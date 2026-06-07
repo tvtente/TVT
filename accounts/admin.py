@@ -115,6 +115,25 @@ class ProfileCatalogAdmin(TranslatableAdmin):
         return obj.translated_name
 
 
+class ProfileSkillTypeAdmin(ProfileCatalogAdmin):
+    list_display = ("current_name", "parent_name", "slug", "order", "is_active")
+    list_filter = ("is_active", "parent")
+
+    def get_queryset(self, request):
+        return (
+            super()
+            .get_queryset(request)
+            .select_related("parent")
+            .prefetch_related("parent__translations")
+        )
+
+    @admin.display(description=_("Category"))
+    def parent_name(self, obj):
+        if not obj.parent_id:
+            return "—"
+        return obj.parent.translated_name
+
+
 @admin.register(Profile)
 class ProfileAdmin(TranslatableAdmin):
     list_display = (
@@ -229,7 +248,7 @@ for social_model in (SocialApp, SocialToken):
 
 admin.site.register(ProfileLanguageLevel, ProfileCatalogAdmin)
 admin.site.register(ProfileSkillLevel, ProfileCatalogAdmin)
-admin.site.register(ProfileSkillType, ProfileCatalogAdmin)
+admin.site.register(ProfileSkillType, ProfileSkillTypeAdmin)
 admin.site.register(ProfileCompetencyLevel, ProfileCatalogAdmin)
 admin.site.register(ProfileCompetencyType, ProfileCatalogAdmin)
 admin.site.register(ProfileLinkType, ProfileCatalogAdmin)

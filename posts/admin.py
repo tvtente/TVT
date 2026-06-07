@@ -180,7 +180,9 @@ class PostAdmin(TranslatableAdmin, SummernoteModelAdmin):
     exclude = ('views_count',)
 
     # Parler can merge form field names into admin field lists; never treat these as Post fields.
-    _NON_MODEL_FORM_LEAKS = frozenset({"featured_image_staging_id", "social_image_staging_id"})
+    _NON_MODEL_FORM_LEAKS = frozenset(
+        {"featured_image_staging_id", "social_image_staging_id", "mobile_image_staging_id"}
+    )
 
     summernote_fields = ('content',)
 
@@ -555,6 +557,8 @@ class PostAdmin(TranslatableAdmin, SummernoteModelAdmin):
 
         lang = _post_admin_language(request, getattr(form, "instance", None))
         cleaned = form.cleaned_data
+        instance = form.instance
+        instance.set_current_language(lang)
         title = (cleaned.get("title") or "").strip()
         slug = (cleaned.get("slug") or "").strip() or "post-image"
         summary = (cleaned.get("summary") or "").strip()
@@ -575,6 +579,7 @@ class PostAdmin(TranslatableAdmin, SummernoteModelAdmin):
                     staging_uuid=featured_stage,
                 )
                 cleaned["featured_image_asset"] = img
+                instance.featured_image_asset = img
 
             if social_stage:
                 img = gallery_bridge.create_gallery_image_from_staged_upload(
@@ -585,6 +590,7 @@ class PostAdmin(TranslatableAdmin, SummernoteModelAdmin):
                     staging_uuid=social_stage,
                 )
                 cleaned["social_image_asset"] = img
+                instance.social_image_asset = img
 
             if mobile_stage:
                 img = gallery_bridge.create_gallery_image_from_staged_upload(
@@ -595,6 +601,7 @@ class PostAdmin(TranslatableAdmin, SummernoteModelAdmin):
                     staging_uuid=mobile_stage,
                 )
                 cleaned["mobile_image_asset"] = img
+                instance.mobile_image_asset = img
 
         except StagedUpload.DoesNotExist:
             raise ValidationError(

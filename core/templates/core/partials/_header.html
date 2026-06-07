@@ -103,40 +103,38 @@
                                 <i class="fas fa-bag-shopping"></i>
                             </a>
 
-                            <!-- User Avatar -->
-                            <a
-                                href="{% url 'accounts:profile_edit' %}"
-                                data-bs-toggle="tooltip"
-                                data-bs-placement="bottom"
-                                data-bs-title="{% translate 'Edit Profile' %}"
-                                style="display: inline-flex; align-items: center;"
-                            >
-                                <img src="{{ user|avatar_url }}"
-                                     alt="{{ user.username }}'s Avatar"
-                                     class="rounded-circle"
-                                     style="width: 36px; height: 36px; object-fit: cover;">
-                            </a>
-
-                            <!-- Logout Form -->
-                            <form
-                                id="logout-form"
-                                action="{% url 'logout' %}"
-                                method="post"
-                                class="m-0"
-                                style="display: inline-flex;"
-                            >
-                                {% csrf_token %}
+                            <div class="dropdown user-avatar-dropdown">
                                 <button
-                                    type="submit"
-                                    class="btn btn-outline-warning btn-sm d-inline-flex align-items-center justify-content-center"
-                                    data-bs-toggle="tooltip"
+                                    class="btn p-0 border-0 bg-transparent dropdown-toggle user-avatar-toggle"
+                                    type="button"
+                                    id="userAvatarMenu"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false"
                                     data-bs-placement="bottom"
-                                    data-bs-title="{% translate 'Log Out' %}"
-                                    style="width: 36px; height: 36px; padding: 0;"
+                                    data-bs-title="{% translate 'Account options' %}"
                                 >
-                                    <i class="fas fa-sign-out-alt"></i>
+                                    <img src="{{ user|avatar_url }}"
+                                         alt="{{ user.username }}'s Avatar"
+                                         class="rounded-circle"
+                                         style="width: 36px; height: 36px; object-fit: cover;">
                                 </button>
-                            </form>
+                                <ul class="dropdown-menu dropdown-menu-end shadow-sm user-avatar-menu" aria-labelledby="userAvatarMenu">
+                                    <li class="dropdown-header">
+                                        <div class="fw-semibold">{{ user.get_full_name|default:user.username }}</div>
+                                        <div class="small text-muted">@{{ user.username }}</div>
+                                    </li>
+                                    {% show_profile_menu 'profile-menu' %}
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <form action="{% url 'logout' %}" method="post" class="m-0">
+                                            {% csrf_token %}
+                                            <button type="submit" class="dropdown-item text-danger">
+                                                <i class="fas fa-sign-out-alt me-2"></i>{% translate "Log out" %}
+                                            </button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
 
                         {% else %}
                             <!-- Login Link -->

@@ -302,6 +302,55 @@ class WidgetSelectorTests(TestCase):
         self.assertEqual(items[0].safe_translation_getter("name", language_code="es"), "Salud")
         self.assertEqual(items[0].num_posts, 1)
 
+    def test_recent_posts_widget_leaves_thumbnail_empty_when_post_has_no_images(self):
+        widget = Widget.objects.create(
+            zone=self.zone,
+            widget_type=Widget.WidgetType.RECENT_POSTS,
+            title="Recent",
+            cache_timeout=0,
+            item_count=10,
+        )
+        post = Post.objects.create(author=self.user, status="published")
+        post.set_current_language("en")
+        post.title = "No image post"
+        post.slug = "no-image-post"
+        post.content = "content"
+        post.save()
+
+        items = get_widget_items(widget, "en", self.zone.slug)
+
+        self.assertEqual(items[0].thumbnail_url, "")
+
+    def test_recent_posts_widget_prefers_mobile_thumbnail_over_social(self):
+        widget = Widget.objects.create(
+            zone=self.zone,
+            widget_type=Widget.WidgetType.RECENT_POSTS,
+            title="Recent",
+            cache_timeout=0,
+            item_count=10,
+        )
+        featured_image = Image(title="Featured", slug="thumb-featured", language="en", description="")
+        featured_image.image.save("thumb-featured.jpg", ContentFile(b"featured"), save=True)
+        social_image = Image(title="Social", slug="thumb-social", language="en", description="")
+        social_image.image.save("thumb-social.jpg", ContentFile(b"social"), save=True)
+        mobile_image = Image(title="Mobile", slug="thumb-mobile", language="en", description="")
+        mobile_image.image.save("thumb-mobile.jpg", ContentFile(b"mobile"), save=True)
+
+        post = Post.objects.create(author=self.user, status="published")
+        post.set_current_language("en")
+        post.title = "Thumb priority"
+        post.slug = "thumb-priority"
+        post.content = "content"
+        post.featured_image_asset = featured_image
+        post.social_image_asset = social_image
+        post.mobile_image_asset = mobile_image
+        post.save()
+
+        items = get_widget_items(widget, "en", self.zone.slug)
+
+        self.assertTrue(items[0].thumbnail_url.endswith("thumb-mobile.jpg"))
+        self.assertEqual(items[0].thumbnail_kind, "mobile")
+
     def test_top_rated_today_widget_orders_posts_by_today_points(self):
         widget = Widget.objects.create(
             zone=self.zone,
@@ -500,6 +549,35 @@ class WidgetSelectorTests(TestCase):
 
         self.assertEqual([item.pk for item in items], [high_post.pk, low_post.pk])
 
+    def test_hero_carousel_includes_posts_without_image(self):
+        widget = Widget.objects.create(
+            zone=self.zone,
+            widget_type=Widget.WidgetType.HERO_CAROUSEL,
+            title="Hero",
+            cache_timeout=0,
+            item_count=10,
+        )
+        imaged_post = self._create_post_with_image("hero-image", "Hero image")
+        imaged_post.editor_rating = 80
+        imaged_post.save(update_fields=["editor_rating"])
+
+        no_image_post = Post.objects.create(
+            author=self.user,
+            status="published",
+            show_in_post_grids=True,
+            editor_rating=90,
+        )
+        no_image_post.set_current_language("en")
+        no_image_post.title = "Hero no image"
+        no_image_post.slug = "hero-no-image"
+        no_image_post.content = "content"
+        no_image_post.save()
+
+        items = get_widget_items(widget, "en", self.zone.slug)
+
+        self.assertEqual([item.pk for item in items], [no_image_post.pk, imaged_post.pk])
+        self.assertIsNone(items[0].widget_display_image)
+
     def test_book_grid_recent_returns_only_published_books_in_language_order(self):
         widget = Widget.objects.create(
             zone=self.zone,
@@ -628,7 +706,7 @@ class WidgetRenderingTests(TestCase):
         self.assertIn("hero-carousel", html)
         self.assertIn("Hero article", html)
         self.assertIn("zoomable", html)
-        self.assertIn("background-color: rgba(17, 24, 39, 0.5)", html)
+        self.assertIn("hero-carousel__caption-box", html)
 
     def test_hero_carousel_template_respects_square_image_format(self):
         self.widget.image_format = Widget.ImageFormat.SQUARE

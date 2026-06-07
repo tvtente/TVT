@@ -2,16 +2,21 @@ import tempfile
 from io import StringIO
 
 from django.contrib.auth import get_user_model
+from django.contrib import admin
 from django.core.files.base import ContentFile
 from django.core.management import call_command
 from django.core.management.base import CommandError
 from django.core.exceptions import ValidationError
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.test import RequestFactory
 from django.test import TestCase, override_settings
 from django.urls import reverse
 from django.utils import translation
 
+from pages.admin import PageAdmin
 from books.models import Book
 from gallery.models import Image
+from gallery.models import StagedUpload
 from pages.models import HomeSection, Page, PageSection
 from posts.models import Post
 from publications.models import Publication
@@ -40,6 +45,38 @@ class PageFeaturedImageDualReadTests(TestCase):
 
         with translation.override("es"):
             self.assertEqual(page.get_featured_image().name, g.image.name)
+
+    def test_page_admin_create_persists_staged_png_featured_image(self):
+        request = RequestFactory().post(
+            "/admin/pages/page/add/",
+            {"featured_image_asset_staging_es": ""},
+        )
+        request.user = self.user
+
+        png_bytes = (
+            b"\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01"
+            b"\x08\x06\x00\x00\x00\x1f\x15\xc4\x89\x00\x00\x00\rIDATx\x9cc``\xf8\x0f"
+            b"\x00\x01\x05\x01\x02\xa7^\xab?\x00\x00\x00\x00IEND\xaeB`\x82"
+        )
+        staged = StagedUpload.objects.create(
+            file=SimpleUploadedFile("hero.png", png_bytes, content_type="image/png"),
+        )
+        request.POST = request.POST.copy()
+        request.POST["featured_image_asset_staging_es"] = str(staged.pk)
+
+        page = Page(author=self.user, status="published")
+        page.set_current_language("es")
+        page.title = "Portada"
+        page.slug = "portada"
+        page.content = "Contenido"
+        page.abstract = "Resumen"
+
+        page_admin = PageAdmin(Page, admin.site)
+        page_admin.save_model(request, page, form=None, change=False)
+
+        page.refresh_from_db()
+        self.assertIsNotNone(page.featured_image_asset_es)
+        self.assertTrue(page.featured_image_asset_es.image.name.endswith(".png"))
 
 
 class HomepageUniquenessTests(TestCase):

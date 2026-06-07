@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
+import logging
+
 from django.contrib.admin.views.decorators import staff_member_required
+from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
@@ -11,9 +14,13 @@ from django.views.decorators.http import require_http_methods
 
 from gallery.models import Image, StagedUpload
 
+logger = logging.getLogger(__name__)
+
 ALLOWED_IMAGE_CONTENT_TYPES = frozenset(
     {
         "image/jpeg",
+        "image/jpg",
+        "image/pjpeg",
         "image/png",
         "image/gif",
         "image/webp",
@@ -52,11 +59,16 @@ def stage_upload_view(request):
     if upload.size > MAX_UPLOAD_BYTES:
         return JsonResponse({"error": "file_too_large"}, status=400)
 
-    staged = StagedUpload.objects.create(
-        file=upload,
-        original_filename=getattr(upload, "name", "") or "",
-        created_by=request.user if request.user.is_authenticated else None,
-    )
+    try:
+        staged = StagedUpload.objects.create(
+            file=upload,
+            original_filename=getattr(upload, "name", "") or "",
+            created_by=request.user if request.user.is_authenticated else None,
+        )
+    except ValidationError:
+        logger.warning("Gallery staging rejected an invalid image upload.", exc_info=True)
+        return JsonResponse({"error": "invalid_image"}, status=400)
+
     url = request.build_absolute_uri(staged.file.url) if staged.file else ""
     return JsonResponse(
         {

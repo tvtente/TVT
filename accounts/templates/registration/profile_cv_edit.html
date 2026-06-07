@@ -6,6 +6,160 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'accounts/css/profile_cv.css' %}">
+<style>
+    html {
+        scroll-behavior: smooth;
+    }
+
+    .cv-stat-link {
+        display: inline-flex;
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .cv-stat-link:hover,
+    .cv-stat-link:focus {
+        color: inherit;
+    }
+
+    .cv-stat-link .cv-stat {
+        transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+
+    .cv-stat-link:hover .cv-stat,
+    .cv-stat-link:focus .cv-stat {
+        transform: translateY(-3px);
+        box-shadow: 0 1rem 2rem rgba(15, 23, 42, 0.08);
+        border-color: rgba(255, 193, 7, 0.55);
+    }
+
+    .cv-section {
+        scroll-margin-top: 6rem;
+    }
+
+    .profile-cv-page form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    #cv-experience {
+        order: 1;
+    }
+
+    #cv-education {
+        order: 2;
+    }
+
+    #cv-certifications {
+        order: 3;
+    }
+
+    #cv-languages {
+        order: 4;
+    }
+
+    #cv-skills {
+        order: 5;
+    }
+
+    #cv-competencies {
+        order: 6;
+    }
+
+    #cv-links {
+        order: 7;
+    }
+
+    #cv-external-publications {
+        order: 8;
+    }
+
+    .cv-save-bar {
+        order: 99;
+    }
+
+    .cv-section__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+    .cv-section__toggle {
+        min-width: 2.4rem;
+        min-height: 2.4rem;
+        border-radius: 999px;
+        border: 1px solid var(--tavata-card-box-border);
+        background: #fff;
+        color: var(--tavata-dark);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.15rem;
+        font-weight: 700;
+        line-height: 1;
+    }
+
+    .cv-section__toggle:hover,
+    .cv-section__toggle:focus {
+        border-color: var(--tavata-yellow);
+        box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--tavata-yellow) 22%, transparent);
+    }
+
+    .cv-section__body[hidden] {
+        display: none !important;
+    }
+
+    .cv-save-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.65rem;
+        align-items: center;
+    }
+
+    .cv-save-nav .cv-stat-link {
+        display: inline-flex;
+    }
+
+    .cv-save-nav .btn {
+        border-radius: 999px;
+        white-space: nowrap;
+    }
+
+    .competency-help {
+        margin: 0;
+    }
+
+    .competency-help__toggle {
+        list-style: none;
+        width: 1.65rem;
+        height: 1.65rem;
+        border-radius: 999px;
+        border: 1px solid var(--tavata-card-box-border);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.95rem;
+        font-weight: 700;
+        cursor: pointer;
+        user-select: none;
+        color: var(--tavata-dark);
+        background: #fff;
+    }
+
+    .competency-help__toggle::-webkit-details-marker {
+        display: none;
+    }
+
+    .competency-help__toggle:hover,
+    .competency-help__toggle:focus {
+        border-color: var(--tavata-yellow);
+    }
+
+    .competency-help__body {
+        max-width: 28rem;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -33,84 +187,21 @@
         </div>
     </div>
 
-    <!-- Quick summary -->
-    <div class="row g-3 mb-4">
-        <div class="col-6 col-md-3 col-xl">
-            <div class="cv-stat card h-100 border-0 shadow-sm">
-                <div class="card-body">
-                    <div class="small text-muted">{% trans "Education" %}</div>
-                    <div class="fs-4 fw-bold">{{ education_formset.initial_form_count }}</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-md-3 col-xl">
-            <div class="cv-stat card h-100 border-0 shadow-sm">
-                <div class="card-body">
-                    <div class="small text-muted">{% trans "Experience" %}</div>
-                    <div class="fs-4 fw-bold">{{ experience_formset.initial_form_count }}</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-md-3 col-xl">
-            <div class="cv-stat card h-100 border-0 shadow-sm">
-                <div class="card-body">
-                    <div class="small text-muted">{% trans "Certifications" %}</div>
-                    <div class="fs-4 fw-bold">{{ certification_formset.initial_form_count }}</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-md-3 col-xl">
-            <div class="cv-stat card h-100 border-0 shadow-sm">
-                <div class="card-body">
-                    <div class="small text-muted">{% trans "Languages" %}</div>
-                    <div class="fs-4 fw-bold">{{ language_formset.initial_form_count }}</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-md-3 col-xl">
-            <div class="cv-stat card h-100 border-0 shadow-sm">
-                <div class="card-body">
-                    <div class="small text-muted">{% trans "Technical and Methodological Knowledge" %}</div>
-                    <div class="fs-4 fw-bold">{{ skill_formset.initial_form_count }}</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-md-3 col-xl">
-            <div class="cv-stat card h-100 border-0 shadow-sm">
-                <div class="card-body">
-                    <div class="small text-muted">{% trans "Transversal Competencies" %}</div>
-                    <div class="fs-4 fw-bold">{{ competency_formset.initial_form_count }}</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-md-3 col-xl">
-            <div class="cv-stat card h-100 border-0 shadow-sm">
-                <div class="card-body">
-                    <div class="small text-muted">{% trans "Professional Links" %}</div>
-                    <div class="fs-4 fw-bold">{{ link_formset.initial_form_count }}</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-md-3 col-xl">
-            <div class="cv-stat card h-100 border-0 shadow-sm">
-                <div class="card-body">
-                    <div class="small text-muted">{% trans "External Publications" %}</div>
-                    <div class="fs-4 fw-bold">{{ external_publication_formset.initial_form_count }}</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <form method="post" novalidate>
         {% csrf_token %}
 
         <!-- EDUCATION -->
-        <section class="cv-section card shadow-sm border-0 mb-4">
+        <section id="cv-education" class="cv-section card shadow-sm border-0 mb-4">
             <div class="card-header bg-white border-0 pt-4 px-4">
-                <h2 class="h5 mb-1">{% trans "Education" %}</h2>
-                <p class="text-muted small mb-0">{% trans "Add your academic background, degrees, and institutions." %}</p>
+                <div class="cv-section__header">
+                    <div>
+                        <h2 class="h5 mb-1">{% trans "Education" %}</h2>
+                        <p class="text-muted small mb-0">{% trans "Add your academic background, degrees, and institutions." %}</p>
+                    </div>
+                    <button type="button" class="cv-section__toggle" data-section-toggle="cv-education-body" aria-expanded="true" aria-controls="cv-education-body" title="{% trans 'Collapse or expand section' %}">-</button>
+                </div>
             </div>
-            <div class="card-body px-4 pb-4">
+            <div id="cv-education-body" class="card-body px-4 pb-4 cv-section__body">
                 {{ education_formset.management_form }}
 
                 {% if education_formset.non_form_errors %}
@@ -138,7 +229,16 @@
                                                     </label>
                                                 </div>
                                             </div>
-                                        {% elif field.name == "description" %}
+                                        {% elif field.name == "is_current" %}
+                                            <div class="col-12">
+                                                <div class="form-check mt-2">
+                                                    {{ field }}
+                                                    <label class="form-check-label ms-2" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                                </div>
+                                                {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+                                                {% for error in field.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                            </div>
+                                        {% elif field.name == "description" or field.name == "main_responsibilities" or field.name == "key_achievements" %}
                                             <div class="col-12">
                                                 <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
                                                 {{ field }}
@@ -175,7 +275,14 @@
                                                 </label>
                                             </div>
                                         </div>
-                                    {% elif field.name == "description" %}
+                                    {% elif field.name == "is_current" %}
+                                        <div class="col-12">
+                                            <div class="form-check mt-2">
+                                                {{ field }}
+                                                <label class="form-check-label ms-2" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                            </div>
+                                        </div>
+                                    {% elif field.name == "description" or field.name == "main_responsibilities" or field.name == "key_achievements" %}
                                         <div class="col-12">
                                             <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
                                             {{ field }}
@@ -199,12 +306,17 @@
         </section>
 
         <!-- EXPERIENCE -->
-        <section class="cv-section card shadow-sm border-0 mb-4">
+        <section id="cv-experience" class="cv-section card shadow-sm border-0 mb-4">
             <div class="card-header bg-white border-0 pt-4 px-4">
-                <h2 class="h5 mb-1">{% trans "Experience" %}</h2>
-                <p class="text-muted small mb-0">{% trans "List positions, organizations, and dates relevant to your professional path." %}</p>
+                <div class="cv-section__header">
+                    <div>
+                        <h2 class="h5 mb-1">{% trans "Experience" %}</h2>
+                        <p class="text-muted small mb-0">{% trans "List positions, organizations, and dates relevant to your professional path." %}</p>
+                    </div>
+                    <button type="button" class="cv-section__toggle" data-section-toggle="cv-experience-body" aria-expanded="true" aria-controls="cv-experience-body" title="{% trans 'Collapse or expand section' %}">-</button>
+                </div>
             </div>
-            <div class="card-body px-4 pb-4">
+            <div id="cv-experience-body" class="card-body px-4 pb-4 cv-section__body">
                 {{ experience_formset.management_form }}
 
                 {% if experience_formset.non_form_errors %}
@@ -232,7 +344,16 @@
                                                     </label>
                                                 </div>
                                             </div>
-                                        {% elif field.name == "description" %}
+                                        {% elif field.name == "is_current" %}
+                                            <div class="col-12">
+                                                <div class="form-check mt-2">
+                                                    {{ field }}
+                                                    <label class="form-check-label ms-2" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                                </div>
+                                                {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+                                                {% for error in field.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                            </div>
+                                        {% elif field.name == "description" or field.name == "main_responsibilities" or field.name == "key_achievements" %}
                                             <div class="col-12">
                                                 <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
                                                 {{ field }}
@@ -269,7 +390,14 @@
                                                 </label>
                                             </div>
                                         </div>
-                                    {% elif field.name == "description" %}
+                                    {% elif field.name == "is_current" %}
+                                        <div class="col-12">
+                                            <div class="form-check mt-2">
+                                                {{ field }}
+                                                <label class="form-check-label ms-2" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                            </div>
+                                        </div>
+                                    {% elif field.name == "description" or field.name == "main_responsibilities" or field.name == "key_achievements" %}
                                         <div class="col-12">
                                             <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
                                             {{ field }}
@@ -293,12 +421,17 @@
         </section>
 
         <!-- CERTIFICATIONS -->
-        <section class="cv-section card shadow-sm border-0 mb-4">
+        <section id="cv-certifications" class="cv-section card shadow-sm border-0 mb-4">
             <div class="card-header bg-white border-0 pt-4 px-4">
-                <h2 class="h5 mb-1">{% trans "Certifications" %}</h2>
-                <p class="text-muted small mb-0">{% trans "Add certifications, issuing institutions, and credential links." %}</p>
+                <div class="cv-section__header">
+                    <div>
+                        <h2 class="h5 mb-1">{% trans "Certifications" %}</h2>
+                        <p class="text-muted small mb-0">{% trans "Add certifications, issuing institutions, and credential links." %}</p>
+                    </div>
+                    <button type="button" class="cv-section__toggle" data-section-toggle="cv-certifications-body" aria-expanded="true" aria-controls="cv-certifications-body" title="{% trans 'Collapse or expand section' %}">-</button>
+                </div>
             </div>
-            <div class="card-body px-4 pb-4">
+            <div id="cv-certifications-body" class="card-body px-4 pb-4 cv-section__body">
                 {{ certification_formset.management_form }}
 
                 {% if certification_formset.non_form_errors %}
@@ -325,6 +458,15 @@
                                                         {% trans "Delete this item" %}
                                                     </label>
                                                 </div>
+                                            </div>
+                                        {% elif field.name == "no_expiration" %}
+                                            <div class="col-12">
+                                                <div class="form-check mt-2">
+                                                    {{ field }}
+                                                    <label class="form-check-label ms-2" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                                </div>
+                                                {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+                                                {% for error in field.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
                                             </div>
                                         {% elif field.name == "description" %}
                                             <div class="col-12">
@@ -363,6 +505,13 @@
                                                 </label>
                                             </div>
                                         </div>
+                                    {% elif field.name == "no_expiration" %}
+                                        <div class="col-12">
+                                            <div class="form-check mt-2">
+                                                {{ field }}
+                                                <label class="form-check-label ms-2" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                            </div>
+                                        </div>
                                     {% elif field.name == "description" %}
                                         <div class="col-12">
                                             <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
@@ -387,12 +536,17 @@
         </section>
 
         <!-- LANGUAGES -->
-        <section class="cv-section card shadow-sm border-0 mb-4">
+        <section id="cv-languages" class="cv-section card shadow-sm border-0 mb-4">
             <div class="card-header bg-white border-0 pt-4 px-4">
-                <h2 class="h5 mb-1">{% trans "Languages" %}</h2>
-                <p class="text-muted small mb-0">{% trans "Specify languages and your level in each one." %}</p>
+                <div class="cv-section__header">
+                    <div>
+                        <h2 class="h5 mb-1">{% trans "Languages" %}</h2>
+                        <p class="text-muted small mb-0">{% trans "Specify languages and your level in each one." %}</p>
+                    </div>
+                    <button type="button" class="cv-section__toggle" data-section-toggle="cv-languages-body" aria-expanded="true" aria-controls="cv-languages-body" title="{% trans 'Collapse or expand section' %}">-</button>
+                </div>
             </div>
-            <div class="card-body px-4 pb-4">
+            <div id="cv-languages-body" class="card-body px-4 pb-4 cv-section__body">
                 {{ language_formset.management_form }}
 
                 {% if language_formset.non_form_errors %}
@@ -469,200 +623,191 @@
         </section>
 
         <!-- SKILLS -->
-        <section class="cv-section card shadow-sm border-0 mb-4">
+        <section id="cv-skills" class="cv-section card shadow-sm border-0 mb-4">
             <div class="card-header bg-white border-0 pt-4 px-4">
-                <h2 class="h5 mb-1">{% trans "Technical and Methodological Knowledge" %}</h2>
-                <p class="text-muted small mb-0">{% trans "Document tools, methods, platforms, or technical areas that support your research and professional practice." %}</p>
+                <div class="cv-section__header">
+                    <div>
+                        <h2 class="h5 mb-1">{% trans "Technical and Methodological Knowledge" %}</h2>
+                        <p class="text-muted small mb-0">{% trans "Document tools, methods, platforms, or technical areas that support your research and professional practice." %}</p>
+                    </div>
+                    <button type="button" class="cv-section__toggle" data-section-toggle="cv-skills-body" aria-expanded="true" aria-controls="cv-skills-body" title="{% trans 'Collapse or expand section' %}">-</button>
+                </div>
             </div>
-            <div class="card-body px-4 pb-4">
-                {{ skill_formset.management_form }}
+            <div id="cv-skills-body" class="card-body px-4 pb-4 cv-section__body">
+                <input type="hidden" name="skill_groups-TOTAL_FORMS" id="id_skill_groups-TOTAL_FORMS" value="{{ skill_editor_rows|length }}">
 
-                {% if skill_formset.non_form_errors %}
-                    <div class="alert alert-danger">{{ skill_formset.non_form_errors }}</div>
+                {% if skill_editor_errors %}
+                    <div class="alert alert-danger">
+                        {% for error in skill_editor_errors %}
+                            <div>{{ error }}</div>
+                        {% endfor %}
+                    </div>
                 {% endif %}
 
-                <div class="cv-formset" data-formset-container="skills">
-                    {% for form in skill_formset %}
-                        <div class="cv-item card border mb-3">
+                <p class="text-muted small mb-3">
+                    {% trans "Choose one category at a time. After selecting it, mark the technologies or tools you know. Each category can only be used once." %}
+                </p>
+
+                <div
+                    class="cv-formset"
+                    id="skill-category-groups"
+                    data-category-label="{% trans 'Category' %}"
+                    data-category-placeholder="{% trans 'Select a category' %}"
+                    data-technologies-label="{% trans 'Technologies' %}"
+                    data-empty-technologies-message="{% trans 'Select a category to show its related technologies.' %}"
+                    data-remove-label="{% trans 'Delete this item' %}"
+                >
+                    {% for row in skill_editor_rows %}
+                        <div class="cv-item card border mb-3 skill-category-row" data-skill-row>
                             <div class="card-body">
-                                {% if form.non_field_errors %}
-                                    <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+                                {% if row.errors %}
+                                    <div class="alert alert-danger">
+                                        {% for error in row.errors %}
+                                            <div>{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
                                 {% endif %}
 
-                                {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
-
                                 <div class="row g-3">
-                                    {% for field in form.visible_fields %}
-                                        {% if field.name == "DELETE" %}
-                                            <div class="col-12">
-                                                <div class="form-check mt-2">
-                                                    {{ field }}
-                                                    <label class="form-check-label text-danger ms-2" for="{{ field.id_for_label }}">
-                                                        {% trans "Delete this item" %}
-                                                    </label>
-                                                </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">{% trans "Category" %}</label>
+                                        <select class="form-select skill-category-select" name="skill_groups-{{ forloop.counter0 }}-category" data-skill-category-select>
+                                            <option value="">{% trans "Select a category" %}</option>
+                                            {% for category in skill_category_catalog %}
+                                                <option value="{{ category.id }}" {% if row.category_id == category.id %}selected{% endif %}>{{ category.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="mt-3" data-skill-technologies-wrap>
+                                    {% if not row.category_id %}
+                                        <div class="form-text">{% trans "Select a category to show its related technologies." %}</div>
+                                    {% endif %}
+                                    {% for category in skill_category_catalog %}
+                                        <div class="skill-technologies-group {% if row.category_id != category.id %}d-none{% endif %}" data-skill-technologies-group="{{ category.id }}">
+                                            <label class="form-label d-block">{% trans "Technologies" %}</label>
+                                            <div class="row g-2">
+                                                {% for tech in category.technologies %}
+                                                    <div class="col-md-4">
+                                                        <div class="form-check">
+                                                            <input
+                                                                class="form-check-input"
+                                                                type="checkbox"
+                                                                name="skill_groups-{{ forloop.parentloop.counter0 }}-technologies"
+                                                                value="{{ tech.id }}"
+                                                                id="id_skill_groups_{{ forloop.parentloop.counter0 }}_tech_{{ tech.id }}"
+                                                                {% if tech.id in row.technology_ids %}checked{% endif %}
+                                                            >
+                                                            <label class="form-check-label" for="id_skill_groups_{{ forloop.parentloop.counter0 }}_tech_{{ tech.id }}">
+                                                                {{ tech.name }}
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
                                             </div>
-                                        {% elif field.name == "description" %}
-                                            <div class="col-12">
-                                                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
-                                                {{ field }}
-                                                {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
-                                                {% for error in field.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
-                                            </div>
-                                        {% else %}
-                                            <div class="col-md-6">
-                                                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
-                                                {{ field }}
-                                                {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
-                                                {% for error in field.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
-                                            </div>
-                                        {% endif %}
+                                        </div>
                                     {% endfor %}
+                                </div>
+
+                                <div class="mt-3">
+                                    <button type="button" class="btn btn-outline-danger btn-sm" data-remove-skill-row>
+                                        {% trans "Delete this item" %}
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     {% endfor %}
                 </div>
 
-                <template id="empty-form-skills">
-                    <div class="cv-item card border mb-3">
-                        <div class="card-body">
-                            {% for hidden in skill_formset.empty_form.hidden_fields %}{{ hidden }}{% endfor %}
-                            <div class="row g-3">
-                                {% for field in skill_formset.empty_form.visible_fields %}
-                                    {% if field.name == "DELETE" %}
-                                        <div class="col-12">
-                                            <div class="form-check mt-2">
-                                                {{ field }}
-                                                <label class="form-check-label text-danger ms-2" for="{{ field.id_for_label }}">
-                                                    {% trans "Delete this item" %}
-                                                </label>
-                                            </div>
-                                        </div>
-                                    {% elif field.name == "description" %}
-                                        <div class="col-12">
-                                            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
-                                            {{ field }}
-                                        </div>
-                                    {% else %}
-                                        <div class="col-md-6">
-                                            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
-                                            {{ field }}
-                                        </div>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                </template>
+                {{ skill_category_catalog|json_script:"skill-category-catalog-data" }}
 
-                <button type="button" class="btn btn-outline-primary btn-sm js-add-form" data-prefix="skills">
-                    + {% trans "Add another" %}
+                <button type="button" class="btn btn-outline-primary btn-sm" id="add-skill-category-row">
+                    + {% trans "Add another category" %}
                 </button>
             </div>
         </section>
 
         <!-- COMPETENCIES -->
-        <section class="cv-section card shadow-sm border-0 mb-4">
+        <section id="cv-competencies" class="cv-section card shadow-sm border-0 mb-4">
             <div class="card-header bg-white border-0 pt-4 px-4">
-                <h2 class="h5 mb-1">{% trans "Transversal Competencies" %}</h2>
-                <p class="text-muted small mb-0">{% trans "Highlight analytical, collaborative, and communication strengths that shape your way of working." %}</p>
+                <div class="cv-section__header">
+                    <div>
+                        <h2 class="h5 mb-1">{% trans "Transversal Competencies" %}</h2>
+                        <p class="text-muted small mb-0">{% trans "Highlight analytical, collaborative, and communication strengths that shape your way of working." %}</p>
+                    </div>
+                    <button type="button" class="cv-section__toggle" data-section-toggle="cv-competencies-body" aria-expanded="true" aria-controls="cv-competencies-body" title="{% trans 'Collapse or expand section' %}">-</button>
+                </div>
             </div>
-            <div class="card-body px-4 pb-4">
-                {{ competency_formset.management_form }}
-
-                {% if competency_formset.non_form_errors %}
-                    <div class="alert alert-danger">{{ competency_formset.non_form_errors }}</div>
+            <div id="cv-competencies-body" class="card-body px-4 pb-4 cv-section__body">
+                {% if competency_selection_errors %}
+                    <div class="alert alert-danger">
+                        {% for error in competency_selection_errors %}
+                            <div>{{ error }}</div>
+                        {% endfor %}
+                    </div>
                 {% endif %}
 
-                <div class="cv-formset" data-formset-container="competencies">
-                    {% for form in competency_formset %}
-                        <div class="cv-item card border mb-3">
-                            <div class="card-body">
-                                {% if form.non_field_errors %}
-                                    <div class="alert alert-danger">{{ form.non_field_errors }}</div>
-                                {% endif %}
+                <p class="text-muted small mb-3">
+                    {% trans "Choose up to five transversal competencies that best represent how you work." %}
+                </p>
 
-                                {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
-
-                                <div class="row g-3">
-                                    {% for field in form.visible_fields %}
-                                        {% if field.name == "DELETE" %}
-                                            <div class="col-12">
-                                                <div class="form-check mt-2">
-                                                    {{ field }}
-                                                    <label class="form-check-label text-danger ms-2" for="{{ field.id_for_label }}">
-                                                        {% trans "Delete this item" %}
-                                                    </label>
+                <div class="row g-3">
+                    {% for competency in competency_catalog %}
+                        <div class="col-md-6">
+                            <div class="cv-item card border h-100">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-start justify-content-between gap-3">
+                                        <div class="form-check m-0">
+                                            <input
+                                                class="form-check-input"
+                                                type="checkbox"
+                                                name="competency_choices"
+                                                value="{{ competency.id }}"
+                                                id="id_competency_choice_{{ competency.id }}"
+                                                {% if competency.id in selected_competency_ids %}checked{% endif %}
+                                            >
+                                            <label class="form-check-label fw-semibold" for="id_competency_choice_{{ competency.id }}">
+                                                {{ competency.name }}
+                                            </label>
+                                        </div>
+                                        {% if competency.description %}
+                                            <details class="competency-help">
+                                                <summary class="competency-help__toggle" aria-label="{% trans 'More information about this competency' %}">i</summary>
+                                                <div class="competency-help__body small text-muted mt-2">
+                                                    {{ competency.description }}
                                                 </div>
-                                            </div>
-                                        {% elif field.name == "description" %}
-                                            <div class="col-12">
-                                                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
-                                                {{ field }}
-                                                {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
-                                                {% for error in field.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
-                                            </div>
-                                        {% else %}
-                                            <div class="col-md-6">
-                                                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
-                                                {{ field }}
-                                                {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
-                                                {% for error in field.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
-                                            </div>
+                                            </details>
                                         {% endif %}
-                                    {% endfor %}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     {% endfor %}
                 </div>
-
-                <template id="empty-form-competencies">
-                    <div class="cv-item card border mb-3">
-                        <div class="card-body">
-                            {% for hidden in competency_formset.empty_form.hidden_fields %}{{ hidden }}{% endfor %}
-                            <div class="row g-3">
-                                {% for field in competency_formset.empty_form.visible_fields %}
-                                    {% if field.name == "DELETE" %}
-                                        <div class="col-12">
-                                            <div class="form-check mt-2">
-                                                {{ field }}
-                                                <label class="form-check-label text-danger ms-2" for="{{ field.id_for_label }}">
-                                                    {% trans "Delete this item" %}
-                                                </label>
-                                            </div>
-                                        </div>
-                                    {% elif field.name == "description" %}
-                                        <div class="col-12">
-                                            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
-                                            {{ field }}
-                                        </div>
-                                    {% else %}
-                                        <div class="col-md-6">
-                                            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
-                                            {{ field }}
-                                        </div>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                </template>
-
-                <button type="button" class="btn btn-outline-primary btn-sm js-add-form" data-prefix="competencies">
-                    + {% trans "Add another" %}
-                </button>
+                <div
+                    class="form-text mt-3"
+                    id="competency-selection-help"
+                    data-default-text="{% trans 'Maximum selection: 5 competencies.' %}"
+                    data-limit-text="{% trans 'Maximum selection reached (5).' %}"
+                >
+                    {% trans "Maximum selection: 5 competencies." %}
+                </div>
             </div>
         </section>
 
         <!-- LINKS -->
-        <section class="cv-section card shadow-sm border-0 mb-4">
+        <section id="cv-links" class="cv-section card shadow-sm border-0 mb-4">
             <div class="card-header bg-white border-0 pt-4 px-4">
-                <h2 class="h5 mb-1">{% trans "Academic and Professional Links" %}</h2>
-                <p class="text-muted small mb-0">{% trans "Add institutional pages, academic profiles, repositories, portfolios, or other relevant public references." %}</p>
+                <div class="cv-section__header">
+                    <div>
+                        <h2 class="h5 mb-1">{% trans "Academic and Professional Links" %}</h2>
+                        <p class="text-muted small mb-0">{% trans "Add institutional pages, academic profiles, repositories, portfolios, or other relevant public references." %}</p>
+                    </div>
+                    <button type="button" class="cv-section__toggle" data-section-toggle="cv-links-body" aria-expanded="true" aria-controls="cv-links-body" title="{% trans 'Collapse or expand section' %}">-</button>
+                </div>
             </div>
-            <div class="card-body px-4 pb-4">
+            <div id="cv-links-body" class="card-body px-4 pb-4 cv-section__body">
                 {{ link_formset.management_form }}
 
                 {% if link_formset.non_form_errors %}
@@ -739,12 +884,17 @@
         </section>
 
         <!-- EXTERNAL PUBLICATIONS -->
-        <section class="cv-section card shadow-sm border-0 mb-4">
+        <section id="cv-external-publications" class="cv-section card shadow-sm border-0 mb-4">
             <div class="card-header bg-white border-0 pt-4 px-4">
-                <h2 class="h5 mb-1">{% trans "External Publications" %}</h2>
-                <p class="text-muted small mb-0">{% trans "Register books, articles, chapters, essays, or other publications published outside TVTente." %}</p>
+                <div class="cv-section__header">
+                    <div>
+                        <h2 class="h5 mb-1">{% trans "External Publications" %}</h2>
+                        <p class="text-muted small mb-0">{% trans "Register books, articles, chapters, essays, or other publications published outside TVTente." %}</p>
+                    </div>
+                    <button type="button" class="cv-section__toggle" data-section-toggle="cv-external-publications-body" aria-expanded="true" aria-controls="cv-external-publications-body" title="{% trans 'Collapse or expand section' %}">-</button>
+                </div>
             </div>
-            <div class="card-body px-4 pb-4">
+            <div id="cv-external-publications-body" class="card-body px-4 pb-4 cv-section__body">
                 {{ external_publication_formset.management_form }}
 
                 {% if external_publication_formset.non_form_errors %}
@@ -835,9 +985,31 @@
         <!-- Save bar -->
         <div class="cv-save-bar card border-0 shadow-sm mb-4">
             <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
-                <div>
-                    <h3 class="h6 mb-1">{% trans "Ready to save your CV?" %}</h3>
-                    <p class="text-muted small mb-0">{% trans "Review the information and save your changes." %}</p>
+                <div class="cv-save-nav">
+                    <a href="#cv-experience" class="cv-stat-link">
+                        <span class="btn btn-outline-secondary btn-sm">{% trans "Experience" %}</span>
+                    </a>
+                    <a href="#cv-education" class="cv-stat-link">
+                        <span class="btn btn-outline-secondary btn-sm">{% trans "Education" %}</span>
+                    </a>
+                    <a href="#cv-certifications" class="cv-stat-link">
+                        <span class="btn btn-outline-secondary btn-sm">{% trans "Certifications" %}</span>
+                    </a>
+                    <a href="#cv-languages" class="cv-stat-link">
+                        <span class="btn btn-outline-secondary btn-sm">{% trans "Languages" %}</span>
+                    </a>
+                    <a href="#cv-skills" class="cv-stat-link">
+                        <span class="btn btn-outline-secondary btn-sm">{% trans "Technical and Methodological Knowledge" %}</span>
+                    </a>
+                    <a href="#cv-competencies" class="cv-stat-link">
+                        <span class="btn btn-outline-secondary btn-sm">{% trans "Transversal Competencies" %}</span>
+                    </a>
+                    <a href="#cv-links" class="cv-stat-link">
+                        <span class="btn btn-outline-secondary btn-sm">{% trans "Professional Links" %}</span>
+                    </a>
+                    <a href="#cv-external-publications" class="cv-stat-link">
+                        <span class="btn btn-outline-secondary btn-sm">{% trans "External Publications" %}</span>
+                    </a>
                 </div>
                 <button type="submit" class="btn btn-primary btn-lg">
                     {% trans "Save CV" %}
@@ -849,9 +1021,504 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
+    const cvForm = document.querySelector(".profile-cv-page form");
+    const removeItemLabel = "{% trans 'Delete this item' %}";
+
     function updateFormIndexes(fragment, prefix, index) {
         const regex = new RegExp(prefix + "-__prefix__", "g");
         return fragment.replace(regex, prefix + "-" + index);
+    }
+
+    function rowHasMeaningfulInput(item) {
+        const deleteCheckbox = item.querySelector('input[type="checkbox"][name$="-DELETE"]');
+        if (deleteCheckbox && deleteCheckbox.checked) {
+            return false;
+        }
+
+        const hiddenId = item.querySelector('input[type="hidden"][name$="-id"]');
+        if (hiddenId && hiddenId.value) {
+            return true;
+        }
+
+        return Array.from(item.querySelectorAll("input, select, textarea")).some(function (field) {
+            if (!field.name || field.name.endsWith("-DELETE")) {
+                return false;
+            }
+            if (field.type === "checkbox") {
+                return field.checked;
+            }
+            return Boolean((field.value || "").trim());
+        });
+    }
+
+    function initDeleteButtons(scope) {
+        const container = scope || document;
+        container.querySelectorAll(".cv-item").forEach(function (item) {
+            if (item.dataset.removeFormReady === "true" || item.hasAttribute("data-skill-row")) {
+                return;
+            }
+
+            const deleteCheckbox = item.querySelector('input[type="checkbox"][name$="-DELETE"]');
+            if (!deleteCheckbox) {
+                return;
+            }
+
+            const deleteWrapper = deleteCheckbox.closest(".col-12") || deleteCheckbox.closest(".form-check");
+            if (deleteWrapper) {
+                deleteWrapper.style.display = "none";
+            } else {
+                deleteCheckbox.style.display = "none";
+            }
+
+            const cardBody = item.querySelector(".card-body");
+            if (!cardBody) {
+                return;
+            }
+
+            let actionRow = cardBody.querySelector("[data-remove-form-actions]");
+            if (!actionRow) {
+                actionRow = document.createElement("div");
+                actionRow.className = "mt-3";
+                actionRow.setAttribute("data-remove-form-actions", "");
+
+                const removeButton = document.createElement("button");
+                removeButton.type = "button";
+                removeButton.className = "btn btn-outline-danger btn-sm";
+                removeButton.textContent = removeItemLabel;
+                removeButton.addEventListener("click", function () {
+                    deleteCheckbox.checked = true;
+                    item.hidden = true;
+                    syncConditionalRequirements(item);
+                });
+
+                actionRow.appendChild(removeButton);
+                cardBody.appendChild(actionRow);
+            }
+
+            item.dataset.removeFormReady = "true";
+        });
+    }
+
+    function syncConditionalRequirements(scope) {
+        const container = scope || document;
+        container.querySelectorAll(".cv-item").forEach(function (item) {
+            const isActive = rowHasMeaningfulInput(item);
+
+            const startDateInput = item.querySelector('input[type="date"][name$="-start_date"]');
+            const endDateInput = item.querySelector('input[type="date"][name$="-end_date"]');
+            const currentCheckbox = item.querySelector('input[type="checkbox"][name$="-is_current"]');
+            const issueDateInput = item.querySelector('input[type="date"][name$="-issue_date"]');
+            const expirationDateInput = item.querySelector('input[type="date"][name$="-expiration_date"]');
+            const noExpirationCheckbox = item.querySelector('input[type="checkbox"][name$="-no_expiration"]');
+
+            if (startDateInput) {
+                startDateInput.required = isActive;
+            }
+
+            if (endDateInput) {
+                endDateInput.required = isActive && !(currentCheckbox && currentCheckbox.checked);
+            }
+
+            if (issueDateInput) {
+                issueDateInput.required = isActive;
+            }
+
+            if (expirationDateInput) {
+                expirationDateInput.required = isActive && !(noExpirationCheckbox && noExpirationCheckbox.checked);
+            }
+        });
+    }
+
+    function syncCurrentDateToggle(scope) {
+        const container = scope || document;
+        container.querySelectorAll(".cv-item").forEach(function (item) {
+            const currentCheckbox = item.querySelector('input[type="checkbox"][name$="-is_current"]');
+            const endDateInput = item.querySelector('input[type="date"][name$="-end_date"]');
+
+            if (!currentCheckbox || !endDateInput) {
+                return;
+            }
+
+            const applyState = function () {
+                const isCurrent = currentCheckbox.checked;
+                endDateInput.disabled = isCurrent;
+
+                if (isCurrent) {
+                    endDateInput.dataset.previousValue = endDateInput.value;
+                    endDateInput.value = "";
+                } else if (endDateInput.dataset.previousValue && !endDateInput.value) {
+                    endDateInput.value = endDateInput.dataset.previousValue;
+                }
+                syncConditionalRequirements(item);
+            };
+
+            currentCheckbox.addEventListener("change", applyState);
+            applyState();
+        });
+    }
+
+    function enhanceDatePickers(scope) {
+        const container = scope || document;
+        container.querySelectorAll('input[type="date"]').forEach(function (input) {
+            const locale = (document.documentElement.lang || "es").split("-")[0];
+            const canShowPicker = typeof input.showPicker === "function";
+            input.setAttribute("autocomplete", "off");
+            input.setAttribute("inputmode", "none");
+            input.setAttribute("lang", locale);
+            input.setAttribute("title", "dd/mm/aaaa");
+            input.setAttribute("aria-label", (input.getAttribute("aria-label") || input.name || "date") + " (dd/mm/aaaa)");
+
+            if (!input.nextElementSibling || !input.nextElementSibling.classList.contains("date-format-hint")) {
+                const hint = document.createElement("div");
+                hint.className = "form-text date-format-hint";
+                hint.textContent = "Formato: dd/mm/aaaa";
+                input.insertAdjacentElement("afterend", hint);
+            }
+
+            const openPicker = function () {
+                if (canShowPicker && !input.disabled) {
+                    input.showPicker();
+                }
+            };
+
+            if (canShowPicker) {
+                input.addEventListener("focus", openPicker);
+                input.addEventListener("click", openPicker);
+                input.addEventListener("keydown", function (event) {
+                    const allowedKeys = new Set([
+                        "Tab",
+                        "Shift",
+                        "Escape",
+                        "Enter",
+                    ]);
+
+                    if (allowedKeys.has(event.key)) {
+                        return;
+                    }
+
+                    event.preventDefault();
+                    openPicker();
+                });
+                input.addEventListener("paste", function (event) {
+                    event.preventDefault();
+                });
+                input.addEventListener("drop", function (event) {
+                    event.preventDefault();
+                });
+            } else {
+                input.removeAttribute("inputmode");
+            }
+        });
+    }
+
+    function syncNoExpirationToggle(scope) {
+        const container = scope || document;
+        container.querySelectorAll(".cv-item").forEach(function (item) {
+            const noExpirationCheckbox = item.querySelector('input[type="checkbox"][name$="-no_expiration"]');
+            const expirationDateInput = item.querySelector('input[type="date"][name$="-expiration_date"]');
+
+            if (!noExpirationCheckbox || !expirationDateInput) {
+                return;
+            }
+
+            const applyState = function () {
+                const noExpiration = noExpirationCheckbox.checked;
+                expirationDateInput.disabled = noExpiration;
+
+                if (noExpiration) {
+                    expirationDateInput.dataset.previousValue = expirationDateInput.value;
+                    expirationDateInput.value = "";
+                } else if (expirationDateInput.dataset.previousValue && !expirationDateInput.value) {
+                    expirationDateInput.value = expirationDateInput.dataset.previousValue;
+                }
+                syncConditionalRequirements(item);
+            };
+
+            noExpirationCheckbox.addEventListener("change", applyState);
+            applyState();
+        });
+    }
+
+    function wireSectionToggles(scope) {
+        const container = scope || document;
+        container.querySelectorAll("[data-section-toggle]").forEach(function (button) {
+            if (button.dataset.toggleReady === "true") {
+                return;
+            }
+
+            const targetId = button.dataset.sectionToggle;
+            const target = document.getElementById(targetId);
+            if (!target) {
+                return;
+            }
+
+            const applyState = function (expanded) {
+                target.hidden = !expanded;
+                button.setAttribute("aria-expanded", expanded ? "true" : "false");
+                button.textContent = expanded ? "-" : "+";
+            };
+
+            button.addEventListener("click", function () {
+                const expanded = button.getAttribute("aria-expanded") === "true";
+                applyState(!expanded);
+            });
+
+            applyState(button.getAttribute("aria-expanded") !== "false");
+            button.dataset.toggleReady = "true";
+        });
+    }
+
+    function initSkillCategoryEditor() {
+        const container = document.getElementById("skill-category-groups");
+        const totalInput = document.getElementById("id_skill_groups-TOTAL_FORMS");
+        const addButton = document.getElementById("add-skill-category-row");
+        const catalogNode = document.getElementById("skill-category-catalog-data");
+        if (!container || !totalInput || !addButton || !catalogNode) {
+            return;
+        }
+
+        const catalog = JSON.parse(catalogNode.textContent || "[]");
+        const categoryLabel = container.dataset.categoryLabel || "Category";
+        const categoryPlaceholder = container.dataset.categoryPlaceholder || "Select a category";
+        const technologiesLabel = container.dataset.technologiesLabel || "Technologies";
+        const emptyTechnologiesMessage =
+            container.dataset.emptyTechnologiesMessage || "Select a category to show its related technologies.";
+        const removeLabel = container.dataset.removeLabel || "Delete this item";
+
+        function renderEmptyTechnologiesMessage(technologiesWrap) {
+            technologiesWrap.innerHTML = "";
+            const message = document.createElement("div");
+            message.className = "form-text";
+            message.textContent = emptyTechnologiesMessage;
+            technologiesWrap.appendChild(message);
+        }
+
+        function renderTechnologies(technologiesWrap, rowIndex, categoryId, selectedTechnologyIds) {
+            const category = catalog.find((item) => String(item.id) === String(categoryId));
+            if (!category) {
+                renderEmptyTechnologiesMessage(technologiesWrap);
+                return;
+            }
+
+            technologiesWrap.innerHTML = "";
+
+            const group = document.createElement("div");
+            group.className = "skill-technologies-group";
+            group.dataset.skillTechnologiesGroup = String(category.id);
+
+            const label = document.createElement("label");
+            label.className = "form-label d-block";
+            label.textContent = technologiesLabel;
+            group.appendChild(label);
+
+            const row = document.createElement("div");
+            row.className = "row g-2";
+
+            category.technologies.forEach(function (tech) {
+                const col = document.createElement("div");
+                col.className = "col-md-4";
+
+                const formCheck = document.createElement("div");
+                formCheck.className = "form-check";
+
+                const input = document.createElement("input");
+                input.className = "form-check-input";
+                input.type = "checkbox";
+                input.name = "skill_groups-" + rowIndex + "-technologies";
+                input.value = String(tech.id);
+                input.id = "id_skill_groups_" + rowIndex + "_tech_" + tech.id;
+                input.checked = selectedTechnologyIds.includes(String(tech.id));
+
+                const inputLabel = document.createElement("label");
+                inputLabel.className = "form-check-label";
+                inputLabel.setAttribute("for", input.id);
+                inputLabel.textContent = tech.name;
+
+                formCheck.appendChild(input);
+                formCheck.appendChild(inputLabel);
+                col.appendChild(formCheck);
+                row.appendChild(col);
+            });
+
+            group.appendChild(row);
+            technologiesWrap.appendChild(group);
+        }
+
+        function selectedCategoryValues() {
+            return Array.from(container.querySelectorAll("[data-skill-category-select]"))
+                .map((select) => select.value)
+                .filter(Boolean);
+        }
+
+        function syncCategoryAvailability() {
+            const selected = selectedCategoryValues();
+            container.querySelectorAll("[data-skill-category-select]").forEach(function (select) {
+                const currentValue = select.value;
+                Array.from(select.options).forEach(function (option) {
+                    if (!option.value) {
+                        option.disabled = false;
+                        return;
+                    }
+                    option.disabled = option.value !== currentValue && selected.includes(option.value);
+                });
+            });
+        }
+
+        function updateAddButtonState() {
+            addButton.disabled = selectedCategoryValues().length >= catalog.length;
+        }
+
+        function wireRow(row) {
+            const select = row.querySelector("[data-skill-category-select]");
+            const technologiesWrap = row.querySelector("[data-skill-technologies-wrap]");
+            const removeButton = row.querySelector("[data-remove-skill-row]");
+            if (!select || !technologiesWrap || !removeButton) {
+                return;
+            }
+
+            const updateTechnologies = function () {
+                renderTechnologies(
+                    technologiesWrap,
+                    Array.from(container.children).indexOf(row),
+                    select.value,
+                    []
+                );
+                syncCategoryAvailability();
+                updateAddButtonState();
+            };
+
+            select.addEventListener("change", updateTechnologies);
+            removeButton.addEventListener("click", function () {
+                row.remove();
+                reindexRows();
+                syncCategoryAvailability();
+                updateAddButtonState();
+            });
+        }
+
+        function reindexRows() {
+            const rows = Array.from(container.querySelectorAll("[data-skill-row]"));
+            totalInput.value = String(rows.length);
+            rows.forEach(function (row, index) {
+                const select = row.querySelector("[data-skill-category-select]");
+                if (select) {
+                    select.name = "skill_groups-" + index + "-category";
+                }
+                row.querySelectorAll('input[type="checkbox"]').forEach(function (checkbox) {
+                    checkbox.name = "skill_groups-" + index + "-technologies";
+                    checkbox.id = "id_skill_groups_" + index + "_tech_" + checkbox.value;
+                    const formCheck = checkbox.closest(".form-check");
+                    const label = formCheck ? formCheck.querySelector(".form-check-label") : null;
+                    if (label) {
+                        label.setAttribute("for", checkbox.id);
+                    }
+                });
+            });
+        }
+
+        addButton.addEventListener("click", function () {
+            const rowIndex = container.querySelectorAll("[data-skill-row]").length;
+            const row = document.createElement("div");
+            row.className = "cv-item card border mb-3 skill-category-row";
+            row.setAttribute("data-skill-row", "");
+
+            const cardBody = document.createElement("div");
+            cardBody.className = "card-body";
+
+            const rowGrid = document.createElement("div");
+            rowGrid.className = "row g-3";
+
+            const categoryCol = document.createElement("div");
+            categoryCol.className = "col-md-6";
+
+            const categoryLabelNode = document.createElement("label");
+            categoryLabelNode.className = "form-label";
+            categoryLabelNode.textContent = categoryLabel;
+
+            const select = document.createElement("select");
+            select.className = "form-select skill-category-select";
+            select.name = "skill_groups-" + rowIndex + "-category";
+            select.setAttribute("data-skill-category-select", "");
+
+            const placeholderOption = document.createElement("option");
+            placeholderOption.value = "";
+            placeholderOption.textContent = categoryPlaceholder;
+            select.appendChild(placeholderOption);
+
+            catalog.forEach(function (category) {
+                const option = document.createElement("option");
+                option.value = String(category.id);
+                option.textContent = category.name;
+                select.appendChild(option);
+            });
+
+            categoryCol.appendChild(categoryLabelNode);
+            categoryCol.appendChild(select);
+            rowGrid.appendChild(categoryCol);
+
+            const technologiesWrap = document.createElement("div");
+            technologiesWrap.className = "mt-3";
+            technologiesWrap.setAttribute("data-skill-technologies-wrap", "");
+            renderEmptyTechnologiesMessage(technologiesWrap);
+
+            const actionsWrap = document.createElement("div");
+            actionsWrap.className = "mt-3";
+
+            const removeButton = document.createElement("button");
+            removeButton.type = "button";
+            removeButton.className = "btn btn-outline-danger btn-sm";
+            removeButton.setAttribute("data-remove-skill-row", "");
+            removeButton.textContent = removeLabel;
+
+            actionsWrap.appendChild(removeButton);
+            cardBody.appendChild(rowGrid);
+            cardBody.appendChild(technologiesWrap);
+            cardBody.appendChild(actionsWrap);
+            row.appendChild(cardBody);
+            container.appendChild(row);
+            wireRow(row);
+            reindexRows();
+            syncCategoryAvailability();
+            updateAddButtonState();
+        });
+
+        container.querySelectorAll("[data-skill-row]").forEach(wireRow);
+        reindexRows();
+        syncCategoryAvailability();
+        updateAddButtonState();
+    }
+
+    function initCompetencySelector() {
+        const checkboxes = Array.from(document.querySelectorAll('input[name="competency_choices"]'));
+        if (!checkboxes.length) {
+            return;
+        }
+
+        const maxSelections = 5;
+        const help = document.getElementById("competency-selection-help");
+        const defaultText = help ? help.dataset.defaultText : "Maximum selection: 5 competencies.";
+        const limitText = help ? help.dataset.limitText : "Maximum selection reached (5).";
+
+        function syncState() {
+            const checked = checkboxes.filter(function (checkbox) {
+                return checkbox.checked;
+            });
+            const checkedCount = checked.length;
+
+            checkboxes.forEach(function (checkbox) {
+                checkbox.disabled = !checkbox.checked && checkedCount >= maxSelections;
+            });
+
+            if (help) {
+                help.textContent = checkedCount >= maxSelections ? limitText : defaultText;
+            }
+        }
+
+        checkboxes.forEach(function (checkbox) {
+            checkbox.addEventListener("change", syncState);
+        });
+
+        syncState();
     }
 
     document.querySelectorAll(".js-add-form").forEach(function (button) {
@@ -876,6 +1543,11 @@ document.addEventListener("DOMContentLoaded", function () {
             const newForm = addedForms[addedForms.length - 1];
 
             if (newForm) {
+                initDeleteButtons(newForm);
+                syncCurrentDateToggle(newForm);
+                syncNoExpirationToggle(newForm);
+                enhanceDatePickers(newForm);
+                syncConditionalRequirements(newForm);
                 newForm.scrollIntoView({ behavior: "smooth", block: "center" });
 
                 const firstInput = newForm.querySelector("input:not([type='hidden']), select, textarea");
@@ -885,6 +1557,33 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     });
+
+    syncCurrentDateToggle(document);
+    syncNoExpirationToggle(document);
+    enhanceDatePickers(document);
+    wireSectionToggles(document);
+    initDeleteButtons(document);
+    initSkillCategoryEditor();
+    initCompetencySelector();
+    syncConditionalRequirements(document);
+
+    if (cvForm) {
+        cvForm.addEventListener("submit", function (event) {
+            syncConditionalRequirements(document);
+            if (!cvForm.checkValidity()) {
+                event.preventDefault();
+                cvForm.reportValidity();
+            }
+        });
+
+        cvForm.addEventListener("input", function () {
+            syncConditionalRequirements(document);
+        });
+
+        cvForm.addEventListener("change", function () {
+            syncConditionalRequirements(document);
+        });
+    }
 });
 </script>
 {% endblock %}

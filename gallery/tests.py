@@ -1,9 +1,11 @@
 import tempfile
+from io import StringIO
 
 from django.contrib.auth import get_user_model
 from django.core.files.base import ContentFile
 from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.core.management import call_command
 from django.test import SimpleTestCase, TestCase, override_settings
 
 from gallery.asset_allocation import allocate_unique_asset_slug
@@ -160,6 +162,19 @@ class GalleryPhase1MediaLibraryTests(TestCase):
                 slug_input='@@@',
             )
 
+    def test_deleting_staged_upload_removes_physical_file(self):
+        staged = StagedUpload.objects.create(
+            file=SimpleUploadedFile("cleanup.png", b"png-bytes", content_type="image/png"),
+        )
+        storage = staged.file.storage
+        stored_name = staged.file.name
+
+        self.assertTrue(storage.exists(stored_name))
+
+        staged.delete()
+
+        self.assertFalse(storage.exists(stored_name))
+
 
 class GalleryLanguageInferenceTests(SimpleTestCase):
     def test_segment_justice_is_en(self):
@@ -196,3 +211,25 @@ class GalleryLanguageInferenceTests(SimpleTestCase):
         lang, reason = infer_gallery_image_language(title="Informació general")
         self.assertEqual(lang, "ca")
         self.assertEqual(reason, "keyword")
+
+
+@override_settings(MEDIA_ROOT=tempfile.mkdtemp())
+class GalleryCleanupCommandTests(TestCase):
+    def test_cleanup_gallery_images_dry_run_reports_rows_without_image(self):
+        Image.objects.create(title="Broken", slug="broken", language="es", description="")
+
+        out = StringIO()
+        call_command("cleanup_gallery_images", "--dry-run", stdout=out)
+
+        self.assertIn("Would delete 1 gallery image row(s)", out.getvalue())
+        self.assertEqual(Image.objects.count(), 1)
+
+    def test_cleanup_gallery_images_deletes_rows_without_image(self):
+        Image.objects.create(title="Broken", slug="broken-delete", language="es", description="")
+        valid = Image(title="Valid", slug="valid-delete", language="es", description="")
+        valid.image.save("valid-delete.jpg", ContentFile(b"ok"), save=True)
+
+        call_command("cleanup_gallery_images")
+
+        self.assertFalse(Image.objects.filter(slug="broken-delete").exists())
+        self.assertTrue(Image.objects.filter(pk=valid.pk).exists())

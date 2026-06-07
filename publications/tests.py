@@ -1,12 +1,17 @@
 import tempfile
 
+from django.contrib import admin
 from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.forms import ModelForm
+from django.test import RequestFactory
 from django.test import TestCase, override_settings
 from django.urls import reverse
 
 from gallery.models import Image
+from gallery.models import StagedUpload
+from publications.admin import PublicationAdmin
 from publications.models import Publication
 
 
@@ -86,3 +91,48 @@ class PublicationViewsTests(TestCase):
         publication.save()
 
         self.assertEqual(publication.get_mobile_image().name, mobile.image.name)
+
+    def test_publication_admin_finalize_staged_png_persists_featured_asset(self):
+        request = RequestFactory().post(
+            "/admin/publications/publication/add/",
+            {
+                "language": "en",
+                "featured_image_staging_id": "",
+                "social_image_staging_id": "",
+                "mobile_image_staging_id": "",
+            },
+        )
+        request.user = self.author
+
+        png_bytes = (
+            b"\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01"
+            b"\x08\x06\x00\x00\x00\x1f\x15\xc4\x89\x00\x00\x00\rIDATx\x9cc``\xf8\x0f"
+            b"\x00\x01\x05\x01\x02\xa7^\xab?\x00\x00\x00\x00IEND\xaeB`\x82"
+        )
+        staged = StagedUpload.objects.create(
+            file=SimpleUploadedFile("publication-featured.png", png_bytes, content_type="image/png"),
+        )
+        request.POST = request.POST.copy()
+        request.POST["featured_image_staging_id"] = str(staged.pk)
+
+        publication = Publication(is_published=True)
+        publication.set_current_language("en")
+
+        class DummyPublicationForm(ModelForm):
+            class Meta:
+                model = Publication
+                fields = ()
+
+        form = DummyPublicationForm(instance=publication)
+        form.cleaned_data = {
+            "title": "Publication image",
+            "slug": "publication-image",
+            "abstract": "Abstract",
+            "meta_description": "",
+        }
+
+        publication_admin = PublicationAdmin(Publication, admin.site)
+        publication_admin.save_model(request, publication, form, change=False)
+
+        self.assertIsNotNone(publication.featured_image_asset)
+        self.assertTrue(publication.featured_image_asset.image.name.endswith(".png"))

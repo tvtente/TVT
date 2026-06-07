@@ -6,7 +6,7 @@
 {# Child visibility is prepared in menu_tags.py as node.visible_children. #}
 
 {% for node in nodes %}
-
+    {% if not node.is_account_management_menu %}
     {# Dropdown if it has visible static children or dynamic children. #}
     {% if node.visible_children or node.dynamic_children %}
         <li class="nav-item dropdown">
@@ -30,7 +30,11 @@
                 {# Render dynamic children. #}
                 {% for dynamic_child in node.dynamic_children %}
                     <li>
-                        <a class="dropdown-item" href="{{ dynamic_child.menu_url|default:dynamic_child.get_absolute_url }}">
+                        <a
+                            class="dropdown-item"
+                            href="{{ dynamic_child.menu_url|default:dynamic_child.get_absolute_url }}"
+                            {% if dynamic_child.level %}style="padding-left: calc(1rem + {{ dynamic_child.level }} * 0.85rem);" {% endif %}
+                        >
                             {{ dynamic_child.name|default:dynamic_child.translated_title }}
                         </a>
                     </li>
@@ -45,6 +49,7 @@
                 {{ node.translated_title }}
             </a>
         </li>
+    {% endif %}
     {% endif %}
 
 {% endfor %}

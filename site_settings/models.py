@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.exceptions import SuspiciousFileOperation
 from django.utils.translation import gettext_lazy as _, gettext
 from parler.models import TranslatableModel, TranslatedFields
 from solo.models import SingletonModel
@@ -210,6 +211,30 @@ class SiteTemplate(TranslatableModel):
     @property
     def translated_footer_copyright_text(self):
         return self.safe_translation_getter("footer_copyright_text", any_language=True) or ""
+
+    def _safe_file_url(self, field_name):
+        field = getattr(self, field_name, None)
+        if not field or not getattr(field, "name", ""):
+            return ""
+        try:
+            storage = field.storage
+            if not storage.exists(field.name):
+                return ""
+            return field.url
+        except (ValueError, OSError, SuspiciousFileOperation):
+            return ""
+
+    @property
+    def site_logo_url(self):
+        return self._safe_file_url("site_logo")
+
+    @property
+    def favicon_url(self):
+        return self._safe_file_url("favicon")
+
+    @property
+    def top_bar_banner_image_url(self):
+        return self._safe_file_url("top_bar_banner_image")
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

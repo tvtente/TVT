@@ -1,5 +1,6 @@
 # File: accounts/forms.py
 import logging
+from datetime import date
 
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
@@ -229,6 +230,7 @@ class BaseProfileCVForm(TranslationAwareTranslatableModelForm):
 
     checkbox_fields = {
         "is_current",
+        "no_expiration",
         "DELETE",
     }
 
@@ -241,6 +243,7 @@ class BaseProfileCVForm(TranslationAwareTranslatableModelForm):
         "end_date",
         "issue_date",
         "expiration_date",
+        "publication_date",
     }
 
     number_fields = {
@@ -248,6 +251,7 @@ class BaseProfileCVForm(TranslationAwareTranslatableModelForm):
         "end_year",
         "year",
         "order",
+        "credit_hours",
     }
 
     def __init__(self, *args, **kwargs):
@@ -292,19 +296,51 @@ class ProfileEducationForm(BaseProfileCVForm):
 
     translated_fields = ("institution", "degree", "field_of_study", "description")
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if "is_current" in self.fields:
+            self.fields["is_current"].help_text = _("If checked, the system will record today's date as the current end date.")
+
+    def clean(self):
+        cleaned_data = super().clean()
+        start_date = cleaned_data.get("start_date")
+        end_date = cleaned_data.get("end_date")
+        is_current = bool(cleaned_data.get("is_current"))
+
+        if not start_date:
+            self.add_error("start_date", _("Start date is required."))
+
+        if is_current:
+            cleaned_data["end_date"] = date.today()
+            cleaned_data["end_year"] = cleaned_data["end_date"].year
+        elif not end_date:
+            self.add_error("end_date", _("End date is required unless the entry is marked as current."))
+        elif start_date and end_date and end_date < start_date:
+            self.add_error("end_date", _("End date cannot be earlier than start date."))
+
+        if start_date:
+            cleaned_data["start_year"] = start_date.year
+        elif not cleaned_data.get("start_year"):
+            cleaned_data["start_year"] = None
+
+        if not is_current and not end_date:
+            cleaned_data["end_year"] = None
+
+        return cleaned_data
+
     class Meta:
         model = ProfileEducation
         fields = [
             "education_type",
             "institution",
             "institution_url",
+            "credit_hours",
             "degree",
             "field_of_study",
-            "start_year",
-            "end_year",
+            "start_date",
+            "end_date",
             "is_current",
             "description",
-            "order",
         ]
 
 
@@ -313,7 +349,37 @@ class ProfileExperienceForm(BaseProfileCVForm):
     Form for one experience item in the user's CV.
     """
 
-    translated_fields = ("organization", "position", "location", "description")
+    translated_fields = (
+        "organization",
+        "position",
+        "location",
+        "description",
+        "main_responsibilities",
+        "key_achievements",
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if "is_current" in self.fields:
+            self.fields["is_current"].help_text = _("If checked, the system will record today's date as the current end date.")
+
+    def clean(self):
+        cleaned_data = super().clean()
+        start_date = cleaned_data.get("start_date")
+        end_date = cleaned_data.get("end_date")
+        is_current = bool(cleaned_data.get("is_current"))
+
+        if not start_date:
+            self.add_error("start_date", _("Start date is required."))
+
+        if is_current:
+            cleaned_data["end_date"] = date.today()
+        elif not end_date:
+            self.add_error("end_date", _("End date is required unless the entry is marked as current."))
+        elif start_date and end_date and end_date < start_date:
+            self.add_error("end_date", _("End date cannot be earlier than start date."))
+
+        return cleaned_data
 
     class Meta:
         model = ProfileExperience
@@ -322,12 +388,13 @@ class ProfileExperienceForm(BaseProfileCVForm):
             "organization",
             "organization_url",
             "position",
-            "location",
             "start_date",
             "end_date",
             "is_current",
+            "location",
             "description",
-            "order",
+            "main_responsibilities",
+            "key_achievements",
         ]
 
 
@@ -338,6 +405,26 @@ class ProfileCertificationForm(BaseProfileCVForm):
 
     translated_fields = ("name", "issuer", "description")
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if "no_expiration" in self.fields:
+            self.fields["no_expiration"].help_text = _("Check this if the certification does not expire.")
+
+    def clean(self):
+        cleaned_data = super().clean()
+        issue_date = cleaned_data.get("issue_date")
+        expiration_date = cleaned_data.get("expiration_date")
+        no_expiration = bool(cleaned_data.get("no_expiration"))
+
+        if no_expiration:
+            cleaned_data["expiration_date"] = None
+        elif issue_date and not expiration_date:
+            self.add_error("expiration_date", _("Expiration date is required unless the certification has no expiration."))
+        elif issue_date and expiration_date and expiration_date < issue_date:
+            self.add_error("expiration_date", _("Expiration date cannot be earlier than issue date."))
+
+        return cleaned_data
+
     class Meta:
         model = ProfileCertification
         fields = [
@@ -346,10 +433,11 @@ class ProfileCertificationForm(BaseProfileCVForm):
             "issuer",
             "issue_date",
             "expiration_date",
+            "no_expiration",
+            "credit_hours",
             "credential_id",
             "credential_url",
             "description",
-            "order",
         ]
 
 
@@ -360,12 +448,21 @@ class ProfileLanguageForm(BaseProfileCVForm):
 
     translated_fields = ("language",)
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        level_field = self.fields.get("level")
+        if level_field is not None:
+            level_field.label_from_instance = lambda obj: (
+                f"{obj.translated_name} - {obj.translated_description}"
+                if obj.translated_description
+                else obj.translated_name
+            )
+
     class Meta:
         model = ProfileLanguage
         fields = [
             "language",
             "level",
-            "order",
         ]
 
 
@@ -378,13 +475,24 @@ class ProfileSkillForm(BaseProfileCVForm):
 
     translated_fields = ("description",)
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        skill_type_field = self.fields.get("skill_type")
+        if skill_type_field is not None:
+            skill_type_field.queryset = (
+                skill_type_field.queryset
+                .filter(is_active=True, children__isnull=True)
+                .select_related("parent")
+                .prefetch_related("translations", "parent__translations")
+                .distinct()
+            )
+            skill_type_field.label_from_instance = lambda obj: obj.hierarchy_label
+
     class Meta:
         model = ProfileSkill
         fields = [
             "skill_type",
             "level",
-            "description",
-            "order",
         ]
 
 
@@ -412,15 +520,13 @@ class ProfileLinkForm(BaseProfileCVForm):
     Form for one professional/external profile link.
     """
 
-    translated_fields = ("label",)
+    translated_fields = ()
 
     class Meta:
         model = ProfileLink
         fields = [
             "link_type",
-            "label",
             "url",
-            "order",
         ]
 
 
@@ -439,11 +545,10 @@ class ProfileExternalPublicationForm(BaseProfileCVForm):
             "publication_type",
             "title",
             "publisher",
-            "year",
+            "publication_date",
             "url",
             "doi",
             "description",
-            "order",
         ]
 
 
@@ -455,7 +560,7 @@ ProfileEducationFormSet = inlineformset_factory(
     Profile,
     ProfileEducation,
     form=ProfileEducationForm,
-    extra=1,
+    extra=0,
     can_delete=True,
 )
 
@@ -463,7 +568,7 @@ ProfileExperienceFormSet = inlineformset_factory(
     Profile,
     ProfileExperience,
     form=ProfileExperienceForm,
-    extra=1,
+    extra=0,
     can_delete=True,
 )
 
@@ -471,7 +576,7 @@ ProfileCertificationFormSet = inlineformset_factory(
     Profile,
     ProfileCertification,
     form=ProfileCertificationForm,
-    extra=1,
+    extra=0,
     can_delete=True,
 )
 
@@ -479,7 +584,7 @@ ProfileLanguageFormSet = inlineformset_factory(
     Profile,
     ProfileLanguage,
     form=ProfileLanguageForm,
-    extra=1,
+    extra=0,
     can_delete=True,
 )
 
@@ -487,7 +592,7 @@ ProfileSkillFormSet = inlineformset_factory(
     Profile,
     ProfileSkill,
     form=ProfileSkillForm,
-    extra=1,
+    extra=0,
     can_delete=True,
 )
 
@@ -495,7 +600,7 @@ ProfileCompetencyFormSet = inlineformset_factory(
     Profile,
     ProfileCompetency,
     form=ProfileCompetencyForm,
-    extra=1,
+    extra=0,
     can_delete=True,
 )
 
@@ -503,7 +608,7 @@ ProfileLinkFormSet = inlineformset_factory(
     Profile,
     ProfileLink,
     form=ProfileLinkForm,
-    extra=1,
+    extra=0,
     can_delete=True,
 )
 
@@ -511,6 +616,6 @@ ProfileExternalPublicationFormSet = inlineformset_factory(
     Profile,
     ProfileExternalPublication,
     form=ProfileExternalPublicationForm,
-    extra=1,
+    extra=0,
     can_delete=True,
 )

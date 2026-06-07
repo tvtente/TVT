@@ -98,12 +98,18 @@ SQUARE_WIDGET_TYPES = {
 }
 
 
-def _get_thumbnail_url(obj):
+def _get_thumbnail_data(obj):
     if isinstance(obj, Post):
+        thumbnail_image = obj.get_mobile_image()
+        if thumbnail_image:
+            return thumbnail_image.url, "mobile"
         thumbnail_image = obj.get_social_image()
         if thumbnail_image:
-            return thumbnail_image.url
-    return static("images/placeholders/default_thumbnail.png")
+            return thumbnail_image.url, "social"
+        thumbnail_image = obj.get_featured_image()
+        if thumbnail_image:
+            return thumbnail_image.url, "featured"
+    return "", ""
 
 
 def _call_image_getter(obj, getter_name):
@@ -469,10 +475,7 @@ def _build_widget_items(widget_instance, language_code):
             return list(items_qs[: widget_instance.item_count])
 
         case "hero_carousel":
-            items_qs = _with_featured_image(
-                _grid_visible_posts().order_by("-editor_rating", "-published_date"),
-                language_code,
-            )
+            items_qs = _grid_visible_posts().order_by("-editor_rating", "-published_date")
             if widget_instance.category_filter:
                 items_qs = items_qs.filter(categories=widget_instance.category_filter)
             return list(items_qs.distinct()[: widget_instance.item_count])
@@ -520,7 +523,7 @@ def _decorate_widget_items(widget_instance, items, zone_slug):
 
     if widget_instance.widget_type in POST_WIDGET_TYPES:
         for post_obj in items:
-            post_obj.thumbnail_url = _get_thumbnail_url(post_obj)
+            post_obj.thumbnail_url, post_obj.thumbnail_kind = _get_thumbnail_data(post_obj)
 
     for item in items:
         item.widget_display_image = _resolve_display_image(item, image_format)

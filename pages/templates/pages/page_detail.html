@@ -48,6 +48,12 @@
     {{ block.super }}
     {% if uses_modular_sections %}
     <style>
+        .homepage-modular-page {
+            background:
+                radial-gradient(circle at top, rgba(255, 193, 7, 0.08), transparent 34%),
+                linear-gradient(180deg, #f8f6f0 0%, #fbfaf7 40%, #f5f1e6 100%);
+        }
+
         .breadcrumb {
             margin-bottom: 0.25rem;
         }
@@ -61,12 +67,15 @@
         }
 
         .home-section {
-            padding: 2.75rem 0;
-            border-block: 1px solid color-mix(in srgb, var(--tavata-card-box-border) 85%, white);
+            position: relative;
+            padding: clamp(3rem, 7vw, 5rem) 0;
+            border-block: 1px solid color-mix(in srgb, var(--tavata-card-box-border) 72%, white);
+            overflow: clip;
         }
 
         .home-section--muted {
-            background-color: var(--tavata-card-box-bg);
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(247, 243, 235, 0.96));
         }
 
         .home-section--notice {
@@ -75,19 +84,23 @@
         }
 
         .home-section--surface {
-            background-color: var(--tavata-category-tree-bg);
-            border: 1px solid var(--tavata-category-tree-border);
-            border-radius: var(--tavata-border-radius);
-            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.06);
+            background:
+                linear-gradient(160deg, rgba(255, 255, 255, 0.98), rgba(247, 243, 234, 0.96));
+            border: 1px solid color-mix(in srgb, var(--tavata-category-tree-border) 78%, white);
+            border-radius: calc(var(--tavata-border-radius) * 3);
+            box-shadow: 0 24px 50px rgba(20, 20, 20, 0.08);
         }
 
         .home-section--dark {
-            background-color: var(--tavata-dark);
+            background:
+                radial-gradient(circle at 14% 18%, rgba(255, 193, 7, 0.2), transparent 22%),
+                radial-gradient(circle at 88% 10%, rgba(255, 255, 255, 0.08), transparent 18%),
+                linear-gradient(135deg, #060606 0%, #121212 52%, #0b0b0b 100%);
             color: var(--tavata-light);
         }
 
         .home-section + .home-section {
-            margin-top: 1.5rem;
+            margin-top: 0;
         }
 
         .home-section-separator {
@@ -97,7 +110,7 @@
         }
 
         .home-section__inner {
-            max-width: 1040px;
+            max-width: 1180px;
             margin-inline: auto;
         }
 
@@ -105,15 +118,63 @@
             max-width: none;
         }
 
+        .home-section__eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.65rem;
+            margin-bottom: 1rem;
+            font-size: 0.82rem;
+            font-weight: 800;
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+            color: color-mix(in srgb, var(--tavata-dark) 80%, var(--tavata-yellow));
+        }
+
+        .home-section__eyebrow::before {
+            content: "";
+            width: 2rem;
+            height: 2px;
+            border-radius: 999px;
+            background: var(--tavata-yellow);
+        }
+
+        .home-section--dark .home-section__eyebrow {
+            color: rgba(255, 255, 255, 0.92);
+        }
+
         .page-section-heading {
             margin-bottom: 1rem;
-            font-size: clamp(1.7rem, 2.8vw, 2.4rem);
-            line-height: 1.08;
+            font-size: clamp(2rem, 4vw, 4.1rem);
+            line-height: 0.98;
             letter-spacing: -0.02em;
+            font-weight: 800;
+            text-wrap: balance;
+        }
+
+        .home-section--dark .page-section-heading {
+            color: #f6f3ea;
         }
 
         .page-section-button {
             margin-top: 1.5rem;
+            border-radius: 999px;
+            padding: 0.9rem 1.4rem;
+            font-weight: 700;
+            box-shadow: 0 16px 30px rgba(20, 20, 20, 0.1);
+        }
+
+        .homepage-section-copy {
+            max-width: 40rem;
+        }
+
+        .homepage-section-copy .page-content,
+        .homepage-section-copy .page-content p {
+            font-size: clamp(1rem, 1.5vw, 1.2rem);
+            line-height: 1.7;
+        }
+
+        .homepage-section-copy .page-content p:last-child {
+            margin-bottom: 0;
         }
 
         .homepage-section-widgets--hero {
@@ -123,6 +184,15 @@
         .homepage-section-widgets--hero .hero-carousel-section {
             margin-inline: auto;
             max-width: 1180px;
+        }
+
+        .homepage-section-widgets--hero::after {
+            content: "";
+            position: absolute;
+            inset: auto 8% 4% 12%;
+            height: 3px;
+            background: linear-gradient(90deg, rgba(255, 193, 7, 0), rgba(255, 193, 7, 0.95), rgba(255, 193, 7, 0));
+            opacity: 0.8;
         }
 
         .homepage-section-widgets--hero .carousel-inner {
@@ -139,6 +209,18 @@
             backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.08);
             box-shadow: 0 18px 32px rgba(0, 0, 0, 0.18);
+        }
+
+        .homepage-section-panel {
+            background: rgba(255, 255, 255, 0.96);
+            color: var(--tavata-dark);
+            border-radius: calc(var(--tavata-border-radius) * 4);
+            padding: clamp(1.5rem, 4vw, 2.5rem);
+            box-shadow: 0 34px 70px rgba(0, 0, 0, 0.18);
+        }
+
+        .homepage-section-panel .hero-carousel-section h2 {
+            display: none;
         }
 
         .home-section--page {
@@ -162,10 +244,23 @@
             padding: 1.25rem 1.25rem 0;
         }
 
+        .homepage-embedded-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
         .homepage-embedded-page__inner {
             display: grid;
             gap: 1.5rem;
             padding: 1.25rem;
+        }
+
+        .homepage-embedded-page--media-end .homepage-embedded-page__media {
+            order: 2;
+        }
+
+        .homepage-embedded-page--media-end .homepage-embedded-page__content {
+            order: 1;
         }
 
         .homepage-embedded-page__eyebrow {
@@ -263,7 +358,9 @@
         .homepage-modular-page .post-grid-section .card,
         .homepage-modular-page .book-grid-section .card,
         .homepage-modular-page .publication-grid-section .card {
-            border-radius: calc(var(--tavata-border-radius) * 2.2);
+            border-radius: calc(var(--tavata-border-radius) * 2.75);
+            background: rgba(255, 255, 255, 0.96);
+            border: 1px solid rgba(227, 222, 209, 0.88);
             overflow: hidden;
             box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
             transition: transform 0.22s ease, box-shadow 0.22s ease;
@@ -272,7 +369,7 @@
         .homepage-modular-page .post-grid-section .card:hover,
         .homepage-modular-page .book-grid-section .card:hover,
         .homepage-modular-page .publication-grid-section .card:hover {
-            transform: translateY(-4px);
+            transform: translateY(-8px);
             box-shadow: 0 24px 48px rgba(15, 23, 42, 0.12);
         }
 
@@ -281,6 +378,7 @@
         .homepage-modular-page .publication-grid-section .card-title {
             line-height: 1.15;
             letter-spacing: -0.015em;
+            font-size: 1.28rem;
         }
 
         .homepage-modular-page .book-grid-section .btn,
@@ -288,13 +386,74 @@
         .homepage-modular-page .post-grid-section .btn {
             border-radius: 999px;
             padding-inline: 1rem;
+            font-weight: 700;
+        }
+
+        .homepage-modular-page .post-grid-section .btn-primary,
+        .homepage-modular-page .publication-grid-section .btn-primary {
+            background: #101010;
+            border-color: #101010;
+        }
+
+        .homepage-modular-page .post-grid-section .btn-primary:hover,
+        .homepage-modular-page .publication-grid-section .btn-primary:hover {
+            background: #1c1c1c;
+            border-color: #1c1c1c;
+        }
+
+        .homepage-section-content-intro {
+            max-width: 44rem;
+            margin: 0 auto 1.1rem;
+            text-align: center;
+        }
+
+        .homepage-section-content-intro .page-content,
+        .homepage-section-content-intro .page-content p {
+            color: color-mix(in srgb, var(--tavata-body-color) 80%, white);
+        }
+
+        .home-section--dark .homepage-section-content-intro .page-content,
+        .home-section--dark .homepage-section-content-intro .page-content p {
+            color: rgba(255, 255, 255, 0.78);
+        }
+
+        .home-section--widget-zone .homepage-section-content-intro,
+        .home-section--content .homepage-section-content-intro {
+            margin-bottom: 0.65rem;
+        }
+
+        .home-section--widget-zone .page-section-heading,
+        .home-section--content .page-section-heading {
+            margin-bottom: 0.45rem;
+        }
+
+        .home-section--widget-zone .homepage-section-content-intro .page-content p,
+        .home-section--content .homepage-section-content-intro .page-content p {
+            margin-bottom: 0.45rem;
         }
 
         @media (min-width: 992px) {
+            .homepage-embedded-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                align-items: start;
+            }
+
             .homepage-embedded-page__inner {
                 grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.35fr);
                 align-items: start;
                 padding: 1.5rem;
+            }
+
+            .homepage-embedded-page__media {
+                display: flex;
+                align-items: flex-start;
+            }
+
+            .homepage-embedded-page__image {
+                aspect-ratio: auto;
+                height: auto;
+                max-height: 460px;
+                object-fit: contain;
             }
 
             .homepage-embedded-page__intro {
@@ -305,6 +464,10 @@
         @media (max-width: 991.98px) {
             .home-section {
                 padding: 2rem 0;
+            }
+
+            .homepage-section-panel {
+                border-radius: calc(var(--tavata-border-radius) * 3);
             }
 
             .homepage-section-widgets--hero .carousel-caption {
@@ -388,18 +551,73 @@
 
 
         {% if has_page_sections %}
-            {% for section in page_sections %}
+            {% for group in page_section_groups %}
+                {% with section=group.anchor %}
                 {% if not forloop.first %}
                     <div class="container">
                         <hr class="home-section-separator">
                     </div>
                 {% endif %}
-                <section class="home-section home-section--{{ section.background_style }}{% if section.section_type == "page" and section.linked_page %} home-section--page{% endif %}">
+                <section class="home-section home-section--{{ section.background_style }} home-section--{{ section.section_type|slugify }}{% if section.section_type == "page" and section.linked_page %} home-section--page{% endif %}">
                     <div class="{% if not section.full_width %}container {% endif %}home-section__inner {% if section.full_width %}home-section__inner--full{% endif %}">
-                        {% if section.section_type == "hero" and section.widget_zone %}
+                        {% if group.kind == "page_pair" %}
+                            <div class="homepage-embedded-grid">
+                                {% for section in group.sections %}
+                                    <article class="homepage-embedded-page{% if forloop.first %} homepage-embedded-page--media-end{% endif %}">
+                                        {% if section.translated_content %}
+                                            <div class="homepage-embedded-page__intro page-content fs-5">
+                                                {{ section.translated_content|add_zoom_class_to_images|safe }}
+                                            </div>
+                                        {% endif %}
+                                        <div class="homepage-embedded-page__inner">
+                                            {% with linked_featured_image=section.linked_page.get_featured_image %}
+                                            {% if linked_featured_image %}
+                                                <div class="homepage-embedded-page__media">
+                                                    <img
+                                                        src="{{ linked_featured_image.url }}"
+                                                        alt="{{ section.linked_page.translated_title }}"
+                                                        class="homepage-embedded-page__image zoomable"
+                                                    >
+                                                </div>
+                                            {% endif %}
+                                            {% endwith %}
+                                            <div class="homepage-embedded-page__content">
+                                                <div class="homepage-embedded-page__eyebrow">
+                                                    {{ section.translated_internal_title }}
+                                                </div>
+                                                {% if section.embedded_page_heading %}
+                                                    <h2 class="homepage-embedded-page__title">{{ section.embedded_page_heading }}</h2>
+                                                {% endif %}
+                                                {% with linked_abstract=section.linked_page.get_abstract %}
+                                                {% if linked_abstract %}
+                                                    <p class="homepage-embedded-page__summary">{{ linked_abstract }}</p>
+                                                {% endif %}
+                                                {% endwith %}
+                                                <div class="homepage-embedded-page__body page-content fs-5">
+                                                    {{ section.linked_page.translated_content|add_zoom_class_to_images|truncatewords_html:130|safe }}
+                                                </div>
+                                                <div class="homepage-embedded-page__cta">
+                                                    {% if section.translated_button_text and section.translated_button_url %}
+                                                        <a href="{{ section.translated_button_url }}" class="btn btn-primary page-section-button mt-0">
+                                                            {{ section.translated_button_text }}
+                                                        </a>
+                                                    {% endif %}
+                                                    <a href="{% if section.translated_button_url %}{{ section.translated_button_url }}{% else %}{{ section.linked_page.get_absolute_url }}{% endif %}" class="homepage-embedded-page__direct-link">
+                                                        {{ section.linked_page.translated_title }}
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </article>
+                                {% endfor %}
+                            </div>
+                        {% elif section.section_type == "hero" and section.widget_zone %}
                             {% if section.translated_heading or section.translated_content or section.translated_button_text and section.translated_button_url %}
                                 <div class="row align-items-center g-5">
-                                    <div class="col-lg-7">
+                                    <div class="col-lg-7 homepage-section-copy">
+                                        {% if section.translated_internal_title %}
+                                            <div class="home-section__eyebrow">{{ section.translated_internal_title }}</div>
+                                        {% endif %}
                                         {% if section.embedded_page_heading %}
                                             <h2 class="page-section-heading">{{ section.embedded_page_heading }}</h2>
                                         {% endif %}
@@ -415,7 +633,7 @@
                                         {% endif %}
                                     </div>
                                     <div class="col-lg-5">
-                                        <div class="homepage-section-widgets mt-4 mt-lg-0">
+                                        <div class="homepage-section-widgets homepage-section-panel mt-4 mt-lg-0">
                                             {% show_widget_zone section.widget_zone.slug %}
                                         </div>
                                     </div>
@@ -465,7 +683,7 @@
                                                     {{ section.translated_button_text }}
                                                 </a>
                                             {% endif %}
-                                            <a href="{{ section.linked_page.get_absolute_url }}" class="homepage-embedded-page__direct-link">
+                                            <a href="{% if section.translated_button_url %}{{ section.translated_button_url }}{% else %}{{ section.linked_page.get_absolute_url }}{% endif %}" class="homepage-embedded-page__direct-link">
                                                 {{ section.linked_page.translated_title }}
                                             </a>
                                         </div>
@@ -473,18 +691,25 @@
                                 </div>
                             </article>
                         {% else %}
-                            {% if section.embedded_page_heading %}
-                                <h2 class="page-section-heading">{{ section.embedded_page_heading }}</h2>
-                            {% endif %}
-                            {% if section.translated_content %}
-                                <div class="page-content fs-5">
-                                    {{ section.translated_content|add_zoom_class_to_images|safe }}
+                            {% if section.translated_internal_title or section.embedded_page_heading or section.translated_content or section.translated_button_text and section.translated_button_url %}
+                                <div class="homepage-section-content-intro">
+                                    {% if section.translated_internal_title %}
+                                        <div class="home-section__eyebrow">{{ section.translated_internal_title }}</div>
+                                    {% endif %}
+                                    {% if section.embedded_page_heading %}
+                                        <h2 class="page-section-heading">{{ section.embedded_page_heading }}</h2>
+                                    {% endif %}
+                                    {% if section.translated_content %}
+                                        <div class="page-content fs-5">
+                                            {{ section.translated_content|add_zoom_class_to_images|safe }}
+                                        </div>
+                                    {% endif %}
+                                    {% if section.translated_button_text and section.translated_button_url %}
+                                        <a href="{{ section.translated_button_url }}" class="btn btn-primary page-section-button">
+                                            {{ section.translated_button_text }}
+                                        </a>
+                                    {% endif %}
                                 </div>
-                            {% endif %}
-                            {% if section.translated_button_text and section.translated_button_url %}
-                                <a href="{{ section.translated_button_url }}" class="btn btn-primary page-section-button">
-                                    {{ section.translated_button_text }}
-                                </a>
                             {% endif %}
                             {% if section.widget_zone %}
                                 <div class="{% if section.full_width %}container {% endif %}homepage-section-widgets mt-4">
@@ -494,6 +719,7 @@
                         {% endif %}
                     </div>
                 </section>
+                {% endwith %}
             {% endfor %}
         {% endif %}
 

@@ -1,10 +1,6 @@
 {% load i18n %}
 
 <div class="hero-carousel-section">
-    {% if widget.translated_section_title %}
-        <h2 class="mb-4 text-center">{{ widget.translated_section_title }}</h2>
-    {% endif %}
-
     {% if items %}
         <div
             id="hero-carousel-{{ widget.id }}"
@@ -26,27 +22,24 @@
 
             <div class="carousel-inner rounded-4 overflow-hidden shadow-sm">
                 {% for item in items %}
-                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}{% if not item.widget_display_image %} hero-carousel__item--no-image{% endif %}">
                         {% with display_image=item.widget_display_image %}
                             {% if display_image %}
                                 <img
                                     src="{{ display_image.url }}"
-                                    class="d-block w-100 zoomable"
+                                    class="d-block w-100 zoomable hero-carousel__image"
                                     alt="{{ item.title }}"
                                     style="{% if item.widget_image_format == 'square' %}aspect-ratio: 1 / 1; object-fit: cover;{% elif item.widget_image_format == 'mobile' %}aspect-ratio: 9 / 16; max-height: 80vh; object-fit: cover;{% else %}min-height: 320px; max-height: 520px; object-fit: cover;{% endif %}"
                                 >
                             {% else %}
-                                <div class="bg-dark text-white d-flex align-items-end" style="{% if item.widget_image_format == 'square' %}aspect-ratio: 1 / 1;{% elif item.widget_image_format == 'mobile' %}aspect-ratio: 9 / 16; max-height: 80vh;{% else %}min-height: 320px;{% endif %}">
-                                    <div class="p-4 p-md-5">
-                                        <span class="badge text-bg-warning mb-3">{% translate "Featured" %}</span>
-                                        <h3 class="display-6 fw-semibold">{{ item.title }}</h3>
-                                    </div>
+                                <div class="hero-carousel__empty-frame bg-dark text-white" style="{% if item.widget_image_format == 'square' %}aspect-ratio: 1 / 1;{% elif item.widget_image_format == 'mobile' %}aspect-ratio: 9 / 16; max-height: 80vh;{% else %}min-height: 320px;{% endif %}">
+                                    <div class="hero-carousel__empty-glow"></div>
                                 </div>
                             {% endif %}
                         {% endwith %}
 
                         <div class="carousel-caption text-start">
-                            <div class="rounded-4 p-3 p-md-4 d-inline-block" style="max-width: 40rem; background-color: rgba(17, 24, 39, 0.5);">
+                            <div class="hero-carousel__caption-box rounded-4 p-3 p-md-4 d-inline-block">
                                 <span class="badge text-bg-warning mb-3">{% translate "Featured" %}</span>
                                 <h3 class="h2">{{ item.title }}</h3>
                                 {% if item.summary %}

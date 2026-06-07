@@ -19,15 +19,19 @@
         <div class="list-group list-group-flush">
             {% for item in items %}
                 {# The entire list item is a link (d-flex for alignment) #}
-                <a href="{{ item.get_absolute_url }}" class="list-group-item list-group-item-action d-flex align-items-center">
-                    {# --- NEW: Thumbnail Image --- #}
-                    <img src="{{ item.thumbnail_url }}" 
-                         alt="{{ item.title|default:'Thumbnail' }}" 
-                         class="rounded me-2" 
-                         style="width: 40px; height: 40px; object-fit: cover;">
-                    {# --- END NEW --- #}
-
-                    {{ item.title }}
+                <a href="{{ item.get_absolute_url }}" class="list-group-item list-group-item-action{% if item.thumbnail_kind == 'mobile' %} d-block{% else %} d-flex align-items-center gap-2{% endif %}">
+                    {% if item.thumbnail_url and item.thumbnail_kind == "mobile" %}
+                        <img src="{{ item.thumbnail_url }}"
+                             alt="{{ item.title|default:'Thumbnail' }}"
+                             class="rounded w-100 mb-2 d-block"
+                             style="aspect-ratio: 9 / 16; object-fit: cover;">
+                    {% elif item.thumbnail_url %}
+                        <img src="{{ item.thumbnail_url }}"
+                             alt="{{ item.title|default:'Thumbnail' }}"
+                             class="rounded flex-shrink-0"
+                             style="width: 56px; height: 56px; object-fit: cover;">
+                    {% endif %}
+                    <span class="fw-medium lh-sm d-block">{{ item.title }}</span>
                 </a>
             {% empty %}
                 <span class="list-group-item">{% translate "No items to display." %}</span>

@@ -26,6 +26,22 @@
     return getCookie("csrftoken");
   }
 
+  function stageUploadErrorMessage(errorCode) {
+    if (errorCode === "missing_file") {
+      return "No file was received. Please choose an image again.";
+    }
+    if (errorCode === "unsupported_type") {
+      return "Unsupported image format. Use JPG, PNG, GIF, WEBP, or SVG.";
+    }
+    if (errorCode === "file_too_large") {
+      return "The image is too large. The maximum allowed size is 15 MB.";
+    }
+    if (errorCode === "invalid_image") {
+      return "The selected file is not a valid image. Try exporting or resaving it before uploading.";
+    }
+    return "Staging upload failed.";
+  }
+
   function resolveField(form, fieldName) {
     if (!form || !fieldName) {
       return null;
@@ -370,7 +386,14 @@
         })
           .then(function (r) {
             if (!r.ok) {
-              throw new Error("stage_failed");
+              return r
+                .json()
+                .catch(function () {
+                  return {};
+                })
+                .then(function (data) {
+                  throw new Error(stageUploadErrorMessage(data.error));
+                });
             }
             return r.json();
           })
@@ -388,8 +411,8 @@
             }
             updateSelectionPreview(scope, data.url || "", "Staged upload (finalize on save)");
           })
-          .catch(function () {
-            window.alert("Staging upload failed.");
+          .catch(function (err) {
+            window.alert(err && err.message ? err.message : "Staging upload failed.");
           })
           .finally(function () {
             fileHidden.value = "";

@@ -1,6 +1,6 @@
 from unittest.mock import patch
 
-from django.contrib.auth.models import AnonymousUser
+from django.contrib.auth.models import AnonymousUser, Permission
 from django.core.cache import cache
 from django.test import RequestFactory, TestCase, override_settings
 from django.utils.translation import override
@@ -15,7 +15,7 @@ from menus.cache_keys import (
 from menus.models import Menu, MenuItem
 from menus.selectors import get_blog_category_queryset, get_main_menu_nodes
 from menus.signals import clear_cache_for_menu_slug
-from menus.templatetags.menu_tags import show_menu
+from menus.templatetags.menu_tags import show_menu, show_profile_menu
 from posts.models import Post
 from django.contrib.auth import get_user_model
 
@@ -202,3 +202,54 @@ class MenuSelectorTests(TestCase):
 
         with override("es"):
             self.assertEqual(item.get_url(), "/es/notebooks/")
+
+    def test_all_blog_categories_without_bound_category_resolves_category_index(self):
+        item = MenuItem.objects.create(
+            menu=self.menu,
+            order=3,
+            title="Categorias",
+            link_type=MenuItem.LinkType.ALL_BLOG_CATEGORIES,
+        )
+
+        with override("es"):
+            self.assertEqual(item.get_url(), "/es/categories/")
+
+    def test_profile_menu_resolves_public_profile_url_for_authenticated_user(self):
+        profile_menu = Menu.objects.create(slug="profile-menu")
+        item = MenuItem.objects.create(
+            menu=profile_menu,
+            order=1,
+            title="Perfil publico",
+            link_type=MenuItem.LinkType.PUBLIC_PROFILE,
+        )
+        permission = Permission.objects.get(codename="list_public_profile")
+        self.user.user_permissions.add(permission)
+
+        request = RequestFactory().get("/")
+        request.user = self.user
+
+        with override("es"):
+            result = show_profile_menu({"request": request, "LANGUAGE_CODE": "es"}, "profile-menu")
+
+        self.assertEqual(len(result["nodes"]), 1)
+        self.assertEqual(result["nodes"][0].pk, item.pk)
+        self.assertEqual(
+            result["nodes"][0].resolved_url,
+            f"/es/accounts/profile/{self.user.username}/",
+        )
+
+    def test_profile_menu_hides_public_profile_without_permission(self):
+        profile_menu = Menu.objects.create(slug="profile-menu")
+        MenuItem.objects.create(
+            menu=profile_menu,
+            order=1,
+            title="Perfil publico",
+            link_type=MenuItem.LinkType.PUBLIC_PROFILE,
+        )
+
+        request = RequestFactory().get("/")
+        request.user = self.user
+
+        result = show_profile_menu({"request": request, "LANGUAGE_CODE": "es"}, "profile-menu")
+
+        self.assertEqual(result["nodes"], [])

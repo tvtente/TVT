@@ -1,0 +1,14 @@
+{% load i18n %}
+
+{% for node in nodes %}
+    <li>
+        <a class="dropdown-item" href="{{ node.resolved_url|default:node.get_url }}">
+            {% if node.icon_class %}<i class="{{ node.icon_class }} me-2"></i>{% endif %}
+            {{ node.translated_title }}
+        </a>
+    </li>
+{% empty %}
+    <li>
+        <span class="dropdown-item-text text-muted">{% translate "No profile options configured." %}</span>
+    </li>
+{% endfor %}

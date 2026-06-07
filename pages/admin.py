@@ -268,7 +268,7 @@ class PageAdmin(SummernoteModelAdmin, TranslatableAdmin):
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)
         self._finalize_page_featured_staging(request, obj)
-        if change:
+        if any(getattr(obj, fk_attr, None) is not None for fk_attr in _PAGE_LANG_FK_ATTR.values()):
             obj.save()
 
     class Media:

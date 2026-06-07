@@ -584,6 +584,82 @@ msgstr "Fecha de inicio"
 msgid "End date"
 msgstr "Fecha de finalización"
 
+#: accounts/forms.py:297
+msgid "If checked, the system will record today's date as the current end date."
+msgstr "Si marcas esta opción, el sistema registrará la fecha de hoy como fecha final actual."
+
+#: accounts/forms.py:307 accounts/models.py:541
+msgid "End date cannot be earlier than start date."
+msgstr "La fecha de finalización no puede ser anterior a la fecha de inicio."
+
+#: accounts/models.py:486 accounts/forms.py:335
+msgid "Number of credits"
+msgstr "Número de créditos"
+
+#: accounts/models.py:487
+msgid "Total hours or credits completed for this course of study."
+msgstr "Total de horas o créditos completados en este estudio."
+
+#: accounts/templates/accounts/_public_profile_cv_content.html:309
+msgid "%(credits)s credit hours"
+msgstr "%(credits)s horas de crédito"
+
+#: accounts/models.py:602 accounts/templates/accounts/_public_profile_cv_content.html:260
+msgid "Company description"
+msgstr "Descripción de la empresa"
+
+#: accounts/models.py:606 accounts/templates/accounts/_public_profile_cv_content.html:266
+msgid "Main responsibilities"
+msgstr "Responsabilidades principales"
+
+#: accounts/models.py:610 accounts/templates/accounts/_public_profile_cv_content.html:272
+msgid "Key achievements or projects"
+msgstr "Logros o proyectos destacados"
+
+#: accounts/forms.py:311 accounts/forms.py:366
+msgid "Start date is required."
+msgstr "La fecha de inicio es obligatoria."
+
+#: accounts/forms.py:316 accounts/forms.py:370
+msgid "End date is required unless the entry is marked as current."
+msgstr "La fecha de finalización es obligatoria salvo que la entrada esté marcada como actual."
+
+#: accounts/models.py:676 accounts/templates/accounts/_public_profile_cv_content.html:370
+msgid "No expiration"
+msgstr "Sin caducidad"
+
+#: accounts/models.py:682
+msgid "Number of hours"
+msgstr "Número de horas"
+
+#: accounts/models.py:683
+msgid "Total hours completed for this certification, if applicable."
+msgstr "Total de horas completadas en esta certificación, si aplica."
+
+#: accounts/models.py:689
+msgid "Reference or record number"
+msgstr "Referencia o número de registro"
+
+#: accounts/models.py:690
+msgid "Internal reference, folio, or registration number associated with the credential."
+msgstr "Referencia interna, folio o número de registro asociado a la credencial."
+
+#: accounts/forms.py:397
+msgid "Check this if the certification does not expire."
+msgstr "Marca esta opción si la certificación no caduca."
+
+#: accounts/forms.py:407
+msgid "Expiration date is required unless the certification has no expiration."
+msgstr "La fecha de vencimiento es obligatoria salvo que la certificación no tenga caducidad."
+
+#: accounts/forms.py:409 accounts/models.py:718
+msgid "Expiration date cannot be earlier than issue date."
+msgstr "La fecha de vencimiento no puede ser anterior a la fecha de emisión."
+
+#: accounts/templates/accounts/_public_profile_cv_content.html:360
+msgid "%(hours)s hours"
+msgstr "%(hours)s horas"
+
 #: accounts/models.py:569
 msgid "Organization"
 msgstr "Organización"
@@ -5740,3 +5816,23 @@ msgid ""
 msgstr ""
 "Registra libros, artículos, capítulos, ensayos u otras publicaciones "
 "publicadas fuera de TVTente."
+
+#: widgets/templates/widgets/partials/_hero_carousel.html:51
+msgid "Explore article"
+msgstr "Explorar artículo"
+
+#: accounts/templates/accounts/_public_profile_cv_content.html:173
+msgid "N. Certifications"
+msgstr "N. certificaciones"
+
+#: accounts/templates/accounts/_public_profile_cv_content.html:153
+msgid "Years of Experience"
+msgstr "Años de experiencia"
+
+#: accounts/templates/accounts/_public_profile_cv_content.html:163
+msgid "Years of Education"
+msgstr "Años de formación"
+
+#: accounts/templates/accounts/_public_profile_cv_content.html:177
+msgid "- %(hours)s hrs."
+msgstr "- %(hours)s hrs."

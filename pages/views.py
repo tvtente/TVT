@@ -13,6 +13,44 @@ from .models import Page, PageSection
 logger = logging.getLogger(__name__)
 
 
+def _group_page_sections(page_sections):
+    grouped = []
+    sections = list(page_sections)
+    idx = 0
+
+    while idx < len(sections):
+        current = sections[idx]
+        next_section = sections[idx + 1] if idx + 1 < len(sections) else None
+
+        if (
+            current.section_type == PageSection.SectionType.PAGE
+            and next_section is not None
+            and next_section.section_type == PageSection.SectionType.PAGE
+            and current.background_style == next_section.background_style
+            and current.full_width == next_section.full_width
+        ):
+            grouped.append(
+                {
+                    "kind": "page_pair",
+                    "sections": [current, next_section],
+                    "anchor": current,
+                }
+            )
+            idx += 2
+            continue
+
+        grouped.append(
+            {
+                "kind": "single",
+                "sections": [current],
+                "anchor": current,
+            }
+        )
+        idx += 1
+
+    return grouped
+
+
 def build_page_detail_context(page):
     page_sections = (
         PageSection.objects.language(get_language())
@@ -24,6 +62,7 @@ def build_page_detail_context(page):
     has_page_sections = page_sections.exists()
     uses_modular_sections = has_page_sections
     show_default_page_body = not has_page_sections
+    page_section_groups = _group_page_sections(page_sections)
 
     breadcrumbs = [
         {"url": "/", "label": gettext("Home")},
@@ -34,6 +73,7 @@ def build_page_detail_context(page):
     return {
         "page": page,
         "page_sections": page_sections,
+        "page_section_groups": page_section_groups,
         "has_page_sections": has_page_sections,
         "uses_modular_sections": uses_modular_sections,
         "show_default_page_body": show_default_page_body,

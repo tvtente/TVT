@@ -122,3 +122,10 @@ class StagedUpload(models.Model):
 
     def __str__(self):
         return f"{self.original_filename or self.pk}"
+
+    def delete(self, *args, **kwargs):
+        stored_name = self.file.name if self.file else ""
+        storage = self.file.storage if self.file else None
+        super().delete(*args, **kwargs)
+        if stored_name and storage:
+            storage.delete(stored_name)

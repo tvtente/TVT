@@ -37,6 +37,7 @@
 
         .profile-print-page .cv-export-sheet {
             background: transparent;
+            padding-top: 0.65rem;
         }
 
         .profile-print-page .cv-avatar {
@@ -78,7 +79,7 @@
 
         @page {
             size: A4;
-            margin: 12mm;
+            margin: 16mm 12mm 12mm;
         }
 
         @media print {
@@ -100,6 +101,12 @@
             .profile-print-page .container {
                 max-width: none;
                 width: 100%;
+            }
+
+            .profile-print-page .cv-export-sheet {
+                padding-top: 0.55rem;
+                padding-left: 0.2rem;
+                padding-right: 0.2rem;
             }
 
             .profile-print-page .cv-hero {
@@ -160,6 +167,23 @@
                 overflow: visible !important;
             }
 
+            .profile-print-page .cv-section .card-header {
+                break-after: avoid-page;
+                page-break-after: avoid;
+            }
+
+            .profile-print-page .cv-section .card-body {
+                break-before: avoid-page;
+                page-break-before: avoid;
+            }
+
+            .profile-print-page .cv-section .cv-item:first-child,
+            .profile-print-page .cv-section .cv-focus-entry:first-child,
+            .profile-print-page .cv-section .list-group:first-child {
+                break-before: avoid-page;
+                page-break-before: avoid;
+            }
+
             .profile-print-page .cv-section .card-body,
             .profile-print-page .cv-item .card-body,
             .profile-print-page p,
@@ -177,6 +201,20 @@
                 margin-right: 0.35rem;
                 margin-bottom: 0.35rem;
             }
+
+            .profile-print-page .cv-print-page-break {
+                break-before: page;
+                page-break-before: always;
+                height: 0;
+                margin: 0;
+                padding: 0;
+            }
+
+            .profile-print-page .cv-print-page-break + .cv-section,
+            .profile-print-page .cv-print-page-break + .row {
+                margin-top: 0.55rem !important;
+            }
+
         }
     </style>
 </head>
