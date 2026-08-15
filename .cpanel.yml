@@ -1,0 +1,9 @@
+---
+# cPanel deploys only tracked application code. Server-specific data remains
+# in /home/tvtentec/tvt: .env, media/, staticfiles/ and virtual environments.
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/tvtentec/tvt
+    - /bin/cp manage.py passenger.py passenger_wsgi.py pyproject.toml requirements.txt $DEPLOYPATH
+    - /bin/cp FILEZILLA_UPLOAD.md PERMISSIONS.md README.md create_superuser.py $DEPLOYPATH
+    - /bin/cp -R accounts ai_engine books categories comments contact core docs fans gallery locale menus notebooks pages posts publications scripts search shop site_settings social static tags templates testimonials tvt widgets $DEPLOYPATH
