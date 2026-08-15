@@ -13,6 +13,9 @@ from django.views.static import serve as media_serve
 # URLS THAT SHOULD NOT BE TRANSLATED (e.g., admin, auth process)
 # ==============================================================================
 urlpatterns = [
+    # Webhooks must not be prefixed with a language code: Meta calls this URL
+    # exactly as configured in the App Dashboard.
+    path('webhooks/', include('social.urls')),
     path('gallery-api/', include(('gallery.staff_urls', 'gallery_media'), namespace='gallery_media')),
     # 1. Third-party app URLs (like summernote)
     path('summernote/', include('django_summernote.urls')),

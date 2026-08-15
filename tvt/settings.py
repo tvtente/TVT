@@ -177,6 +177,9 @@ INSTALLED_APPS = [
     'books.apps.BooksConfig',
     'notebooks.apps.NotebooksConfig',
     'shop.apps.ShopConfig',
+    'fans.apps.FansConfig',
+    'social.apps.SocialConfig',
+    'ai_engine',
 ]
 
 MIDDLEWARE = [
@@ -192,6 +195,29 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'tvt.urls'
+
+# Instagram / Meta webhook and local AI. These values are defined in .env for
+# development and in the hosting environment for production.
+META_VERIFY_TOKEN = config('META_VERIFY_TOKEN', default='').strip()
+META_APP_SECRET = config('META_APP_SECRET', default='').strip()
+INSTAGRAM_USER_ID = config('INSTAGRAM_USER_ID', default='').strip()
+INSTAGRAM_USER_ACCESS_TOKEN = config('INSTAGRAM_USER_ACCESS_TOKEN', default='').strip()
+INSTAGRAM_API_VERSION = config('INSTAGRAM_API_VERSION', default='v26.0').strip()
+INSTAGRAM_AUTO_REPLY_ENABLED = config(
+    'INSTAGRAM_AUTO_REPLY_ENABLED', default=False, cast=config_bool
+)
+INSTAGRAM_AUTO_DRAFT_COMMENTS_ENABLED = config(
+    'INSTAGRAM_AUTO_DRAFT_COMMENTS_ENABLED', default=False, cast=config_bool
+)
+INSTAGRAM_AUTO_DRAFT_MESSAGES_ENABLED = config(
+    'INSTAGRAM_AUTO_DRAFT_MESSAGES_ENABLED', default=False, cast=config_bool
+)
+INSTAGRAM_AUTO_REPLY_MESSAGES_ENABLED = config(
+    'INSTAGRAM_AUTO_REPLY_MESSAGES_ENABLED', default=False, cast=config_bool
+)
+USE_LLAMA = config('USAR_LLAMA_SINO_OPENAI', default=False, cast=config_bool)
+LLAMA_BASE_URL = config('LLAMA_BASE_URL', default='http://127.0.0.1:11434').rstrip('/')
+LLAMA_MODEL = config('LLAMA_MODEL', default='gemma3:4b').strip()
 
 TEMPLATES = [
     {

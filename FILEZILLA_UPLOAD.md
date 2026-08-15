@@ -5,7 +5,7 @@ FileZilla no usa automaticamente archivos tipo `.gitignore`, por eso este proyec
 
 ## Subir normalmente
 
-- Carpetas de apps Django: `accounts`, `blog`, `categories`, `comments`, `contact`, `core`, `gallery`, `menus`, `pages`, `posts`, `publications`, `search`, `site_settings`, `tags`, `testimonials`, `tvt`, `widgets`
+- Carpetas de apps Django: `accounts`, `ai_engine`, `blog`, `categories`, `comments`, `contact`, `core`, `fans`, `gallery`, `menus`, `pages`, `posts`, `publications`, `search`, `site_settings`, `social`, `tags`, `testimonials`, `tvt`, `widgets`
 - `templates`
 - `static`
 - `locale`
