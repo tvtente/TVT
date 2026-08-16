@@ -8,6 +8,7 @@ from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 
 from ai_engine.service import ReplyGenerationError, generate_reply
 from fans.models import Fan
@@ -183,7 +184,7 @@ def auto_reply_instagram_comments(comments: list[Comment]) -> int:
             comment.save(update_fields=["status"])
             processed += 1
 
-            if not settings.INSTAGRAM_AUTO_REPLY_ENABLED:
+            if not settings.INSTAGRAM_AUTO_REPLY_ENABLED or _requires_human_review(comment.fan):
                 continue
 
             publish_instagram_comment_reply(comment.platform_comment_id, draft.text)
@@ -227,7 +228,9 @@ def draft_or_reply_instagram_messages(messages: list[DirectMessage]) -> tuple[in
             message.save(update_fields=["status"])
             drafted += 1
 
-            if settings.INSTAGRAM_AUTO_REPLY_MESSAGES_ENABLED:
+            if settings.INSTAGRAM_AUTO_REPLY_MESSAGES_ENABLED and not _requires_human_review(
+                message.fan
+            ):
                 reply_id = publish_instagram_direct_message(
                     message.fan.platform_user_id, generated.text
                 )
@@ -316,6 +319,14 @@ def _is_our_own_comment(comment: Comment) -> bool:
         settings.INSTAGRAM_USER_ID
         and comment.fan.platform_user_id == settings.INSTAGRAM_USER_ID
     )
+
+
+def _requires_human_review(fan: Fan) -> bool:
+    """Una regla individual puede impedir el envío automático, no el borrador."""
+    try:
+        return fan.rule.human_review_required
+    except ObjectDoesNotExist:
+        return False
 
 
 def _risk_level_is_not_safe(comment: Comment | DirectMessage) -> bool:

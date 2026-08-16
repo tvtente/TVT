@@ -1,8 +1,9 @@
 # core/views.py
 import logging
+from pathlib import Path
 
 from django.contrib import messages
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext, get_language
 from books.cart import get_cart_items
@@ -13,6 +14,19 @@ from shop.services import create_provisional_order_from_request
 
 # Get a logger instance for this module.
 logger = logging.getLogger(__name__)
+
+
+def public_verification_file(request):
+    """Entrega el fichero de verificación en la raíz sin alterar la portada."""
+    verification_file = (
+        Path(__file__).resolve().parent
+        / "verification"
+        / "uetr2lswk1zkn93fjne4k5hyfvlann.html"
+    )
+    return HttpResponse(
+        verification_file.read_text(encoding="utf-8").strip(),
+        content_type="text/html",
+    )
 
 def home(request):
     """
