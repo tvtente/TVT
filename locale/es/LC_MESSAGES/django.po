@@ -4114,7 +4114,7 @@ msgstr ""
 
 #: publications/templates/publications/publication_list.html:82
 msgid "Read publication"
-msgstr "Correo Público"
+msgstr "Leer más"
 
 #: publications/templates/publications/publication_list.html:93
 msgid "Publications pagination"
@@ -5896,3 +5896,14 @@ msgstr "Ocultar barra lateral derecha"
 #: core/templates/core/base.html
 msgid "Show right sidebar"
 msgstr "Mostrar barra lateral derecha"
+#: posts/templates/posts/post_detail.html:388
+#: pages/templates/pages/page_detail.html:788
+msgid "Sources consulted"
+msgstr "Fuentes consultadas"
+#: pages/templates/pages/partials/_homepage_latest_posts.html:5
+msgid "Latest posts"
+msgstr "Últimas entradas"
+
+#: pages/templates/pages/partials/_homepage_latest_posts.html:7
+msgid "View all"
+msgstr "Ver todas"

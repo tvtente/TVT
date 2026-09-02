@@ -67,7 +67,7 @@
 </head>
 
 {# These body classes use Flexbox to ensure the footer sticks to the bottom on short pages #}
-<body class="d-flex flex-column min-vh-100 bg-light">
+<body class="d-flex flex-column min-vh-100 bg-light{% if request.resolver_match.app_name == 'posts' %} sidebar-default-collapsed sidebar-left-collapsed sidebar-right-collapsed{% endif %}">
 
     {# --- TOP BAR FOR BRANDING AND SOCIALS --- #}
     {# This is the new top section for the site's main identity. #}
@@ -168,6 +168,7 @@
         right: document.querySelector(".site-sidebar-right"),
     };
     const compactSidebarQuery = window.matchMedia("(max-width: 87.5rem)");
+    const sidebarsDefaultCollapsed = document.body.classList.contains("sidebar-default-collapsed");
 
     function updateSidebarToggle(side, visible) {
         const toggle = sidebarToggles[side];
@@ -213,37 +214,46 @@
         if (!toggle) {
             return;
         }
-        try {
-            setSidebarCollapsed(side, localStorage.getItem(`tvt-sidebar-${side}-collapsed`) === "true");
-            if (localStorage.getItem(`tvt-sidebar-${side}-forced-visible`) === "true") {
-                setSidebarForcedVisible(side, true);
+        if (sidebarsDefaultCollapsed) {
+            document.body.classList.remove(`sidebar-${side}-forced-visible`);
+            setSidebarCollapsed(side, true);
+        } else {
+            try {
+                setSidebarCollapsed(side, localStorage.getItem(`tvt-sidebar-${side}-collapsed`) === "true");
+                if (localStorage.getItem(`tvt-sidebar-${side}-forced-visible`) === "true") {
+                    setSidebarForcedVisible(side, true);
+                }
+            } catch (error) {
+                setSidebarCollapsed(side, false);
             }
-        } catch (error) {
-            setSidebarCollapsed(side, false);
         }
         syncSidebarToggle(side);
         toggle.addEventListener("click", function () {
-            const manuallyCollapsed = document.body.classList.contains(`sidebar-${side}-collapsed`);
-            if (compactSidebarQuery.matches && (
-                document.body.classList.contains(`sidebar-${side}-forced-visible`)
-                || (isSidebarHiddenByLayout(side) && !manuallyCollapsed)
-            )) {
-                const visible = !document.body.classList.contains(`sidebar-${side}-forced-visible`);
+            const forcedVisible = document.body.classList.contains(`sidebar-${side}-forced-visible`);
+            if (compactSidebarQuery.matches && (forcedVisible || isSidebarHiddenByLayout(side))) {
+                const visible = !forcedVisible;
                 setSidebarForcedVisible(side, visible);
-                try {
-                    localStorage.setItem(`tvt-sidebar-${side}-forced-visible`, String(visible));
-                } catch (error) {
-                    // The layout still works when storage is unavailable.
+                if (!visible) {
+                    setSidebarCollapsed(side, true);
+                }
+                if (!sidebarsDefaultCollapsed) {
+                    try {
+                        localStorage.setItem(`tvt-sidebar-${side}-forced-visible`, String(visible));
+                    } catch (error) {
+                        // The layout still works when storage is unavailable.
+                    }
                 }
                 syncSidebarToggle(side);
                 return;
             }
             const collapsed = !document.body.classList.contains(`sidebar-${side}-collapsed`);
             setSidebarCollapsed(side, collapsed);
-            try {
-                localStorage.setItem(`tvt-sidebar-${side}-collapsed`, String(collapsed));
-            } catch (error) {
-                // The layout still works when storage is unavailable.
+            if (!sidebarsDefaultCollapsed) {
+                try {
+                    localStorage.setItem(`tvt-sidebar-${side}-collapsed`, String(collapsed));
+                } catch (error) {
+                    // The layout still works when storage is unavailable.
+                }
             }
             syncSidebarToggle(side);
         });

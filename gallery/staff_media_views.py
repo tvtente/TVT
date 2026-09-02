@@ -68,6 +68,9 @@ def stage_upload_view(request):
     except ValidationError:
         logger.warning("Gallery staging rejected an invalid image upload.", exc_info=True)
         return JsonResponse({"error": "invalid_image"}, status=400)
+    except OSError:
+        logger.exception("Gallery staging could not write the uploaded image.")
+        return JsonResponse({"error": "storage_error"}, status=500)
 
     url = request.build_absolute_uri(staged.file.url) if staged.file else ""
     return JsonResponse(

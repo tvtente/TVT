@@ -4112,7 +4112,7 @@ msgstr ""
 
 #: publications/templates/publications/publication_list.html:82
 msgid "Read publication"
-msgstr "Correu electrònic públic"
+msgstr "Llegir publicació"
 
 #: publications/templates/publications/publication_list.html:93
 msgid "Publications pagination"
@@ -5888,3 +5888,14 @@ msgstr "Amagar la barra lateral dreta"
 #: core/templates/core/base.html
 msgid "Show right sidebar"
 msgstr "Mostrar la barra lateral dreta"
+#: posts/templates/posts/post_detail.html:388
+#: pages/templates/pages/page_detail.html:788
+msgid "Sources consulted"
+msgstr "Fonts consultades"
+#: pages/templates/pages/partials/_homepage_latest_posts.html:5
+msgid "Latest posts"
+msgstr "Últimes entrades"
+
+#: pages/templates/pages/partials/_homepage_latest_posts.html:7
+msgid "View all"
+msgstr "Veure-les totes"

@@ -6,6 +6,7 @@ from datetime import timedelta
 
 from django.contrib import admin
 from django.contrib.contenttypes.admin import GenericTabularInline
+from django.contrib.contenttypes.models import ContentType
 from django.conf import settings
 from django import forms
 from django.core.exceptions import ValidationError
@@ -26,7 +27,7 @@ from . import gallery_bridge
 from .models import Post, PostDailyMetric, PostFavorite, PostPointAllocation
 from comments.models import Comment
 from tags.models import Tag, TaggedPost
-from sources.models import Citation
+from sources.models import Citation, Source
 
 logger = logging.getLogger(__name__)
 
@@ -120,6 +121,39 @@ class CitationInline(GenericTabularInline):
     verbose_name = _("Citation")
     verbose_name_plural = _("Citations and sources")
 
+
+class PostSourcesForm(forms.ModelForm):
+    """Simple source selector for the post editor, scoped to its language."""
+
+    sources = forms.ModelMultipleChoiceField(
+        label=_("Sources consulted"),
+        help_text=_("Select the sources to show at the end of this post."),
+        queryset=Source.objects.none(),
+        required=False,
+        widget=forms.SelectMultiple(attrs={"size": 8}),
+    )
+
+    class Meta:
+        model = Post
+        fields = "__all__"
+
+    def __init__(self, *args, citation_language=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        language = citation_language or getattr(settings, "LANGUAGE_CODE", "es")
+        self.citation_language = language
+        self.fields["sources"].queryset = (
+            Source.objects.prefetch_related("translations")
+            .order_by("organisation", "pk")
+        )
+
+        if self.instance and self.instance.pk:
+            content_type = ContentType.objects.get_for_model(Post, for_concrete_model=False)
+            self.fields["sources"].initial = Citation.objects.filter(
+                content_type=content_type,
+                object_id=self.instance.pk,
+                language=language,
+            ).values_list("source_id", flat=True)
+
 def _post_admin_language(request, obj):
     return (
         request.GET.get("language")
@@ -191,6 +225,7 @@ class PostAdmin(TranslatableAdmin, SummernoteModelAdmin):
     # We no longer exclude "author" because we want Option A:
     # show author as readonly for non-manager users.
     exclude = ('views_count',)
+    form = PostSourcesForm
 
     # Parler can merge form field names into admin field lists; never treat these as Post fields.
     _NON_MODEL_FORM_LEAKS = frozenset(
@@ -212,20 +247,27 @@ class PostAdmin(TranslatableAdmin, SummernoteModelAdmin):
 
     def get_form(self, request, obj=None, **kwargs):
         form = super().get_form(request, obj, **kwargs)
+        citation_language = _post_admin_language(request, obj)
+
+        class LanguageAwarePostForm(form):
+            def __init__(self, *args, **form_kwargs):
+                form_kwargs.setdefault("citation_language", citation_language)
+                super().__init__(*args, **form_kwargs)
+
         for field_name in ("featured_image_asset", "social_image_asset", "mobile_image_asset"):
-            field = form.base_fields.get(field_name)
+            field = LanguageAwarePostForm.base_fields.get(field_name)
             if field:
                 field.widget = forms.HiddenInput()
                 field.required = False
-        if "content" in form.base_fields:
+        if "content" in LanguageAwarePostForm.base_fields:
             summernote_widget = SummernoteWidget if get_config()["iframe"] else SummernoteInplaceWidget
-            form.base_fields["content"].widget = summernote_widget()
-        if "summary" in form.base_fields:
-            form.base_fields["summary"].widget = forms.Textarea(attrs={
+            LanguageAwarePostForm.base_fields["content"].widget = summernote_widget()
+        if "summary" in LanguageAwarePostForm.base_fields:
+            LanguageAwarePostForm.base_fields["summary"].widget = forms.Textarea(attrs={
                 "rows": 3,
                 "maxlength": 280,
             })
-        return form
+        return LanguageAwarePostForm
 
     def formfield_for_dbfield(self, db_field, request, **kwargs):
         if db_field.name in ("featured_image_asset", "social_image_asset", "mobile_image_asset"):
@@ -316,6 +358,7 @@ class PostAdmin(TranslatableAdmin, SummernoteModelAdmin):
             '<input type="hidden" name="featured_image_asset" value="{}" autocomplete="off">'
             '<div class="gallery-picker-anchor" data-gallery-picker-root '
             'data-stage-url="{}" data-images-url="{}" '
+            'data-upload-aspect="16_9" '
             'data-staging-name="featured_image_staging_id" '
             'data-fk-name="featured_image_asset" '
             'data-initial-url="{}" data-initial-caption="{}"></div>',
@@ -339,6 +382,7 @@ class PostAdmin(TranslatableAdmin, SummernoteModelAdmin):
             '<input type="hidden" name="social_image_asset" value="{}" autocomplete="off">'
             '<div class="gallery-picker-anchor" data-gallery-picker-root '
             'data-stage-url="{}" data-images-url="{}" '
+            'data-upload-aspect="1_1" '
             'data-staging-name="social_image_staging_id" '
             'data-fk-name="social_image_asset" '
             'data-initial-url="{}" data-initial-caption="{}"></div>',
@@ -362,6 +406,7 @@ class PostAdmin(TranslatableAdmin, SummernoteModelAdmin):
             '<input type="hidden" name="mobile_image_asset" value="{}" autocomplete="off">'
             '<div class="gallery-picker-anchor" data-gallery-picker-root '
             'data-stage-url="{}" data-images-url="{}" '
+            'data-upload-aspect="9_16" '
             'data-staging-name="mobile_image_staging_id" '
             'data-fk-name="mobile_image_asset" '
             'data-initial-url="{}" data-initial-caption="{}"></div>',
@@ -376,7 +421,33 @@ class PostAdmin(TranslatableAdmin, SummernoteModelAdmin):
     filter_horizontal = ('categories',)
 
     # 🧩 Inline form for managing tag relations
-    inlines = [TaggedPostInline, CitationInline]
+    inlines = [TaggedPostInline]
+
+    def _sync_selected_sources(self, request, obj, form):
+        if "sources" not in form.cleaned_data:
+            return
+
+        language = getattr(form, "citation_language", _post_admin_language(request, obj))
+        content_type = ContentType.objects.get_for_model(Post, for_concrete_model=False)
+        citations = Citation.objects.filter(
+            content_type=content_type,
+            object_id=obj.pk,
+            language=language,
+        )
+        selected_source_ids = set(form.cleaned_data["sources"].values_list("pk", flat=True))
+        existing_source_ids = set(citations.values_list("source_id", flat=True))
+        citations.exclude(source_id__in=selected_source_ids).delete()
+
+        next_order = (citations.order_by("-order").values_list("order", flat=True).first() or 0) + 1
+        for source_id in selected_source_ids - existing_source_ids:
+            Citation.objects.create(
+                source_id=source_id,
+                content_type=content_type,
+                object_id=obj.pk,
+                language=language,
+                order=next_order,
+            )
+            next_order += 1
 
     def get_queryset(self, request):
         """
@@ -588,7 +659,7 @@ class PostAdmin(TranslatableAdmin, SummernoteModelAdmin):
                     title=title or slug,
                     description=description,
                     language=lang,
-                    slug_input=slug,
+                    slug_input=f"{slug}-16_9",
                     staging_uuid=featured_stage,
                 )
                 cleaned["featured_image_asset"] = img
@@ -599,7 +670,7 @@ class PostAdmin(TranslatableAdmin, SummernoteModelAdmin):
                     title=title or slug,
                     description=description,
                     language=lang,
-                    slug_input=f"{slug}-social",
+                    slug_input=f"{slug}-1_1",
                     staging_uuid=social_stage,
                 )
                 cleaned["social_image_asset"] = img
@@ -610,7 +681,7 @@ class PostAdmin(TranslatableAdmin, SummernoteModelAdmin):
                     title=title or slug,
                     description=description,
                     language=lang,
-                    slug_input=f"{slug}-mobile",
+                    slug_input=f"{slug}-9_16",
                     staging_uuid=mobile_stage,
                 )
                 cleaned["mobile_image_asset"] = img
@@ -643,6 +714,7 @@ class PostAdmin(TranslatableAdmin, SummernoteModelAdmin):
             logger.info(f"✏️ Post updated by 🧑‍💻 {request.user.username}: {obj}")
 
         super().save_model(request, obj, form, change)
+        self._sync_selected_sources(request, obj, form)
 
     def save_formset(self, request, form, formset, change):
         instances = formset.save(commit=False)

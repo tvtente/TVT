@@ -26,6 +26,37 @@
     return getCookie("csrftoken");
   }
 
+  function uploadSafeFile(file, preferredName) {
+    // Some hosting WAF rules reject image uploads whose filename resembles an
+    // executable (for example, a name beginning with "exec").  The binary and
+    // MIME type are unchanged; only the multipart filename is normalized.
+    const originalName = file.name || "image";
+    const safeName = (preferredName || originalName)
+      .replace(/^exec(?:utable)?(?=[\s._-]|$)/i, "image")
+      .replace(/[^a-zA-Z0-9._-]/g, "-");
+
+    if (safeName === originalName || typeof File === "undefined") {
+      return file;
+    }
+    return new File([file], safeName || "image", {
+      type: file.type,
+      lastModified: file.lastModified,
+    });
+  }
+
+  function postImageUploadName(scope, file) {
+    const aspect = (scope.root.dataset.uploadAspect || "").trim();
+    const slugField = resolveField(scope.form, "slug");
+    const slug = slugField && slugField.value ? slugField.value.trim() : "";
+    if (!aspect || !slug) {
+      return "";
+    }
+
+    const extensionMatch = (file.name || "").match(/(\.[a-z0-9]+)$/i);
+    const extension = extensionMatch ? extensionMatch[1].toLowerCase() : ".jpg";
+    return slug + "-" + aspect + extension;
+  }
+
   function stageUploadErrorMessage(errorCode) {
     if (errorCode === "missing_file") {
       return "No file was received. Please choose an image again.";
@@ -38,6 +69,9 @@
     }
     if (errorCode === "invalid_image") {
       return "The selected file is not a valid image. Try exporting or resaving it before uploading.";
+    }
+    if (errorCode === "storage_error") {
+      return "The server could not save the image. Check the media/gallery/_staging folder permissions.";
     }
     return "Staging upload failed.";
   }
@@ -377,7 +411,7 @@
         }
         const token = csrfToken();
         const fd = new FormData();
-        fd.append("file", f);
+        fd.append("file", uploadSafeFile(f, postImageUploadName(scope, f)));
         fetch(stageUrl, {
           method: "POST",
           body: fd,
@@ -392,7 +426,11 @@
                   return {};
                 })
                 .then(function (data) {
-                  throw new Error(stageUploadErrorMessage(data.error));
+                  throw new Error(
+                    data.error
+                      ? stageUploadErrorMessage(data.error)
+                      : "Staging upload failed (HTTP " + r.status + ")."
+                  );
                 });
             }
             return r.json();

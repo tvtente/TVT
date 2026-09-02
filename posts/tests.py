@@ -118,7 +118,7 @@ class PostGalleryAssetDualReadTests(TestCase):
         post_admin._apply_gallery_asset_staging_to_cleaned_data(request, form)
 
         self.assertIsNotNone(form.instance.featured_image_asset)
-        self.assertTrue(form.instance.featured_image_asset.image.name.endswith(".png"))
+        self.assertTrue(form.instance.featured_image_asset.image.name.endswith("post-con-imagen-16_9.png"))
 
 
 @override_settings(MEDIA_ROOT=tempfile.mkdtemp(), LANGUAGES=(("es", "Español"), ("en", "English")))

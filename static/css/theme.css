@@ -1525,6 +1525,8 @@ nav[aria-label="breadcrumb"] + * {
 .navbar-right-actions {
   row-gap: 0.5rem;
   align-items: center;
+  position: relative;
+  z-index: 1201;
 }
 
 .navbar-right-actions .btn {
@@ -1672,6 +1674,7 @@ nav[aria-label="breadcrumb"] + * {
   min-width: 260px;
   border-radius: 0.9rem;
   border: 1px solid rgba(255, 193, 7, 0.2);
+  z-index: 1202;
 }
 
 .user-avatar-menu .dropdown-header {
