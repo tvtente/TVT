@@ -14,6 +14,17 @@
   cursor: pointer;
 }
 
+.gallery-picker-webp-option {
+  align-items: center;
+  display: inline-flex;
+  gap: 0.3rem;
+  margin-bottom: 10px;
+}
+
+.gallery-picker-webp-option span {
+  color: var(--body-quiet-color, #666);
+}
+
 .gallery-picker-selection {
   align-items: center;
   border: 1px dashed var(--hairline-color, #ccc);

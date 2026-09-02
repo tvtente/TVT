@@ -1,6 +1,6 @@
 <!-- File: accounts/templates/accounts/public_profile_view.html -->
 {% extends 'core/base.html' %}
-{% load i18n %}
+{% load i18n custom_filters %}
 {% load static %}
 
 {% block title %}{{ profile.get_display_name }}{% translate "'s Profile" %}{% endblock %}
@@ -63,7 +63,7 @@
                         {% for comment in user_comments %}
                             <div class="list-group-item">
                                 <small class="text-muted me-2">
-                                    {{ comment.created_at|timesince }} {% translate "ago" %}:
+                                    {{ comment.created_at|relative_time }}:
                                 </small>
                                 <p class="mb-1">{{ comment.content|truncatechars:100 }}</p>
                                 <a href="{{ comment.post.get_absolute_url }}#comment-{{ comment.id }}" class="btn btn-sm btn-link">

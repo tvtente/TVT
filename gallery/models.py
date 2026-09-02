@@ -11,6 +11,8 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import override
 
+from gallery.image_processing import convert_upload_to_webp
+
 # Editorial default when language is omitted (legacy sync, programmatic creates).
 GALLERY_IMAGE_DEFAULT_LANGUAGE = "es"
 
@@ -84,6 +86,18 @@ class Image(models.Model):
     def __str__(self):
         return self.title
 
+    def save(self, *args, **kwargs):
+        # Direct uploads through the library admin are converted before the
+        # ImageField writes them to permanent storage. Finalised staged files
+        # are already committed and therefore are not processed a second time.
+        if (
+            self.image
+            and not self.image._committed
+            and getattr(self, "convert_to_webp_upload", True)
+        ):
+            self.image = convert_upload_to_webp(self.image.file)
+        super().save(*args, **kwargs)
+
     def get_absolute_url(self):
         return reverse("gallery:image_detail", args=[self.pk])
 
@@ -106,6 +120,7 @@ class StagedUpload(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     file = models.ImageField(upload_to=staged_upload_to, verbose_name=_("Staged file"))
     original_filename = models.CharField(max_length=255, blank=True)
+    convert_to_webp = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -122,6 +137,14 @@ class StagedUpload(models.Model):
 
     def __str__(self):
         return f"{self.original_filename or self.pk}"
+
+    def save(self, *args, **kwargs):
+        # Staging is the normal upload path used by post, page and publication
+        # pickers, so conversion here ensures the original raster file is never
+        # persisted in the media library.
+        if self.file and not self.file._committed and self.convert_to_webp:
+            self.file = convert_upload_to_webp(self.file.file)
+        super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
         stored_name = self.file.name if self.file else ""

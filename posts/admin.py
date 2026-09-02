@@ -21,6 +21,7 @@ from django_summernote.admin import SummernoteModelAdmin
 from django_summernote.utils import get_config
 from django_summernote.widgets import SummernoteInplaceWidget, SummernoteWidget
 from parler.admin import TranslatableAdmin
+from parler.forms import TranslatableModelForm
 from gallery.finalization import FinalizationError
 from gallery.models import StagedUpload
 from . import gallery_bridge
@@ -122,7 +123,7 @@ class CitationInline(GenericTabularInline):
     verbose_name_plural = _("Citations and sources")
 
 
-class PostSourcesForm(forms.ModelForm):
+class PostSourcesForm(TranslatableModelForm):
     """Simple source selector for the post editor, scoped to its language."""
 
     sources = forms.ModelMultipleChoiceField(
@@ -130,7 +131,7 @@ class PostSourcesForm(forms.ModelForm):
         help_text=_("Select the sources to show at the end of this post."),
         queryset=Source.objects.none(),
         required=False,
-        widget=forms.SelectMultiple(attrs={"size": 8}),
+        widget=forms.SelectMultiple(attrs={"size": 8, "class": "post-sources-select"}),
     )
 
     class Meta:
@@ -744,7 +745,12 @@ class PostAdmin(TranslatableAdmin, SummernoteModelAdmin):
         formset.save_m2m()
 
     class Media:
-        css = {"all": ("gallery/admin/media_library_picker.css",)}
+        css = {
+            "all": (
+                "gallery/admin/media_library_picker.css",
+                "posts/admin/post_sources.css",
+            )
+        }
         js = ("gallery/admin/media_library_picker.js",)
 
 @admin.register(PostDailyMetric)

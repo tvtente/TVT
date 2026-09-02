@@ -86,6 +86,7 @@ class ImageAdmin(admin.ModelAdmin):
                         "staging_id",
                         "source_image_id",
                         "image",
+                        "convert_to_webp",
                         "media_picker_panel",
                     ),
                 },
@@ -195,6 +196,7 @@ class ImageAdmin(admin.ModelAdmin):
                     )
                     super().save_model(request, obj, form, change)
                 else:
+                    obj.convert_to_webp_upload = form.cleaned_data.get("convert_to_webp", True)
                     assign_direct_upload_slug(
                         obj,
                         slug_input=form.cleaned_data["slug_input"],

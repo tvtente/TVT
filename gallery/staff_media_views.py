@@ -59,10 +59,18 @@ def stage_upload_view(request):
     if upload.size > MAX_UPLOAD_BYTES:
         return JsonResponse({"error": "file_too_large"}, status=400)
 
+    convert_to_webp = (request.POST.get("convert_to_webp", "true") or "").lower() not in {
+        "0",
+        "false",
+        "off",
+        "no",
+    }
+
     try:
         staged = StagedUpload.objects.create(
             file=upload,
             original_filename=getattr(upload, "name", "") or "",
+            convert_to_webp=convert_to_webp,
             created_by=request.user if request.user.is_authenticated else None,
         )
     except ValidationError:

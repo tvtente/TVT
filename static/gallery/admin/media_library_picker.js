@@ -354,6 +354,10 @@
         '<button type="button" class="button" data-act="upload-stage">Upload (staging)</button>' +
         '<button type="button" class="button" data-act="clear">&times; Clear selection</button>' +
         "</div>" +
+        '<label class="gallery-picker-webp-option">' +
+        '<input type="checkbox" checked data-role="convert-webp"> Convertir a WebP' +
+        '<span> (recomendado)</span>' +
+        "</label>" +
         '<input type="file" accept="image/*" style="display:none" data-act="file-stage">' +
         '<div class="gallery-picker-selection">' +
         '<img alt="" data-role="preview">' +
@@ -381,6 +385,7 @@
 
       const actions = shell.querySelector(".gallery-picker-actions");
       const fileHidden = shell.querySelector('[data-act="file-stage"]');
+      const convertWebp = shell.querySelector('[data-role="convert-webp"]');
       scope.previewImg.addEventListener("click", function () {
         if (!scope.previewImg.src) {
           return;
@@ -412,6 +417,7 @@
         const token = csrfToken();
         const fd = new FormData();
         fd.append("file", uploadSafeFile(f, postImageUploadName(scope, f)));
+        fd.append("convert_to_webp", convertWebp && convertWebp.checked ? "true" : "false");
         fetch(stageUrl, {
           method: "POST",
           body: fd,

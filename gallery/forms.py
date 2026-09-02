@@ -12,6 +12,12 @@ class ImageAddForm(forms.ModelForm):
     )
     staging_id = forms.UUIDField(required=False, widget=forms.HiddenInput)
     source_image_id = forms.IntegerField(required=False, widget=forms.HiddenInput)
+    convert_to_webp = forms.BooleanField(
+        required=False,
+        initial=True,
+        label=_("Convert to WebP"),
+        help_text=_("Enabled by default. Disable to preserve the uploaded format, for example a PNG."),
+    )
 
     class Meta:
         model = Image

@@ -14,6 +14,20 @@ User = get_user_model()
 logger = logging.getLogger(__name__)
 
 
+# Accounts created solely to seed the demonstration discussion on the PRL post.
+DEMO_COMMENTER_USERNAMES = frozenset(
+    {
+        "tecnico-prl",
+        "trabajador",
+        "responsable-empresa",
+        "responsable-mantenimiento",
+        "tecnico-calidad",
+        "desarrollador-sistema",
+        "especialista-proteccion-datos",
+    }
+)
+
+
 class CommentTranslation(models.Model):
     class Source(models.TextChoices):
         HUMAN = "human", _("Human")
@@ -220,6 +234,11 @@ class Comment(MPTTModel):
 
     created_at = models.DateTimeField(default=timezone.now, verbose_name=_("Created At"))
     is_approved = models.BooleanField(default=False, verbose_name=_("Is Approved?"))
+
+    @property
+    def is_demo_profile(self):
+        """Whether this comment belongs to one of the seeded demo identities."""
+        return bool(self.user_id and self.user and self.user.username in DEMO_COMMENTER_USERNAMES)
 
     # 🈯️ Translation metadata
     translated_content = models.TextField(blank=True, null=True, verbose_name=_("Translated Content"))

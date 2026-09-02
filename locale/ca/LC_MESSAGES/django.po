@@ -3655,6 +3655,11 @@ msgstr "Sugerir traducció"
 
 #: posts/templates/posts/post_detail.html:681
 #: posts/templates/posts/post_detail.html:690
+#: posts/templates/posts/post_detail.html
+msgid "Demo profile"
+msgstr "Perfil de demostració"
+
+#: posts/templates/posts/post_detail.html:690
 #, fuzzy
 #| msgid "View original"
 msgid "Original"

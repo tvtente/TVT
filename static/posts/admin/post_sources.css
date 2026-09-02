@@ -1,0 +1,12 @@
+/* Keep selected sources readable in Django's native multiple-select control. */
+select.post-sources-select {
+  background-color: var(--body-bg, #fff);
+  color: var(--body-fg, #333);
+}
+
+form .aligned select.post-sources-select option:checked {
+  /* Override Django admin's pale --selected-row for this native multi-select. */
+  background: #417690 !important;
+  box-shadow: inset 0 0 0 9999px #417690;
+  color: #fff !important;
+}

@@ -1,4 +1,5 @@
 import tempfile
+from io import BytesIO
 from io import StringIO
 
 from django.contrib.auth import get_user_model
@@ -7,6 +8,7 @@ from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.management import call_command
 from django.test import SimpleTestCase, TestCase, override_settings
+from PIL import Image as PillowImage
 
 from gallery.asset_allocation import allocate_unique_asset_slug
 from gallery.finalization import (
@@ -174,6 +176,40 @@ class GalleryPhase1MediaLibraryTests(TestCase):
         staged.delete()
 
         self.assertFalse(storage.exists(stored_name))
+
+    def test_staged_static_raster_upload_is_saved_as_webp(self):
+        payload = BytesIO()
+        PillowImage.new("RGB", (20, 10), "#ffcc00").save(payload, format="PNG")
+        staged = StagedUpload.objects.create(
+            file=SimpleUploadedFile("safety.png", payload.getvalue(), content_type="image/png"),
+        )
+
+        self.assertTrue(staged.file.name.endswith(".webp"))
+        with staged.file.open("rb") as image_file:
+            self.assertEqual(PillowImage.open(image_file).format, "WEBP")
+
+    def test_staged_upload_keeps_original_format_when_webp_is_disabled(self):
+        payload = BytesIO()
+        PillowImage.new("RGBA", (20, 10), (255, 204, 0, 120)).save(payload, format="PNG")
+        staged = StagedUpload.objects.create(
+            file=SimpleUploadedFile("transparent.png", payload.getvalue(), content_type="image/png"),
+            convert_to_webp=False,
+        )
+
+        self.assertTrue(staged.file.name.endswith(".png"))
+        with staged.file.open("rb") as image_file:
+            self.assertEqual(PillowImage.open(image_file).format, "PNG")
+
+    def test_direct_static_raster_upload_is_saved_as_webp(self):
+        payload = BytesIO()
+        PillowImage.new("RGB", (20, 10), "#ffcc00").save(payload, format="JPEG")
+        image = Image(title="Safety", slug="safety", language="es")
+        image.image = SimpleUploadedFile("safety.jpg", payload.getvalue(), content_type="image/jpeg")
+        image.save()
+
+        self.assertTrue(image.image.name.endswith(".webp"))
+        with image.image.open("rb") as image_file:
+            self.assertEqual(PillowImage.open(image_file).format, "WEBP")
 
 
 class GalleryLanguageInferenceTests(SimpleTestCase):

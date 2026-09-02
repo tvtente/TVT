@@ -1,5 +1,7 @@
 from django import template
 from bs4 import BeautifulSoup
+from django.utils.timesince import timesince
+from django.utils.translation import get_language
 
 register = template.Library()
 
@@ -22,3 +24,18 @@ def replace_year(value, year):
     if not value:
         return ""
     return str(value).replace("{year}", str(year))
+
+
+@register.filter
+def relative_time(value):
+    """Render a natural relative time with language-appropriate word order."""
+    if not value:
+        return ""
+
+    duration = timesince(value)
+    language = (get_language() or "en").split("-")[0]
+    if language == "es":
+        return f"Hace {duration.replace(', ', ' y ')}"
+    if language == "ca":
+        return f"Fa {duration.replace(', ', ' i ')}"
+    return f"{duration} ago"
