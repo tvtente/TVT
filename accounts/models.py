@@ -15,6 +15,20 @@ from django.utils import timezone
 logger = logging.getLogger(__name__)
 
 
+# Internal commenter personas use a role icon until an avatar or a gendered
+# default is explicitly chosen.  Keeping this mapping by username avoids
+# turning an editorial role into a new personal-data field.
+ROLE_AVATAR_BY_USERNAME = {
+    "tecnico-prl": "images/avatars/role-prl.svg",
+    "trabajador": "images/avatars/role-worker.svg",
+    "responsable-empresa": "images/avatars/role-management.svg",
+    "responsable-mantenimiento": "images/avatars/role-maintenance.svg",
+    "tecnico-calidad": "images/avatars/role-quality.svg",
+    "desarrollador-sistema": "images/avatars/role-development.svg",
+    "especialista-proteccion-datos": "images/avatars/role-privacy.svg",
+}
+
+
 class ProfileCatalogBase(TranslatableModel):
     slug = models.SlugField(
         max_length=140,
@@ -321,6 +335,10 @@ class Profile(TranslatableModel):
 
         # Default avatar mode has priority over any uploaded file.
         if self.use_default_avatar:
+            if chosen_default == self.AvatarChoice.PRIVATE:
+                role_avatar = ROLE_AVATAR_BY_USERNAME.get(self.user.username)
+                if role_avatar:
+                    return static(role_avatar)
             return static(chosen_default)
 
         avatar_name = (self.avatar.name or '').strip() if self.avatar else ''

@@ -3550,37 +3550,35 @@ msgstr ""
 "      Publicado el %(published_date)s por %(author)s\n"
 "    "
 
+#: posts/templates/posts/post_detail.html
+msgid "Rate"
+msgstr "Valorar"
+
+#: posts/templates/posts/post_detail.html
+msgid "Assign"
+msgstr "Asignar"
+
 #: posts/templates/posts/post_detail.html:443
-#, fuzzy
-#| msgid "Delete this item"
 msgid "Vote this post"
-msgstr "Eliminar este elemento"
+msgstr "Valora esta publicación"
 
 #: posts/templates/posts/post_detail.html:457
-#, fuzzy
-#| msgid "Save Changes"
 msgid "Decrease points"
-msgstr "Guardar Cambios"
+msgstr "Reducir puntos"
 
 #: posts/templates/posts/post_detail.html:462
 #: posts/templates/posts/post_detail.html:505
 #: posts/templates/posts/post_detail.html:537
-#, fuzzy
-#| msgid "Save Changes"
 msgid "Give points"
-msgstr "Guardar Cambios"
+msgstr "Asignar puntos"
 
 #: posts/templates/posts/post_detail.html:464
-#, fuzzy
-#| msgid "Save Changes"
 msgid "Increase points"
-msgstr "Guardar Cambios"
+msgstr "Aumentar puntos"
 
 #: posts/templates/posts/post_detail.html:475
-#, fuzzy
-#| msgid "Save Changes"
 msgid "Save points"
-msgstr "Guardar Cambios"
+msgstr "Guardar puntos"
 
 #: posts/templates/posts/post_detail.html:493
 #: posts/templates/posts/post_detail.html:525
@@ -3597,39 +3595,31 @@ msgstr "Agregar a favoritos"
 
 #: posts/templates/posts/post_detail.html:542
 msgid "Log in to assign points"
-msgstr ""
+msgstr "Inicia sesión para asignar puntos"
 
 #: posts/templates/posts/post_detail.html:553
-#, fuzzy
-#| msgid "Posts published today."
 msgid "Points received today:"
-msgstr "Publicaciones hechas hoy."
+msgstr "Puntos recibidos hoy:"
 
 #: posts/templates/posts/post_detail.html:558
-#, fuzzy
-#| msgid "Log in here"
 msgid "Your points here:"
-msgstr "Iniciar sesión aquí"
+msgstr "Tus puntos aquí:"
 
 #: posts/templates/posts/post_detail.html:561
 msgid "Left today:"
-msgstr ""
+msgstr "Disponibles hoy:"
 
 #: posts/templates/posts/post_detail.html:564
 msgid "Daily budget:"
-msgstr ""
+msgstr "Límite diario:"
 
 #: posts/templates/posts/post_detail.html:567
-#, fuzzy
-#| msgid "7d Views"
 msgid "Views:"
-msgstr "Vistas 7d"
+msgstr "Vistas:"
 
 #: posts/templates/posts/post_detail.html:570
-#, fuzzy
-#| msgid "Comments"
 msgid "Comments:"
-msgstr "comentarios"
+msgstr "Comentarios:"
 
 #: posts/templates/posts/post_detail.html:573
 msgid "Favorites:"
@@ -3905,7 +3895,7 @@ msgstr ""
 #: posts/views.py:646
 #, python-format
 msgid "You assigned %(points)s point(s) to this post for today."
-msgstr ""
+msgstr "Has asignado %(points)s punto(s) a esta publicación hoy."
 
 #: publications/admin.py:112
 msgid ""

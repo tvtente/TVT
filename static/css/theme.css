@@ -938,16 +938,16 @@ header,
 nav[aria-label="breadcrumb"] {
   overflow: visible !important;
   margin-top: 0.85rem;
-  margin-bottom: 1.5rem
+  margin-bottom: 0.85rem;
 }
 
-/* Evita que el contenido de la página quede demasiado pegado al breadcrumb */
+/* La separación inferior se gestiona en el propio breadcrumb, sin sumarla dos veces. */
 .breadcrumb + *,
 .breadcrumb-area + *,
 .breadcrumb-container + *,
 .breadcrumb-wrapper + *,
 nav[aria-label="breadcrumb"] + * {
-  margin-top: 1rem;
+  margin-top: 0;
 }
 
 .breadcrumb {
@@ -1078,6 +1078,62 @@ nav[aria-label="breadcrumb"] + * {
     color: var(--prl-dark);
     font-weight: 650;
 }
+
+/* Índice navegable dentro de los artículos PRL. */
+.prl-index {
+    margin: 0 0 2.25rem;
+    padding: 1.25rem;
+    border: 1px solid #e5d59d;
+    border-radius: 1rem;
+    background: #fffdf6;
+}
+
+.prl-index__summary {
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+    color: var(--prl-dark);
+    font-size: 1.1rem;
+    font-weight: 750;
+    cursor: pointer;
+    list-style: none;
+}
+
+.prl-index__summary::-webkit-details-marker { display: none; }
+.prl-index__summary::after {
+    content: "⌄";
+    margin-left: auto;
+    color: var(--prl-secondary);
+    font-size: 1.3rem;
+    line-height: 1;
+}
+.prl-index[open] .prl-index__summary { margin-bottom: .85rem; }
+.prl-index[open] .prl-index__summary::after { transform: rotate(180deg); }
+.prl-index__summary i { color: var(--prl-secondary); }
+
+.prl-index ol {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .35rem 1.5rem;
+    margin: 0;
+    padding-left: 1.35rem;
+}
+
+.prl-index--compact ol { grid-template-columns: 1fr; }
+
+.prl-index li { padding-left: .15rem; }
+
+.prl-index a {
+    color: var(--prl-dark);
+    font-size: .96rem;
+    font-weight: 650;
+    text-decoration-color: #d7ae24;
+    text-decoration-thickness: 1px;
+    text-underline-offset: .2em;
+}
+
+.prl-index a:hover,
+.prl-index a:focus-visible { color: #7a5700; }
 
 .prl-timeline {
     position: relative;
@@ -1314,6 +1370,8 @@ nav[aria-label="breadcrumb"] + * {
     .prl-process { grid-template-columns: 1fr; }
     .prl-process li { min-height: auto; flex-direction: row; justify-content: flex-start; gap: .75rem; text-align: left; }
     .prl-process li::before { flex: 0 0 auto; margin: 0; }
+    .prl-index { padding: 1rem; }
+    .prl-index ol { grid-template-columns: 1fr; }
 }
 
 .pagination {
