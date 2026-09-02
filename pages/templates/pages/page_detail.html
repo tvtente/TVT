@@ -220,6 +220,32 @@
             box-shadow: 0 0.2rem 0.65rem rgba(0, 0, 0, 0.28);
         }
 
+        /* When both sidebars are explicitly open, the central column becomes
+           narrow. Give the no-image hero enough vertical room for its CTA. */
+        @media (max-width: 1400px) {
+            body.sidebar-right-forced-visible:not(.sidebar-left-collapsed) .homepage-section-widgets--hero .hero-carousel__empty-frame {
+                min-height: 32rem;
+            }
+
+            body.sidebar-right-forced-visible:not(.sidebar-left-collapsed) .homepage-section-widgets--hero .hero-carousel__item--no-image .carousel-caption {
+                inset-inline: 1rem;
+                bottom: 1rem;
+            }
+
+            body.sidebar-right-forced-visible:not(.sidebar-left-collapsed) .homepage-section-widgets--hero .hero-carousel__item--no-image .hero-carousel__caption-box {
+                padding: 1.25rem;
+            }
+
+            body.sidebar-right-forced-visible:not(.sidebar-left-collapsed) .homepage-section-widgets--hero .hero-carousel__caption-box h3 {
+                font-size: clamp(1.7rem, 2.8vw, 2.25rem);
+            }
+
+            body.sidebar-right-forced-visible:not(.sidebar-left-collapsed) .homepage-section-widgets--hero .hero-carousel__caption-box p {
+                font-size: 0.95rem;
+                line-height: 1.4;
+            }
+        }
+
         .homepage-section-widgets--hero .carousel-caption > div {
             backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.08);

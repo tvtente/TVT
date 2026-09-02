@@ -163,20 +163,50 @@
         left: document.querySelector("#site-left-sidebar-toggle"),
         right: document.querySelector("#site-right-sidebar-toggle"),
     };
+    const sidebarElements = {
+        left: document.querySelector(".site-sidebar-left"),
+        right: document.querySelector(".site-sidebar-right"),
+    };
+    const compactSidebarQuery = window.matchMedia("(max-width: 87.5rem)");
+
+    function updateSidebarToggle(side, visible) {
+        const toggle = sidebarToggles[side];
+        if (!toggle) {
+            return;
+        }
+        toggle.setAttribute("aria-pressed", String(visible));
+        const icon = toggle.querySelector(".sidebar-visibility-icon");
+        icon.classList.toggle("sidebar-visibility-icon--visible", visible);
+        toggle.title = visible
+            ? (side === "left" ? "{% translate 'Hide left sidebar' %}" : "{% translate 'Hide right sidebar' %}")
+            : (side === "left" ? "{% translate 'Show left sidebar' %}" : "{% translate 'Show right sidebar' %}");
+    }
 
     function setSidebarCollapsed(side, collapsed) {
         const toggle = sidebarToggles[side];
         document.body.classList.toggle(`sidebar-${side}-collapsed`, collapsed);
-        if (!toggle) {
-            return;
+        updateSidebarToggle(side, !collapsed);
+    }
+
+    function setSidebarForcedVisible(side, visible) {
+        const toggle = sidebarToggles[side];
+        document.body.classList.toggle(`sidebar-${side}-forced-visible`, visible);
+        if (visible) {
+            document.body.classList.remove(`sidebar-${side}-collapsed`);
         }
-        toggle.setAttribute("aria-pressed", String(collapsed));
-        toggle.querySelector("i").className = collapsed
-            ? `fa-solid fa-angles-${side === "left" ? "right" : "left"}`
-            : `fa-solid fa-angles-${side === "left" ? "left" : "right"}`;
-        toggle.title = collapsed
-            ? (side === "left" ? "{% translate 'Show left sidebar' %}" : "{% translate 'Show right sidebar' %}")
-            : (side === "left" ? "{% translate 'Hide left sidebar' %}" : "{% translate 'Hide right sidebar' %}");
+        updateSidebarToggle(side, visible);
+    }
+
+    function isSidebarHiddenByLayout(side) {
+        const sidebar = sidebarElements[side];
+        return Boolean(sidebar && window.getComputedStyle(sidebar).display === "none");
+    }
+
+    function syncSidebarToggle(side) {
+        const forcedVisible = document.body.classList.contains(`sidebar-${side}-forced-visible`);
+        const manuallyCollapsed = document.body.classList.contains(`sidebar-${side}-collapsed`);
+        const visible = forcedVisible || (!manuallyCollapsed && !isSidebarHiddenByLayout(side));
+        updateSidebarToggle(side, visible);
     }
 
     Object.entries(sidebarToggles).forEach(function ([side, toggle]) {
@@ -185,10 +215,29 @@
         }
         try {
             setSidebarCollapsed(side, localStorage.getItem(`tvt-sidebar-${side}-collapsed`) === "true");
+            if (localStorage.getItem(`tvt-sidebar-${side}-forced-visible`) === "true") {
+                setSidebarForcedVisible(side, true);
+            }
         } catch (error) {
             setSidebarCollapsed(side, false);
         }
+        syncSidebarToggle(side);
         toggle.addEventListener("click", function () {
+            const manuallyCollapsed = document.body.classList.contains(`sidebar-${side}-collapsed`);
+            if (compactSidebarQuery.matches && (
+                document.body.classList.contains(`sidebar-${side}-forced-visible`)
+                || (isSidebarHiddenByLayout(side) && !manuallyCollapsed)
+            )) {
+                const visible = !document.body.classList.contains(`sidebar-${side}-forced-visible`);
+                setSidebarForcedVisible(side, visible);
+                try {
+                    localStorage.setItem(`tvt-sidebar-${side}-forced-visible`, String(visible));
+                } catch (error) {
+                    // The layout still works when storage is unavailable.
+                }
+                syncSidebarToggle(side);
+                return;
+            }
             const collapsed = !document.body.classList.contains(`sidebar-${side}-collapsed`);
             setSidebarCollapsed(side, collapsed);
             try {
@@ -196,7 +245,12 @@
             } catch (error) {
                 // The layout still works when storage is unavailable.
             }
+            syncSidebarToggle(side);
         });
+    });
+
+    compactSidebarQuery.addEventListener("change", function () {
+        Object.keys(sidebarToggles).forEach(syncSidebarToggle);
     });
 
     function syncNavbarRows() {

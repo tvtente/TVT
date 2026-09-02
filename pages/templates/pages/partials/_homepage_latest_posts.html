@@ -10,7 +10,7 @@
 
     <div class="row">
         {% for post in homepage_posts %}
-            <div class="col-md-6 col-lg-4 mb-4">
+            <div class="col-md-6 col-lg-6 mb-4">
                 <article class="card h-100 shadow-sm border-0">
                     {% with featured_image=post.get_featured_image %}
                         {% if featured_image %}
