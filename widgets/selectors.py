@@ -5,14 +5,18 @@ from django.core.cache import cache
 from django.db.models import Count, Q, Sum
 from django.db.models.functions import Length
 from django.templatetags.static import static
+from django.urls import reverse
 from django.utils import timezone
+from django.utils.translation import override
 
 from accounts.models import User
+from accounts.views import _profile_has_cv_in_language
 from books.models import Book
 from categories.models import Category
 from posts.models import Post, PostPointAllocation
-from posts.selectors import get_community_picks_queryset
+from posts.selectors import get_community_picks_queryset, get_published_posts_queryset
 from publications.models import Publication
+from pages.models import Page
 from tags.models import Tag
 from testimonials.models import Testimonial
 from core.cache_observability import get_cache_logger, log_cache_event
@@ -62,6 +66,7 @@ POST_WIDGET_TYPES = {
     "post_grid_top_rated_week",
     "post_grid_most_favorited",
     "post_grid_community_picks",
+    "post_grid_top_tags",
     "post_intent_reflection",
     "post_intent_quick_reads",
     "post_intent_wellbeing",
@@ -82,6 +87,7 @@ LANDSCAPE_WIDGET_TYPES = {
     "post_grid_top_rated_week",
     "post_grid_most_favorited",
     "post_grid_community_picks",
+    "post_grid_top_tags",
     "post_intent_reflection",
     "post_intent_quick_reads",
     "post_intent_wellbeing",
@@ -167,8 +173,8 @@ def _with_featured_image(queryset, language_code):
     return queryset.filter(asset_q).distinct()
 
 
-def _grid_visible_posts():
-    return Post.objects.filter(status="published", show_in_post_grids=True)
+def _grid_visible_posts(language_code=None):
+    return get_published_posts_queryset(language_code).filter(show_in_post_grids=True)
 
 
 def _published_books_queryset(language_code):
@@ -197,7 +203,7 @@ def _top_rated_posts_queryset(language_code, *, days=1):
     point_filter = Q(point_allocations__date__gte=date_from, point_allocations__date__lte=today)
 
     return (
-        _grid_visible_posts()
+        _grid_visible_posts(language_code)
         .annotate(
             total_points=Sum(
                 "point_allocations__points",
@@ -209,9 +215,9 @@ def _top_rated_posts_queryset(language_code, *, days=1):
     )
 
 
-def _most_favorited_posts_queryset():
+def _most_favorited_posts_queryset(language_code=None):
     return (
-        _grid_visible_posts()
+        _grid_visible_posts(language_code)
         .annotate(total_favorites=Count("favorites", distinct=True))
         .filter(total_favorites__gt=0)
         .order_by("-total_favorites", "-published_date")
@@ -222,20 +228,20 @@ def _build_widget_items(widget_instance, language_code):
     match widget_instance.widget_type:
         case "recent_posts":
             return list(
-                Post.objects.filter(status="published").order_by("-published_date")[
+                get_published_posts_queryset(language_code).order_by("-published_date")[
                     :widget_instance.item_count
                 ]
             )
 
         case "most_viewed_posts":
             return list(
-                Post.objects.filter(status="published")
+                get_published_posts_queryset(language_code)
                 .order_by("-views_count", "-published_date")[: widget_instance.item_count]
             )
 
         case "most_commented_posts":
             items_qs = (
-                Post.objects.filter(status="published")
+                get_published_posts_queryset(language_code)
                 .annotate(
                     num_comments=Count(
                         "comments",
@@ -249,7 +255,7 @@ def _build_widget_items(widget_instance, language_code):
 
         case "editor_picks_posts":
             return list(
-                Post.objects.filter(status="published", editor_rating__gt=0)
+                get_published_posts_queryset(language_code).filter(editor_rating__gt=0)
                 .order_by("-editor_rating", "-published_date")[: widget_instance.item_count]
             )
 
@@ -271,13 +277,17 @@ def _build_widget_items(widget_instance, language_code):
             return list(categories_qs[: widget_instance.item_count])
 
         case "featured_tags":
-            tags = list(
+            tags_queryset = (
                 Tag.objects.language(language_code)
-                .filter(slug__in=FEATURED_TAG_SLUGS)
+                .filter(translations__language_code=language_code)
                 .annotate(
                     num_posts=Count(
-                        "posts",
-                        filter=Q(posts__status="published"),
+                        "post_links",
+                        filter=Q(
+                            post_links__post__status="published",
+                            post_links__language=language_code,
+                            post_links__post__translations__language_code=language_code,
+                        ),
                         distinct=True,
                     )
                 )
@@ -291,7 +301,12 @@ def _build_widget_items(widget_instance, language_code):
                     )
                 )
                 .filter(num_posts__gt=0)
+                .distinct()
             )
+            curated_tags = list(tags_queryset.filter(slug__in=FEATURED_TAG_SLUGS))
+            # Do not leave the cloud empty merely because the editorial preset
+            # has no matching published posts after curation or archiving.
+            tags = curated_tags or list(tags_queryset.order_by("-num_posts", "translations__label"))
             tag_order = {
                 slug: index for index, slug in enumerate(FEATURED_TAG_SLUGS)
             }
@@ -300,19 +315,20 @@ def _build_widget_items(widget_instance, language_code):
                 key=lambda tag: (
                     -(tag.recent_clicks or 0),
                     -tag.click_count,
+                    -tag.num_posts,
                     tag_order.get(tag.slug, len(tag_order)),
                 ),
             )[: widget_instance.item_count]
 
         case "post_grid_recent":
             items_qs = _with_featured_image(
-                _grid_visible_posts().order_by("-published_date"),
+                _grid_visible_posts(language_code).order_by("-published_date"),
                 language_code,
             )
             return list(items_qs[: widget_instance.item_count])
 
         case "post_grid_category":
-            items_qs = _grid_visible_posts()
+            items_qs = _grid_visible_posts(language_code)
             if widget_instance.category_filter:
                 items_qs = items_qs.filter(categories=widget_instance.category_filter)
             else:
@@ -329,14 +345,14 @@ def _build_widget_items(widget_instance, language_code):
 
         case "post_grid_popular":
             items_qs = _with_featured_image(
-                _grid_visible_posts().order_by("-views_count", "-published_date"),
+                _grid_visible_posts(language_code).order_by("-views_count", "-published_date"),
                 language_code,
             )
             return list(items_qs[: widget_instance.item_count])
 
         case "post_grid_commented":
             items_qs = (
-                _grid_visible_posts()
+                _grid_visible_posts(language_code)
                 .annotate(
                     num_comments=Count(
                         "comments",
@@ -350,11 +366,13 @@ def _build_widget_items(widget_instance, language_code):
             return list(items_qs[: widget_instance.item_count])
 
         case "post_grid_editor":
-            items_qs = _with_featured_image(
-                _grid_visible_posts()
+            # Editorially rated posts remain useful even when no featured
+            # image has been uploaded.  The grid template already renders a
+            # complete card without an image, so do not hide them here.
+            items_qs = (
+                _grid_visible_posts(language_code)
                 .filter(editor_rating__gt=0)
-                .order_by("-editor_rating", "-published_date"),
-                language_code,
+                .order_by("-editor_rating", "-published_date")
             )
             return list(items_qs[: widget_instance.item_count])
 
@@ -374,21 +392,87 @@ def _build_widget_items(widget_instance, language_code):
 
         case "post_grid_most_favorited":
             items_qs = _with_featured_image(
-                _most_favorited_posts_queryset(),
+                _most_favorited_posts_queryset(language_code),
                 language_code,
             )
             return list(items_qs[: widget_instance.item_count])
 
         case "post_grid_community_picks":
             items_qs = _with_featured_image(
-                get_community_picks_queryset(),
+                get_community_picks_queryset(language_code=language_code),
                 language_code,
             )
             return list(items_qs[: widget_instance.item_count])
 
+        case "post_grid_top_tags":
+            # In the homepage sidebar these tags act as a discovery aid for the
+            # editorially important content.  Rank tags attached to rated or
+            # commented posts before generic click-volume tags, so an unrelated
+            # historic topic does not dominate this widget.
+            tag_queryset = (
+                Tag.objects.language(language_code)
+                .filter(translations__language_code=language_code)
+                .annotate(
+                    num_posts=Count(
+                        "post_links",
+                        filter=Q(
+                            post_links__post__status="published",
+                            post_links__language=language_code,
+                            post_links__post__translations__language_code=language_code,
+                        ),
+                        distinct=True,
+                    ),
+                    recent_clicks=Sum(
+                        "daily_metrics__click_count",
+                        filter=Q(
+                            daily_metrics__date__gte=timezone.localdate()
+                            - timezone.timedelta(days=30)
+                        ),
+                    ),
+                    rated_posts=Count(
+                        "post_links",
+                        filter=Q(
+                            post_links__post__status="published",
+                            post_links__language=language_code,
+                            post_links__post__translations__language_code=language_code,
+                            post_links__post__editor_rating__gt=0,
+                        ),
+                        distinct=True,
+                    ),
+                    commented_posts=Count(
+                        "post_links__post",
+                        filter=Q(
+                            post_links__post__status="published",
+                            post_links__language=language_code,
+                            post_links__post__translations__language_code=language_code,
+                            post_links__post__comments__is_approved=True,
+                        ),
+                        distinct=True,
+                    ),
+                )
+                .filter(num_posts__gt=0)
+                .order_by(
+                    "-rated_posts",
+                    "-commented_posts",
+                    "-recent_clicks",
+                    "-click_count",
+                    "-num_posts",
+                )
+                .distinct()
+            )
+            top_tags = list(tag_queryset[: widget_instance.top_tag_count])
+            items_qs = get_published_posts_queryset(language_code).filter(
+                tag_links__tag__in=top_tags,
+                tag_links__language=language_code,
+            )
+            if widget_instance.category_filter:
+                items_qs = items_qs.filter(categories=widget_instance.category_filter)
+            return list(
+                items_qs.distinct().order_by("-published_date")[: widget_instance.item_count]
+            )
+
         case "post_intent_reflection":
-            items_qs = Post.objects.filter(
-                status="published",
+            items_qs = get_published_posts_queryset(language_code).filter(
                 tags__slug__in=REFLECTION_TAG_SLUGS,
             ).order_by("-editor_rating", "-published_date")
             if widget_instance.category_filter:
@@ -398,10 +482,7 @@ def _build_widget_items(widget_instance, language_code):
 
         case "post_intent_quick_reads":
             items_qs = (
-                Post.objects.filter(
-                    status="published",
-                    translations__language_code=language_code,
-                )
+                get_published_posts_queryset(language_code)
                 .exclude(translations__summary="")
                 .annotate(content_length=Length("translations__content"))
                 .filter(content_length__lte=1800)
@@ -413,8 +494,7 @@ def _build_widget_items(widget_instance, language_code):
             return list(items_qs.distinct()[: widget_instance.item_count])
 
         case "post_intent_wellbeing":
-            items_qs = Post.objects.filter(
-                status="published",
+            items_qs = get_published_posts_queryset(language_code).filter(
                 tags__slug__in=WELLBEING_TAG_SLUGS,
             ).order_by("-editor_rating", "-published_date")
             if widget_instance.category_filter:
@@ -424,7 +504,7 @@ def _build_widget_items(widget_instance, language_code):
 
         case "post_intent_debate":
             items_qs = (
-                Post.objects.filter(status="published")
+                get_published_posts_queryset(language_code)
                 .annotate(
                     num_comments=Count(
                         "comments",
@@ -440,7 +520,7 @@ def _build_widget_items(widget_instance, language_code):
             return list(items_qs.distinct()[: widget_instance.item_count])
 
         case "post_carousel":
-            items_qs = Post.objects.filter(status="published")
+            items_qs = get_published_posts_queryset(language_code)
             if widget_instance.category_filter:
                 items_qs = items_qs.filter(categories=widget_instance.category_filter)
             return list(
@@ -451,7 +531,7 @@ def _build_widget_items(widget_instance, language_code):
 
         case "post_carousel_commented":
             items_qs = (
-                Post.objects.filter(status="published")
+                get_published_posts_queryset(language_code)
                 .annotate(
                     num_comments=Count(
                         "comments",
@@ -466,7 +546,7 @@ def _build_widget_items(widget_instance, language_code):
             return list(items_qs[: widget_instance.item_count])
 
         case "post_carousel_viewed":
-            items_qs = Post.objects.filter(status="published").order_by(
+            items_qs = get_published_posts_queryset(language_code).order_by(
                 "-views_count",
                 "-published_date",
             )
@@ -475,7 +555,7 @@ def _build_widget_items(widget_instance, language_code):
             return list(items_qs[: widget_instance.item_count])
 
         case "hero_carousel":
-            items_qs = _grid_visible_posts().order_by("-editor_rating", "-published_date")
+            items_qs = _grid_visible_posts(language_code).order_by("-editor_rating", "-published_date")
             if widget_instance.category_filter:
                 items_qs = items_qs.filter(categories=widget_instance.category_filter)
             return list(items_qs.distinct()[: widget_instance.item_count])
@@ -485,6 +565,33 @@ def _build_widget_items(widget_instance, language_code):
             if widget_instance.category_filter:
                 items_qs = items_qs.filter(categories=widget_instance.category_filter)
             return list(items_qs[: widget_instance.item_count])
+
+        case "page_card":
+            if not widget_instance.page_filter_id:
+                return []
+            pages = list(
+                Page.objects.language(language_code)
+                .filter(
+                    pk=widget_instance.page_filter_id,
+                    status="published",
+                    translations__language_code=language_code,
+                )
+                .select_related("author", "author__profile")
+            )
+            for page in pages:
+                page.widget_destination_url = page.get_absolute_url()
+                author_profile = getattr(page.author, "profile", None)
+                if (
+                    widget_instance.link_to_author_cv
+                    and author_profile
+                    and _profile_has_cv_in_language(author_profile, language_code)
+                ):
+                    with override(language_code):
+                        page.widget_destination_url = reverse(
+                            "accounts:public_profile",
+                            kwargs={"username": page.author.username},
+                        )
+            return pages
 
         case "publication_grid_recent":
             items_qs = _published_publications_queryset(language_code)

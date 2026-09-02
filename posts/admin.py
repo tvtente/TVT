@@ -5,6 +5,7 @@ import uuid
 from datetime import timedelta
 
 from django.contrib import admin
+from django.contrib.contenttypes.admin import GenericTabularInline
 from django.conf import settings
 from django import forms
 from django.core.exceptions import ValidationError
@@ -25,6 +26,7 @@ from . import gallery_bridge
 from .models import Post, PostDailyMetric, PostFavorite, PostPointAllocation
 from comments.models import Comment
 from tags.models import Tag, TaggedPost
+from sources.models import Citation
 
 logger = logging.getLogger(__name__)
 
@@ -106,6 +108,17 @@ class TaggedPostInline(admin.TabularInline):
                 .distinct()
             )
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+
+class CitationInline(GenericTabularInline):
+    """Citations for this post, reusing the central sources catalogue."""
+
+    model = Citation
+    extra = 0
+    autocomplete_fields = ("source",)
+    fields = ("source", "language", "order", "locator", "note")
+    verbose_name = _("Citation")
+    verbose_name_plural = _("Citations and sources")
 
 def _post_admin_language(request, obj):
     return (
@@ -363,7 +376,7 @@ class PostAdmin(TranslatableAdmin, SummernoteModelAdmin):
     filter_horizontal = ('categories',)
 
     # 🧩 Inline form for managing tag relations
-    inlines = [TaggedPostInline]
+    inlines = [TaggedPostInline, CitationInline]
 
     def get_queryset(self, request):
         """

@@ -3,6 +3,7 @@ import logging
 
 from django.db.models import Q
 from django.shortcuts import render
+from django.utils.translation import get_language
 
 from core.pagination import get_site_config_int, paginate_queryset
 from pages.models import Page
@@ -33,6 +34,7 @@ def search_results_view(request):
     page_results_qs = Page.objects.none()
     post_results_qs = Post.objects.none()
 
+    language = get_language()
     if query:
         # Build the Q objects for the search query
         page_query = (
@@ -48,11 +50,13 @@ def search_results_view(request):
         # --- ¡LA LÓGICA CORRECTA! ---
         # 1. Obtenemos TODAS las páginas que coinciden con la búsqueda.
         # 2. LUEGO, las ordenamos por importancia y después por título.
-        page_results_qs = Page.objects.filter(page_query, status='published') \
+        page_results_qs = Page.objects.language(language).filter( \
+                                      page_query, status='published', translations__language_code=language) \
                                       .distinct() \
                                       .order_by('importance_order', 'translations__title')
         
-        post_results_qs = Post.objects.filter(post_query, status='published') \
+        post_results_qs = Post.objects.language(language).filter( \
+                                      post_query, status='published', translations__language_code=language) \
                                       .distinct().order_by('-published_date')
 
     # --- Paginación (ahora sobre los QuerySets correctos) ---

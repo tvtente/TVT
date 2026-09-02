@@ -381,6 +381,29 @@
     {{ post.content|add_zoom_class_to_images|safe }}
   </div>
 
+  {% if citations %}
+    <section class="prl-sources post-sources" aria-labelledby="post-sources-title">
+      <h2 id="post-sources-title">
+        <i class="fa-solid fa-book-open" aria-hidden="true"></i>
+        {% trans "Sources consulted" %}
+      </h2>
+      <ol>
+        {% for citation in citations %}
+          <li>
+            {% if citation.source.display_url %}
+              <a href="{{ citation.source.display_url }}" target="_blank" rel="noopener noreferrer">{{ citation.source.display_bibliographic_reference }}</a>
+            {% else %}
+              {{ citation.source.display_bibliographic_reference }}
+            {% endif %}
+            {% if citation.locator %}<span class="text-muted"> — {{ citation.locator }}</span>{% endif %}
+            {% if citation.note %}<div class="small text-muted mt-1">{{ citation.note }}</div>{% endif %}
+            {% if citation.source.original_document_availability_note %}<div class="small text-muted mt-1"><i class="fa-solid fa-language me-1" aria-hidden="true"></i>{{ citation.source.original_document_availability_note }}</div>{% endif %}
+          </li>
+        {% endfor %}
+      </ol>
+    </section>
+  {% endif %}
+
   {% if post_points_enabled %}
     <div class="post-author-strip">
       <img

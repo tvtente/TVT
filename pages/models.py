@@ -116,9 +116,10 @@ class Page(TranslatableModel):
 
     def get_absolute_url(self):
         # Uses the 'pages' namespace to generate the correct URL.
+        if self.is_homepage:
+            return reverse('home')
         translated_slug = (
             self.safe_translation_getter("slug", language_code=get_language(), any_language=False)
-            or self.safe_translation_getter("slug", any_language=True)
         )
         return reverse('pages:page_detail', kwargs={'slug': translated_slug})
 
@@ -150,9 +151,7 @@ class Page(TranslatableModel):
         language_code = language_code or get_language()
         return (
             self.safe_translation_getter("abstract", language_code=language_code, any_language=False)
-            or self.safe_translation_getter("abstract", any_language=True)
             or self.safe_translation_getter("meta_description", language_code=language_code, any_language=False)
-            or self.safe_translation_getter("meta_description", any_language=True)
             or ''
         )
 
@@ -160,7 +159,6 @@ class Page(TranslatableModel):
         language_code = language_code or get_language()
         return (
             self.safe_translation_getter("keywords", language_code=language_code, any_language=False)
-            or self.safe_translation_getter("keywords", any_language=True)
             or ''
         )
 
@@ -170,27 +168,32 @@ class Page(TranslatableModel):
 
     def get_absolute_url_for_language(self, language_code):
         with override(language_code):
+            # The homepage is routed at the language root (e.g. /es/), not
+            # through the generic page-detail URL.  This also keeps the
+            # language selector on the home view, which provides its dynamic
+            # sections such as the latest-posts list.
+            if self.is_homepage:
+                return reverse('home')
             translated_slug = (
                 self.safe_translation_getter("slug", language_code=language_code, any_language=False)
-                or self.safe_translation_getter("slug", any_language=True)
             )
             return reverse('pages:page_detail', kwargs={'slug': translated_slug})
 
     @property
     def translated_title(self):
-        return self.safe_translation_getter("title", any_language=True) or str(_("Untitled"))
+        return self.safe_translation_getter("title", any_language=False) or str(_("Untitled"))
 
     @property
     def translated_content(self):
-        return self.safe_translation_getter("content", any_language=True) or ""
+        return self.safe_translation_getter("content", any_language=False) or ""
 
     @property
     def translated_meta_title(self):
-        return self.safe_translation_getter("meta_title", any_language=True) or ""
+        return self.safe_translation_getter("meta_title", any_language=False) or ""
 
     @property
     def translated_meta_description(self):
-        return self.safe_translation_getter("meta_description", any_language=True) or ""
+        return self.safe_translation_getter("meta_description", any_language=False) or ""
 
 
 class HomeSection(TranslatableModel):

@@ -61,6 +61,7 @@
   </div>
 
   {% include 'core/partials/_pagination.html' with page_obj=posts %}
+  {% include "posts/partials/_untranslated_posts_notice.html" %}
 
   <div class="mt-5">
     <h5 class="text-center">{% translate "You might be interested in these recent posts:" %}</h5>

@@ -222,7 +222,7 @@ class Publication(TranslatableModel):
         return reverse(
             "publications:publication_detail",
             kwargs={
-                "slug": self.safe_translation_getter("slug", any_language=True),
+                "slug": self.safe_translation_getter("slug", any_language=False),
             },
         )
 

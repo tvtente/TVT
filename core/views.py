@@ -7,13 +7,35 @@ from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext, get_language
 from books.cart import get_cart_items
-from pages.models import Page
+from categories.models import Category
+from core.pagination import paginate_queryset
+from pages.models import Page, PageSection
+from posts.models import Post
 from pages.views import build_page_detail_context
+from posts.selectors import get_posts_for_list_type, get_untranslated_post_cards
 from shop.models import Order
 from shop.services import create_provisional_order_from_request
 
 # Get a logger instance for this module.
 logger = logging.getLogger(__name__)
+
+HOMEPAGE_POSTS_CATEGORY_SLUG = "fundamentos-de-la-prevencion-moderna"
+
+
+def _get_homepage_posts_queryset():
+    """Posts assigned to the editorial category selected for the homepage."""
+    category = (
+        Category.objects.filter(translations__slug=HOMEPAGE_POSTS_CATEGORY_SLUG)
+        .distinct()
+        .first()
+    )
+    if category is None:
+        logger.warning(
+            "Homepage post category '%s' was not found.",
+            HOMEPAGE_POSTS_CATEGORY_SLUG,
+        )
+        return Post.objects.none()
+    return Post.objects.filter(categories__in=category.get_descendants(include_self=True)).distinct()
 
 
 def public_verification_file(request):
@@ -39,7 +61,11 @@ def home(request):
     try:
         homepage = (
             Page.objects.language(get_language())
-            .filter(is_homepage=True, status='published')
+            .filter(
+                is_homepage=True,
+                status='published',
+                translations__language_code=get_language(),
+            )
             .distinct()
             .latest('updated_at')
         )
@@ -77,6 +103,29 @@ def home(request):
             ],
         }
     )
+
+    # Keep this pagination independent from any other paginated component that
+    # may be configured on the homepage.  It is intentionally fixed at three
+    # cards so the homepage always presents a balanced row of latest posts.
+    homepage_posts_queryset = _get_homepage_posts_queryset()
+    context["homepage_posts"] = paginate_queryset(
+        get_posts_for_list_type().filter(pk__in=homepage_posts_queryset),
+        request.GET.get("home_page"),
+        3,
+    )
+    context["untranslated_post_cards"] = get_untranslated_post_cards(
+        queryset=homepage_posts_queryset,
+    )
+    if homepage is not None:
+        homepage_sections = context["page_sections"]
+        carousel_section = homepage_sections.filter(
+            section_type=PageSection.SectionType.HERO,
+        ).first()
+        context["homepage_posts_after_section_id"] = (
+            carousel_section.pk
+            if carousel_section is not None
+            else homepage_sections.values_list("pk", flat=True).first()
+        )
 
     return render(request, 'pages/page_detail.html', context)
 

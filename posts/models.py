@@ -126,6 +126,7 @@ class Post(TranslatableModel):
         choices=[
             ('draft', _("Draft")),
             ('published', _("Published")),
+            ('archived', _("Archived")),
         ],
         default='draft',
         verbose_name=_("Status")
@@ -237,7 +238,6 @@ class Post(TranslatableModel):
     def get_absolute_url(self):
         slug = (
             self.safe_translation_getter('slug', any_language=False)
-            or self.safe_translation_getter('slug', any_language=True)
         )
         return reverse('posts:post_detail', kwargs={
             'year': self.published_date.year,
@@ -249,7 +249,6 @@ class Post(TranslatableModel):
     def get_absolute_url_for_language(self, language_code):
         slug = (
             self.safe_translation_getter('slug', language_code=language_code, any_language=False)
-            or self.safe_translation_getter('slug', any_language=True)
         )
         with override(language_code):
             return reverse('posts:post_detail', kwargs={

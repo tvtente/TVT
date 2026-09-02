@@ -172,6 +172,7 @@ INSTALLED_APPS = [
     'testimonials',
     'posts',
     'tags',
+    'sources.apps.SourcesConfig',
     'comments.apps.CommentsConfig',
     'publications',
     'books.apps.BooksConfig',

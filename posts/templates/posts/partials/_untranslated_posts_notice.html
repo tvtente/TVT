@@ -1,0 +1,29 @@
+{% load i18n %}
+
+{% if untranslated_post_cards %}
+<aside class="alert alert-light border mt-4 mb-0" aria-labelledby="other-language-posts-title">
+    <h2 id="other-language-posts-title" class="h5 mb-2">
+        {% translate "Posts available in other languages" %}
+    </h2>
+    <p class="small text-muted mb-3">
+        {% translate "These recent posts have not been translated into the selected language yet." %}
+    </p>
+    <ul class="list-unstyled mb-0">
+        {% for post in untranslated_post_cards %}
+            <li class="d-flex flex-wrap align-items-center gap-2{% if not forloop.last %} mb-2{% endif %}">
+                <span class="fw-semibold">
+                    {{ post.title }}
+                    {% if post.title_is_automatic %}
+                        <span class="badge text-bg-secondary">{% translate "automatic translation" %}</span>
+                    {% endif %}
+                </span>
+                {% for edition in post.editions %}
+                    <a href="{{ edition.url }}" class="btn btn-outline-primary btn-sm">
+                        {{ edition.code|upper }} · {{ edition.label }}
+                    </a>
+                {% endfor %}
+            </li>
+        {% endfor %}
+    </ul>
+</aside>
+{% endif %}

@@ -3,6 +3,7 @@ import uuid
 
 from django import forms
 from django.contrib import admin
+from django.contrib.contenttypes.admin import GenericTabularInline
 from django.core.exceptions import ValidationError
 from django.urls import reverse
 from django.utils.html import format_html
@@ -14,6 +15,7 @@ from gallery.finalization import FinalizationError
 from gallery.models import StagedUpload
 from gallery.staging_uploads import create_gallery_image_from_staged_upload
 from .models import Page, PageSection
+from sources.models import Citation
 
 
 logger = logging.getLogger(__name__)
@@ -49,9 +51,20 @@ class PageSectionInline(TranslatableStackedInline):
     classes = ("collapse",)
 
 
+class CitationInline(GenericTabularInline):
+    """Structured sources used by this page."""
+
+    model = Citation
+    extra = 0
+    autocomplete_fields = ("source",)
+    fields = ("source", "language", "order", "locator", "note")
+    verbose_name = _("Citation")
+    verbose_name_plural = _("Citations and sources")
+
+
 @admin.register(Page)
 class PageAdmin(SummernoteModelAdmin, TranslatableAdmin):
-    inlines = (PageSectionInline,)
+    inlines = (PageSectionInline, CitationInline)
     list_display = (
         "current_title",
         "status",

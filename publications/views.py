@@ -3,6 +3,7 @@
 import logging
 
 from django.conf import settings
+from django.contrib.contenttypes.models import ContentType
 from django.core.paginator import Paginator
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
@@ -13,6 +14,7 @@ from django.utils.translation import override
 from parler.utils.context import switch_language
 
 from .models import Publication
+from sources.models import Citation
 
 
 logger = logging.getLogger(__name__)
@@ -165,6 +167,18 @@ def publication_detail_view(request, slug):
         },
     ]
 
+    citations = (
+        Citation.objects
+        .filter(
+            content_type=ContentType.objects.get_for_model(Publication, for_concrete_model=False),
+            object_id=publication.pk,
+            language=language,
+        )
+        .select_related("source")
+        .prefetch_related("source__translations")
+        .order_by("order", "pk")
+    )
+
     sections = [
         {
             "title": _("Introduction"),
@@ -195,18 +209,26 @@ def publication_detail_view(request, slug):
             "content": publication.safe_translation_getter("conclusions", any_language=False),
         },
         {
-            "title": _("References / Bibliography"),
-            "content": publication.safe_translation_getter("references", any_language=False),
-        },
-        {
             "title": _("Annexes"),
             "content": publication.safe_translation_getter("annexes", any_language=False),
         },
     ]
 
+    # The legacy free-text bibliography remains visible only for publications
+    # that have not been migrated to structured citations yet.
+    if not citations:
+        sections.insert(
+            -1,
+            {
+                "title": _("References / Bibliography"),
+                "content": publication.safe_translation_getter("references", any_language=False),
+            },
+        )
+
     context = {
         "publication": publication,
         "sections": sections,
+        "citations": citations,
         "breadcrumbs": breadcrumbs,
         "translatable_object": publication,
         "title": publication.safe_translation_getter("title", any_language=True),

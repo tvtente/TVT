@@ -1,0 +1,43 @@
+{% load i18n %}
+
+<section id="latest-posts" class="container py-5" aria-labelledby="latest-posts-title">
+    <div class="d-flex align-items-center justify-content-between gap-3 mb-4">
+        <h2 id="latest-posts-title" class="mb-0">{% translate "Latest posts" %}</h2>
+        <a href="{% url 'posts:post_list' %}" class="btn btn-outline-primary btn-sm">
+            {% translate "View all" %}
+        </a>
+    </div>
+
+    <div class="row">
+        {% for post in homepage_posts %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <article class="card h-100 shadow-sm border-0">
+                    {% with featured_image=post.get_featured_image %}
+                        {% if featured_image %}
+                            <a href="{{ post.get_absolute_url }}">
+                                <img src="{{ featured_image.url }}" class="card-img-top" loading="lazy" alt="{{ post.title }}">
+                            </a>
+                        {% endif %}
+                    {% endwith %}
+                    <div class="card-body d-flex flex-column">
+                        <h3 class="h5 card-title">{{ post.title }}</h3>
+                        <p class="card-text text-muted small">
+                            {% firstof post.author.get_full_name post.author.username as author_name %}
+                            {% blocktranslate with published_date=post.published_date|date:"DATE_FORMAT" author=author_name %}
+                                Published on {{ published_date }} by {{ author }}
+                            {% endblocktranslate %}
+                        </p>
+                        <a href="{{ post.get_absolute_url }}" class="btn btn-primary mt-auto">{% translate "Read More" %}</a>
+                    </div>
+                </article>
+            </div>
+        {% empty %}
+            <div class="col">
+                <div class="alert alert-info mb-0">{% translate "There are no posts yet. Come back soon!" %}</div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% include "core/partials/_pagination.html" with page_obj=homepage_posts param_name="home_page" anchor="latest-posts" %}
+    {% include "posts/partials/_untranslated_posts_notice.html" %}
+</section>

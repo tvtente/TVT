@@ -5,6 +5,7 @@ import logging
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
 from django.db.models import F, Q
 from django.http import Http404, HttpResponseRedirect, JsonResponse
@@ -18,7 +19,12 @@ from parler.utils.context import switch_language
 from core.pagination import get_site_config_int, paginate_queryset
 from .models import Post, PostDailyMetric
 from .forms import PostPointAllocationForm
-from .selectors import POST_LIST_TYPES, get_posts_for_list_type
+from .selectors import (
+    POST_LIST_TYPES,
+    get_posts_for_list_type,
+    get_published_posts_queryset,
+    get_untranslated_post_cards,
+)
 from .services import (
     can_user_assign_post_points,
     get_max_points_per_post,
@@ -36,6 +42,7 @@ from comments.forms import CommentForm
 from comments.models import Comment
 from site_settings.models import SiteConfiguration
 from tags.models import Tag, TagDailyMetric
+from sources.models import Citation
 
 
 logger = logging.getLogger(__name__)
@@ -56,7 +63,7 @@ def post_list_view(request, list_type=None):
     if list_type and list_type not in POST_LIST_TYPES:
         raise Http404(gettext("Post list not found."))
 
-    all_posts = get_posts_for_list_type(list_type)
+    all_posts = get_posts_for_list_type(list_type, language_code=get_language())
 
     posts_per_page = get_site_config_int(
         "blog_items_per_page",
@@ -91,6 +98,7 @@ def post_list_view(request, list_type=None):
             "page_title": page_title,
             "page_description": page_description,
             "post_list_type": list_type,
+            "untranslated_post_cards": get_untranslated_post_cards(),
         },
     )
 
@@ -102,8 +110,7 @@ def following_posts_view(request):
     ).values_list("followed_id", flat=True)
 
     all_posts = (
-        Post.objects.filter(
-            status="published",
+        get_published_posts_queryset().filter(
             author_id__in=followed_user_ids,
         )
         .select_related("author", "author__profile")
@@ -142,8 +149,7 @@ def following_posts_view(request):
 @login_required
 def favorite_posts_view(request):
     all_posts = (
-        Post.objects.filter(
-            status="published",
+        get_published_posts_queryset().filter(
             favorites__user=request.user,
         )
         .select_related("author", "author__profile")
@@ -520,6 +526,17 @@ def post_detail_view(request, year, month, day, slug):
     points_access = can_user_assign_post_points(request.user, post, config)
     max_points_per_post = get_max_points_per_post(config)
     author_profile = getattr(post.author, "profile", None)
+    citations = (
+        Citation.objects
+        .filter(
+            content_type=ContentType.objects.get_for_model(Post, for_concrete_model=False),
+            object_id=post.pk,
+            language=language,
+        )
+        .select_related("source")
+        .prefetch_related("source__translations")
+        .order_by("order", "pk")
+    )
     point_form = (
         PostPointAllocationForm(
             initial={"points": points_summary.current_post_points},
@@ -547,6 +564,7 @@ def post_detail_view(request, year, month, day, slug):
             "post_points_form": point_form,
             "post_points_max_per_post": max_points_per_post,
             "author_profile": author_profile,
+            "citations": citations,
             "can_follow_author": request.user.is_authenticated and request.user != post.author,
             "is_following_author": author_profile.is_followed_by(request.user) if author_profile else False,
             "is_favorited_post": is_post_favorited_by_user(request.user, post),
@@ -648,6 +666,7 @@ def posts_by_category_view(request, category_slug):
         .language(language)
         .filter(
             status="published",
+            translations__language_code=language,
             categories__in=category_tree,
         )
         .distinct()
@@ -665,7 +684,7 @@ def posts_by_category_view(request, category_slug):
     fallback_posts = (
         Post.objects
         .language(language)
-        .filter(status="published")
+        .filter(status="published", translations__language_code=language)
         .exclude(pk__in=all_posts.values("pk"))
         .order_by("-published_date")[:3]
     )
@@ -688,6 +707,10 @@ def posts_by_category_view(request, category_slug):
         "fallback_posts": fallback_posts,
         "category_label": category_label,
         "translatable_object": category,
+        "untranslated_post_cards": get_untranslated_post_cards(
+            language,
+            queryset=Post.objects.filter(categories__in=category_tree),
+        ),
     }
 
     return render(
@@ -739,6 +762,7 @@ def posts_by_tag_view(request, tag_slug):
             tag_links__tag=tag,
             tag_links__language=language,
             status="published",
+            translations__language_code=language,
         )
         .distinct()
         .order_by("-published_date")
@@ -755,7 +779,7 @@ def posts_by_tag_view(request, tag_slug):
     fallback_posts = (
         Post.objects
         .language(language)
-        .filter(status="published")
+        .filter(status="published", translations__language_code=language)
         .exclude(pk__in=[post.pk for post in posts])
         .order_by("-published_date")[:3]
     )
@@ -775,6 +799,10 @@ def posts_by_tag_view(request, tag_slug):
             {"url": "", "label": tag_label},
         ],
         "tag_label": tag_label,
+        "untranslated_post_cards": get_untranslated_post_cards(
+            language,
+            queryset=Post.objects.filter(tag_links__tag=tag),
+        ),
     }
 
     return render(

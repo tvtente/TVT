@@ -22,8 +22,12 @@
         {% include 'widgets/partials/_featured_tags_widget.html' with widget=data.widget items=data.items request=request %}
     
     {# --- WXISTING CASES FOR POST GRIDS --- #}
-    {% elif data.widget.widget_type == 'post_grid_recent' or data.widget.widget_type == 'post_grid_category' or data.widget.widget_type == 'post_grid_popular' or data.widget.widget_type == 'post_grid_commented' or data.widget.widget_type == 'post_grid_editor' or data.widget.widget_type == 'post_grid_top_rated_today' or data.widget.widget_type == 'post_grid_top_rated_week' or data.widget.widget_type == 'post_grid_most_favorited' or data.widget.widget_type == 'post_grid_community_picks' or data.widget.widget_type == 'post_intent_reflection' or data.widget.widget_type == 'post_intent_quick_reads' or data.widget.widget_type == 'post_intent_wellbeing' or data.widget.widget_type == 'post_intent_debate' %}
-        {% include 'widgets/partials/_post_grid.html' with widget=data.widget items=data.items request=request prefer_square_image=data.prefer_square_image image_format=data.image_format %}
+    {% elif data.widget.widget_type == 'post_grid_recent' or data.widget.widget_type == 'post_grid_category' or data.widget.widget_type == 'post_grid_popular' or data.widget.widget_type == 'post_grid_commented' or data.widget.widget_type == 'post_grid_editor' or data.widget.widget_type == 'post_grid_top_rated_today' or data.widget.widget_type == 'post_grid_top_rated_week' or data.widget.widget_type == 'post_grid_most_favorited' or data.widget.widget_type == 'post_grid_community_picks' or data.widget.widget_type == 'post_grid_top_tags' or data.widget.widget_type == 'post_intent_reflection' or data.widget.widget_type == 'post_intent_quick_reads' or data.widget.widget_type == 'post_intent_wellbeing' or data.widget.widget_type == 'post_intent_debate' %}
+        {% if zone_slug == 'homepage-sidebar-right' %}
+            {% include 'widgets/partials/_post_grid.html' with widget=data.widget items=data.items request=request prefer_square_image=data.prefer_square_image image_format=data.image_format collapsible_sidebar=True %}
+        {% else %}
+            {% include 'widgets/partials/_post_grid.html' with widget=data.widget items=data.items request=request prefer_square_image=data.prefer_square_image image_format=data.image_format %}
+        {% endif %}
     
     {# --- CASE FOR POST CAROUSEL --- #}
     {% elif data.widget.widget_type == 'post_carousel' or data.widget.widget_type == 'post_carousel_commented' or data.widget.widget_type == 'post_carousel_viewed' %}
@@ -37,6 +41,13 @@
 
     {% elif data.widget.widget_type == 'publication_grid_recent' %}
         {% include 'widgets/partials/_publication_grid.html' with widget=data.widget items=data.items request=request %}
+
+    {% elif data.widget.widget_type == 'page_card' %}
+        {% if zone_slug == 'homepage-sidebar-right' %}
+            {% include 'widgets/partials/_page_card.html' with widget=data.widget items=data.items request=request collapsible_sidebar=True %}
+        {% else %}
+            {% include 'widgets/partials/_page_card.html' with widget=data.widget items=data.items request=request %}
+        {% endif %}
 
     {# --- CASE FOR USER DIRECTORY --- #}
     {% elif data.widget.widget_type == 'user_directory' %}

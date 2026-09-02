@@ -1,4 +1,5 @@
 {% load static %}
+{% load i18n %}
 {% load settings_tags %}
 {% get_active_site_template as site_template %}
 <!doctype html>
@@ -158,6 +159,45 @@
     const navbarCollapseWrapper = document.querySelector(".navbar-collapse-wrapper");
     const mainNavbarMenu = document.querySelector(".main-navbar-menu");
     const navbarRightActions = document.querySelector(".navbar-right-actions");
+    const sidebarToggles = {
+        left: document.querySelector("#site-left-sidebar-toggle"),
+        right: document.querySelector("#site-right-sidebar-toggle"),
+    };
+
+    function setSidebarCollapsed(side, collapsed) {
+        const toggle = sidebarToggles[side];
+        document.body.classList.toggle(`sidebar-${side}-collapsed`, collapsed);
+        if (!toggle) {
+            return;
+        }
+        toggle.setAttribute("aria-pressed", String(collapsed));
+        toggle.querySelector("i").className = collapsed
+            ? `fa-solid fa-angles-${side === "left" ? "right" : "left"}`
+            : `fa-solid fa-angles-${side === "left" ? "left" : "right"}`;
+        toggle.title = collapsed
+            ? (side === "left" ? "{% translate 'Show left sidebar' %}" : "{% translate 'Show right sidebar' %}")
+            : (side === "left" ? "{% translate 'Hide left sidebar' %}" : "{% translate 'Hide right sidebar' %}");
+    }
+
+    Object.entries(sidebarToggles).forEach(function ([side, toggle]) {
+        if (!toggle) {
+            return;
+        }
+        try {
+            setSidebarCollapsed(side, localStorage.getItem(`tvt-sidebar-${side}-collapsed`) === "true");
+        } catch (error) {
+            setSidebarCollapsed(side, false);
+        }
+        toggle.addEventListener("click", function () {
+            const collapsed = !document.body.classList.contains(`sidebar-${side}-collapsed`);
+            setSidebarCollapsed(side, collapsed);
+            try {
+                localStorage.setItem(`tvt-sidebar-${side}-collapsed`, String(collapsed));
+            } catch (error) {
+                // The layout still works when storage is unavailable.
+            }
+        });
+    });
 
     function syncNavbarRows() {
         if (!navbarCollapseWrapper || !mainNavbarMenu || !navbarRightActions) {

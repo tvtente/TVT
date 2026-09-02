@@ -43,6 +43,7 @@ class Widget(TranslatableModel):
         POST_GRID_TOP_RATED_WEEK = 'post_grid_top_rated_week', _("Post Grid: Top Rated This Week")
         POST_GRID_MOST_FAVORITED = 'post_grid_most_favorited', _("Post Grid: Most Favorited")
         POST_GRID_COMMUNITY_PICKS = 'post_grid_community_picks', _("Post Grid: Community Picks")
+        POST_GRID_TOP_TAGS = 'post_grid_top_tags', _("Post Grid: Top Tags")
         POST_INTENT_REFLECTION = 'post_intent_reflection', _("Intent: For Reflection")
         POST_INTENT_QUICK_READS = 'post_intent_quick_reads', _("Intent: Quick Reads")
         POST_INTENT_WELLBEING = 'post_intent_wellbeing', _("Intent: Well-being")
@@ -54,6 +55,7 @@ class Widget(TranslatableModel):
         HERO_CAROUSEL = "hero_carousel", _("Hero Carousel")
         BOOK_GRID_RECENT = "book_grid_recent", _("Book Grid: Recent Books")
         PUBLICATION_GRID_RECENT = "publication_grid_recent", _("Publication Grid: Recent Publications")
+        PAGE_CARD = "page_card", _("Page Card")
         USER_DIRECTORY = 'user_directory', _("User Directory")
         TESTIMONIALS = 'testimonials', _("Testimonials")
 
@@ -111,6 +113,11 @@ class Widget(TranslatableModel):
         # Texto mejorado para reflejar su uso dual
         help_text=_("Used by widgets that display a list of items, like 'Recent Posts' or 'Blog Categories'.")
     )
+    top_tag_count = models.PositiveIntegerField(
+        default=3,
+        verbose_name=_("Number of top tags"),
+        help_text=_("For the Top Tags grid, how many leading cloud tags are used to select posts."),
+    )
     
     cache_timeout = models.PositiveIntegerField(
         default=900, # Default to 15 minutes (900 seconds)
@@ -124,6 +131,21 @@ class Widget(TranslatableModel):
         on_delete=models.SET_NULL,
         verbose_name=_("Filter by Category (optional)"),
         help_text=_("If selected, the widget will only show items from this specific category.")
+    )
+    page_filter = models.ForeignKey(
+        "pages.Page",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        verbose_name=_("Featured Page (optional)"),
+        help_text=_("The page displayed by the Page Card widget."),
+    )
+    link_to_author_cv = models.BooleanField(
+        default=False,
+        verbose_name=_("Prefer the author's public CV"),
+        help_text=_(
+            "For a featured profile page, link to the author's public CV when it is available in the selected language."
+        ),
     )
 
     # --- NEW: Grid/Column Configuration ---

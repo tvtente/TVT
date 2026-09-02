@@ -133,6 +133,31 @@
         {% endif %}
     {% endfor %}
 
+    {% if citations %}
+        <section class="publication-section publication-sources mb-4" aria-labelledby="publication-sources-title">
+            <h2 id="publication-sources-title">
+                <i class="fas fa-book-open me-2" aria-hidden="true"></i>
+                {% translate "Sources and bibliography" %}
+            </h2>
+            <div class="publication-section-body">
+                <ol>
+                    {% for citation in citations %}
+                        <li class="mb-2">
+                            {% if citation.source.display_url %}
+                                <a href="{{ citation.source.display_url }}" target="_blank" rel="noopener noreferrer">{{ citation.source.display_bibliographic_reference }}</a>
+                            {% else %}
+                                {{ citation.source.display_bibliographic_reference }}
+                            {% endif %}
+                            {% if citation.locator %}<span class="text-muted"> — {{ citation.locator }}</span>{% endif %}
+                            {% if citation.note %}<div class="small text-muted mt-1">{{ citation.note }}</div>{% endif %}
+                            {% if citation.source.original_document_availability_note %}<div class="small text-muted mt-1"><i class="fas fa-language me-1" aria-hidden="true"></i>{{ citation.source.original_document_availability_note }}</div>{% endif %}
+                        </li>
+                    {% endfor %}
+                </ol>
+            </div>
+        </section>
+    {% endif %}
+
     {% if publication.attachment %}
         <section class="publication-section mb-4">
             <h2>{% translate "Document" %}</h2>

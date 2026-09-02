@@ -19,6 +19,8 @@
                     <h1 class="h3 mb-3">
                         {% if content_kind == "post" %}
                             {% translate "This post is not available in this language." %}
+                        {% elif content_kind == "page" %}
+                            {% translate "This page is not available in this language." %}
                         {% elif content_kind == "book" %}
                             {% translate "This book is not available in this language." %}
                         {% elif content_kind == "publication" %}

@@ -21,4 +21,5 @@ def show_widget_zone(context, zone_slug):
     return {
         "processed_widgets": processed_widgets,
         "request": context["request"],
+        "zone_slug": zone_slug,
     }

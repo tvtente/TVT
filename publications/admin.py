@@ -4,6 +4,7 @@ import logging
 import uuid
 
 from django.contrib import admin
+from django.contrib.contenttypes.admin import GenericTabularInline
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.urls import reverse
@@ -17,10 +18,22 @@ from gallery.models import Image, StagedUpload
 from gallery.staging_uploads import create_gallery_image_from_staged_upload
 
 from .models import Publication
+from sources.models import Citation
 
 
 logger = logging.getLogger(__name__)
 User = get_user_model()
+
+
+class CitationInline(GenericTabularInline):
+    """Structured sources used by this publication."""
+
+    model = Citation
+    extra = 0
+    autocomplete_fields = ("source",)
+    fields = ("source", "language", "order", "locator", "note")
+    verbose_name = _("Citation")
+    verbose_name_plural = _("Citations and sources")
 
 
 def get_researcher_users_queryset():
@@ -91,6 +104,8 @@ class PublicationAdmin(TranslatableAdmin):
         "authors",
         "categories",
     )
+
+    inlines = (CitationInline,)
 
     # 🙈 Optional: hide auto fields and custom media pickers
     readonly_fields = (

@@ -1,15 +1,18 @@
 import tempfile
+from datetime import timedelta
 
 from django.core.files.base import ContentFile
 from django.test import TestCase, override_settings
 from django.contrib.auth import get_user_model
 from django.urls import reverse
+from django.utils import timezone, translation
 
 from core.language_urls import get_best_language_url, replace_language_prefix
 from core.pagination import paginate_queryset
 from gallery.models import Image
 from pages.models import Page, PageSection
 from posts.models import Post
+from categories.models import Category
 from publications.models import Publication
 
 
@@ -75,6 +78,63 @@ class HomepageResolutionTests(TestCase):
         self.assertContains(response, "Homepage heading")
         self.assertContains(response, "Homepage section body", html=False)
         self.assertNotContains(response, "Legacy homepage body")
+
+    def test_homepage_language_url_uses_language_root(self):
+        homepage = Page.objects.create(author=self.user, status="published", is_homepage=True)
+        homepage.set_current_language("en")
+        homepage.title = "Homepage"
+        homepage.slug = "homepage"
+        homepage.content = "Homepage content"
+        homepage.save()
+
+        with translation.override("es"):
+            self.assertEqual(homepage.get_absolute_url_for_language("es"), reverse("home"))
+
+    def test_home_shows_latest_posts_three_at_a_time_using_home_page_parameter(self):
+        homepage = Page.objects.create(author=self.user, status="published", is_homepage=True)
+        homepage.set_current_language("en")
+        homepage.title = "Homepage"
+        homepage.slug = "homepage"
+        homepage.save()
+
+        section = PageSection.objects.create(
+            page=homepage,
+            section_type=PageSection.SectionType.CONTENT,
+            enabled=True,
+            order=1,
+        )
+        section.set_current_language("en")
+        section.internal_title = "Homepage content"
+        section.save()
+
+        category = Category.objects.create()
+        category.set_current_language("en")
+        category.name = "Foundations"
+        category.slug = "fundamentos-de-la-prevencion-moderna"
+        category.save()
+
+        for index in range(4):
+            post = Post.objects.create(
+                author=self.user,
+                status="published",
+                published_date=timezone.now() + timedelta(minutes=index),
+            )
+            post.set_current_language("en")
+            post.title = f"Latest post {index + 1}"
+            post.slug = f"latest-post-{index + 1}"
+            post.content = "Post content"
+            post.save()
+            post.categories.add(category)
+
+        first_page = self.client.get(reverse("home"))
+        second_page = self.client.get(reverse("home"), {"home_page": 2})
+
+        self.assertContains(first_page, "Latest post 4")
+        self.assertContains(first_page, "Latest post 2")
+        self.assertNotContains(first_page, "Latest post 1")
+        self.assertContains(first_page, "?home_page=2#latest-posts")
+        self.assertContains(second_page, "Latest post 1")
+        self.assertNotContains(second_page, "Latest post 4")
 
 
 @override_settings(MEDIA_ROOT=tempfile.mkdtemp())

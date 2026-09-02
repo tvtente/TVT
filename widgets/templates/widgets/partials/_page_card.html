@@ -1,0 +1,37 @@
+{% load i18n %}
+
+{% for item in items %}
+<section class="widget-page-card{% if collapsible_sidebar %} card mb-4 shadow-sm border-0 sidebar-collapsible-widget{% endif %}">
+    {% if collapsible_sidebar %}
+        <h2 class="card-header p-0 mb-0 widget-page-card__heading">
+            <button class="btn btn-light w-100 text-start d-flex justify-content-between align-items-center"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapse-widget-{{ widget.id }}"
+                    aria-expanded="true"
+                    aria-controls="collapse-widget-{{ widget.id }}">
+                <span>{{ widget.translated_section_title|default:widget.translated_title }}</span>
+                <i class="fas fa-chevron-down TAVATA-collapse-icon"></i>
+            </button>
+        </h2>
+        <div class="collapse show" id="collapse-widget-{{ widget.id }}"><div class="card-body p-3">
+    {% elif widget.translated_section_title %}
+        <h2 class="widget-page-card__heading">{{ widget.translated_section_title }}</h2>
+    {% endif %}
+    <article class="card shadow-sm border-0">
+        {% if item.widget_display_image %}
+            <a href="{{ item.widget_destination_url }}">
+                <img src="{{ item.widget_display_image.url }}" class="card-img-top" alt="{{ item.translated_title }}" loading="lazy">
+            </a>
+        {% endif %}
+        <div class="card-body">
+            <h3 class="h5 card-title">{{ item.translated_title }}</h3>
+            {% if item.get_abstract %}
+                <p class="card-text">{{ item.get_abstract|truncatechars:180 }}</p>
+            {% endif %}
+            <a href="{{ item.widget_destination_url }}" class="btn btn-sm btn-primary">{% translate "Read More" %}</a>
+        </div>
+    </article>
+    {% if collapsible_sidebar %}</div></div>{% endif %}
+</section>
+{% endfor %}

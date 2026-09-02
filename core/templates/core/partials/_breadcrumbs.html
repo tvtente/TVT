@@ -28,5 +28,23 @@
         <li class="breadcrumb-item active" aria-current="page">{% translate "Home" %}</li>
       {% endif %}
     {% endif %}
+    <li class="breadcrumb-layout-controls">
+      <button id="site-left-sidebar-toggle"
+              class="site-layout-toggle"
+              type="button"
+              aria-pressed="false"
+              title="{% translate 'Hide left sidebar' %}">
+        <i class="fa-solid fa-angles-left" aria-hidden="true"></i>
+        <span class="visually-hidden">{% translate "Toggle left sidebar" %}</span>
+      </button>
+      <button id="site-right-sidebar-toggle"
+              class="site-layout-toggle"
+              type="button"
+              aria-pressed="false"
+              title="{% translate 'Hide right sidebar' %}">
+        <i class="fa-solid fa-angles-right" aria-hidden="true"></i>
+        <span class="visually-hidden">{% translate "Toggle right sidebar" %}</span>
+      </button>
+    </li>
   </ol>
 </nav>

@@ -5836,3 +5836,63 @@ msgstr "Años de formación"
 #: accounts/templates/accounts/_public_profile_cv_content.html:177
 msgid "- %(hours)s hrs."
 msgstr "- %(hours)s hrs."
+
+#: posts/templates/posts/partials/_untranslated_posts_notice.html:6
+msgid "Posts available in other languages"
+msgstr "Posts disponibles en otros idiomas"
+
+#: posts/templates/posts/partials/_untranslated_posts_notice.html:9
+msgid "These recent posts have not been translated into the selected language yet."
+msgstr "Estas entradas recientes todavía no se han traducido al idioma seleccionado."
+
+#: posts/templates/posts/partials/_untranslated_posts_notice.html:16
+msgid "automatic translation"
+msgstr "traducción automática"
+
+msgid "Post Grid: Top Tags"
+msgstr "Cuadrícula de posts: etiquetas principales"
+
+msgid "Number of top tags"
+msgstr "Número de etiquetas principales"
+
+msgid "For the Top Tags grid, how many leading cloud tags are used to select posts."
+msgstr "Para la cuadrícula de etiquetas principales, cuántas etiquetas líderes de la nube se usan para seleccionar posts."
+#: widgets/templates/widgets/partials/_hero_carousel.html:43
+msgid "Featured"
+msgstr "Destacado"
+
+#: core/templates/core/base.html
+msgid "Toggle sidebars"
+msgstr "Alternar barras laterales"
+
+#: core/templates/core/base.html
+msgid "Show sidebars"
+msgstr "Mostrar barras laterales"
+
+#: core/templates/core/base.html
+msgid "Hide sidebars"
+msgstr "Ocultar barras laterales"
+
+#: core/templates/core/base.html
+msgid "Toggle left sidebar"
+msgstr "Alternar barra lateral izquierda"
+
+#: core/templates/core/base.html
+msgid "Toggle right sidebar"
+msgstr "Alternar barra lateral derecha"
+
+#: core/templates/core/base.html
+msgid "Hide left sidebar"
+msgstr "Ocultar barra lateral izquierda"
+
+#: core/templates/core/base.html
+msgid "Show left sidebar"
+msgstr "Mostrar barra lateral izquierda"
+
+#: core/templates/core/base.html
+msgid "Hide right sidebar"
+msgstr "Ocultar barra lateral derecha"
+
+#: core/templates/core/base.html
+msgid "Show right sidebar"
+msgstr "Mostrar barra lateral derecha"

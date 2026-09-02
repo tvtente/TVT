@@ -116,6 +116,7 @@
 
         .home-section__inner--full {
             max-width: none;
+            padding-inline: clamp(0.875rem, 3vw, 2rem);
         }
 
         .home-section__eyebrow {
@@ -186,15 +187,6 @@
             max-width: 1180px;
         }
 
-        .homepage-section-widgets--hero::after {
-            content: "";
-            position: absolute;
-            inset: auto 8% 4% 12%;
-            height: 3px;
-            background: linear-gradient(90deg, rgba(255, 193, 7, 0), rgba(255, 193, 7, 0.95), rgba(255, 193, 7, 0));
-            opacity: 0.8;
-        }
-
         .homepage-section-widgets--hero .carousel-inner {
             border-radius: calc(var(--tavata-border-radius) * 3);
             box-shadow: 0 28px 64px rgba(15, 23, 42, 0.18);
@@ -203,6 +195,29 @@
         .homepage-section-widgets--hero .carousel-caption {
             inset-inline: 4.5%;
             bottom: 2.2rem;
+            z-index: 3;
+        }
+
+        .homepage-section-widgets--hero .hero-carousel__item--no-image .carousel-caption {
+            bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+        }
+
+        .homepage-section-widgets--hero .carousel-control-prev,
+        .homepage-section-widgets--hero .carousel-control-next {
+            z-index: 4;
+            width: 3.75rem;
+            opacity: 1;
+        }
+
+        .homepage-section-widgets--hero .carousel-control-prev-icon,
+        .homepage-section-widgets--hero .carousel-control-next-icon {
+            width: 2.25rem;
+            height: 2.25rem;
+            border-radius: 50%;
+            background-color: rgba(12, 18, 28, 0.62);
+            background-size: 48%;
+            box-shadow: 0 0.2rem 0.65rem rgba(0, 0, 0, 0.28);
         }
 
         .homepage-section-widgets--hero .carousel-caption > div {
@@ -719,8 +734,43 @@
                         {% endif %}
                     </div>
                 </section>
+                {% if page.is_homepage and section.pk == homepage_posts_after_section_id %}
+                    {% include "pages/partials/_homepage_latest_posts.html" %}
+                {% endif %}
                 {% endwith %}
             {% endfor %}
+        {% endif %}
+
+        {# Legacy or content-only homepages have no modular section to attach to. #}
+        {% if page.is_homepage and not homepage_posts_after_section_id %}
+            {% include "pages/partials/_homepage_latest_posts.html" %}
+        {% endif %}
+
+        {% if citations %}
+            <div class="{% if uses_modular_sections %}container{% endif %}">
+                <div class="{% if not uses_modular_sections %}row{% endif %}">
+                    <section class="{% if not uses_modular_sections %}col-lg-10 mx-auto{% endif %} prl-sources page-sources mt-5" aria-labelledby="page-sources-title">
+                        <h2 id="page-sources-title">
+                            <i class="fa-solid fa-book-open" aria-hidden="true"></i>
+                            {% translate "Sources consulted" %}
+                        </h2>
+                        <ol>
+                            {% for citation in citations %}
+                                <li>
+                                    {% if citation.source.display_url %}
+                                        <a href="{{ citation.source.display_url }}" target="_blank" rel="noopener noreferrer">{{ citation.source.display_bibliographic_reference }}</a>
+                                    {% else %}
+                                        {{ citation.source.display_bibliographic_reference }}
+                                    {% endif %}
+                                    {% if citation.locator %}<span class="text-muted"> — {{ citation.locator }}</span>{% endif %}
+                                    {% if citation.note %}<div class="small text-muted mt-1">{{ citation.note }}</div>{% endif %}
+                                    {% if citation.source.original_document_availability_note %}<div class="small text-muted mt-1"><i class="fa-solid fa-language me-1" aria-hidden="true"></i>{{ citation.source.original_document_availability_note }}</div>{% endif %}
+                                </li>
+                            {% endfor %}
+                        </ol>
+                    </section>
+                </div>
+            </div>
         {% endif %}
 
     {% else %}

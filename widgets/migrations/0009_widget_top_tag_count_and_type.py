@@ -1,0 +1,40 @@
+from django.db import migrations, models
+
+
+class Migration(migrations.Migration):
+
+    dependencies = [("widgets", "0008_alter_widget_image_format")]
+
+    operations = [
+        migrations.AddField(
+            model_name="widget",
+            name="top_tag_count",
+            field=models.PositiveIntegerField(
+                default=3,
+                help_text="For the Top Tags grid, how many leading cloud tags are used to select posts.",
+                verbose_name="Number of top tags",
+            ),
+        ),
+        migrations.AlterField(
+            model_name="widget",
+            name="widget_type",
+            field=models.CharField(
+                choices=[
+                    ("recent_posts", "Recent Blog Posts"), ("most_viewed_posts", "Most Viewed Blog Posts"),
+                    ("most_commented_posts", "Most Commented Blog Posts"), ("blog_categories", "Blog Category List"),
+                    ("featured_tags", "Featured Tags"), ("editor_picks_posts", "Editor's Picks (Blog Posts)"),
+                    ("post_grid_recent", "Post Grid: Recent Posts"), ("post_grid_category", "Post Grid: Category"),
+                    ("post_grid_popular", "Post Grid: Most Viewed"), ("post_grid_commented", "Post Grid: Most Commented"),
+                    ("post_grid_editor", "Post Grid: Editor's Picks"), ("post_grid_top_rated_today", "Post Grid: Top Rated Today"),
+                    ("post_grid_top_rated_week", "Post Grid: Top Rated This Week"), ("post_grid_most_favorited", "Post Grid: Most Favorited"),
+                    ("post_grid_community_picks", "Post Grid: Community Picks"), ("post_grid_top_tags", "Post Grid: Top Tags"),
+                    ("post_intent_reflection", "Intent: For Reflection"), ("post_intent_quick_reads", "Intent: Quick Reads"),
+                    ("post_intent_wellbeing", "Intent: Well-being"), ("post_intent_debate", "Intent: Debate Starters"),
+                    ("post_carousel", "Post Carousel"), ("post_carousel_commented", "Post Carousel: Most Commented"),
+                    ("post_carousel_viewed", "Post Carousel: Most Viewed"), ("hero_carousel", "Hero Carousel"),
+                    ("book_grid_recent", "Book Grid: Recent Books"), ("publication_grid_recent", "Publication Grid: Recent Publications"),
+                    ("user_directory", "User Directory"), ("testimonials", "Testimonials"),
+                ], max_length=50, verbose_name="Widget Type",
+            ),
+        ),
+    ]

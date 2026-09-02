@@ -5828,3 +5828,63 @@ msgstr "Anys de formació"
 #: accounts/templates/accounts/_public_profile_cv_content.html:177
 msgid "- %(hours)s hrs."
 msgstr "- %(hours)s hrs."
+
+#: posts/templates/posts/partials/_untranslated_posts_notice.html:6
+msgid "Posts available in other languages"
+msgstr "Entrades disponibles en altres idiomes"
+
+#: posts/templates/posts/partials/_untranslated_posts_notice.html:9
+msgid "These recent posts have not been translated into the selected language yet."
+msgstr "Aquestes entrades recents encara no s'han traduït a l'idioma seleccionat."
+
+#: posts/templates/posts/partials/_untranslated_posts_notice.html:16
+msgid "automatic translation"
+msgstr "traducció automàtica"
+
+msgid "Post Grid: Top Tags"
+msgstr "Graella de posts: etiquetes principals"
+
+msgid "Number of top tags"
+msgstr "Nombre d'etiquetes principals"
+
+msgid "For the Top Tags grid, how many leading cloud tags are used to select posts."
+msgstr "Per a la graella d'etiquetes principals, quantes etiquetes capdavanteres del núvol s'utilitzen per seleccionar posts."
+#: widgets/templates/widgets/partials/_hero_carousel.html:43
+msgid "Featured"
+msgstr "Destacat"
+
+#: core/templates/core/base.html
+msgid "Toggle sidebars"
+msgstr "Alternar les barres laterals"
+
+#: core/templates/core/base.html
+msgid "Show sidebars"
+msgstr "Mostrar les barres laterals"
+
+#: core/templates/core/base.html
+msgid "Hide sidebars"
+msgstr "Amagar les barres laterals"
+
+#: core/templates/core/base.html
+msgid "Toggle left sidebar"
+msgstr "Alternar la barra lateral esquerra"
+
+#: core/templates/core/base.html
+msgid "Toggle right sidebar"
+msgstr "Alternar la barra lateral dreta"
+
+#: core/templates/core/base.html
+msgid "Hide left sidebar"
+msgstr "Amagar la barra lateral esquerra"
+
+#: core/templates/core/base.html
+msgid "Show left sidebar"
+msgstr "Mostrar la barra lateral esquerra"
+
+#: core/templates/core/base.html
+msgid "Hide right sidebar"
+msgstr "Amagar la barra lateral dreta"
+
+#: core/templates/core/base.html
+msgid "Show right sidebar"
+msgstr "Mostrar la barra lateral dreta"

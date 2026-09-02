@@ -74,6 +74,7 @@
 
   {# --- Paginación estándar centralizada --- #}
   {% include 'core/partials/_pagination.html' with page_obj=posts %}
+  {% include "posts/partials/_untranslated_posts_notice.html" %}
 
 </div>
 {% endblock %}
