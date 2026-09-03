@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="TVTente">
+  <rect width="64" height="64" rx="12" fill="#ffc107"/>
+  <path d="M32 23c-8 0-14 7-14 16s6 16 14 16 14-7 14-16-6-16-14-16Z" fill="#212529"/>
+  <path d="M24 27h16v5H24zm-2 9h20v5H22zm2 9h16v5H24z" fill="#ffc107"/>
+  <path d="M20 26c-8-7-13-4-12 2 1 6 7 8 13 5m23-7c8-7 13-4 12 2-1 6-7 8-13 5" fill="#dcecff" stroke="#212529" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="27" cy="22" r="3" fill="#212529"/>
+  <circle cx="38" cy="22" r="3" fill="#212529"/>
+</svg>

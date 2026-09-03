@@ -7,6 +7,7 @@ from django.contrib.auth import views as auth_views
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.contrib.staticfiles.views import serve as staticfiles_serve
 from django.views.static import serve as media_serve
+from django.views.generic import RedirectView
 from core import views as core_views
 
 
@@ -14,6 +15,9 @@ from core import views as core_views
 # URLS THAT SHOULD NOT BE TRANSLATED (e.g., admin, auth process)
 # ==============================================================================
 urlpatterns = [
+    # Browsers often request this path automatically, even when a page uses an
+    # SVG favicon. Redirect it to the bundled fallback so the request is not a 404.
+    path('favicon.ico', RedirectView.as_view(url=f'{settings.STATIC_URL}images/favicon.svg', permanent=False)),
     # Archivo de verificación de dominio: no se traduce ni sustituye la portada.
     path('uetr2lswk1zkn93fjne4k5hyfvlann.html', core_views.public_verification_file),
     # Webhooks must not be prefixed with a language code: Meta calls this URL

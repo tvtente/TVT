@@ -1685,6 +1685,18 @@ nav[aria-label="breadcrumb"] + * {
 }
 
 /* --- Topbar compact language switcher --- */
+.brand-identity,
+.brand-identity a,
+.site-brand-logo {
+  background: transparent !important;
+}
+
+.site-brand-logo {
+  display: block;
+  border: 0;
+  box-shadow: none;
+}
+
 .topbar-slogan {
   font-size: var(--tavata-slogan-font-size);
 }
@@ -1756,6 +1768,8 @@ nav[aria-label="breadcrumb"] + * {
 
   .topbar-actions {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
     justify-content: space-between;
   }
 
@@ -1768,8 +1782,97 @@ nav[aria-label="breadcrumb"] + * {
   }
 }
 
+/* The social menu and the three language buttons share one row on phones.
+ * Bootstrap's mx-2 spacing is visually useful on desktop, but makes that row
+ * wider than a narrow viewport. Keep every control visible without creating
+ * horizontal overflow. */
+@media (max-width: 575.98px) {
+  .topbar-actions {
+    gap: 0.35rem !important;
+  }
+
+  .social-links {
+    min-width: 0;
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    white-space: nowrap;
+  }
+
+  .social-links .social-link {
+    margin-inline: 0.25rem !important;
+    font-size: 1.15rem !important;
+  }
+
+  .topbar-language-switcher {
+    flex: 0 0 auto;
+  }
+
+  .topbar-language-switcher .btn {
+    min-width: 31px;
+    padding-inline: 0.35rem;
+  }
+}
+
+/* On the narrowest phones, one row cannot accommodate the complete social
+ * menu and all language choices.  Split them deliberately instead of letting
+ * the controls overlap. */
+@media (max-width: 25rem) {
+  .topbar-actions {
+    flex-wrap: wrap;
+    row-gap: 0.35rem;
+  }
+
+  .social-links {
+    flex-basis: 100%;
+  }
+
+  .topbar-language-switcher {
+    margin-left: auto;
+  }
+}
+
 .publication-detail {
     max-width: 1040px;
+}
+
+/* --- Límites visuales para imágenes de publicaciones ---
+ * El tamaño del archivo puede ser mayor para conservar nitidez, pero estas
+ * cotas evitan que una imagen crezca sin control en pantallas grandes. */
+.post-featured-image,
+.post-widget-image--landscape {
+  display: block;
+  width: 100%;
+  max-width: 75rem; /* 1200 px: destacada 16:9 */
+  height: auto;
+  aspect-ratio: 16 / 9;
+  margin-inline: auto;
+  object-fit: cover;
+}
+
+.post-social-image,
+.post-widget-image--square {
+  display: block;
+  width: 100%;
+  max-width: 37.5rem; /* 600 px: social 1:1 */
+  height: auto;
+  aspect-ratio: 1 / 1;
+  margin-inline: auto;
+  object-fit: cover;
+}
+
+.post-summary-social-image {
+  width: min(100%, 13.75rem); /* 220 px junto al resumen */
+}
+
+.post-widget-image--mobile {
+  display: block;
+  width: 100%;
+  max-width: 33.75rem; /* 540 px: móvil 9:16 */
+  height: auto;
+  aspect-ratio: 9 / 16;
+  margin-inline: auto;
+  object-fit: cover;
 }
 
 .publication-subtitle {

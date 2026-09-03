@@ -27,7 +27,7 @@
                             {% if display_image %}
                                 <img
                                     src="{{ display_image.url }}"
-                                    class="d-block w-100 zoomable hero-carousel__image"
+                                    class="d-block w-100 zoomable hero-carousel__image post-widget-image--{{ item.widget_image_format }}"
                                     alt="{{ item.title }}"
                                     style="{% if item.widget_image_format == 'square' %}aspect-ratio: 1 / 1; object-fit: cover;{% elif item.widget_image_format == 'mobile' %}aspect-ratio: 9 / 16; max-height: 80vh; object-fit: cover;{% else %}min-height: 320px; max-height: 520px; object-fit: cover;{% endif %}"
                                 >

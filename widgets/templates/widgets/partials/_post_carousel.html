@@ -30,7 +30,7 @@
                         {% if display_image %}
                             <img
                                 src="{{ display_image.url }}"
-                                class="zoomable w-100 carousel-img"
+                                class="zoomable w-100 carousel-img post-widget-image--{{ item.widget_image_format }}"
                                 alt="{{ item.title }}"
                                 style="{% if item.widget_image_format == 'square' %}aspect-ratio: 1 / 1; object-fit: cover;{% elif item.widget_image_format == 'mobile' %}aspect-ratio: 9 / 16; object-fit: cover;{% else %}aspect-ratio: 16 / 9; object-fit: cover;{% endif %}"
                             >

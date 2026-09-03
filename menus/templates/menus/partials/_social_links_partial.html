@@ -3,7 +3,7 @@
 
 {# This partial renders a list of social media links without dropdowns #}
 {% for node in nodes %}
-    <a href="{{ node.get_url }}" target="_blank" rel="noopener noreferrer" class="text-secondary fs-5 mx-2" title="{{ node.translated_title }}">
+    <a href="{{ node.get_url }}" target="_blank" rel="noopener noreferrer" class="social-link text-secondary fs-5 mx-2" title="{{ node.translated_title }}">
         {% if node.icon_class %}
             <i class="{{ node.icon_class }}"></i>
         {% else %}

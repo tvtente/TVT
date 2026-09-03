@@ -39,7 +39,7 @@
                         <a href="{{ item.get_absolute_url }}">
                             <img
                                 src="{{ post_image.url }}"
-                                class="card-img-top post-grid-image {% if image_format == 'square' %}post-grid-image-square{% endif %}"
+                                class="card-img-top post-grid-image post-widget-image--{{ image_format }} {% if image_format == 'square' %}post-grid-image-square{% endif %}"
                                 alt="{{ item.title }}"
                                 loading="lazy"
                                 style="aspect-ratio: {% if image_format == 'square' %}1 / 1{% elif image_format == 'mobile' %}9 / 16{% else %}16 / 10{% endif %}; object-fit: cover;"

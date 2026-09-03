@@ -3,13 +3,13 @@
 
 {# --- SEO --- #}
 {% block seo_title %}{{ post.meta_title|default:post.title }}{% endblock %}
-{% block seo_description %}{{ post.summary|default:post.meta_description|default:"" }}{% endblock %}
+{% block seo_description %}{{ post.meta_description|default:post.summary|default:"" }}{% endblock %}
 {% block og_title %}{{ post.meta_title|default:post.title }}{% endblock %}
-{% block og_description %}{{ post.summary|default:post.meta_description|default:"" }}{% endblock %}
+{% block og_description %}{{ post.meta_description|default:post.summary|default:"" }}{% endblock %}
 {% block og_type %}article{% endblock %}
 {% block twitter_card %}{% if post.get_social_image %}summary_large_image{% else %}summary{% endif %}{% endblock %}
 {% block twitter_title %}{{ post.meta_title|default:post.title }}{% endblock %}
-{% block twitter_description %}{{ post.summary|default:post.meta_description|default:"" }}{% endblock %}
+{% block twitter_description %}{{ post.meta_description|default:post.summary|default:"" }}{% endblock %}
 {% block og_image %}
   {% with featured_image=post.get_featured_image %}
   {% if featured_image %}
@@ -25,6 +25,34 @@
   {% endwith %}
 {% endblock %}
 {% block title %}{{ post.title }}{% endblock %}
+{% block structured_data %}
+  {% with canonical_url=request.scheme|add:"://"|add:request.get_host|add:post.get_absolute_url featured_image=post.get_featured_image description=post.meta_description|default:post.summary %}
+  <link rel="canonical" href="{{ canonical_url }}">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "{{ post.title|escapejs }}",
+    {% if description %}"description": "{{ description|escapejs }}",{% endif %}
+    {% if featured_image %}"image": ["{{ request.scheme }}://{{ request.get_host }}{{ featured_image.url }}"],{% endif %}
+    "datePublished": "{{ post.published_date|date:'c' }}",
+    "dateModified": "{{ post.updated_at|date:'c' }}",
+    "author": {
+      "@type": "Person",
+      "name": "{{ post.author.get_full_name|default:post.author.username|escapejs }}"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "TVTente - PRL Digital"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "{{ canonical_url }}"
+    }
+  }
+  </script>
+  {% endwith %}
+{% endblock %}
 
 {% block extra_css %}
   {{ block.super }}
@@ -425,7 +453,7 @@
   {% if featured_image %}
     <img src="{{ featured_image.url }}"
          alt="{{ post.title }}"
-         class="zoomable img-fluid rounded mb-4 shadow">
+         class="post-featured-image zoomable img-fluid rounded mb-4 shadow">
   {% endif %}
   {% endwith %}
 
@@ -443,9 +471,8 @@
       <div class="d-flex flex-column flex-sm-row align-items-center align-items-sm-start gap-3 mb-3">
         <img src="{{ post.get_social_image.url }}"
              alt="{{ post.title }}"
-             class="post-summary-social-image zoomable rounded shadow-sm flex-shrink-0"
-             loading="lazy"
-             style="width: min(100%, 220px); aspect-ratio: 1 / 1; object-fit: cover;">
+             class="post-summary-social-image post-social-image zoomable rounded shadow-sm flex-shrink-0"
+             loading="lazy">
         <p class="lead mb-0">{{ post.summary }}</p>
       </div>
     {% else %}

@@ -22,9 +22,14 @@
     <meta name="twitter:title" content="{% block twitter_title %}Tavata.art{% endblock %}">
     <meta name="twitter:description" content="{% block twitter_description %}Default site description. Provide a more specific one for better SEO.{% endblock %}">
     {% block twitter_image %}{% endblock %}
+    {# SEO markup specific to each page (canonical URL, structured data, etc.). #}
+    {% block structured_data %}{% endblock %}
     {% if site_template.favicon_url %}
     <link rel="icon" href="{{ site_template.favicon_url }}">
     <link rel="shortcut icon" href="{{ site_template.favicon_url }}">
+    {% else %}
+    <link rel="icon" type="image/svg+xml" href="{% static 'images/favicon.svg' %}">
+    <link rel="shortcut icon" href="{% static 'images/favicon.svg' %}">
     {% endif %}
 
     {# --- CSS Stylesheets --- #}

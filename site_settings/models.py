@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.exceptions import SuspiciousFileOperation
 from django.utils.translation import gettext_lazy as _, gettext
+from django.templatetags.static import static
 from parler.models import TranslatableModel, TranslatedFields
 from solo.models import SingletonModel
 
@@ -226,7 +227,12 @@ class SiteTemplate(TranslatableModel):
 
     @property
     def site_logo_url(self):
-        return self._safe_file_url("site_logo")
+        # The configured media logo takes precedence.  The bundled identity is
+        # a reliable fallback for environments that share the database but not
+        # uploaded media (for example local and testing).
+        return self._safe_file_url("site_logo") or static(
+            "images/branding/mente-prl-digital-logo.png"
+        )
 
     @property
     def favicon_url(self):
