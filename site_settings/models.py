@@ -164,6 +164,19 @@ class SiteTemplate(TranslatableModel):
         verbose_name=_("Top Bar Banner Link"),
         help_text=_("The URL the banner image will link to.")
     )
+    navigation_banner_image = models.ImageField(
+        upload_to='site_branding/navigation/',
+        blank=True,
+        null=True,
+        verbose_name=_("Navigation Banner Image"),
+        help_text=_("Optional compact image displayed immediately before the shopping cart."),
+    )
+    navigation_banner_link = models.URLField(
+        max_length=255,
+        blank=True,
+        verbose_name=_("Navigation Banner Link"),
+        help_text=_("Destination URL when the navigation banner is clicked."),
+    )
     primary_color = models.CharField(max_length=7, default="#ffc107", verbose_name=_("Primary Color"))
     dark_color = models.CharField(max_length=7, default="#212529", verbose_name=_("Dark Color"))
     light_color = models.CharField(max_length=7, default="#f8f9fa", verbose_name=_("Light Color"))
@@ -183,6 +196,11 @@ class SiteTemplate(TranslatableModel):
     slogan_font_size = models.PositiveIntegerField(default=28, verbose_name=_("Slogan Font Size"))
     logo_height = models.PositiveIntegerField(default=50, verbose_name=_("Logo Height"))
     banner_max_height = models.PositiveIntegerField(default=50, verbose_name=_("Banner Max Height"))
+    navigation_banner_height = models.PositiveIntegerField(
+        default=36,
+        verbose_name=_("Navigation Banner Height"),
+        help_text=_("Displayed height in pixels for the compact banner beside the shopping cart."),
+    )
     border_radius = models.PositiveIntegerField(default=4, verbose_name=_("Border Radius"))
     layout_max_width = models.PositiveIntegerField(default=1440, verbose_name=_("Layout Max Width"))
     layout_horizontal_padding = models.PositiveIntegerField(default=16, verbose_name=_("Layout Horizontal Padding"))
@@ -241,6 +259,10 @@ class SiteTemplate(TranslatableModel):
     @property
     def top_bar_banner_image_url(self):
         return self._safe_file_url("top_bar_banner_image")
+
+    @property
+    def navigation_banner_image_url(self):
+        return self._safe_file_url("navigation_banner_image")
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

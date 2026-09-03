@@ -517,7 +517,20 @@ if ENVIRONMENT == 'production':
     MEDIA_URL = config('MEDIA_URL', default='/media/')
     MEDIA_ROOT = config('MEDIA_ROOT')
 else:
-    MEDIA_URL = config('MEDIA_URL', default='/media/')
+    # Local projects can reuse the publicly uploaded media from testing / the
+    # live site. This avoids copying the media directory just to work on code.
+    # Keep it opt-in: when testing a new upload locally, disable the flag so
+    # the browser uses the local MEDIA_ROOT again.
+    USE_REMOTE_MEDIA_IN_DEVELOPMENT = config(
+        'USAR_MEDIA_REMOTA_EN_DESARROLLO', default=False, cast=config_bool
+    )
+    REMOTE_MEDIA_BASE_URL = config(
+        'MEDIA_REMOTA_BASE_URL', default='https://tvtente.com'
+    ).strip().rstrip('/')
+    if USE_REMOTE_MEDIA_IN_DEVELOPMENT:
+        MEDIA_URL = f'{REMOTE_MEDIA_BASE_URL}/media/'
+    else:
+        MEDIA_URL = config('MEDIA_URL', default='/media/')
     MEDIA_ROOT = config('MEDIA_ROOT', default=str(BASE_DIR / 'media'))
 
 # Security defaults per environment (DirectAdmin/Passenger friendly).

@@ -450,6 +450,22 @@ The workflow uses:
 
 This keeps CI independent from the production DirectAdmin/Passenger runtime.
 
+### Reuse remote media while working locally
+
+Uploaded images live in `media/` and are not normally copied by Git. To make a
+local development or testing instance display the images already uploaded to
+the public site, add the following to its local `.env`:
+
+```env
+USAR_MEDIA_REMOTA_EN_DESARROLLO=yes
+MEDIA_REMOTA_BASE_URL=https://tvtente.com
+```
+
+This makes Django generate media URLs beginning with
+`https://tvtente.com/media/`; static assets continue to use the local
+`/static/` configuration. Disable the first variable when you need to test a
+new local upload before it has been sent to the server.
+
 ### Passenger WSGI
 
 `passenger_wsgi.py` must load Django, not the plain diagnostic `It works` app.

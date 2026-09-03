@@ -1705,6 +1705,29 @@ nav[aria-label="breadcrumb"] + * {
   flex-shrink: 0;
 }
 
+.navbar-promo-banner {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  height: var(--navbar-banner-height, 36px);
+  max-width: calc(var(--navbar-banner-height, 36px) * 2);
+  overflow: hidden;
+  background: transparent;
+}
+
+.navbar-promo-banner img {
+  display: block;
+  max-width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.navbar-promo-banner:hover,
+.navbar-promo-banner:focus {
+  opacity: 0.82;
+}
+
 .topbar-language-switcher .btn {
   --bs-btn-padding-y: 0.16rem;
   --bs-btn-padding-x: 0.45rem;

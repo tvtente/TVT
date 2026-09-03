@@ -15,6 +15,28 @@ _LANGUAGE_LABELS = {
 class Source(TranslatableModel):
     """A primary document or publication that can be cited by any content."""
 
+    # These columns were part of the original single-language source table.
+    # They remain in production databases while the public/editorial values
+    # live in parler translations. Keeping internal aliases lets new Source
+    # rows satisfy the legacy NOT NULL columns without exposing two sets of
+    # fields in the CMS.
+    legacy_title = models.CharField(
+        max_length=500,
+        db_column="title",
+        editable=False,
+        default="",
+    )
+    legacy_bibliographic_reference = models.TextField(
+        db_column="bibliographic_reference",
+        editable=False,
+        default="",
+    )
+    legacy_summary = models.TextField(
+        db_column="summary",
+        editable=False,
+        default="",
+    )
+
     class SourceType(models.TextChoices):
         LAW = "law", _("Law or regulation")
         DIRECTIVE = "directive", _("Directive or international regulation")
@@ -69,6 +91,21 @@ class Source(TranslatableModel):
 
     def __str__(self):
         return self.safe_translation_getter("title", any_language=True) or str(_("Untitled source"))
+
+    def save(self, *args, **kwargs):
+        """Mirror the initial translation into legacy database columns.
+
+        The aliases are a compatibility layer only. Editors still manage the
+        translated fields declared above, while older database schemas keep
+        receiving the non-null values they require on insertion.
+        """
+        if self._state.adding:
+            self.legacy_title = self.safe_translation_getter("title", any_language=True) or ""
+            self.legacy_bibliographic_reference = (
+                self.safe_translation_getter("bibliographic_reference", any_language=True) or ""
+            )
+            self.legacy_summary = self.safe_translation_getter("summary", any_language=True) or ""
+        super().save(*args, **kwargs)
 
     @property
     def display_title(self):

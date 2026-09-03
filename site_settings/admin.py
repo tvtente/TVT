@@ -51,6 +51,8 @@ SITE_TEMPLATE_HELP_TEXTS = {
     "site_slogan": _("Short phrase shown beside or near the logo, depending on the active header layout."),
     "top_bar_banner_image": _("Optional image displayed in the top bar. Use it for a slim banner, not for large hero images."),
     "top_bar_banner_link": _("Destination URL when the top bar banner is clicked. Leave blank if the banner should not link anywhere."),
+    "navigation_banner_image": _("Compact image displayed immediately before the shopping cart in the main navigation."),
+    "navigation_banner_link": _("Destination URL when the navigation banner is clicked. Leave blank to show it without a link."),
     "footer_copyright_text": _("Text shown in the footer. Use {year} to insert the current year automatically."),
     "primary_color": _("Main accent color. Used by buttons, highlights, separators, and theme accents."),
     "dark_color": _("Dark theme color. Used by dark header areas, strong contrast elements, and dark buttons."),
@@ -66,6 +68,7 @@ SITE_TEMPLATE_HELP_TEXTS = {
     "slogan_font_size": _("Slogan text size in pixels. Increase only if the slogan has enough horizontal space."),
     "logo_height": _("Displayed logo height in pixels in the top/header area. Example: 40 keeps the logo compact."),
     "banner_max_height": _("Maximum banner image height in pixels in the top bar. Keeps banners from pushing the layout down."),
+    "navigation_banner_height": _("Displayed height in pixels for the compact banner immediately before the shopping cart."),
     "border_radius": _("Corner rounding in pixels for buttons, cards, images, and panels that follow the theme."),
     "layout_max_width": _("Maximum page width in pixels. Larger values make content spread more on wide screens."),
     "layout_horizontal_padding": _("Horizontal padding in pixels around the main layout. Helps content breathe on small screens."),
@@ -171,6 +174,12 @@ class SiteTemplateAdmin(TranslatableAdmin):
                 "Images and short text used in the top area of the site. Logo, favicon, and banner are independent files."
             ),
             "fields": ("site_logo", "favicon", "site_slogan", "top_bar_banner_image", "top_bar_banner_link")
+        }),
+        (_("Navigation banner"), {
+            "description": _(
+                "A compact optional image placed immediately before the shopping cart in the main navigation."
+            ),
+            "fields": ("navigation_banner_image", "navigation_banner_link", "navigation_banner_height")
         }),
         (_("Footer"), {
             "description": _(

@@ -3,15 +3,13 @@
 {% load static %}
 {% load menu_tags %}
 {% load avatar_tags %}
+{% load settings_tags %}
+
+{% get_active_site_template as site_template %}
 
 <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-
-            <!-- Site Brand/Logo -->
-            <a class="navbar-brand tavata-navbar-brand-icon" href="{% url 'home' %}" aria-label="{% trans 'Home' %}">
-                🐝
-            </a>
 
             <!-- Mobile Navigation Toggle Button -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="{% translate 'Toggle navigation' %}">
@@ -28,6 +26,18 @@
 
                 <!-- Right Side: Search + User/Auth -->
                 <div class="d-flex align-items-center gap-2 navbar-right-actions">
+                        {% if site_template.navigation_banner_image_url %}
+                            {% if site_template.navigation_banner_link %}
+                                <a class="navbar-promo-banner" href="{{ site_template.navigation_banner_link }}" style="--navbar-banner-height: {{ site_template.navigation_banner_height }}px;">
+                                    <img src="{{ site_template.navigation_banner_image_url }}" alt="{% translate 'Workplace risk prevention' %}">
+                                </a>
+                            {% else %}
+                                <span class="navbar-promo-banner" style="--navbar-banner-height: {{ site_template.navigation_banner_height }}px;">
+                                    <img src="{{ site_template.navigation_banner_image_url }}" alt="{% translate 'Workplace risk prevention' %}">
+                                </span>
+                            {% endif %}
+                        {% endif %}
+
                         <a
                             class="btn btn-warning btn-sm d-inline-flex align-items-center justify-content-center"
                             href="{% url 'cart_detail' %}"
