@@ -4,6 +4,10 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/tvtentec/tvt
+    # A previous incomplete deployment left this un-applied migration in the
+    # active application directory. cp -R merges directories, so remove this
+    # exact obsolete code file before copying the tracked migration set.
+    - /bin/rm -f $DEPLOYPATH/gallery/migrations/0004_alter_image_image.py
     - /bin/cp manage.py passenger.py passenger_wsgi.py pyproject.toml requirements.txt $DEPLOYPATH
     - /bin/cp FILEZILLA_UPLOAD.md PERMISSIONS.md README.md create_superuser.py $DEPLOYPATH
     - /bin/cp -R accounts ai_engine books categories comments contact core docs fans gallery locale menus notebooks pages posts publications scripts search shop site_settings social static tags templates testimonials tvt widgets $DEPLOYPATH
