@@ -1,5 +1,6 @@
 import logging
 
+from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
@@ -344,6 +345,13 @@ class Profile(TranslatableModel):
         avatar_name = (self.avatar.name or '').strip() if self.avatar else ''
         if avatar_name and avatar_name not in default_paths:
             try:
+                # With a remote MEDIA_URL, this local process intentionally
+                # does not own a copy of uploaded files. Returning the field
+                # URL lets the browser load the public/testing media directly.
+                media_url = str(getattr(settings, "MEDIA_URL", ""))
+                if media_url.startswith(("https://", "http://")):
+                    return self.avatar.url
+
                 storage = self.avatar.storage
                 if storage.exists(avatar_name):
                     return self.avatar.url

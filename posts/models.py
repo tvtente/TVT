@@ -1,5 +1,8 @@
+from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from parler.models import TranslatableModel, TranslatedFields
 from django.urls import reverse
@@ -89,6 +92,12 @@ class Post(TranslatableModel):
             verbose_name=_("Featured image (library)"),
             help_text=_("Optional gallery row for the featured image; overrides the upload below when set."),
         ),
+        featured_image_alt=models.CharField(
+            max_length=250,
+            blank=True,
+            verbose_name=_("Featured image alternative text"),
+            help_text=_("Describe the image. If empty, the post title is used."),
+        ),
         social_image_asset=models.ForeignKey(
             "gallery.Image",
             null=True,
@@ -98,6 +107,12 @@ class Post(TranslatableModel):
             verbose_name=_("Social image (library)"),
             help_text=_("Optional gallery row for the square social image; overrides the upload below when set."),
         ),
+        social_image_alt=models.CharField(
+            max_length=250,
+            blank=True,
+            verbose_name=_("Social image alternative text"),
+            help_text=_("Describe the image. If empty, the post title is used."),
+        ),
         mobile_image_asset=models.ForeignKey(
             "gallery.Image",
             null=True,
@@ -106,6 +121,12 @@ class Post(TranslatableModel):
             related_name="+",
             verbose_name=_("Mobile image (library)"),
             help_text=_("Optional gallery row for a vertical 9:16 image used in mobile-first widgets."),
+        ),
+        mobile_image_alt=models.CharField(
+            max_length=250,
+            blank=True,
+            verbose_name=_("Mobile image alternative text"),
+            help_text=_("Describe the image. If empty, the post title is used."),
         ),
     )
 
@@ -197,6 +218,16 @@ class Post(TranslatableModel):
         )
         return self._file_from_gallery_asset(asset)
 
+    def _image_alt(self, field_name, language_code=None):
+        return (
+            self.safe_translation_getter(field_name, language_code=language_code, any_language=False)
+            or self.safe_translation_getter("title", language_code=language_code, any_language=True)
+            or ""
+        )
+
+    def get_featured_image_alt(self, language_code=None):
+        return self._image_alt("featured_image_alt", language_code)
+
     def get_social_image(self, language_code=None):
         asset = self.safe_translation_getter(
             "social_image_asset",
@@ -208,6 +239,9 @@ class Post(TranslatableModel):
             return from_asset
         return self.get_featured_image(language_code=language_code)
 
+    def get_social_image_alt(self, language_code=None):
+        return self._image_alt("social_image_alt", language_code)
+
     def get_mobile_image(self, language_code=None):
         asset = self.safe_translation_getter(
             "mobile_image_asset",
@@ -218,6 +252,9 @@ class Post(TranslatableModel):
         if from_asset:
             return from_asset
         return self.get_featured_image(language_code=language_code)
+
+    def get_mobile_image_alt(self, language_code=None):
+        return self._image_alt("mobile_image_alt", language_code)
 
     def has_dedicated_square_image(self, language_code=None):
         """True when a dedicated square social asset exists."""
@@ -257,6 +294,126 @@ class Post(TranslatableModel):
                 'day': self.published_date.day,
                 'slug': slug,
             })
+
+
+class PostContentBlock(models.Model):
+    """An ordered visual section of a post, or a reference to another post."""
+
+    class BlockType(models.TextChoices):
+        CONTENT = "content", _("Content with image")
+        RELATED_POST = "related_post", _("Reference to another post")
+
+    post = models.ForeignKey(
+        Post,
+        on_delete=models.CASCADE,
+        related_name="content_blocks",
+        verbose_name=_("Post"),
+    )
+    language = models.CharField(
+        max_length=10,
+        choices=settings.LANGUAGES,
+        default="es",
+        verbose_name=_("Content language"),
+    )
+    order = models.PositiveSmallIntegerField(default=1, verbose_name=_("Display order"))
+    block_type = models.CharField(
+        max_length=20,
+        choices=BlockType.choices,
+        default=BlockType.CONTENT,
+        verbose_name=_("Block type"),
+    )
+    anchor = models.SlugField(
+        max_length=120,
+        blank=True,
+        verbose_name=_("Section anchor"),
+        help_text=_("Optional URL fragment for linking directly to this section."),
+    )
+    heading = models.CharField(max_length=250, blank=True, verbose_name=_("Section title"))
+    content = models.TextField(blank=True, verbose_name=_("Section content"))
+    image_asset = models.ForeignKey(
+        "gallery.Image",
+        null=True,
+        blank=True,
+        on_delete=models.PROTECT,
+        related_name="post_content_blocks",
+        verbose_name=_("16:9 image from media library"),
+    )
+    image_alt = models.CharField(
+        max_length=250,
+        blank=True,
+        verbose_name=_("Image alternative text"),
+        help_text=_("Describe the image. If empty, the section title or post title is used."),
+    )
+    related_post = models.ForeignKey(
+        Post,
+        null=True,
+        blank=True,
+        on_delete=models.PROTECT,
+        related_name="referenced_by_content_blocks",
+        verbose_name=_("Referenced post"),
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ("language", "order", "pk")
+        verbose_name = _("Post content block")
+        verbose_name_plural = _("Post content blocks")
+
+    def __str__(self):
+        return self.heading or f"{self.post} · {self.order}"
+
+    def clean(self):
+        super().clean()
+        if self.heading and not self.anchor:
+            self.anchor = slugify(self.heading)
+        errors = {}
+        if self.block_type == self.BlockType.CONTENT:
+            if not self.content.strip():
+                errors["content"] = _("A content block needs text.")
+            if not self.image_asset_id and not getattr(self, "_has_staged_image", False):
+                errors["image_asset"] = _("A content block needs a 16:9 image.")
+            if self.related_post_id:
+                errors["related_post"] = _("Content blocks cannot also reference another post.")
+        elif self.block_type == self.BlockType.RELATED_POST:
+            if not self.related_post_id:
+                errors["related_post"] = _("Select the post to reference.")
+            elif self.related_post_id == self.post_id:
+                errors["related_post"] = _("A post cannot reference itself.")
+            if self.image_asset_id:
+                errors["image_asset"] = _("Referenced posts use their own featured image.")
+        if errors:
+            raise ValidationError(errors)
+
+    def save(self, *args, **kwargs):
+        # Programmatic and direct-model saves get the same sensible default
+        # as the Admin form. Editors may always replace it before saving.
+        if self.heading and not self.anchor:
+            self.anchor = slugify(self.heading)
+        super().save(*args, **kwargs)
+
+    @property
+    def image_url(self):
+        if not self.image_asset:
+            return ""
+        return self.image_asset.get_image_url()
+
+    @property
+    def image_alt_or_default(self):
+        return self.image_alt or self.heading or self.post.safe_translation_getter("title", any_language=True) or ""
+
+    @property
+    def is_renderable(self):
+        """Keep incomplete records (including direct DB imports) off public pages."""
+        if self.block_type == self.BlockType.CONTENT:
+            return bool(self.content.strip() and self.image_url)
+        if self.block_type == self.BlockType.RELATED_POST:
+            return bool(self.related_post_id)
+        return False
+
+    @property
+    def anchor_or_default(self):
+        return self.anchor or f"post-block-{self.pk}"
 
 
 class PostDailyMetric(models.Model):

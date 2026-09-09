@@ -71,6 +71,7 @@ class Image(models.Model):
         upload_to=gallery_image_upload_to,
         blank=True,
         null=True,
+        max_length=255,
         verbose_name=_("Image"),
     )
 

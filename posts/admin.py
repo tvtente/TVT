@@ -16,6 +16,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.utils.html import format_html, format_html_join
+from django.utils.safestring import mark_safe
 
 from django_summernote.admin import SummernoteModelAdmin
 from django_summernote.utils import get_config
@@ -25,12 +26,17 @@ from parler.forms import TranslatableModelForm
 from gallery.finalization import FinalizationError
 from gallery.models import StagedUpload
 from . import gallery_bridge
-from .models import Post, PostDailyMetric, PostFavorite, PostPointAllocation
+from .models import Post, PostContentBlock, PostDailyMetric, PostFavorite, PostPointAllocation
 from comments.models import Comment
 from tags.models import Tag, TaggedPost
 from sources.models import Citation, Source
 
 logger = logging.getLogger(__name__)
+
+
+def _admin_gallery_preview_url(asset):
+    """Use the canonical public media URL for saved library assets."""
+    return asset.get_image_url() if asset else ""
 
 
 @admin.register(PostPointAllocation)
@@ -121,6 +127,125 @@ class CitationInline(GenericTabularInline):
     fields = ("source", "language", "order", "locator", "note")
     verbose_name = _("Citation")
     verbose_name_plural = _("Citations and sources")
+
+
+class ContentBlockImagePickerWidget(forms.HiddenInput):
+    """The standard media-library picker, scoped to an inline content block."""
+
+    # The foreign-key value itself is hidden, but the containing Admin field
+    # must remain visible so editors can use the picker controls below it.
+    is_hidden = False
+
+    def render(self, name, value, attrs=None, renderer=None):
+        # Django passes per-render attributes separately from the widget
+        # attributes configured by the inline form.  Merge both so existing
+        # assets retain their initial preview after reopening the editor.
+        attrs = {**self.attrs, **(attrs or {})}
+        input_html = super().render(name, value, attrs=attrs, renderer=renderer)
+        prefix = name.rsplit("-", 1)[0]
+        staging_name = f"{prefix}-image_staging_id"
+        anchor_name = f"{prefix}-anchor"
+        initial_url = attrs.get("data-initial-url", "")
+        initial_caption = attrs.get("data-initial-caption", "")
+        picker_html = format_html(
+            '<input type="hidden" name="{}" value="" autocomplete="off">'
+            '<div class="gallery-picker-anchor" data-gallery-picker-root '
+            'data-stage-url="{}" data-images-url="{}" '
+            'data-upload-aspect="16_9" '
+            'data-staging-name="{}" data-fk-name="{}" '
+            'data-upload-name-field-name="{}" '
+            'data-initial-url="{}" data-initial-caption="{}"></div>',
+            staging_name,
+            reverse("gallery_media:stage"),
+            reverse("gallery_media:image_list"),
+            staging_name,
+            name,
+            anchor_name,
+            initial_url,
+            initial_caption,
+        )
+        return mark_safe(f"{input_html}{picker_html}")
+
+
+class PostContentBlockInlineForm(forms.ModelForm):
+    """Give every visual section the same WYSIWYG editor as the main post."""
+
+    image_staging_id = forms.UUIDField(required=False, widget=forms.HiddenInput())
+
+    class Meta:
+        model = PostContentBlock
+        fields = "__all__"
+        widgets = {
+            "content": (SummernoteWidget if get_config()["iframe"] else SummernoteInplaceWidget)(),
+            "image_asset": ContentBlockImagePickerWidget(),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        asset = getattr(self.instance, "image_asset", None)
+        if asset:
+            self.fields["image_asset"].widget.attrs.update({
+                "data-initial-url": _admin_gallery_preview_url(asset),
+                "data-initial-caption": f"{asset.title} ({asset.slug})",
+            })
+
+    def _post_clean(self):
+        self.instance._has_staged_image = bool(self.data.get(self.add_prefix("image_staging_id")))
+        try:
+            super()._post_clean()
+        finally:
+            self.instance._has_staged_image = False
+
+    def clean(self):
+        cleaned_data = super().clean()
+        staging_id = cleaned_data.get("image_staging_id")
+        if staging_id and not StagedUpload.objects.filter(pk=staging_id).exists():
+            self.add_error("image_staging_id", _("The staged upload expired or was already removed. Upload again."))
+        return cleaned_data
+
+
+class PostContentBlockInline(admin.StackedInline):
+    """Ordered visual sections and searchable references within a post."""
+
+    model = PostContentBlock
+    form = PostContentBlockInlineForm
+    fk_name = "post"
+    # Keep one empty row visible, so editors immediately see where to build
+    # the next visual section without having to find Django's add-row link.
+    extra = 1
+    autocomplete_fields = ("related_post",)
+    fields = ("order", "block_type", "heading", "anchor", "content", "image_asset", "image_alt", "related_post")
+    verbose_name = _("Content block")
+    verbose_name_plural = _("Post content blocks")
+
+    def formfield_for_dbfield(self, db_field, request, **kwargs):
+        # Avoid Django's related-object wrapper (its pencil/plus icons).  This
+        # field is managed exclusively through the same visual media picker as
+        # featured, social and mobile images.
+        if db_field.name == "image_asset":
+            return db_field.formfield(widget=ContentBlockImagePickerWidget(), required=False)
+        return super().formfield_for_dbfield(db_field, request, **kwargs)
+
+    def get_formset(self, request, obj=None, **kwargs):
+        formset = super().get_formset(request, obj, **kwargs)
+        current_language = _post_admin_language(request, obj)
+
+        class LanguageFilteredBlockFormSet(formset):
+            def __init__(self, *args, **formset_kwargs):
+                super().__init__(*args, **formset_kwargs)
+                self.queryset = self.queryset.filter(language=current_language)
+                for form in self.forms:
+                    form.instance.language = current_language
+
+            def save_new(self, form, commit=True):
+                form.instance.language = current_language
+                return super().save_new(form, commit=commit)
+
+            def save_existing(self, form, instance, commit=True):
+                instance.language = current_language
+                return super().save_existing(form, instance, commit=commit)
+
+        return LanguageFilteredBlockFormSet
 
 
 class PostSourcesForm(TranslatableModelForm):
@@ -335,14 +460,7 @@ class PostAdmin(TranslatableAdmin, SummernoteModelAdmin):
         f = getattr(asset, "image", None)
         if not f or not getattr(f, "name", ""):
             return "", ""
-        try:
-            url = f.url
-        except (OSError, ValueError, NotImplementedError):
-            logger.warning(
-                _("Failed to resolve the media asset preview URL in the admin."),
-                exc_info=True,
-            )
-            url = ""
+        url = _admin_gallery_preview_url(asset)
         caption = "{} ({})".format(getattr(asset, "title", "") or getattr(asset, "slug", ""), getattr(asset, "slug", ""))
         return url, caption
 
@@ -422,7 +540,7 @@ class PostAdmin(TranslatableAdmin, SummernoteModelAdmin):
     filter_horizontal = ('categories',)
 
     # 🧩 Inline form for managing tag relations
-    inlines = [TaggedPostInline]
+    inlines = [PostContentBlockInline, TaggedPostInline]
 
     def _sync_selected_sources(self, request, obj, form):
         if "sources" not in form.cleaned_data:
@@ -720,6 +838,11 @@ class PostAdmin(TranslatableAdmin, SummernoteModelAdmin):
     def save_formset(self, request, form, formset, change):
         instances = formset.save(commit=False)
         language_codes = [language_code for language_code, _ in settings.LANGUAGES]
+        block_forms_by_instance = {
+            id(inline_form.instance): inline_form
+            for inline_form in formset.forms
+            if isinstance(inline_form.instance, PostContentBlock)
+        }
 
         for deleted_object in formset.deleted_objects:
             if isinstance(deleted_object, TaggedPost):
@@ -739,6 +862,35 @@ class PostAdmin(TranslatableAdmin, SummernoteModelAdmin):
                         language=language_code,
                         defaults={'relevance_score': instance.relevance_score},
                     )
+            elif isinstance(instance, PostContentBlock):
+                inline_form = block_forms_by_instance.get(id(instance))
+                staging_id = (
+                    inline_form.cleaned_data.get("image_staging_id")
+                    if inline_form and getattr(inline_form, "cleaned_data", None)
+                    else None
+                )
+                if staging_id and instance.block_type == PostContentBlock.BlockType.CONTENT:
+                    anchor = instance.anchor or "post-section"
+                    post_slug = instance.post.safe_translation_getter(
+                        "slug",
+                        language_code=instance.language,
+                        any_language=True,
+                    ) or "post"
+                    try:
+                        instance.image_asset = gallery_bridge.create_gallery_image_from_staged_upload(
+                            title=instance.heading or anchor,
+                            description="",
+                            language=instance.language,
+                            slug_input=f"{post_slug}-{anchor}-169-{timezone.now():%y%m%d%H%M%S}",
+                            staging_uuid=staging_id,
+                        )
+                    except StagedUpload.DoesNotExist:
+                        raise ValidationError(
+                            _("The staged upload expired or was already removed. Upload again."),
+                        ) from None
+                    except FinalizationError as exc:
+                        raise ValidationError(str(exc)) from exc
+                instance.save()
             else:
                 instance.save()
 
@@ -749,9 +901,13 @@ class PostAdmin(TranslatableAdmin, SummernoteModelAdmin):
             "all": (
                 "gallery/admin/media_library_picker.css",
                 "posts/admin/post_sources.css",
+                "posts/admin/post_content_blocks.css",
             )
         }
-        js = ("gallery/admin/media_library_picker.js",)
+        js = (
+            "gallery/admin/media_library_picker.js",
+            "posts/admin/post_content_blocks.js",
+        )
 
 @admin.register(PostDailyMetric)
 class PostDailyMetricAdmin(admin.ModelAdmin):

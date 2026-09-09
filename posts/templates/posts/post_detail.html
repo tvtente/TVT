@@ -452,7 +452,7 @@
   {% with featured_image=post.get_featured_image %}
   {% if featured_image %}
     <img src="{{ featured_image.url }}"
-         alt="{{ post.title }}"
+         alt="{{ post.get_featured_image_alt }}"
          class="post-featured-image zoomable img-fluid rounded mb-4 shadow">
   {% endif %}
   {% endwith %}
@@ -470,7 +470,7 @@
     {% if post.has_dedicated_square_image %}
       <div class="d-flex flex-column flex-sm-row align-items-center align-items-sm-start gap-3 mb-3">
         <img src="{{ post.get_social_image.url }}"
-             alt="{{ post.title }}"
+             alt="{{ post.get_social_image_alt }}"
              class="post-summary-social-image post-social-image zoomable rounded shadow-sm flex-shrink-0"
              loading="lazy">
         <p class="lead mb-0">{{ post.summary }}</p>
@@ -508,10 +508,42 @@
 
   <hr class="my-4">
 
-  {# Content #}
-  <div class="post-content fs-5">
-    {{ post.content|add_zoom_class_to_images|safe }}
-  </div>
+  {# Existing editorial content is always preserved. Visual blocks extend it. #}
+  {% if post.content %}
+    <div class="post-content fs-5">
+      {{ post.content|add_zoom_class_to_images|safe }}
+    </div>
+  {% endif %}
+
+  {% if content_blocks %}
+    <div class="post-content-blocks">
+      {% for block in content_blocks %}
+        {% if block.is_renderable and block.block_type == 'content' %}
+          <section id="{{ block.anchor_or_default }}" class="post-content-block">
+            {% if block.image_url %}
+              <figure class="post-content-block-figure">
+                <img src="{{ block.image_url }}" alt="{{ block.image_alt_or_default }}" class="zoomable img-fluid rounded shadow-sm" loading="lazy">
+              </figure>
+            {% endif %}
+            {% if block.heading %}<h2>{{ block.heading }}</h2>{% endif %}
+            <div class="post-content fs-5">{{ block.content|add_zoom_class_to_images|safe }}</div>
+          </section>
+        {% elif block.is_renderable and block.related_post %}
+          <article id="{{ block.anchor_or_default }}" class="post-related-block">
+            {% with related_image=block.related_post.get_featured_image %}
+              {% if related_image %}<img src="{{ related_image.url }}" alt="{{ block.related_post.get_featured_image_alt }}" class="post-related-block-image" loading="lazy">{% endif %}
+            {% endwith %}
+            <div>
+              {% if block.heading %}<h2>{{ block.heading }}</h2>{% endif %}
+              <h3><a href="{{ block.related_post.get_absolute_url }}">{{ block.related_post.title }}</a></h3>
+              {% if block.related_post.summary %}<p>{{ block.related_post.summary }}</p>{% endif %}
+              <a class="btn btn-outline-primary btn-sm" href="{{ block.related_post.get_absolute_url }}">{% trans "Read post" %}</a>
+            </div>
+          </article>
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% endif %}
 
   {% if citations %}
     <section class="prl-sources post-sources" aria-labelledby="post-sources-title">

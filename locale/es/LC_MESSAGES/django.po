@@ -3509,7 +3509,7 @@ msgstr "Necesitas iniciar sesión para dejar un comentario."
 
 #: posts/services.py:44
 msgid "You cannot assign points to your own post."
-msgstr ""
+msgstr "No puedes asignar puntos a tu propia publicación."
 
 #: posts/services.py:47
 msgid "Only published posts can receive points."

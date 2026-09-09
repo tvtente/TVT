@@ -10,9 +10,31 @@ from django.utils.text import slugify
 from gallery.models import Image
 
 
+ASSET_SLUG_MAX_LENGTH = Image._meta.get_field("slug").max_length
+
+
 def normalize_slug_base(value: str) -> str:
     base = slugify((value or "").strip())
     return base or "image"
+
+
+def compact_asset_slug(value: str, max_length: int) -> str:
+    """Fit a technical image slug while retaining its meaningful beginning and end.
+
+    Post URLs may deliberately be descriptive, while the media-library slug is
+    limited to 100 characters. Keeping both ends preserves the post context at
+    the beginning and image marker/timestamp at the end (for example ``169``).
+    """
+    if len(value) <= max_length:
+        return value
+    if max_length < 3:
+        return value[:max_length]
+
+    start_length = (max_length - 1) // 2
+    end_length = max_length - start_length - 1
+    start = value[:start_length].rstrip("-")
+    end = value[-end_length:].lstrip("-")
+    return f"{start}-{end}"[:max_length].strip("-") or "image"
 
 
 def allocate_unique_asset_slug(base_slug: str, extension: str) -> tuple[str, str]:
@@ -27,7 +49,11 @@ def allocate_unique_asset_slug(base_slug: str, extension: str) -> tuple[str, str
     root = normalize_slug_base(base_slug)
     counter: int | None = None
     while True:
-        slug_attempt = root if counter is None else f"{root}-{counter}"
+        suffix = "" if counter is None else f"-{counter}"
+        slug_attempt = compact_asset_slug(
+            root,
+            ASSET_SLUG_MAX_LENGTH - len(suffix),
+        ) + suffix
         relative_path = f"gallery/{slug_attempt}{ext}"
         slug_taken = Image.objects.filter(slug=slug_attempt).exists()
         path_taken = default_storage.exists(relative_path)

@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Permission
 from django.templatetags.static import static
-from django.test import TestCase
+from django.test import TestCase, override_settings
 
 from comments.models import Comment
 from .models import (
@@ -481,6 +481,18 @@ class UserAvatarUrlTests(TestCase):
         self.assertEqual(
             get_user_avatar_url(user_like),
             static("images/avatars/default_private.png"),
+        )
+
+    @override_settings(MEDIA_URL="https://tvtente.com/media/")
+    def test_profile_uses_remote_avatar_url_without_local_file(self):
+        user = User.objects.create_user(username="remote-avatar", password="testpass123")
+        profile = user.profile
+        profile.avatar.name = "avatars/remote-avatar.png"
+        profile.use_default_avatar = False
+
+        self.assertEqual(
+            profile.get_avatar_url(),
+            "https://tvtente.com/media/avatars/remote-avatar.png",
         )
 
 

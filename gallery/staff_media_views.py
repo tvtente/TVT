@@ -3,14 +3,18 @@
 from __future__ import annotations
 
 import logging
+import mimetypes
 
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
-from django.http import JsonResponse
+from django.http import FileResponse, Http404, JsonResponse
 from django.shortcuts import get_object_or_404
+from django.urls import reverse
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.http import require_http_methods
+from PIL import Image as PillowImage
+from PIL import ImageOps, UnidentifiedImageError
 
 from gallery.models import Image, StagedUpload
 
@@ -29,6 +33,36 @@ ALLOWED_IMAGE_CONTENT_TYPES = frozenset(
 )
 MAX_UPLOAD_BYTES = 15 * 1024 * 1024
 PAGE_SIZE = 24
+UPLOAD_ASPECT_RATIOS = {
+    "16_9": 16 / 9,
+    "1_1": 1,
+    "9_16": 9 / 16,
+}
+ASPECT_RATIO_TOLERANCE = 0.015
+
+
+def _matches_requested_aspect(upload, aspect_name: str) -> bool:
+    """Return whether a raster upload matches one of the picker aspect ratios."""
+    expected_ratio = UPLOAD_ASPECT_RATIOS.get(aspect_name)
+    if expected_ratio is None:
+        return True
+
+    try:
+        upload.seek(0)
+        with PillowImage.open(upload) as image:
+            image = ImageOps.exif_transpose(image)
+            width, height = image.size
+    except (AttributeError, OSError, UnidentifiedImageError, ValueError):
+        return False
+    finally:
+        try:
+            upload.seek(0)
+        except (AttributeError, OSError):
+            pass
+
+    if not width or not height:
+        return False
+    return abs((width / height) - expected_ratio) <= ASPECT_RATIO_TOLERANCE
 
 
 def _image_payload(request, image: Image) -> dict:
@@ -59,6 +93,12 @@ def stage_upload_view(request):
     if upload.size > MAX_UPLOAD_BYTES:
         return JsonResponse({"error": "file_too_large"}, status=400)
 
+    requested_aspect = (request.POST.get("required_aspect") or "").strip()
+    if requested_aspect and requested_aspect not in UPLOAD_ASPECT_RATIOS:
+        return JsonResponse({"error": "invalid_aspect_request"}, status=400)
+    if requested_aspect and not _matches_requested_aspect(upload, requested_aspect):
+        return JsonResponse({"error": "invalid_aspect"}, status=400)
+
     convert_to_webp = (request.POST.get("convert_to_webp", "true") or "").lower() not in {
         "0",
         "false",
@@ -80,13 +120,50 @@ def stage_upload_view(request):
         logger.exception("Gallery staging could not write the uploaded image.")
         return JsonResponse({"error": "storage_error"}, status=500)
 
-    url = request.build_absolute_uri(staged.file.url) if staged.file else ""
+    # A staged file can be stored locally while development uses the remote
+    # production MEDIA_URL.  Serve its preview through this staff-only endpoint
+    # instead of returning ``staged.file.url`` (which may point to another host).
+    url = request.build_absolute_uri(reverse("gallery_media:stage_preview", args=[staged.pk]))
     return JsonResponse(
         {
             "id": str(staged.pk),
             "url": url,
         },
     )
+
+
+@staff_member_required
+@require_http_methods(["GET"])
+def stage_preview_view(request, pk):
+    """Return a temporary staged image preview to the authenticated editor."""
+    staged = get_object_or_404(StagedUpload, pk=pk)
+    if not staged.file or not getattr(staged.file, "name", ""):
+        raise Http404("Staged image not found.")
+    try:
+        image_file = staged.file.open("rb")
+    except OSError as exc:
+        raise Http404("Staged image not found.") from exc
+    content_type = mimetypes.guess_type(staged.file.name)[0] or "application/octet-stream"
+    response = FileResponse(image_file, content_type=content_type)
+    response["Cache-Control"] = "private, no-store"
+    return response
+
+
+@staff_member_required
+@require_http_methods(["GET"])
+def image_preview_view(request, pk):
+    """Return a library image preview from the current server to an editor."""
+    image = get_object_or_404(Image, pk=pk)
+    if not image.image or not getattr(image.image, "name", ""):
+        raise Http404("Library image not found.")
+    try:
+        image_file = image.image.open("rb")
+    except OSError as exc:
+        raise Http404("Library image not found.") from exc
+    content_type = mimetypes.guess_type(image.image.name)[0] or "application/octet-stream"
+    response = FileResponse(image_file, content_type=content_type)
+    response["Cache-Control"] = "private, no-store"
+    return response
 
 
 @csrf_protect

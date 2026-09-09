@@ -33,7 +33,7 @@
           {% with featured_image=post.get_featured_image %}
           {% if featured_image %}
             <a href="{{ post.get_absolute_url }}">
-              <img src="{{ featured_image.url }}" class="card-img-top" loading="lazy" alt="{{ post.title }}">
+              <img src="{{ featured_image.url }}" class="card-img-top" loading="lazy" alt="{{ post.get_featured_image_alt }}">
             </a>
           {% endif %}
           {% endwith %}

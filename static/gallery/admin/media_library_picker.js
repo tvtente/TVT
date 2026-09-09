@@ -46,8 +46,14 @@
 
   function postImageUploadName(scope, file) {
     const aspect = (scope.root.dataset.uploadAspect || "").trim();
-    const slugField = resolveField(scope.form, "slug");
-    const slug = slugField && slugField.value ? slugField.value.trim() : "";
+    const configuredName = (scope.root.dataset.uploadNameFieldName || "").trim();
+    const nameField = configuredName
+      ? resolveField(scope.form, configuredName)
+      : resolveField(scope.form, "slug");
+    const nameStem = nameField && nameField.value ? nameField.value.trim() : "";
+    const postSlugField = configuredName ? resolveField(scope.form, "slug") : null;
+    const postSlug = postSlugField && postSlugField.value ? postSlugField.value.trim() : "";
+    const slug = configuredName && postSlug ? postSlug + "-" + nameStem : nameStem;
     if (!aspect || !slug) {
       return "";
     }
@@ -70,6 +76,12 @@
     if (errorCode === "invalid_image") {
       return "The selected file is not a valid image. Try exporting or resaving it before uploading.";
     }
+    if (errorCode === "invalid_aspect") {
+      return "This image does not have the required proportions. Choose a 16:9 image for this field.";
+    }
+    if (errorCode === "invalid_aspect_request") {
+      return "The required image proportion is not configured correctly.";
+    }
     if (errorCode === "storage_error") {
       return "The server could not save the image. Check the media/gallery/_staging folder permissions.";
     }
@@ -84,7 +96,9 @@
   }
 
   function initGalleryPickerEcosystem() {
-    const roots = document.querySelectorAll("[data-gallery-picker-root]");
+    const roots = Array.from(document.querySelectorAll("[data-gallery-picker-root]")).filter(
+      function (root) { return !root.closest(".empty-form"); }
+    );
     if (!roots.length) {
       return;
     }
@@ -324,7 +338,10 @@
       }
     });
 
-    roots.forEach(function (root) {
+    function initializePickerRoot(root) {
+      if (!root || root.dataset.galleryPickerInitialized === "true") {
+        return;
+      }
       const form = root.closest("form");
       if (!form) {
         return;
@@ -343,6 +360,7 @@
       if (!stagingInput || (!fkInput && !sourceInput)) {
         return;
       }
+      root.dataset.galleryPickerInitialized = "true";
 
       const anchor = root.parentElement || root;
 
@@ -418,6 +436,10 @@
         const fd = new FormData();
         fd.append("file", uploadSafeFile(f, postImageUploadName(scope, f)));
         fd.append("convert_to_webp", convertWebp && convertWebp.checked ? "true" : "false");
+        const requiredAspect = (scope.root.dataset.uploadAspect || "").trim();
+        if (requiredAspect) {
+          fd.append("required_aspect", requiredAspect);
+        }
         fetch(stageUrl, {
           method: "POST",
           body: fd,
@@ -462,7 +484,10 @@
             fileHidden.value = "";
           });
       });
-    });
+    }
+
+    window.initializeGalleryMediaPickerRoot = initializePickerRoot;
+    roots.forEach(initializePickerRoot);
   }
 
   if (document.readyState === "loading") {

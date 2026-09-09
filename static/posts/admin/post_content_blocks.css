@@ -1,0 +1,76 @@
+/* Focus mode for the long Post editor in Django admin. */
+.post-editor-sidebar-toggle {
+  align-items: center;
+  background: var(--button-bg, #417690);
+  border: 0;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 18%);
+  color: var(--button-fg, #fff);
+  cursor: pointer;
+  display: inline-flex;
+  font-weight: 600;
+  gap: 0.4rem;
+  margin: 0 0 1rem;
+  padding: 0.55rem 0.8rem;
+}
+
+.post-editor-sidebar-toggle:hover {
+  background: var(--button-hover-bg, #205067);
+}
+
+body.post-editor-sidebar-collapsed #nav-sidebar {
+  display: none;
+}
+
+body.post-editor-sidebar-collapsed #main {
+  margin-left: 0;
+}
+
+@media (min-width: 1024px) {
+  body.post-editor-sidebar-collapsed #content {
+    max-width: none;
+  }
+}
+
+/* Summernote's default iframe is 720px wide.  In the admin that width is
+   added to the label column, causing the editor scrollbar to sit off-screen. */
+#post_form .form-row.field-content .summernote-div,
+#post_form .form-row.field-content .summernote-div iframe {
+  box-sizing: border-box;
+  max-width: 100% !important;
+  width: min(720px, calc(100vw - 280px)) !important;
+}
+
+/* The iframe owns the text scrollbar.  The wrapper must never create a
+   second scrollbar around it, but it must not clip the iframe's own one. */
+#post_form .form-row.field-content .summernote-div {
+  overflow-x: hidden !important;
+  overflow-y: visible !important;
+}
+
+#post_form .form-row.field-content .summernote-div iframe {
+  display: block;
+  max-width: none !important;
+  min-height: 20rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+  resize: both;
+}
+
+@media (max-width: 900px) {
+  #post_form .form-row.field-content .flex-container {
+    display: block;
+  }
+
+  #post_form .form-row.field-content label {
+    display: block;
+    float: none;
+    padding: 0 0 0.4rem;
+    width: auto;
+  }
+
+  #post_form .form-row.field-content .summernote-div,
+  #post_form .form-row.field-content .summernote-div iframe {
+    width: calc(100vw - 3rem) !important;
+  }
+}

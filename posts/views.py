@@ -17,7 +17,7 @@ from django.utils.translation import gettext_lazy as _, gettext, get_language, o
 from parler.utils.context import switch_language
 
 from core.pagination import get_site_config_int, paginate_queryset
-from .models import Post, PostDailyMetric
+from .models import Post, PostContentBlock, PostDailyMetric
 from .forms import PostPointAllocationForm
 from .selectors import (
     POST_LIST_TYPES,
@@ -537,6 +537,15 @@ def post_detail_view(request, year, month, day, slug):
         .prefetch_related("source__translations")
         .order_by("order", "pk")
     )
+    content_blocks_queryset = (
+        PostContentBlock.objects.filter(post=post, language=language)
+        .select_related("image_asset", "related_post", "related_post__author")
+        .prefetch_related("related_post__translations")
+        .order_by("order", "pk")
+    )
+    # A direct import may leave a row incomplete.  Public pages only receive
+    # self-contained blocks so they never expose an orphaned mini-post.
+    content_blocks = [block for block in content_blocks_queryset if block.is_renderable]
     point_form = (
         PostPointAllocationForm(
             initial={"points": points_summary.current_post_points},
@@ -565,6 +574,7 @@ def post_detail_view(request, year, month, day, slug):
             "post_points_max_per_post": max_points_per_post,
             "author_profile": author_profile,
             "citations": citations,
+            "content_blocks": content_blocks,
             "can_follow_author": request.user.is_authenticated and request.user != post.author,
             "is_following_author": author_profile.is_followed_by(request.user) if author_profile else False,
             "is_favorited_post": is_post_favorited_by_user(request.user, post),

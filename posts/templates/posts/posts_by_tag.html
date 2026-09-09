@@ -34,7 +34,7 @@
               <img src="{{ featured_image.url }}"
                    class="card-img-top"
                    loading="lazy"
-                   alt="{{ post.title }}"
+                   alt="{{ post.get_featured_image_alt }}"
                    style="height: 180px; object-fit: cover;">
             </a>
           {% endif %}
@@ -68,7 +68,7 @@
                   {% with featured_image=fallback_post.get_featured_image %}
                   {% if featured_image %}
                     <a href="{{ fallback_post.get_absolute_url }}">
-                      <img src="{{ featured_image.url }}" class="card-img-top" loading="lazy" alt="{{ fallback_post.title }}">
+                      <img src="{{ featured_image.url }}" class="card-img-top" loading="lazy" alt="{{ fallback_post.get_featured_image_alt }}">
                     </a>
                   {% endif %}
                   {% endwith %}

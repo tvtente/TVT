@@ -1728,6 +1728,43 @@ nav[aria-label="breadcrumb"] + * {
   opacity: 0.82;
 }
 
+.post-content-block {
+  margin: 2.5rem 0;
+}
+
+.post-content-block-figure {
+  margin: 0 0 1.25rem;
+}
+
+.post-content-block-figure img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.post-related-block {
+  display: grid;
+  grid-template-columns: minmax(11rem, 20rem) minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: center;
+  margin: 2.5rem 0;
+  padding: 1rem;
+  border: 1px solid var(--tavata-card-box-border);
+  border-radius: var(--tavata-border-radius);
+  background: var(--tavata-card-box-bg);
+}
+
+.post-related-block-image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: calc(var(--tavata-border-radius) * 0.8);
+}
+
+@media (max-width: 575.98px) {
+  .post-related-block { grid-template-columns: 1fr; }
+}
+
 .topbar-language-switcher .btn {
   --bs-btn-padding-y: 0.16rem;
   --bs-btn-padding-x: 0.45rem;
