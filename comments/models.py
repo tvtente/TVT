@@ -14,20 +14,6 @@ User = get_user_model()
 logger = logging.getLogger(__name__)
 
 
-# Accounts created solely to seed the demonstration discussion on the PRL post.
-DEMO_COMMENTER_USERNAMES = frozenset(
-    {
-        "tecnico-prl",
-        "trabajador",
-        "responsable-empresa",
-        "responsable-mantenimiento",
-        "tecnico-calidad",
-        "desarrollador-sistema",
-        "especialista-proteccion-datos",
-    }
-)
-
-
 class CommentTranslation(models.Model):
     class Source(models.TextChoices):
         HUMAN = "human", _("Human")
@@ -237,8 +223,13 @@ class Comment(MPTTModel):
 
     @property
     def is_demo_profile(self):
-        """Whether this comment belongs to one of the seeded demo identities."""
-        return bool(self.user_id and self.user and self.user.username in DEMO_COMMENTER_USERNAMES)
+        """Whether this comment belongs to an editorial demo identity."""
+        if not self.user_id or not self.user:
+            return False
+        try:
+            return self.user.profile.is_demo_commenter
+        except ObjectDoesNotExist:
+            return False
 
     # 🈯️ Translation metadata
     translated_content = models.TextField(blank=True, null=True, verbose_name=_("Translated Content"))

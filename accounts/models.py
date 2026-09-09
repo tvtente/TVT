@@ -16,20 +16,6 @@ from django.utils import timezone
 logger = logging.getLogger(__name__)
 
 
-# Internal commenter personas use a role icon until an avatar or a gendered
-# default is explicitly chosen.  Keeping this mapping by username avoids
-# turning an editorial role into a new personal-data field.
-ROLE_AVATAR_BY_USERNAME = {
-    "tecnico-prl": "images/avatars/role-prl.svg",
-    "trabajador": "images/avatars/role-worker.svg",
-    "responsable-empresa": "images/avatars/role-management.svg",
-    "responsable-mantenimiento": "images/avatars/role-maintenance.svg",
-    "tecnico-calidad": "images/avatars/role-quality.svg",
-    "desarrollador-sistema": "images/avatars/role-development.svg",
-    "especialista-proteccion-datos": "images/avatars/role-privacy.svg",
-}
-
-
 class ProfileCatalogBase(TranslatableModel):
     slug = models.SlugField(
         max_length=140,
@@ -312,6 +298,23 @@ class Profile(TranslatableModel):
         verbose_name=_("Is a Trusted Commenter?"),
         help_text=_("If checked, comments are automatically approved.")
     )
+    is_demo_commenter = models.BooleanField(
+        default=False,
+        verbose_name=_("Is a demo commenter?"),
+        help_text=_(
+            "Marks an editorial demonstration identity. It cannot sign in, "
+            "but can receive points and participate in comment threads."
+        ),
+    )
+    role_avatar_path = models.CharField(
+        max_length=255,
+        blank=True,
+        verbose_name=_("Role avatar path"),
+        help_text=_(
+            "Optional static asset path for a role avatar, for example "
+            "images/avatars/role-prl.svg."
+        ),
+    )
     is_listed_publicly = models.BooleanField(
         default=False, # consider False for new registrations.
                        # We will make this configurable in the signup process.
@@ -336,10 +339,10 @@ class Profile(TranslatableModel):
 
         # Default avatar mode has priority over any uploaded file.
         if self.use_default_avatar:
-            if chosen_default == self.AvatarChoice.PRIVATE:
-                role_avatar = ROLE_AVATAR_BY_USERNAME.get(self.user.username)
-                if role_avatar:
-                    return static(role_avatar)
+            if self.role_avatar_path:
+                if self.role_avatar_path.startswith(("https://", "http://")):
+                    return self.role_avatar_path
+                return static(self.role_avatar_path)
             return static(chosen_default)
 
         avatar_name = (self.avatar.name or '').strip() if self.avatar else ''
@@ -360,6 +363,16 @@ class Profile(TranslatableModel):
 
         # Fallback to static default if uploaded file is missing/broken.
         return static(chosen_default)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if self.is_demo_commenter and self.user_id:
+            # Demo identities are genuine users so that they can own points and
+            # comments, but they must never become interactive login accounts.
+            User.objects.filter(pk=self.user_id).update(
+                is_active=False,
+                password="!demo-commenter-no-login",
+            )
         
     def __str__(self):
         return f"{self.user.username}'s Profile"

@@ -425,6 +425,17 @@ class PostAdmin(TranslatableAdmin, SummernoteModelAdmin):
                 continue
             out.append(name)
 
+        # Keep every alternative-text field immediately after its media
+        # selector, especially the mobile variant at the end of the editor.
+        for picker_name, alt_name in (
+            ("featured_image_picker", "featured_image_alt"),
+            ("social_image_picker", "social_image_alt"),
+            ("mobile_image_picker", "mobile_image_alt"),
+        ):
+            if picker_name in out and alt_name in out:
+                out.remove(alt_name)
+                out.insert(out.index(picker_name) + 1, alt_name)
+
         return out
 
     def get_readonly_fields(self, request, obj=None):

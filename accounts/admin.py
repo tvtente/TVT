@@ -47,10 +47,21 @@ class ProfileInline(TranslatableStackedInline):
             ),
         }),
         (_("Profile"), {
-            "fields": ("bio", "location", "is_listed_publicly", "is_trusted_commenter"),
+            "fields": (
+                "bio",
+                "location",
+                "is_listed_publicly",
+                "is_trusted_commenter",
+                "is_demo_commenter",
+            ),
         }),
         (_("Avatar"), {
-            "fields": ("avatar", "default_avatar_choice", "use_default_avatar"),
+            "fields": (
+                "avatar",
+                "default_avatar_choice",
+                "use_default_avatar",
+                "role_avatar_path",
+            ),
         }),
     )
 
@@ -150,6 +161,7 @@ class ProfileAdmin(TranslatableAdmin):
         "is_contributor",
         "is_listed_publicly",
         "is_trusted_commenter",
+        "is_demo_commenter",
     )
     search_fields = (
         "user__username",
@@ -180,10 +192,19 @@ class ProfileAdmin(TranslatableAdmin):
             "fields": ("bio", "location"),
         }),
         (_("Avatar"), {
-            "fields": ("avatar", "default_avatar_choice", "use_default_avatar"),
+            "fields": (
+                "avatar",
+                "default_avatar_choice",
+                "use_default_avatar",
+                "role_avatar_path",
+            ),
         }),
         (_("Moderation / Visibility"), {
-            "fields": ("is_trusted_commenter", "is_listed_publicly"),
+            "fields": (
+                "is_trusted_commenter",
+                "is_demo_commenter",
+                "is_listed_publicly",
+            ),
         }),
     )
 
