@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Profesional autónomo">
+  <circle cx="64" cy="64" r="60" fill="#e6f3f2"/>
+  <circle cx="64" cy="45" r="19" fill="#c98f68"/>
+  <path d="M39 39c4-16 14-24 25-24s21 8 25 24H39Z" fill="#0b5d6b"/>
+  <path d="M25 102c6-23 21-35 39-35s33 12 39 35v8H25Z" fill="#137a8b"/>
+  <rect x="46" y="72" width="36" height="29" rx="4" fill="#fff" stroke="#0b5d6b" stroke-width="4"/>
+  <path d="M55 80h18M55 88h13" stroke="#0b5d6b" stroke-width="4" stroke-linecap="round"/>
+  <path d="M77 73v-4a13 13 0 0 0-26 0v4" fill="none" stroke="#0b5d6b" stroke-width="4"/>
+</svg>

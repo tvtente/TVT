@@ -452,7 +452,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
 # Idioma por defecto
-LANGUAGE_CODE = config('LANGUAGE_CODE', default='en')
+LANGUAGE_CODE = config('LANGUAGE_CODE', default='es')
 
 # Lista de idiomas disponibles
 LANGUAGES = [
