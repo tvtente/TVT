@@ -171,6 +171,14 @@ class Post(TranslatableModel):
         verbose_name=_("Migrated"),
         help_text=_("Internal admin flag used to avoid exporting or importing this post more than once.")
     )
+    short_code = models.SlugField(
+        max_length=32,
+        unique=True,
+        null=True,
+        blank=True,
+        editable=False,
+        verbose_name=_("Short link code"),
+    )
 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created At"))
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated At"))
@@ -200,6 +208,30 @@ class Post(TranslatableModel):
 
     def __str__(self):
         return str(self.safe_translation_getter("title", any_language=True) or _("(No title)"))
+
+    def save(self, *args, **kwargs):
+        """Assign a stable, non-editable short code once the post has an ID."""
+        super().save(*args, **kwargs)
+        if self.short_code:
+            return
+
+        short_code = f"p-{self.pk}"
+        type(self).objects.filter(pk=self.pk).filter(
+            models.Q(short_code__isnull=True) | models.Q(short_code="")
+        ).update(short_code=short_code)
+        self.short_code = short_code
+
+    def get_short_path(self):
+        if not self.short_code:
+            return ""
+        return reverse("short_post_redirect", kwargs={"short_code": self.short_code})
+
+    def get_short_url(self):
+        short_path = self.get_short_path()
+        if not short_path:
+            return ""
+        base_url = str(getattr(settings, "PUBLIC_SITE_URL", "https://tvtente.com")).rstrip("/")
+        return f"{base_url}{short_path}"
 
     @staticmethod
     def _file_from_gallery_asset(asset):

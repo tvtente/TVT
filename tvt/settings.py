@@ -98,6 +98,7 @@ def config_csv(value):
 ADMIN_NAME = config('ADMIN_NAME', default='Tavata')
 ADMIN_EMAIL = config('ADMIN_EMAIL', default='tavata.art@outlook.com')
 ADMINS = [(ADMIN_NAME, ADMIN_EMAIL)]
+PUBLIC_SITE_URL = config('PUBLIC_SITE_URL', default='https://tvtente.com').rstrip('/')
 GOOGLE_CLIENT_ID = config('GOOGLE_CLIENT_ID', default='').strip()
 GOOGLE_CLIENT_SECRET = config('GOOGLE_CLIENT_SECRET', default='').strip()
 GOOGLE_AUTH_ENABLED = bool(GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET)

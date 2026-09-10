@@ -56,6 +56,19 @@ def _is_ajax_request(request):
     return request.headers.get("X-Requested-With") == "XMLHttpRequest"
 
 
+def short_post_redirect_view(request, short_code):
+    """Resolve a public short link without exposing draft or archived posts."""
+    post = get_object_or_404(
+        Post,
+        short_code=short_code,
+        status="published",
+    )
+    slug = post.safe_translation_getter("slug", language_code="es", any_language=False)
+    if not slug:
+        raise Http404(gettext("Post not found."))
+    return redirect(post.get_absolute_url_for_language("es"))
+
+
 def post_list_view(request, list_type=None):
     """
     📚 Lists published posts with pagination and optional dynamic ordering.

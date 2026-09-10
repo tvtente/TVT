@@ -9,6 +9,7 @@ from django.contrib.staticfiles.views import serve as staticfiles_serve
 from django.views.static import serve as media_serve
 from django.views.generic import RedirectView
 from core import views as core_views
+from posts import views as post_views
 
 
 # ==============================================================================
@@ -23,6 +24,8 @@ urlpatterns = [
     # Webhooks must not be prefixed with a language code: Meta calls this URL
     # exactly as configured in the App Dashboard.
     path('webhooks/', include('social.urls')),
+    # Short links deliberately stay outside i18n_patterns: /r/p-13/ is stable.
+    path('r/<slug:short_code>/', post_views.short_post_redirect_view, name='short_post_redirect'),
     path('gallery-api/', include(('gallery.staff_urls', 'gallery_media'), namespace='gallery_media')),
     # 1. Third-party app URLs (like summernote)
     path('summernote/', include('django_summernote.urls')),

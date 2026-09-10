@@ -436,6 +436,13 @@ class PostAdmin(TranslatableAdmin, SummernoteModelAdmin):
                 out.remove(alt_name)
                 out.insert(out.index(picker_name) + 1, alt_name)
 
+        # The generated short URL is intentionally visible even on the add
+        # form. Before the first save there is no primary key, so it simply
+        # explains when the permanent link will become available.
+        if "short_url_admin" not in out:
+            insert_at = out.index("slug") + 1 if "slug" in out else 0
+            out.insert(insert_at, "short_url_admin")
+
         return out
 
     def get_readonly_fields(self, request, obj=None):
@@ -449,6 +456,7 @@ class PostAdmin(TranslatableAdmin, SummernoteModelAdmin):
             "featured_image_picker",
             "social_image_picker",
             "mobile_image_picker",
+            "short_url_admin",
         ):
             if name not in readonly:
                 readonly.append(name)
@@ -461,6 +469,22 @@ class PostAdmin(TranslatableAdmin, SummernoteModelAdmin):
                 readonly.append("author")
 
         return readonly
+
+    @admin.display(description=_("Short URL"))
+    def short_url_admin(self, obj):
+        if not obj or not obj.pk or not obj.short_code:
+            return _("It will be generated automatically when this post is saved for the first time.")
+        return format_html(
+            '<div class="d-flex align-items-center gap-2">'
+            '<input type="text" value="{}" readonly aria-label="{}" '
+            'style="width:min(100%, 460px); font-family:monospace;">'
+            '<button type="button" class="button" '
+            'onclick="if(navigator.clipboard){{navigator.clipboard.writeText(this.previousElementSibling.value)}}">{}</button>'
+            '</div>',
+            obj.get_short_url(),
+            _("Short URL"),
+            _("Copy"),
+        )
 
     def _picker_initial_attrs(self, obj, field_name):
         if not obj or not getattr(obj, "pk", None):
