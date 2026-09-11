@@ -64,6 +64,7 @@ class BookAdmin(TranslatableAdmin):
         "translations__meta_title",
         "translations__meta_description",
         "isbn",
+        "external_authors",
     )
     filter_horizontal = (
         "authors",
@@ -107,11 +108,13 @@ class BookAdmin(TranslatableAdmin):
         }),
         (_("Relations"), {
             "fields": (
+                "author_mode",
+                "external_authors",
                 "authors",
                 "categories",
             ),
             "description": _(
-                "Selectable authors are limited to active users with a professional profile or contributor/researcher flags."
+                "Choose internal authors for TVTente user accounts, or external authors for published works by third parties."
             ),
         }),
         (_("Media & Files"), {
@@ -121,6 +124,8 @@ class BookAdmin(TranslatableAdmin):
                 "mobile_image_picker",
                 "preview_pdf",
                 "full_pdf",
+                "official_source_url",
+                "direct_pdf_url",
             ),
         }),
         (_("System Info"), {
@@ -152,12 +157,7 @@ class BookAdmin(TranslatableAdmin):
 
     @admin.display(description=_("Authors"))
     def get_authors(self, obj):
-        return ", ".join(
-            [
-                author.get_full_name() or author.username
-                for author in obj.authors.all()
-            ]
-        )
+        return obj.get_authors_display()
 
     @admin.display(description=_("Categories"))
     def get_categories(self, obj):

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tvt-cms 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-11 21:14+0200\n"
+"POT-Creation-Date: 2026-09-11 22:12+0200\n"
 "PO-Revision-Date: 2025-06-29 22:05+0200\n"
 "Last-Translator: Gustavo <tu_email@ejemplo.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
@@ -89,7 +89,7 @@ msgid "Institution"
 msgstr "Institución"
 
 #: accounts/admin.py:256 accounts/models.py:477 accounts/models.py:1006
-#: books/models.py:20 gallery/models.py:44 notebooks/admin.py:56
+#: books/models.py:24 gallery/models.py:44 notebooks/admin.py:56
 #: notebooks/models.py:23 pages/admin.py:118 pages/models.py:21
 #: posts/models.py:58 publications/models.py:28 sources/admin.py:37
 #: sources/models.py:57
@@ -180,7 +180,7 @@ msgstr ""
 msgid "Expiration date cannot be earlier than issue date."
 msgstr "La fecha de vencimiento no puede ser anterior a la fecha de emisión."
 
-#: accounts/models.py:23 books/models.py:25 categories/admin.py:141
+#: accounts/models.py:23 books/models.py:29 categories/admin.py:141
 #: categories/models.py:24 gallery/models.py:48 menus/models.py:32
 #: notebooks/models.py:24 posts/models.py:63 publications/models.py:34
 #: tags/models.py:22
@@ -211,7 +211,7 @@ msgstr "Actualizado el"
 #: accounts/models.py:140 accounts/models.py:151 accounts/models.py:162
 #: accounts/models.py:173 accounts/models.py:589 accounts/models.py:773
 #: accounts/models.py:864 accounts/models.py:905 accounts/models.py:1015
-#: books/models.py:34 books/templates/books/book_detail.html:216
+#: books/models.py:38 books/templates/books/book_detail.html:237
 #: categories/models.py:28
 msgid "Description"
 msgstr "Descripción"
@@ -479,7 +479,7 @@ msgstr "Seguidor"
 msgid "Followed user"
 msgstr "Usuario seguido"
 
-#: accounts/models.py:422 books/models.py:149 comments/models.py:77
+#: accounts/models.py:422 books/models.py:174 comments/models.py:77
 #: comments/models.py:221 posts/models.py:183 posts/models.py:495
 #: posts/models.py:530 publications/models.py:205 shop/models.py:67
 msgid "Created At"
@@ -1646,47 +1646,45 @@ msgstr "Publicación no disponible en este idioma"
 msgid "The PDF could not be generated at this time."
 msgstr "The PDF could not be generated at this time."
 
-#: books/admin.py:80 publications/admin.py:121
+#: books/admin.py:81 publications/admin.py:121
 msgid "Main Information"
 msgstr "Información principal"
 
-#: books/admin.py:87
+#: books/admin.py:88
 msgid "Editorial Content"
 msgstr "Contenido editorial"
 
-#: books/admin.py:96
+#: books/admin.py:97
 msgid "Commercial Metadata"
 msgstr "Metadatos comerciales"
 
-#: books/admin.py:108 publications/admin.py:157
+#: books/admin.py:109 publications/admin.py:157
 msgid "Relations"
 msgstr "Relaciones"
 
-#: books/admin.py:114
+#: books/admin.py:117
 msgid ""
-"Selectable authors are limited to active users with a professional profile "
-"or contributor/researcher flags."
+"Choose internal authors for TVTente user accounts, or external authors for "
+"published works by third parties."
 msgstr ""
-"Los autores seleccionables se limitan a usuarios activos con perfil "
-"profesional o con las marcas de colaborador o investigador."
 
-#: books/admin.py:117 publications/admin.py:166
+#: books/admin.py:120 publications/admin.py:166
 msgid "Media & Files"
 msgstr "Medios y archivos"
 
-#: books/admin.py:126 publications/admin.py:174
+#: books/admin.py:131 publications/admin.py:174
 msgid "System Info"
 msgstr "Información del sistema"
 
-#: books/admin.py:153 books/models.py:100
+#: books/admin.py:158 books/models.py:105
 #: books/templates/books/book_detail.html:79 publications/admin.py:199
 #: publications/models.py:168
 #: publications/templates/publications/publication_detail.html:51
 msgid "Authors"
 msgstr "Autor"
 
-#: books/admin.py:162 books/models.py:106
-#: books/templates/books/book_detail.html:105 categories/models.py:66
+#: books/admin.py:162 books/models.py:122
+#: books/templates/books/book_detail.html:119 categories/models.py:66
 #: categories/views.py:41 notebooks/models.py:82 pages/admin.py:274
 #: pages/models.py:44 pages/templates/pages/page_detail.html:561
 #: posts/admin.py:717 posts/models.py:200
@@ -1727,116 +1725,144 @@ msgstr "Selección de imagen de la biblioteca multimedia no válida."
 msgid "The staged upload expired or was already removed. Upload again."
 msgstr "La carga temporal caducó o ya fue eliminada. Vuelve a subirla."
 
-#: books/models.py:30
+#: books/models.py:18
+msgid "Internal authors"
+msgstr "Autores internos"
+
+#: books/models.py:19 books/models.py:115
+msgid "External authors"
+msgstr "Autores externos"
+
+#: books/models.py:34
 msgid "Subtitle"
 msgstr "Título"
 
-#: books/models.py:38 books/templates/books/book_detail.html:118
+#: books/models.py:42 books/templates/books/book_detail.html:139
 msgid "Excerpt"
 msgstr "Excerpt"
 
-#: books/models.py:42 books/templates/books/book_detail.html:225
+#: books/models.py:46 books/templates/books/book_detail.html:246
 msgid "Table of contents"
 msgstr "Contenido"
 
-#: books/models.py:48 notebooks/models.py:48 posts/models.py:78
+#: books/models.py:52 notebooks/models.py:48 posts/models.py:78
 #: publications/models.py:127
 msgid "Meta Title"
 msgstr "Meta Título"
 
-#: books/models.py:54 notebooks/models.py:54 posts/models.py:84
+#: books/models.py:58 notebooks/models.py:54 posts/models.py:84
 #: publications/models.py:133
 msgid "Meta Description"
 msgstr "Meta Descripción"
 
-#: books/models.py:62
+#: books/models.py:66
 msgid "Cover image (library)"
 msgstr "Imagen Destacada"
 
-#: books/models.py:63
+#: books/models.py:67
 msgid "Primary book cover from Media Library."
 msgstr "Primary book cover from Media Library."
 
-#: books/models.py:71 posts/models.py:107 publications/models.py:150
+#: books/models.py:75 posts/models.py:107 publications/models.py:150
 msgid "Social image (library)"
 msgstr "Imagen social (biblioteca)"
 
-#: books/models.py:72
+#: books/models.py:76
 msgid "Square or social-preview image from Media Library."
 msgstr "Square or social-preview image from Media Library."
 
-#: books/models.py:80 posts/models.py:122 publications/models.py:159
+#: books/models.py:84 posts/models.py:122 publications/models.py:159
 #, fuzzy
 #| msgid "Social image (library)"
 msgid "Mobile image (library)"
 msgstr "Imagen social (biblioteca)"
 
-#: books/models.py:81
+#: books/models.py:85
 msgid "Vertical 9:16 image optimized for mobile layouts."
 msgstr ""
 
-#: books/models.py:87
+#: books/models.py:91
 msgid "Preview PDF"
 msgstr "PDF de vista previa"
 
-#: books/models.py:93 publications/models.py:190
+#: books/models.py:97 publications/models.py:190
 msgid "Full PDF"
 msgstr "PDF completo"
 
-#: books/models.py:111 books/templates/books/book_detail.html:91
+#: books/models.py:111
+msgid "Author type"
+msgstr "Tipo de autoría"
+
+#: books/models.py:116
+msgid "Use this field when the book was not written by TVTente users."
+msgstr ""
+
+#: books/models.py:127 books/templates/books/book_detail.html:91
 msgid "ISBN"
 msgstr "ISBN"
 
-#: books/models.py:115 publications/models.py:196
+#: books/models.py:131 publications/models.py:196
 msgid "Publication Date"
 msgstr "Fecha de Creación"
 
-#: books/models.py:119 publications/models.py:200
+#: books/models.py:135 publications/models.py:200
 msgid "Is Published?"
 msgstr "Publicado"
 
-#: books/models.py:126 books/templates/books/book_detail.html:98
+#: books/models.py:142 books/templates/books/book_detail.html:98
 msgid "Price"
 msgstr "Price"
 
-#: books/models.py:131 shop/models.py:51
+#: books/models.py:147 shop/models.py:51
 msgid "Currency"
 msgstr "Currency"
 
-#: books/models.py:135
+#: books/models.py:151
+msgid "Official source URL"
+msgstr "URL de la fuente oficial"
+
+#: books/models.py:155
+msgid "Direct PDF URL"
+msgstr "URL directa del PDF"
+
+#: books/models.py:156
+msgid "Optional direct URL to the original PDF when it exists."
+msgstr ""
+
+#: books/models.py:160
 msgid "Allow Free Preview"
 msgstr "Permitir vista previa gratuita"
 
-#: books/models.py:139
+#: books/models.py:164
 msgid "Requires Purchase"
 msgstr "Requires Purchase"
 
-#: books/models.py:144
+#: books/models.py:169
 #, fuzzy
 #| msgid "available"
 msgid "Available from"
 msgstr "Disponible desde"
 
-#: books/models.py:145
+#: books/models.py:170
 msgid "Optional release date for the purchasable full edition."
 msgstr "Fecha opcional de lanzamiento para la edición completa vendible."
 
-#: books/models.py:153 comments/models.py:81 posts/models.py:184
+#: books/models.py:178 comments/models.py:81 posts/models.py:184
 #: posts/models.py:496 publications/models.py:209 shop/models.py:71
 msgid "Updated At"
 msgstr "Actualizado En"
 
-#: books/models.py:157 shop/models.py:96 sources/models.py:47
+#: books/models.py:182 shop/models.py:96 sources/models.py:47
 msgid "Book"
 msgstr "Libro"
 
-#: books/models.py:158 books/templates/books/book_list.html:33
+#: books/models.py:183 books/templates/books/book_list.html:33
 #: books/views.py:166 books/views.py:176 books/views.py:177 books/views.py:207
 #: books/views.py:314 books/views.py:371
 msgid "Books"
 msgstr "Libros"
 
-#: books/models.py:163 categories/models.py:74 categories/models.py:76
+#: books/models.py:188 categories/models.py:74 categories/models.py:76
 #: categories/models.py:82 menus/admin.py:76 menus/models.py:211
 #: notebooks/models.py:109 notebooks/models.py:132 pages/models.py:110
 #: pages/models.py:184 pages/models.py:252 pages/models.py:256
@@ -1852,22 +1878,47 @@ msgstr "Volver a libros"
 msgid "Editorial book"
 msgstr "Libro editorial"
 
-#: books/templates/books/book_detail.html:146
+#: books/templates/books/book_detail.html:105
+msgid "Original source"
+msgstr "Fuente original"
+
+#: books/templates/books/book_detail.html:108
+msgid "Official page"
+msgstr "Página oficial"
+
+#: books/templates/books/book_detail.html:111
+msgid "Original PDF"
+msgstr "PDF original"
+
+#: books/templates/books/book_detail.html:130
+#| msgid "External Publication"
+msgid "External free publication"
+msgstr "Publicación externa de acceso gratuito"
+
+#: books/templates/books/book_detail.html:131
+msgid ""
+"This document was prepared by its authors for the European Agency for Safety "
+"and Health at Work (EU-OSHA). TVTente facilitates its location and download, "
+"but is not the author, editor or translator of this publication. "
+"Reproduction is authorised by the editor provided the source is acknowledged."
+msgstr "Este documento fue elaborado por sus autores para la Agencia Europea para la Seguridad y la Salud en el Trabajo (EU-OSHA). TVTente facilita su localización y descarga, pero no es autor, editor ni traductor de esta publicación. La reproducción está autorizada por el editor siempre que se reconozca la fuente."
+
+#: books/templates/books/book_detail.html:167
 #: books/templates/books/book_list.html:125
 msgid "Add to free library"
 msgstr "Añadir a mi biblioteca gratuita"
 
-#: books/templates/books/book_detail.html:146
+#: books/templates/books/book_detail.html:167
 #: books/templates/books/book_list.html:125
 msgid "Add to cart"
 msgstr "Añadir al carrito"
 
-#: books/templates/books/book_detail.html:153
+#: books/templates/books/book_detail.html:174
 #: books/templates/books/book_list.html:104
 msgid "Coming soon"
 msgstr "Próximamente disponible"
 
-#: books/templates/books/book_detail.html:156
+#: books/templates/books/book_detail.html:177
 #, fuzzy, python-format
 #| msgid ""
 #| "\n"
@@ -1883,40 +1934,40 @@ msgstr ""
 "                                Publicado el %(date)s\n"
 "                            "
 
-#: books/templates/books/book_detail.html:161
+#: books/templates/books/book_detail.html:182
 #: books/templates/books/book_list.html:110
 #, fuzzy
 #| msgid "available"
 msgid "Available soon."
 msgstr "Próximamente disponible."
 
-#: books/templates/books/book_detail.html:169
+#: books/templates/books/book_detail.html:190
 msgid "View preview edition"
 msgstr "Ver edición de vista previa"
 
-#: books/templates/books/book_detail.html:176
+#: books/templates/books/book_detail.html:197
 msgid "View full edition"
 msgstr "Ver edición completa"
 
-#: books/templates/books/book_detail.html:180
+#: books/templates/books/book_detail.html:201
 msgid "Download full edition"
 msgstr "Descargar edición completa"
 
-#: books/templates/books/book_detail.html:184
+#: books/templates/books/book_detail.html:205
 msgid "Full edition available with free access"
 msgstr "Edición completa disponible con acceso gratuito"
 
-#: books/templates/books/book_detail.html:184
+#: books/templates/books/book_detail.html:205
 msgid "Full edition available after purchase"
 msgstr "Edición completa disponible tras la compra"
 
-#: books/templates/books/book_detail.html:185
+#: books/templates/books/book_detail.html:206
 msgid ""
 "Add the book to the cart and confirm access with your account. No payment is "
 "required."
 msgstr ""
 
-#: books/templates/books/book_detail.html:185
+#: books/templates/books/book_detail.html:206
 msgid ""
 "The complete digital document is only enabled for users with a completed "
 "purchase."
@@ -1924,20 +1975,20 @@ msgstr ""
 "El documento digital completo solo está habilitado para usuarios con una "
 "compra completada."
 
-#: books/templates/books/book_detail.html:192
+#: books/templates/books/book_detail.html:213
 msgid "Preview not available in this language."
 msgstr "Vista previa no disponible en este idioma."
 
-#: books/templates/books/book_detail.html:193
+#: books/templates/books/book_detail.html:214
 msgid "This book preview is available in these language editions:"
 msgstr ""
 "La vista previa de este libro está disponible en estas ediciones idiomáticas:"
 
-#: books/templates/books/book_detail.html:204
+#: books/templates/books/book_detail.html:225
 msgid "Full document not available in this language."
 msgstr "Documento completo no disponible en este idioma."
 
-#: books/templates/books/book_detail.html:205
+#: books/templates/books/book_detail.html:226
 msgid "This book can be consulted in full in these language editions:"
 msgstr "Este libro puede consultarse completo en estas ediciones idiomáticas:"
 
@@ -3886,14 +3937,12 @@ msgstr "Fuentes consultadas"
 #: posts/templates/posts/post_detail.html:558
 #: publications/templates/publications/publication_detail.html:147
 #: sources/models.py:234
-#| msgid "Primary Color"
 msgid "Primary source"
 msgstr "Fuente principal"
 
 #: pages/templates/pages/page_detail.html:801
 #: posts/templates/posts/post_detail.html:565
 #: publications/templates/publications/publication_detail.html:154
-#| msgid "View original"
 msgid "Open original document"
 msgstr "Abrir documento original"
 
@@ -5105,20 +5154,16 @@ msgid "Order item"
 msgstr "Artículo del pedido"
 
 #: shop/templates/shop/my_orders.html:16
-#, fuzzy
-#| msgid "Review the books you want to buy before continuing to checkout."
 msgid "Review the books to which your account has access."
-msgstr "Review the books you want to buy before continuing to checkout."
+msgstr "Revisa los libros a los que tiene acceso tu cuenta."
 
 #: shop/templates/shop/my_orders.html:34
 msgid "Created"
 msgstr "Creado"
 
 #: shop/templates/shop/my_orders.html:65
-#, fuzzy
-#| msgid "View Posts"
 msgid "View access"
-msgstr "Número de vistas"
+msgstr "Ver acceso"
 
 #: shop/templates/shop/my_orders.html:74
 msgid "You have not created any orders yet."
@@ -6175,7 +6220,6 @@ msgid "Publication data"
 msgstr "Fecha de Creación"
 
 #: sources/admin.py:33
-#| msgid "Reader information"
 msgid "Reader-facing explanation"
 msgstr "Explicación para las personas lectoras"
 
@@ -6240,7 +6284,6 @@ msgid ""
 msgstr ""
 
 #: sources/models.py:68
-#| msgid "Sources consulted"
 msgid "Source description"
 msgstr "Descripción de la fuente"
 
@@ -6279,7 +6322,6 @@ msgid "Official URL"
 msgstr ""
 
 #: sources/models.py:94
-#| msgid "View document"
 msgid "Direct document URL"
 msgstr "URL directa del documento"
 
@@ -6942,6 +6984,13 @@ msgstr ""
 "                <strong>Error de widget:</strong> La plantilla para el tipo "
 "de widget \"%(widget_type)s\" no se encontró en el despachador.\n"
 "            "
+
+#~ msgid ""
+#~ "Selectable authors are limited to active users with a professional "
+#~ "profile or contributor/researcher flags."
+#~ msgstr ""
+#~ "Los autores seleccionables se limitan a usuarios activos con perfil "
+#~ "profesional o con las marcas de colaborador o investigador."
 
 #, fuzzy
 #~| msgid "Editorial book"

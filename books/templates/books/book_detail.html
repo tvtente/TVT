@@ -100,6 +100,20 @@
                     </div>
                 {% endif %}
 
+                {% if book.official_source_url or book.direct_pdf_url %}
+                    <div class="col-12">
+                        <strong class="d-block mb-2">{% translate "Original source" %}</strong>
+                        <div class="d-flex flex-wrap gap-2">
+                            {% if book.official_source_url %}
+                                <a href="{{ book.official_source_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-dark btn-sm">{% translate "Official page" %}</a>
+                            {% endif %}
+                            {% if book.direct_pdf_url %}
+                                <a href="{{ book.direct_pdf_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-dark btn-sm">{% translate "Original PDF" %}</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+
                 {% if book.categories.exists %}
                     <div class="col-12">
                         <strong class="d-block mb-2">{% translate "Categories" %}</strong>
@@ -110,6 +124,13 @@
                 {% endif %}
             </div>
         </div>
+
+        {% if book.author_mode == "external" %}
+            <aside class="alert alert-info border-0 shadow-sm mb-5" role="note">
+                <strong class="d-block mb-2">{% translate "External free publication" %}</strong>
+                {% translate "This document was prepared by its authors for the European Agency for Safety and Health at Work (EU-OSHA). TVTente facilitates its location and download, but is not the author, editor or translator of this publication. Reproduction is authorised by the editor provided the source is acknowledged." %}
+            </aside>
+        {% endif %}
 
         {% if book.excerpt %}
             <section class="mb-5">

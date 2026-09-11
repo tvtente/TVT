@@ -14,6 +14,10 @@ User = get_user_model()
 
 
 class Book(TranslatableModel):
+    class AuthorMode(models.TextChoices):
+        INTERNAL = "internal", _("Internal authors")
+        EXTERNAL = "external", _("External authors")
+
     translations = TranslatedFields(
         title=models.CharField(
             max_length=250,
@@ -96,8 +100,20 @@ class Book(TranslatableModel):
 
     authors = models.ManyToManyField(
         User,
+        blank=True,
         related_name="books",
         verbose_name=_("Authors"),
+    )
+    author_mode = models.CharField(
+        max_length=12,
+        choices=AuthorMode.choices,
+        default=AuthorMode.INTERNAL,
+        verbose_name=_("Author type"),
+    )
+    external_authors = models.TextField(
+        blank=True,
+        verbose_name=_("External authors"),
+        help_text=_("Use this field when the book was not written by TVTente users."),
     )
     categories = models.ManyToManyField(
         Category,
@@ -129,6 +145,15 @@ class Book(TranslatableModel):
         max_length=3,
         default="EUR",
         verbose_name=_("Currency"),
+    )
+    official_source_url = models.URLField(
+        blank=True,
+        verbose_name=_("Official source URL"),
+    )
+    direct_pdf_url = models.URLField(
+        blank=True,
+        verbose_name=_("Direct PDF URL"),
+        help_text=_("Optional direct URL to the original PDF when it exists."),
     )
     allow_free_preview = models.BooleanField(
         default=True,
@@ -179,6 +204,8 @@ class Book(TranslatableModel):
         )
 
     def get_authors_display(self):
+        if self.author_mode == self.AuthorMode.EXTERNAL:
+            return self.external_authors
         return ", ".join(
             [
                 author.get_full_name() or author.username
