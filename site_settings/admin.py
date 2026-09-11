@@ -1,10 +1,19 @@
+import uuid
+
 from django import forms
 from django.contrib import admin
+from django.core.exceptions import ValidationError
+from django.urls import reverse
 from django.utils.html import format_html
+from django.utils import timezone
+from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from parler.admin import TranslatableAdmin
 from solo.admin import SingletonModelAdmin
 
+from gallery.finalization import FinalizationError
+from gallery.models import Image, StagedUpload
+from gallery.staging_uploads import create_gallery_image_from_staged_upload
 from .models import SiteConfiguration, SiteTemplate
 
 
@@ -24,6 +33,8 @@ COLOR_FIELDS = {
 
 SITE_CONFIGURATION_HELP_TEXTS = {
     "blog_items_per_page": _("How many posts appear in blog and category lists before pagination is shown."),
+    "homepage_post_grid_columns": _("Desktop columns for the latest-posts grid on the homepage."),
+    "homepage_post_grid_rows": _("Rows shown on the homepage before pagination. The total is rows multiplied by columns."),
     "search_pages_per_page": _("How many page results are shown in the Pages section of search results."),
     "search_posts_per_page": _("How many post results are shown in the Posts section of search results."),
     "search_results_per_page": _("General fallback for paginated search sections. Keep it close to the page/post values."),
@@ -84,6 +95,42 @@ SITE_TEMPLATE_HELP_TEXTS = {
 }
 
 
+BRANDING_MEDIA_FIELDS = {
+    "site_logo": {
+        "asset": "site_logo_asset",
+        "staging": "site_logo_staging_id",
+        "clear": "site_logo_clear_selection",
+        "label": _("Site logo"),
+        "slug": "logo",
+        "aspect": "",
+    },
+    "favicon": {
+        "asset": "favicon_asset",
+        "staging": "favicon_staging_id",
+        "clear": "favicon_clear_selection",
+        "label": _("Favicon"),
+        "slug": "favicon",
+        "aspect": "1_1",
+    },
+    "top_bar_banner_image": {
+        "asset": "top_bar_banner_image_asset",
+        "staging": "top_bar_banner_staging_id",
+        "clear": "top_bar_banner_clear_selection",
+        "label": _("Top bar banner"),
+        "slug": "top-bar-banner",
+        "aspect": "",
+    },
+    "navigation_banner_image": {
+        "asset": "navigation_banner_image_asset",
+        "staging": "navigation_banner_staging_id",
+        "clear": "navigation_banner_clear_selection",
+        "label": _("Navigation banner"),
+        "slug": "navigation-banner",
+        "aspect": "",
+    },
+}
+
+
 @admin.register(SiteConfiguration)
 class SiteConfigurationAdmin(SingletonModelAdmin):
     fieldsets = (
@@ -93,6 +140,8 @@ class SiteConfigurationAdmin(SingletonModelAdmin):
             ),
             "fields": (
                 "blog_items_per_page",
+                "homepage_post_grid_columns",
+                "homepage_post_grid_rows",
                 "gallery_items_per_page",
                 "user_profile_items_per_page",
                 "user_directory_items_per_page",
@@ -173,13 +222,23 @@ class SiteTemplateAdmin(TranslatableAdmin):
             "description": _(
                 "Images and short text used in the top area of the site. Logo, favicon, and banner are independent files."
             ),
-            "fields": ("site_logo", "favicon", "site_slogan", "top_bar_banner_image", "top_bar_banner_link")
+            "fields": (
+                "site_logo_media_picker",
+                "favicon_media_picker",
+                "site_slogan",
+                "top_bar_banner_media_picker",
+                "top_bar_banner_link",
+            )
         }),
         (_("Navigation banner"), {
             "description": _(
                 "A compact optional image placed immediately before the shopping cart in the main navigation."
             ),
-            "fields": ("navigation_banner_image", "navigation_banner_link", "navigation_banner_height")
+            "fields": (
+                "navigation_banner_media_picker",
+                "navigation_banner_link",
+                "navigation_banner_height",
+            )
         }),
         (_("Footer"), {
             "description": _(
@@ -226,6 +285,136 @@ class SiteTemplateAdmin(TranslatableAdmin):
     def get_queryset(self, request):
         return super().get_queryset(request).prefetch_related("translations")
 
+    def get_readonly_fields(self, request, obj=None):
+        readonly = list(super().get_readonly_fields(request, obj) or [])
+        for name in (
+            "site_logo_media_picker",
+            "favicon_media_picker",
+            "top_bar_banner_media_picker",
+            "navigation_banner_media_picker",
+        ):
+            if name not in readonly:
+                readonly.append(name)
+        return readonly
+
+    def _branding_initial(self, obj, legacy_field, asset_field):
+        if not obj:
+            return "", ""
+        asset = getattr(obj, asset_field, None)
+        if asset:
+            return (
+                asset.get_image_url(),
+                "{} ({})".format(asset.title or asset.slug, asset.slug),
+            )
+        legacy = getattr(obj, legacy_field, None)
+        if legacy and getattr(legacy, "name", ""):
+            try:
+                return legacy.url, legacy.name
+            except (OSError, ValueError):
+                pass
+        return "", ""
+
+    def _branding_picker(self, obj, legacy_field):
+        config = BRANDING_MEDIA_FIELDS[legacy_field]
+        initial_url, initial_caption = self._branding_initial(
+            obj, legacy_field, config["asset"]
+        )
+        selected_id = getattr(obj, f"{config['asset']}_id", "") if obj else ""
+        return format_html(
+            '<input type="hidden" name="{}" value="" autocomplete="off">'
+            '<input type="hidden" name="{}" value="{}" autocomplete="off">'
+            '<input type="hidden" name="{}" value="" autocomplete="off">'
+            '<div class="gallery-picker-anchor" data-gallery-picker-root '
+            'data-stage-url="{}" data-images-url="{}" '
+            'data-staging-name="{}" data-fk-name="{}" data-clear-name="{}" '
+            'data-upload-aspect="{}" '
+            'data-initial-url="{}" data-initial-caption="{}"></div>',
+            config["staging"],
+            config["asset"],
+            selected_id or "",
+            config["clear"],
+            reverse("gallery_media:stage"),
+            reverse("gallery_media:image_list"),
+            config["staging"],
+            config["asset"],
+            config["clear"],
+            config["aspect"],
+            initial_url,
+            initial_caption,
+        )
+
+    @admin.display(description=_("Site logo — media library"))
+    def site_logo_media_picker(self, obj):
+        return self._branding_picker(obj, "site_logo")
+
+    @admin.display(description=_("Favicon — media library"))
+    def favicon_media_picker(self, obj):
+        return self._branding_picker(obj, "favicon")
+
+    @admin.display(description=_("Top bar banner — media library"))
+    def top_bar_banner_media_picker(self, obj):
+        return self._branding_picker(obj, "top_bar_banner_image")
+
+    @admin.display(description=_("Navigation banner — media library"))
+    def navigation_banner_media_picker(self, obj):
+        return self._branding_picker(obj, "navigation_banner_image")
+
+    @staticmethod
+    def _staging_id(request, field_name):
+        raw = (request.POST.get(field_name) or "").strip()
+        if not raw:
+            return None
+        try:
+            return uuid.UUID(raw)
+        except ValueError:
+            return None
+
+    def _finalize_branding_media(self, request, obj):
+        changed = False
+        base_slug = slugify(obj.name) or "site"
+        for legacy_field, config in BRANDING_MEDIA_FIELDS.items():
+            stage_id = self._staging_id(request, config["staging"])
+            clear_requested = request.POST.get(config["clear"]) == "1"
+            asset_id = (request.POST.get(config["asset"]) or "").strip()
+
+            if stage_id:
+                try:
+                    asset = create_gallery_image_from_staged_upload(
+                        title=f"{obj.name} · {config['label']}"[:100],
+                        description="",
+                        language="es",
+                        slug_input=(
+                            f"{base_slug}-{config['slug']}-{timezone.now():%y%m%d%H%M%S}"
+                        ),
+                        staging_uuid=stage_id,
+                    )
+                except StagedUpload.DoesNotExist:
+                    raise ValidationError(_("The staged upload expired or was already removed. Upload again.")) from None
+                except FinalizationError as exc:
+                    raise ValidationError(str(exc)) from exc
+                setattr(obj, config["asset"], asset)
+                setattr(obj, legacy_field, "")
+                changed = True
+                continue
+
+            if clear_requested:
+                setattr(obj, config["asset"], None)
+                setattr(obj, legacy_field, "")
+                changed = True
+                continue
+
+            if asset_id:
+                asset = Image.objects.filter(pk=asset_id).first()
+                if asset and getattr(obj, f"{config['asset']}_id") != asset.pk:
+                    setattr(obj, config["asset"], asset)
+                    changed = True
+        if changed:
+            obj.save()
+
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)
+        self._finalize_branding_media(request, obj)
+
     @admin.display(description=_("Site Slogan"))
     def current_site_slogan(self, obj):
         return obj.translated_site_slogan
@@ -262,3 +451,7 @@ class SiteTemplateAdmin(TranslatableAdmin):
             color,
             color,
         )
+
+    class Media:
+        css = {"all": ("gallery/admin/media_library_picker.css",)}
+        js = ("gallery/admin/media_library_picker.js",)

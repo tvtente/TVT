@@ -10,6 +10,7 @@ from books.models import Book
 
 class Order(models.Model):
     class Status(models.TextChoices):
+        FREE_ACCESS = "free_access", _("Free access granted")
         PENDING_PAYMENT = "pending_payment", _("Pending payment")
         PAYMENT_UNAVAILABLE = "payment_unavailable", _("Payment unavailable")
         PAID = "paid", _("Paid")

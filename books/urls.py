@@ -13,4 +13,5 @@ urlpatterns = [
     path("<slug:slug>/", views.book_detail_view, name="book_detail"),
     path("<slug:slug>/preview/", views.book_reader_view, name="book_reader"),
     path("<slug:slug>/document/", views.book_document_view, name="book_document"),
+    path("<slug:slug>/download/", views.book_download_view, name="book_download"),
 ]

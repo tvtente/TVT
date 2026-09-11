@@ -789,14 +789,24 @@
                         </h2>
                         <ol>
                             {% for citation in citations %}
-                                <li>
-                                    {% if citation.source.display_url %}
-                                        <a href="{{ citation.source.display_url }}" target="_blank" rel="noopener noreferrer">{{ citation.source.display_bibliographic_reference }}</a>
-                                    {% else %}
-                                        {{ citation.source.display_bibliographic_reference }}
+                                <li class="prl-source-entry">
+                                    <div class="prl-source-entry__reference">
+                                        {% if citation.is_primary %}<span class="prl-source-entry__badge">{% trans "Primary source" %}</span>{% endif %}
+                                        {% if citation.source.display_url %}
+                                            <a href="{{ citation.source.display_url }}" target="_blank" rel="noopener noreferrer">{{ citation.source.display_bibliographic_reference }}</a>
+                                        {% else %}
+                                            {{ citation.source.display_bibliographic_reference }}
+                                        {% endif %}
+                                        {% if citation.locator %}<span class="text-muted"> — {{ citation.locator }}</span>{% endif %}
+                                        {% if citation.source.document_url %}<a class="prl-source-entry__document" href="{{ citation.source.document_url }}" target="_blank" rel="noopener noreferrer">{% trans "Open original document" %}</a>{% endif %}
+                                    </div>
+                                    {% if citation.note or citation.source.display_summary %}
+                                        <details class="prl-source-entry__details">
+                                            <summary>{% trans "Context and relevance" %}</summary>
+                                            {% if citation.note %}<div>{{ citation.note|linebreaksbr }}</div>{% endif %}
+                                            {% if citation.source.display_summary %}<div class="mt-2">{{ citation.source.display_summary|linebreaksbr }}</div>{% endif %}
+                                        </details>
                                     {% endif %}
-                                    {% if citation.locator %}<span class="text-muted"> — {{ citation.locator }}</span>{% endif %}
-                                    {% if citation.note %}<div class="small text-muted mt-1">{{ citation.note }}</div>{% endif %}
                                     {% if citation.source.original_document_availability_note %}<div class="small text-muted mt-1"><i class="fa-solid fa-language me-1" aria-hidden="true"></i>{{ citation.source.original_document_availability_note }}</div>{% endif %}
                                 </li>
                             {% endfor %}

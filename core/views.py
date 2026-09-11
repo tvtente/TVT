@@ -3,12 +3,13 @@ import logging
 from pathlib import Path
 
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext, get_language
 from books.cart import get_cart_items
 from categories.models import Category
-from core.pagination import paginate_queryset
+from core.pagination import get_site_config_int, paginate_queryset
 from pages.models import Page, PageSection
 from posts.models import Post
 from pages.views import build_page_detail_context
@@ -104,15 +105,27 @@ def home(request):
         }
     )
 
-    # Keep this pagination independent from any other paginated component that
-    # may be configured on the homepage.  It is intentionally fixed at three
-    # cards so the homepage always presents a balanced row of latest posts.
+    # Rows and columns control both the visual grid and pagination together.
     homepage_posts_queryset = _get_homepage_posts_queryset()
+    homepage_post_grid_columns = max(1, get_site_config_int(
+        "homepage_post_grid_columns",
+        2,
+        logger=logger,
+        warning_message="Homepage post columns unavailable; using 2.",
+    ))
+    homepage_post_grid_rows = max(1, get_site_config_int(
+        "homepage_post_grid_rows",
+        3,
+        logger=logger,
+        warning_message="Homepage post rows unavailable; using 3.",
+    ))
+    homepage_items_per_page = homepage_post_grid_columns * homepage_post_grid_rows
     context["homepage_posts"] = paginate_queryset(
         get_posts_for_list_type().filter(pk__in=homepage_posts_queryset),
         request.GET.get("home_page"),
-        3,
+        homepage_items_per_page,
     )
+    context["homepage_post_grid_columns"] = homepage_post_grid_columns
     context["untranslated_post_cards"] = get_untranslated_post_cards(
         queryset=homepage_posts_queryset,
     )
@@ -152,6 +165,7 @@ def cart_detail(request):
     return render(request, "core/cart_detail.html", context)
 
 
+@login_required
 def checkout_detail(request):
     cart_summary = get_cart_items(request)
 
@@ -172,13 +186,14 @@ def checkout_detail(request):
         "title": gettext("Checkout"),
         "meta_title": gettext("Checkout"),
         "meta_description": gettext(
-            "Review your books and continue to the payment step."
+            "Review your books and confirm free access to their full editions."
         ),
     }
 
     return render(request, "core/checkout_detail.html", context)
 
 
+@login_required
 def checkout_create_order(request):
     if request.method != "POST":
         raise Http404(gettext("Page not found."))
@@ -193,7 +208,7 @@ def checkout_create_order(request):
 
     messages.success(
         request,
-        gettext("Your provisional order has been created successfully."),
+        gettext("Access to the selected books has been granted successfully."),
     )
     return redirect("checkout_order_pending", reference=order.reference)
 
@@ -221,7 +236,7 @@ def checkout_order_pending(request, reference):
         "title": gettext("Order created"),
         "meta_title": gettext("Order created"),
         "meta_description": gettext(
-            "Your provisional order has been created and is ready for the payment step."
+            "Your access to the selected books has been granted at no cost."
         ),
     }
 
@@ -232,36 +247,5 @@ def checkout_payment_placeholder(request):
     if request.method != "POST":
         raise Http404(gettext("Page not found."))
 
-    reference = request.POST.get("reference")
-    order = get_object_or_404(
-        Order.objects.prefetch_related("items", "items__book"),
-        reference=reference,
-    )
-
-    if order.user_id:
-        if not request.user.is_authenticated or (
-            request.user.id != order.user_id and not request.user.is_staff
-        ):
-            raise Http404(gettext("Page not found."))
-
-    if order.status == Order.Status.PENDING_PAYMENT:
-        order.status = Order.Status.PAYMENT_UNAVAILABLE
-        order.save(update_fields=["status", "updated_at"])
-        messages.warning(
-            request,
-            gettext(
-                "The payment step is not available yet. Your order has been marked as payment unavailable."
-            ),
-        )
-    elif order.status == Order.Status.PAYMENT_UNAVAILABLE:
-        messages.info(
-            request,
-            gettext("This order is already marked as payment unavailable."),
-        )
-    else:
-        messages.info(
-            request,
-            gettext("This order is no longer pending payment."),
-        )
-
-    return redirect("checkout_order_pending", reference=order.reference)
+    # Payment remains deliberately disabled while the catalogue is free.
+    raise Http404(gettext("Page not found."))

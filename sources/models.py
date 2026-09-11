@@ -55,8 +55,22 @@ class Source(TranslatableModel):
 
     translations = TranslatedFields(
         title=models.CharField(max_length=500, verbose_name=_("Title")),
-        bibliographic_reference=models.TextField(blank=True, verbose_name=_("Bibliographic reference")),
-        summary=models.TextField(blank=True, verbose_name=_("Editorial notes")),
+        bibliographic_reference=models.TextField(
+            blank=True,
+            verbose_name=_("Bibliographic reference"),
+            help_text=_(
+                "Full reference: original title, authors, editor, place, year, "
+                "ISBN/ISSN/DOI and other permanent identification data."
+            ),
+        ),
+        summary=models.TextField(
+            blank=True,
+            verbose_name=_("Source description"),
+            help_text=_(
+                "Explain the value of this source. It is shown to readers in a "
+                "collapsible panel."
+            ),
+        ),
         localized_url=models.URLField(blank=True, verbose_name=_("Official URL for this language")),
     )
 
@@ -75,6 +89,14 @@ class Source(TranslatableModel):
         verbose_name=_("Original language"),
     )
     url = models.URLField(blank=True, verbose_name=_("Official URL"))
+    document_url = models.URLField(
+        blank=True,
+        verbose_name=_("Direct document URL"),
+        help_text=_(
+            "Optional direct link to the PDF or other original document. Keep "
+            "the official landing page in Official URL."
+        ),
+    )
     status = models.CharField(
         max_length=12,
         choices=Status.choices,
@@ -141,6 +163,14 @@ class Source(TranslatableModel):
         )
 
     @property
+    def display_summary(self):
+        return self.safe_translation_getter(
+            "summary",
+            language_code=get_language(),
+            any_language=True,
+        )
+
+    @property
     def uses_original_document_url(self):
         """Whether the active language falls back to the original document."""
         active_language = (get_language() or "es").split("-")[0]
@@ -199,6 +229,11 @@ class Citation(models.Model):
         verbose_name=_("Content language"),
     )
     order = models.PositiveSmallIntegerField(default=1, verbose_name=_("Display order"))
+    is_primary = models.BooleanField(
+        default=False,
+        verbose_name=_("Primary source"),
+        help_text=_("Mark the source that provides the main evidence for this content."),
+    )
     locator = models.CharField(
         max_length=250,
         blank=True,
@@ -208,7 +243,10 @@ class Citation(models.Model):
     note = models.TextField(
         blank=True,
         verbose_name=_("Editorial note"),
-        help_text=_("Optional explanation of how this source supports the content."),
+        help_text=_(
+            "Optional explanation of how this source supports this content, "
+            "including relevant sections or pages. It is shown in a collapsible panel."
+        ),
     )
     created_at = models.DateTimeField(auto_now_add=True)
 

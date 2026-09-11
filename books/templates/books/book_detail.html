@@ -143,7 +143,7 @@
                     <input type="hidden" name="next" value="{{ request.get_full_path }}">
                     <button type="submit" class="btn btn-dark btn-lg">
                         <i class="fas fa-cart-plus me-1"></i>
-                        {% translate "Add to cart" %}
+                        {% if books_free_access_enabled %}{% translate "Add to free library" %}{% else %}{% translate "Add to cart" %}{% endif %}
                     </button>
                 </form>
             {% endif %}
@@ -175,10 +175,14 @@
                     <i class="fas fa-file-pdf me-1"></i>
                     {% translate "View full edition" %}
                 </a>
+                <a href="{% url 'books:book_download' slug=book.slug %}" class="btn btn-dark btn-lg mb-2">
+                    <i class="fas fa-download me-1"></i>
+                    {% translate "Download full edition" %}
+                </a>
             {% elif book.requires_purchase and book.has_full_pdf_in_any_language %}
                 <div class="alert alert-info border-0 shadow-sm mb-3" role="alert">
-                    <strong class="d-block mb-2">{% translate "Full edition available after purchase" %}</strong>
-                    <p class="mb-0">{% translate "The complete digital document is only enabled for users with a completed purchase." %}</p>
+                    <strong class="d-block mb-2">{% if books_free_access_enabled %}{% translate "Full edition available with free access" %}{% else %}{% translate "Full edition available after purchase" %}{% endif %}</strong>
+                    <p class="mb-0">{% if books_free_access_enabled %}{% translate "Add the book to the cart and confirm access with your account. No payment is required." %}{% else %}{% translate "The complete digital document is only enabled for users with a completed purchase." %}{% endif %}</p>
                 </div>
             {% endif %}
         </section>

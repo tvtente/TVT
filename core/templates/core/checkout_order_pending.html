@@ -11,9 +11,9 @@
         <div class="card-body p-4 p-lg-5">
             <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
                 <div>
-                    <h1 class="display-6 fw-semibold mb-2">{% translate "Order created" %}</h1>
+                    <h1 class="display-6 fw-semibold mb-2">{% translate "Access granted" %}</h1>
                     <p class="text-muted mb-0">
-                        {% translate "Your provisional order has been saved and is ready for the payment step." %}
+                        {% translate "The selected books are now available in your library. No payment was required." %}
                     </p>
                 </div>
                 <span class="badge text-bg-dark fs-6">{{ order.reference }}</span>
@@ -57,26 +57,25 @@
                             <p class="mb-2"><strong>{% translate "Status" %}:</strong> {{ order.get_status_display }}</p>
                             <p class="mb-4"><strong>{% translate "Subtotal" %}:</strong> {{ order.subtotal }} {{ order.currency }}</p>
 
-                            <div class="alert alert-warning border-0 small">
-                                {% translate "The payment gateway is still unavailable. You can keep this order as a provisional record and connect the payment step later." %}
+                            <div class="alert alert-success border-0 small">
+                                {% translate "This access was granted free of charge. Payment methods remain disabled." %}
                             </div>
 
                             <div class="d-grid gap-2">
-                                {% if order.status == "pending_payment" %}
-                                    <form action="{% url 'checkout_pay' %}" method="post" class="m-0">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="reference" value="{{ order.reference }}">
-                                        <button type="submit" class="btn btn-dark w-100">
-                                            {% translate "Proceed to payment" %}
-                                        </button>
-                                    </form>
-                                {% else %}
-                                    <button type="button" class="btn btn-secondary" disabled>
-                                        {% translate "Payment unavailable" %}
-                                    </button>
-                                {% endif %}
-                                <a href="{% url 'checkout_detail' %}" class="btn btn-outline-dark">
-                                    {% translate "Back to checkout" %}
+                                {% for item in order.items.all %}
+                                    {% if item.book and item.book.has_full_pdf_in_any_language %}
+                                        <a href="{% url 'books:book_document' slug=item.book.slug %}" class="btn btn-dark">
+                                            <i class="fas fa-file-pdf me-1"></i>
+                                            {% blocktranslate with title=item.title_snapshot %}Open {{ title }}{% endblocktranslate %}
+                                        </a>
+                                        <a href="{% url 'books:book_download' slug=item.book.slug %}" class="btn btn-outline-dark">
+                                            <i class="fas fa-download me-1"></i>
+                                            {% blocktranslate with title=item.title_snapshot %}Download {{ title }}{% endblocktranslate %}
+                                        </a>
+                                    {% endif %}
+                                {% endfor %}
+                                <a href="{% url 'shop:my_orders' %}" class="btn btn-outline-dark">
+                                    {% translate "My library" %}
                                 </a>
                             </div>
                         </div>

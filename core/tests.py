@@ -14,6 +14,7 @@ from pages.models import Page, PageSection
 from posts.models import Post
 from categories.models import Category
 from publications.models import Publication
+from site_settings.models import SiteConfiguration
 
 
 class LanguageUrlTests(TestCase):
@@ -90,7 +91,7 @@ class HomepageResolutionTests(TestCase):
         with translation.override("es"):
             self.assertEqual(homepage.get_absolute_url_for_language("es"), reverse("home"))
 
-    def test_home_shows_latest_posts_three_at_a_time_using_home_page_parameter(self):
+    def test_home_uses_configured_grid_rows_and_columns_for_pagination(self):
         homepage = Page.objects.create(author=self.user, status="published", is_homepage=True)
         homepage.set_current_language("en")
         homepage.title = "Homepage"
@@ -113,7 +114,12 @@ class HomepageResolutionTests(TestCase):
         category.slug = "fundamentos-de-la-prevencion-moderna"
         category.save()
 
-        for index in range(4):
+        config = SiteConfiguration.get_solo()
+        config.homepage_post_grid_columns = 2
+        config.homepage_post_grid_rows = 3
+        config.save()
+
+        for index in range(7):
             post = Post.objects.create(
                 author=self.user,
                 status="published",
@@ -129,12 +135,12 @@ class HomepageResolutionTests(TestCase):
         first_page = self.client.get(reverse("home"))
         second_page = self.client.get(reverse("home"), {"home_page": 2})
 
-        self.assertContains(first_page, "Latest post 4")
+        self.assertContains(first_page, "Latest post 7")
         self.assertContains(first_page, "Latest post 2")
         self.assertNotContains(first_page, "Latest post 1")
         self.assertContains(first_page, "?home_page=2#latest-posts")
         self.assertContains(second_page, "Latest post 1")
-        self.assertNotContains(second_page, "Latest post 4")
+        self.assertNotContains(second_page, "Latest post 7")
 
 
 @override_settings(MEDIA_ROOT=tempfile.mkdtemp())

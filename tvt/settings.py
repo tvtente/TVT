@@ -60,6 +60,15 @@ def config(name, default=_UNSET, cast=str):
     return file_config(name, default=default, cast=cast)
 
 
+# The cart currently grants access to protected books at no cost. Change this
+# only once a real paid checkout has been implemented.
+BOOKS_FREE_ACCESS_ENABLED = config(
+    'BOOKS_FREE_ACCESS_ENABLED',
+    default='yes',
+    cast=config_bool,
+)
+
+
 LOG_LEVEL_ORDER = {
     'basic': 1,
     'medium': 2,

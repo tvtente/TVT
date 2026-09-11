@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.contrib import messages
 from django.core.paginator import Paginator
-from django.http import Http404
+from django.http import FileResponse, Http404
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils.translation import get_language
@@ -133,7 +133,7 @@ def user_can_access_full_book(request, book):
 
     return Order.objects.filter(
         user=user,
-        status=Order.Status.PAID,
+        status__in=(Order.Status.PAID, Order.Status.FREE_ACCESS),
         items__book=book,
     ).exists()
 
@@ -178,6 +178,7 @@ def book_list_view(request):
             "meta_description": _(
                 "Books, editorial works, and stable publications published by TVTente."
             ),
+            "books_free_access_enabled": getattr(settings, "BOOKS_FREE_ACCESS_ENABLED", True),
         },
     )
 
@@ -219,6 +220,7 @@ def book_detail_view(request, slug):
             "preview_language_editions": preview_language_editions,
             "full_document_language_editions": full_document_language_editions,
             "book_is_purchasable": book_is_purchasable(book),
+            "books_free_access_enabled": getattr(settings, "BOOKS_FREE_ACCESS_ENABLED", True),
             "book_is_coming_soon": book.is_coming_soon(),
             "can_access_full_book": user_can_access_full_book(request, book),
             "title": book.safe_translation_getter("title", any_language=True),
@@ -383,4 +385,29 @@ def book_document_view(request, slug):
             "meta_title": _("Full document"),
             "meta_description": _("Read the full book document online."),
         },
+    )
+
+
+def book_download_view(request, slug):
+    """Download a full edition after the reader has been granted access."""
+    book = _get_published_book_or_language_fallback(request, slug)
+    if not isinstance(book, Book):
+        return book
+
+    if not user_can_access_full_book(request, book):
+        messages.warning(
+            request,
+            _("You need free access to this book before downloading the full edition."),
+        )
+        return redirect(book.get_absolute_url())
+
+    full_pdf = book.get_full_pdf(language_code=get_language())
+    if not full_pdf:
+        raise Http404(_("Book document not available in this language."))
+
+    return FileResponse(
+        full_pdf.open("rb"),
+        as_attachment=True,
+        filename=full_pdf.name.rsplit("/", 1)[-1],
+        content_type="application/pdf",
     )

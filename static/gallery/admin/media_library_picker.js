@@ -180,6 +180,9 @@
       if (scope.fileInput) {
         scope.fileInput.value = "";
       }
+      if (scope.clearInput && opts && opts.markCleared) {
+        scope.clearInput.value = "1";
+      }
       updateSelectionPreview(scope, "", "");
       if (!skipRemote) {
         /* optional: remote DELETE staging */
@@ -226,6 +229,9 @@
           }
           if (activeScope.stagingInput) {
             activeScope.stagingInput.value = "";
+          }
+          if (activeScope.clearInput) {
+            activeScope.clearInput.value = "";
           }
           if (activeScope.fileInput) {
             activeScope.fileInput.value = "";
@@ -355,6 +361,9 @@
       const stagingInput = resolveField(form, stagingName);
       const sourceInput = fkName ? null : resolveField(form, sourceName);
       const fkInput = fkName ? resolveField(form, fkName) : null;
+      const clearInput = root.dataset.clearName
+        ? resolveField(form, root.dataset.clearName)
+        : null;
       const fileInput = fkName ? null : resolveField(form, fileName);
 
       if (!stagingInput || (!fkInput && !sourceInput)) {
@@ -390,6 +399,7 @@
         stagingInput: stagingInput,
         sourceInput: sourceInput,
         fkInput: fkInput,
+        clearInput: clearInput,
         fileInput: fileInput,
         selection: shell.querySelector(".gallery-picker-selection"),
         previewImg: shell.querySelector('[data-role="preview"]'),
@@ -418,12 +428,12 @@
           return;
         }
         const act = t.getAttribute("data-act");
-        if (act === "open-library") {
+          if (act === "open-library") {
           openModal(scope);
         } else if (act === "upload-stage") {
           fileHidden.click();
-        } else if (act === "clear") {
-          clearScopeInputs(scope);
+          } else if (act === "clear") {
+          clearScopeInputs(scope, { markCleared: true });
         }
       });
 
@@ -471,6 +481,9 @@
             }
             if (fkInput) {
               fkInput.value = "";
+            }
+            if (scope.clearInput) {
+              scope.clearInput.value = "";
             }
             if (fileInput) {
               fileInput.value = "";

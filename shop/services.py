@@ -1,4 +1,5 @@
 from django.db import transaction
+from django.conf import settings
 from django.utils.translation import get_language
 
 from books.cart import clear_cart, get_cart_items
@@ -13,14 +14,18 @@ def create_provisional_order_from_request(request):
         return None
 
     user = request.user if request.user.is_authenticated else None
+    if user is None:
+        return None
+
+    is_free_access = getattr(settings, "BOOKS_FREE_ACCESS_ENABLED", True)
     order = Order.objects.create(
         user=user,
-        full_name=user.get_full_name() if user else "",
-        email=user.email if user else "",
-        status=Order.Status.PENDING_PAYMENT,
+        full_name=user.get_full_name(),
+        email=user.email,
+        status=(Order.Status.FREE_ACCESS if is_free_access else Order.Status.PENDING_PAYMENT),
         currency=cart_summary["currency"] or "EUR",
-        subtotal=cart_summary["subtotal"],
-        total=cart_summary["subtotal"],
+        subtotal=0 if is_free_access else cart_summary["subtotal"],
+        total=0 if is_free_access else cart_summary["subtotal"],
     )
 
     language = get_language()

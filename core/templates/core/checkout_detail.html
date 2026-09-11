@@ -13,7 +13,7 @@
                 <div class="card-body p-4 p-lg-5">
                     <h1 class="display-6 fw-semibold mb-2">{% translate "Checkout" %}</h1>
                     <p class="text-muted mb-4">
-                        {% translate "Review your order details before continuing to payment." %}
+                        {% translate "Review the selected books and confirm free access to their complete editions." %}
                     </p>
 
                     {% if cart_items %}
@@ -47,7 +47,7 @@
         <div class="col-lg-5">
             <div class="card shadow-sm border-0 mb-4">
                 <div class="card-body p-4">
-                    <h2 class="h5 mb-3">{% translate "Buyer information" %}</h2>
+                    <h2 class="h5 mb-3">{% translate "Reader information" %}</h2>
 
                     <div class="mb-3">
                         <label class="form-label">{% translate "Full name" %}</label>
@@ -72,18 +72,18 @@
 
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <strong>{% translate "Subtotal" %}</strong>
-                        <strong>{{ cart_subtotal }} {{ cart_currency|default:"EUR" }}</strong>
+                        <strong>{% translate "Free" %}</strong>
                     </div>
 
-                    <div class="alert alert-warning border-0 small">
-                        {% translate "The payment gateway is not enabled yet. This checkout is ready up to the final payment step." %}
+                    <div class="alert alert-success border-0 small">
+                        {% translate "All books are currently free. By confirming, they will be added to your library immediately; no payment details are requested." %}
                     </div>
 
                     <div class="d-grid gap-2">
                         <form action="{% url 'checkout_create_order' %}" method="post" class="m-0">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-dark w-100"{% if not cart_items %} disabled{% endif %}>
-                                {% translate "Create provisional order" %}
+                                {% translate "Get free access" %}
                             </button>
                         </form>
                         <a href="{% url 'cart_detail' %}" class="btn btn-outline-dark">

@@ -8,9 +8,9 @@
         </a>
     </div>
 
-    <div class="row">
+    <div class="homepage-post-grid" style="--homepage-post-columns: {{ homepage_post_grid_columns|default:2 }};">
         {% for post in homepage_posts %}
-            <div class="col-md-6 col-lg-6 mb-4">
+            <div class="homepage-post-grid__item">
                 <article class="card h-100 shadow-sm border-0">
                     {% with featured_image=post.get_featured_image %}
                         {% if featured_image %}
@@ -32,7 +32,7 @@
                 </article>
             </div>
         {% empty %}
-            <div class="col">
+            <div>
                 <div class="alert alert-info mb-0">{% translate "There are no posts yet. Come back soon!" %}</div>
             </div>
         {% endfor %}

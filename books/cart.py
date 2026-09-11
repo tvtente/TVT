@@ -1,5 +1,6 @@
 from decimal import Decimal
 
+from django.conf import settings
 from django.utils.translation import get_language
 
 from .models import Book
@@ -34,6 +35,8 @@ def get_cart_count(request):
 
 
 def book_is_purchasable(book):
+    if getattr(settings, "BOOKS_FREE_ACCESS_ENABLED", True):
+        return bool(book.is_available_for_free_access())
     return bool(book.is_available_for_purchase())
 
 
@@ -100,7 +103,11 @@ def get_cart_items(request):
         if isinstance(raw_item, dict):
             quantity = max(1, int(raw_item.get("quantity", 1) or 1))
 
-        price = book.price or Decimal("0.00")
+        price = (
+            Decimal("0.00")
+            if getattr(settings, "BOOKS_FREE_ACCESS_ENABLED", True)
+            else book.price or Decimal("0.00")
+        )
         line_total = price * quantity
 
         if currency is None:

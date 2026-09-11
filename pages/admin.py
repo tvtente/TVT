@@ -57,7 +57,7 @@ class CitationInline(GenericTabularInline):
     model = Citation
     extra = 0
     autocomplete_fields = ("source",)
-    fields = ("source", "language", "order", "locator", "note")
+    fields = ("source", "language", "is_primary", "order", "locator", "note")
     verbose_name = _("Citation")
     verbose_name_plural = _("Citations and sources")
 

@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.exceptions import SuspiciousFileOperation
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.utils.translation import gettext_lazy as _, gettext
 from django.templatetags.static import static
 from parler.models import TranslatableModel, TranslatedFields
@@ -16,6 +17,18 @@ class SiteConfiguration(SingletonModel):
         default=9, 
         verbose_name=_("Items per Page in Blog/Category lists"),
         help_text=_("Number of posts to show on the main blog page and on category pages.")
+    )
+    homepage_post_grid_columns = models.PositiveSmallIntegerField(
+        default=2,
+        validators=[MinValueValidator(1), MaxValueValidator(4)],
+        verbose_name=_("Homepage post grid columns"),
+        help_text=_("Desktop columns in the latest-posts grid on the homepage."),
+    )
+    homepage_post_grid_rows = models.PositiveSmallIntegerField(
+        default=3,
+        validators=[MinValueValidator(1), MaxValueValidator(12)],
+        verbose_name=_("Homepage post grid rows"),
+        help_text=_("Rows shown before homepage post pagination. Posts per page are rows × columns."),
     )
     search_pages_per_page = models.PositiveIntegerField(
         default=5, 
@@ -131,12 +144,20 @@ class SiteTemplate(TranslatableModel):
         verbose_name=_("Site Logo"),
         help_text=_("The main logo displayed in the top bar.")
     )
+    site_logo_asset = models.ForeignKey(
+        "gallery.Image", null=True, blank=True, on_delete=models.SET_NULL,
+        related_name="+", verbose_name=_("Site logo (media library)"),
+    )
     favicon = models.ImageField(
         upload_to='site_branding/favicons/',
         blank=True,
         null=True,
         verbose_name=_("Favicon"),
         help_text=_("Small icon used by browser tabs, bookmarks, and shortcuts.")
+    )
+    favicon_asset = models.ForeignKey(
+        "gallery.Image", null=True, blank=True, on_delete=models.SET_NULL,
+        related_name="+", verbose_name=_("Favicon (media library)"),
     )
     translations = TranslatedFields(
         site_slogan=models.CharField(
@@ -158,6 +179,10 @@ class SiteTemplate(TranslatableModel):
         verbose_name=_("Top Bar Banner Image"),
         help_text=_("An optional banner image displayed in the top bar.")
     )
+    top_bar_banner_image_asset = models.ForeignKey(
+        "gallery.Image", null=True, blank=True, on_delete=models.SET_NULL,
+        related_name="+", verbose_name=_("Top bar banner (media library)"),
+    )
     top_bar_banner_link = models.URLField(
         max_length=255,
         blank=True,
@@ -170,6 +195,10 @@ class SiteTemplate(TranslatableModel):
         null=True,
         verbose_name=_("Navigation Banner Image"),
         help_text=_("Optional compact image displayed immediately before the shopping cart."),
+    )
+    navigation_banner_image_asset = models.ForeignKey(
+        "gallery.Image", null=True, blank=True, on_delete=models.SET_NULL,
+        related_name="+", verbose_name=_("Navigation banner (media library)"),
     )
     navigation_banner_link = models.URLField(
         max_length=255,
@@ -248,21 +277,25 @@ class SiteTemplate(TranslatableModel):
         # The configured media logo takes precedence.  The bundled identity is
         # a reliable fallback for environments that share the database but not
         # uploaded media (for example local and testing).
-        return self._safe_file_url("site_logo") or static(
+        return self._asset_url("site_logo_asset") or self._safe_file_url("site_logo") or static(
             "images/branding/mente-prl-digital-logo.png"
         )
 
     @property
     def favicon_url(self):
-        return self._safe_file_url("favicon")
+        return self._asset_url("favicon_asset") or self._safe_file_url("favicon")
 
     @property
     def top_bar_banner_image_url(self):
-        return self._safe_file_url("top_bar_banner_image")
+        return self._asset_url("top_bar_banner_image_asset") or self._safe_file_url("top_bar_banner_image")
 
     @property
     def navigation_banner_image_url(self):
-        return self._safe_file_url("navigation_banner_image")
+        return self._asset_url("navigation_banner_image_asset") or self._safe_file_url("navigation_banner_image")
+
+    def _asset_url(self, field_name):
+        asset = getattr(self, field_name, None)
+        return asset.get_image_url() if asset else ""
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

@@ -93,7 +93,9 @@
                                 </div>
                             {% endif %}
 
-                            {% if book.price and book.requires_purchase %}
+                            {% if book.requires_purchase and books_free_access_enabled %}
+                                <p class="fw-semibold mb-3 text-success">{% translate "Free access" %}</p>
+                            {% elif book.price and book.requires_purchase %}
                                 <p class="fw-semibold mb-3">{{ book.price }} {{ book.currency }}</p>
                             {% endif %}
 
@@ -120,7 +122,7 @@
                                             {% csrf_token %}
                                             <input type="hidden" name="next" value="{{ request.get_full_path }}">
                                             <button type="submit" class="btn btn-dark">
-                                                {% translate "Add to cart" %}
+                                                {% if books_free_access_enabled %}{% translate "Add to free library" %}{% else %}{% translate "Add to cart" %}{% endif %}
                                             </button>
                                         </form>
                                     {% endif %}

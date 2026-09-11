@@ -269,6 +269,16 @@ class Book(TranslatableModel):
             return False
         return True
 
+    def is_available_for_free_access(self):
+        """True when the protected full edition can be granted at no cost."""
+        if not (self.is_published and self.requires_purchase):
+            return False
+        if not self.has_full_pdf_in_any_language():
+            return False
+        if self.available_from and self.available_from > timezone.localdate():
+            return False
+        return True
+
     def is_coming_soon(self):
         return bool(
             self.requires_purchase
