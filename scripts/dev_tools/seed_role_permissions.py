@@ -68,6 +68,20 @@ ADMIN_SITE_ACCESS_APP_LABELS = [
 ]
 
 
+# Researcher y Admin deben poder trabajar con publicaciones científicas con la
+# misma capacidad editorial. Admin conserva, además, sus permisos de
+# administración de la estructura del sitio.
+PUBLICATION_ACCESS_PERMISSIONS = [
+    ("publications", "publication", "add_publication"),
+    ("publications", "publication", "view_publication"),
+    ("publications", "publication", "change_publication"),
+
+    ("gallery", "image", "add_image"),
+    ("gallery", "image", "view_image"),
+    ("gallery", "image", "change_image"),
+]
+
+
 # ============================================================
 # Role permissions
 # ============================================================
@@ -184,13 +198,7 @@ ROLE_PERMISSIONS = {
         ("comments", "comment", "add_comment"),
         ("comments", "comment", "view_comment"),
 
-        ("publications", "publication", "add_publication"),
-        ("publications", "publication", "view_publication"),
-        ("publications", "publication", "change_publication"),
-
-        ("gallery", "image", "add_image"),
-        ("gallery", "image", "view_image"),
-        ("gallery", "image", "change_image"),
+        *PUBLICATION_ACCESS_PERMISSIONS,
     ],
 
     # --------------------------------------------------------
@@ -366,7 +374,10 @@ def get_site_manager_full_permissions():
 
 
 def get_admin_site_permissions():
-    return get_permissions_for_app_labels(ADMIN_SITE_ACCESS_APP_LABELS)
+    return [
+        *get_permissions_for_app_labels(ADMIN_SITE_ACCESS_APP_LABELS),
+        *resolve_permissions(PUBLICATION_ACCESS_PERMISSIONS),
+    ]
 
 
 def reset_group_permissions(group_name, permission_specs):

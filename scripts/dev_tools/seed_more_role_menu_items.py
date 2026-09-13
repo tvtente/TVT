@@ -52,6 +52,7 @@ EDITORIAL_GROUPS = [
 PUBLICATION_GROUPS = [
     "Researcher",
     "Reviewer",
+    "Admin",
     "Site Manager",
 ]
 
