@@ -1,8 +1,10 @@
 from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include, re_path
 from django.contrib.auth import views as auth_views
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.contrib.staticfiles.views import serve as staticfiles_serve
 from django.views.static import serve as media_serve
 from django.views.generic import RedirectView
@@ -69,12 +71,18 @@ urlpatterns += i18n_patterns(
 
 
 # ==============================================================================
-# STATIC AND PUBLIC MEDIA FILES
+# SERVING MEDIA FILES IN DEVELOPMENT
 # ==============================================================================
-# Testing must render faithfully with DEBUG=False, so it has the same explicit
-# fallback as local development.  Production remains the web server's
-# responsibility: it should serve these public folders directly.
-if settings.DEBUG or getattr(settings, 'ENVIRONMENT', '') in {'development', 'testing'}:
+# This is only for development (DEBUG=True) and should not be used in production.
+# The web server (e.g., Nginx) should be configured to serve media files.
+if settings.DEBUG:
+    # Añadimos las URLs para los archivos MEDIA
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+    # Este es para tus archivos de app (CSS, JS, imágenes por defecto)
+    # Es la forma recomendada por Django para desarrollo.
+    urlpatterns += staticfiles_urlpatterns()
+elif getattr(settings, 'ENVIRONMENT', '') == 'development':
     urlpatterns += [
         re_path(r'^static/(?P<path>.*)$', staticfiles_serve, {'insecure': True}),
         re_path(r'^media/(?P<path>.*)$', media_serve, {'document_root': settings.MEDIA_ROOT}),
