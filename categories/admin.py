@@ -24,7 +24,7 @@ class CategoryAdmin(TranslatableAdmin, DraggableMPTTAdmin):
     delete_selected_confirmation_template = (
         "admin/categories/category/delete_selected_confirmation.html"
     )
-    list_display = ("tree_actions", "indented_title", "current_slug")
+    list_display = ("tree_actions", "indented_title", "current_slug", "menu_icon_class")
     list_display_links = ("indented_title",)
     search_fields = (
         "translations__name",

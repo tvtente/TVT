@@ -21,6 +21,8 @@ from .models import Post, PostContentBlock, PostDailyMetric
 from .forms import PostPointAllocationForm
 from .selectors import (
     POST_LIST_TYPES,
+    get_post_listing_entries,
+    get_most_commented_posts_for_categories,
     get_posts_for_list_type,
     get_published_posts_queryset,
     get_untranslated_post_cards,
@@ -76,7 +78,18 @@ def post_list_view(request, list_type=None):
     if list_type and list_type not in POST_LIST_TYPES:
         raise Http404(gettext("Post list not found."))
 
-    all_posts = get_posts_for_list_type(list_type, language_code=get_language())
+    all_posts_queryset = get_posts_for_list_type(
+        list_type,
+        language_code=get_language(),
+    )
+    all_posts = (
+        get_post_listing_entries(
+            all_posts_queryset,
+            language_code=get_language(),
+        )
+        if list_type in (None, "latest")
+        else all_posts_queryset
+    )
 
     posts_per_page = get_site_config_int(
         "blog_items_per_page",
@@ -522,6 +535,16 @@ def post_detail_view(request, year, month, day, slug):
         categories.sort(key=lambda c: (get_category_depth(c), c.id))
         category = categories[0]
 
+    # The right sidebar uses the most specific assigned category so its tags
+    # describe the section the reader is actually in, not the broad root.
+    active_category = categories[-1] if categories else None
+
+    category_discussed_posts = get_most_commented_posts_for_categories(
+        [item.pk for item in categories],
+        exclude_post_id=post.pk,
+        language_code=language,
+    )
+
     breadcrumbs = [
         {"url": "/", "label": gettext("Home")},
         {"url": reverse("posts:post_list"), "label": gettext("Posts")},
@@ -592,6 +615,8 @@ def post_detail_view(request, year, month, day, slug):
             "is_following_author": author_profile.is_followed_by(request.user) if author_profile else False,
             "is_favorited_post": is_post_favorited_by_user(request.user, post),
             "post_favorites_total": get_post_favorites_total(post),
+            "category_discussed_posts": category_discussed_posts,
+            "active_category": active_category,
         },
     )
 

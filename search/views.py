@@ -8,6 +8,7 @@ from django.utils.translation import get_language
 from core.pagination import get_site_config_int, paginate_queryset
 from pages.models import Page
 from posts.models import Post
+from posts.selectors import get_matching_mini_post_entries, get_post_listing_entries
 
 logger = logging.getLogger(__name__)
 
@@ -32,7 +33,7 @@ def search_results_view(request):
     
     # Initialize with empty QuerySets
     page_results_qs = Page.objects.none()
-    post_results_qs = Post.objects.none()
+    post_results = []
 
     language = get_language()
     if query:
@@ -58,6 +59,15 @@ def search_results_view(request):
         post_results_qs = Post.objects.language(language).filter( \
                                       post_query, status='published', translations__language_code=language) \
                                       .distinct().order_by('-published_date')
+        post_results = get_post_listing_entries(
+            post_results_qs,
+            language_code=language,
+            include_mini_posts=False,
+        )
+        post_results.extend(
+            get_matching_mini_post_entries(query, language_code=language),
+        )
+        post_results.sort(key=lambda entry: entry.published_date, reverse=True)
 
     # --- Paginación (ahora sobre los QuerySets correctos) ---
     paginated_page_results = paginate_queryset(
@@ -66,13 +76,13 @@ def search_results_view(request):
         pages_per_page,
     )
     paginated_post_results = paginate_queryset(
-        post_results_qs,
+        post_results,
         request.GET.get("p_post", 1),
         posts_per_page,
     )
     
     # --- Contexto ---
-    total_results = page_results_qs.count() + post_results_qs.count()
+    total_results = page_results_qs.count() + len(post_results)
 
     context = {
         'query': query,

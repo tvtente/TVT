@@ -20,11 +20,17 @@ def _get_context_user(context):
 
 
 @register.inclusion_tag("menus/partials/_navbar_main_level.html", takes_context=True)
-def show_menu(context, menu_slug):
+def show_menu(context, menu_slug, exclude_category_menu=False):
     language_code = context.get("LANGUAGE_CODE", settings.LANGUAGE_CODE)
     user = _get_context_user(context)
     top_level_nodes = get_main_menu_nodes(menu_slug, language_code)
     visible_top_level_nodes = filter_visible_menu_items(top_level_nodes, user)
+    if exclude_category_menu:
+        visible_top_level_nodes = [
+            node
+            for node in visible_top_level_nodes
+            if node.link_type != node.LinkType.ALL_BLOG_CATEGORIES
+        ]
     visible_top_level_nodes = attach_visible_children_for_user(
         visible_top_level_nodes,
         user,
@@ -32,6 +38,30 @@ def show_menu(context, menu_slug):
     return {
         "nodes": visible_top_level_nodes,
         "user": user,
+    }
+
+
+@register.inclusion_tag("menus/partials/_category_navigation.html", takes_context=True)
+def show_category_navigation(context, menu_slug):
+    """Render the category section of the main navigation independently."""
+    language_code = context.get("LANGUAGE_CODE", settings.LANGUAGE_CODE)
+    user = _get_context_user(context)
+    top_level_nodes = get_main_menu_nodes(menu_slug, language_code)
+
+    category_menu = next(
+        (
+            node
+            for node in filter_visible_menu_items(top_level_nodes, user)
+            if node.link_type == node.LinkType.ALL_BLOG_CATEGORIES
+        ),
+        None,
+    )
+    if category_menu is None:
+        return {"categories": [], "overview_url": "#"}
+
+    return {
+        "categories": category_menu.dynamic_children,
+        "overview_url": category_menu.get_url_for_user(user),
     }
 
 

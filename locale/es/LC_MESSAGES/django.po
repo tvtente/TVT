@@ -5153,6 +5153,30 @@ msgstr "Total de línea"
 msgid "Order item"
 msgstr "Artículo del pedido"
 
+#: menus/templates/menus/partials/_navbar_category_tree.html:14
+#, python-format
+msgid "View all in %(title)s"
+msgstr "Ver todo en %(title)s"
+
+#: posts/templates/posts/partials/_category_discussed_posts_sidebar.html:7
+msgid "Most commented in this category"
+msgstr "Más comentados en esta categoría"
+
+#: posts/templates/posts/partials/_category_discussed_posts_sidebar.html:25
+#, python-format
+msgid "%(comments)s approved comment"
+msgid_plural "%(comments)s approved comments"
+msgstr[0] "%(comments)s comentario aprobado"
+msgstr[1] "%(comments)s comentarios aprobados"
+
+#: posts/models.py:382
+msgid "Show in listings and search"
+msgstr "Mostrar en listados y búsqueda"
+
+#: posts/models.py:384
+msgid "Show this complete visual section as a mini-post in latest entries and search results."
+msgstr "Muestra esta sección visual completa como minipost en últimas entradas y resultados de búsqueda."
+
 #: shop/templates/shop/my_orders.html:16
 msgid "Review the books to which your account has access."
 msgstr "Revisa los libros a los que tiene acceso tu cuenta."
@@ -6657,6 +6681,10 @@ msgid "Featured Tags"
 msgstr "Imagen Destacada"
 
 #: widgets/models.py:34
+msgid "Category Tag Cloud"
+msgstr "Nube de etiquetas de categoría"
+
+#: widgets/models.py:35
 msgid "Editor's Picks (Blog Posts)"
 msgstr "Selección del Editor (Publicaciones de blog)"
 

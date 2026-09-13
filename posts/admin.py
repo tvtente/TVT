@@ -214,7 +214,17 @@ class PostContentBlockInline(admin.StackedInline):
     # the next visual section without having to find Django's add-row link.
     extra = 1
     autocomplete_fields = ("related_post",)
-    fields = ("order", "block_type", "heading", "anchor", "content", "image_asset", "image_alt", "related_post")
+    fields = (
+        "order",
+        "block_type",
+        "heading",
+        "anchor",
+        "content",
+        "image_asset",
+        "image_alt",
+        "show_in_listings",
+        "related_post",
+    )
     verbose_name = _("Content block")
     verbose_name_plural = _("Post content blocks")
 

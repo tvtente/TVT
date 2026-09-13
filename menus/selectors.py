@@ -79,13 +79,36 @@ def get_dynamic_posts_for_menu_item(item_obj):
     return list(get_posts_for_list_type(item_obj.post_list_type)[:limit])
 
 
+def _get_category_menu_tree(root_category):
+    """Build a small presentation tree below a category configured as menu root."""
+    categories = list(root_category.get_descendants().order_by("tree_id", "lft"))
+    categories_by_id = {category.pk: category for category in categories}
+
+    for category in categories:
+        category.menu_url = category.get_posts_url()
+        category.menu_children = []
+
+    roots = []
+    for category in categories:
+        parent = categories_by_id.get(category.parent_id)
+        if parent is not None:
+            parent.menu_children.append(category)
+        elif category.parent_id == root_category.pk:
+            roots.append(category)
+
+    return roots
+
+
 def get_blog_category_queryset(item_obj, language_code=None):
     language_code = language_code or get_language()
     categories = Category.objects.language(language_code).filter(
         translations__language_code=language_code,
     )
     if item_obj.link_category:
-        categories = item_obj.link_category.get_descendants()
+        # A bound category acts as the editorial root.  Return its descendants
+        # as a presentation tree so the navigation can reveal each level on
+        # demand instead of flattening the whole taxonomy.
+        return _get_category_menu_tree(item_obj.link_category)
     categories = list(
         categories.annotate(
             own_published_posts=Count(

@@ -13,7 +13,11 @@ from core.pagination import get_site_config_int, paginate_queryset
 from pages.models import Page, PageSection
 from posts.models import Post
 from pages.views import build_page_detail_context
-from posts.selectors import get_posts_for_list_type, get_untranslated_post_cards
+from posts.selectors import (
+    get_post_listing_entries,
+    get_posts_for_list_type,
+    get_untranslated_post_cards,
+)
 from shop.models import Order
 from shop.services import create_provisional_order_from_request
 
@@ -120,8 +124,14 @@ def home(request):
         warning_message="Homepage post rows unavailable; using 3.",
     ))
     homepage_items_per_page = homepage_post_grid_columns * homepage_post_grid_rows
+    homepage_entries = get_post_listing_entries(
+        get_posts_for_list_type(language_code=get_language()).filter(
+            pk__in=homepage_posts_queryset,
+        ),
+        language_code=get_language(),
+    )
     context["homepage_posts"] = paginate_queryset(
-        get_posts_for_list_type().filter(pk__in=homepage_posts_queryset),
+        homepage_entries,
         request.GET.get("home_page"),
         homepage_items_per_page,
     )

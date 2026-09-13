@@ -21,7 +21,7 @@
 
                 <!-- Main Menu (Two-Line Layout) -->
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 main-navbar-menu">
-                    {% show_menu 'main-menu' %}
+                    {% show_menu 'main-menu' exclude_category_menu=True %}
                 </ul>
 
                 <!-- Right Side: Search + User/Auth -->
@@ -161,6 +161,12 @@
                 </div>
                 
             </div>
+        </div>
+    </nav>
+
+    <nav class="category-navbar" aria-label="{% translate 'Categories' %}">
+        <div class="container">
+            {% show_category_navigation 'main-menu' %}
         </div>
     </nav>
 

@@ -1,0 +1,33 @@
+{% load i18n %}
+
+{% if category_discussed_posts %}
+  <section class="post-category-discussed-sidebar card mb-4 shadow-sm border-0" aria-labelledby="category-discussed-posts-title">
+    <div class="card-header">
+      <h2 id="category-discussed-posts-title" class="h5 mb-0">
+        <i class="fas fa-comments me-2" aria-hidden="true"></i>{% translate "Most commented in this category" %}
+      </h2>
+    </div>
+    <div class="card-body p-3">
+      <div class="d-grid gap-3">
+        {% for related_post in category_discussed_posts %}
+          <article class="card h-100 shadow-sm border-0">
+            {% with mobile_image=related_post.get_mobile_image %}
+              {% if mobile_image %}
+                <a href="{{ related_post.get_absolute_url }}">
+                  <img src="{{ mobile_image.url }}" class="card-img-top" loading="lazy" alt="{{ related_post.get_mobile_image_alt }}">
+                </a>
+              {% endif %}
+            {% endwith %}
+            <div class="card-body d-flex flex-column">
+              <h3 class="h6 card-title">{{ related_post.title }}</h3>
+              <p class="card-text text-muted small mb-2">
+                {% blocktranslate count comments=related_post.approved_comment_count %}{{ comments }} approved comment{% plural %}{{ comments }} approved comments{% endblocktranslate %}
+              </p>
+              <a href="{{ related_post.get_absolute_url }}" class="btn btn-primary btn-sm mt-auto">{% translate "Read More" %}</a>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+{% endif %}

@@ -31,6 +31,7 @@ class Widget(TranslatableModel):
         MOST_COMMENTED_POSTS = 'most_commented_posts', _('Most Commented Blog Posts')
         BLOG_CATEGORIES = 'blog_categories', _('Blog Category List')
         FEATURED_TAGS = 'featured_tags', _('Featured Tags')
+        CATEGORY_TAG_CLOUD = 'category_tag_cloud', _('Category Tag Cloud')
         EDITOR_PICKS_POSTS = 'editor_picks_posts', _("Editor's Picks (Blog Posts)")
         
         # --- NEW WIDGET TYPES FOR FLEXIBLE POST GRIDS ---

@@ -1,16 +1,18 @@
 from datetime import timedelta
+from dataclasses import dataclass
 from hashlib import sha256
 
 from django.conf import settings
 from django.core.cache import cache
 from django.db.models import Count, F, IntegerField, OuterRef, Q, Subquery, Sum, Value
 from django.db.models.functions import Coalesce
+from django.utils.html import strip_tags
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _, get_language
 
 from comments.models import Comment
 from comments.services import CommentTranslationError, DeepLCommentTranslationProvider
-from .models import Post, PostDailyMetric, PostPointAllocation
+from .models import Post, PostContentBlock, PostDailyMetric, PostPointAllocation
 
 
 POST_LIST_TYPES = {
@@ -41,6 +43,129 @@ POST_LIST_TYPES = {
 }
 
 
+@dataclass(frozen=True)
+class EditorialListingEntry:
+    """A post or an enabled visual section, presented through the same card API."""
+
+    post: Post
+    language_code: str
+    content_block: PostContentBlock | None = None
+
+    @property
+    def is_mini_post(self):
+        return self.content_block is not None
+
+    @property
+    def title(self):
+        return self.content_block.heading if self.content_block else self.post.title
+
+    @property
+    def summary(self):
+        if self.content_block:
+            return strip_tags(self.content_block.content).strip()
+        return self.post.summary
+
+    @property
+    def published_date(self):
+        return self.post.published_date
+
+    @property
+    def author(self):
+        return self.post.author
+
+    def get_absolute_url(self):
+        url = self.post.get_absolute_url_for_language(self.language_code)
+        if self.content_block:
+            return f"{url}#{self.content_block.anchor_or_default}"
+        return url
+
+    def get_featured_image(self):
+        if self.content_block:
+            return getattr(self.content_block.image_asset, "image", None)
+        return self.post.get_featured_image(language_code=self.language_code)
+
+    def get_featured_image_alt(self):
+        if self.content_block:
+            return self.content_block.image_alt_or_default
+        return self.post.get_featured_image_alt(language_code=self.language_code)
+
+    def get_social_image(self):
+        return self.get_featured_image()
+
+    def get_social_image_alt(self):
+        return self.get_featured_image_alt()
+
+
+def get_post_listing_entries(posts, *, language_code=None, include_mini_posts=True):
+    """Merge posts and explicitly published mini-posts into a chronological feed."""
+    language_code = language_code or get_language()
+    posts = list(
+        posts.select_related("author").prefetch_related(
+            "translations",
+            "translations__featured_image_asset",
+        )
+    )
+    if not posts:
+        return []
+
+    blocks_by_post_id = {}
+    if include_mini_posts:
+        blocks = (
+            PostContentBlock.objects.filter(
+                post_id__in=[post.pk for post in posts],
+                language=language_code,
+                block_type=PostContentBlock.BlockType.CONTENT,
+                show_in_listings=True,
+            )
+            .select_related("image_asset")
+            .order_by("post_id", "order", "pk")
+        )
+        for block in blocks:
+            if block.is_listable:
+                blocks_by_post_id.setdefault(block.post_id, []).append(block)
+
+    entries = []
+    for post in posts:
+        entries.append(EditorialListingEntry(post=post, language_code=language_code))
+        entries.extend(
+            EditorialListingEntry(
+                post=post,
+                language_code=language_code,
+                content_block=block,
+            )
+            for block in blocks_by_post_id.get(post.pk, [])
+        )
+    return entries
+
+
+def get_matching_mini_post_entries(query, *, language_code=None):
+    """Find enabled mini-posts by their own heading or content."""
+    language_code = language_code or get_language()
+    blocks = (
+        PostContentBlock.objects.filter(
+            language=language_code,
+            block_type=PostContentBlock.BlockType.CONTENT,
+            show_in_listings=True,
+            post__status="published",
+            post__translations__language_code=language_code,
+        )
+        .filter(Q(heading__icontains=query) | Q(content__icontains=query))
+        .select_related("post__author", "image_asset")
+        .prefetch_related("post__translations")
+        .order_by("-post__published_date", "order", "pk")
+        .distinct()
+    )
+    return [
+        EditorialListingEntry(
+            post=block.post,
+            language_code=language_code,
+            content_block=block,
+        )
+        for block in blocks
+        if block.is_listable
+    ]
+
+
 def get_published_posts_queryset(language_code=None):
     """Published posts that have an explicit translation in ``language_code``."""
     language_code = language_code or get_language()
@@ -48,6 +173,40 @@ def get_published_posts_queryset(language_code=None):
         Post.objects.language(language_code)
         .filter(status="published", translations__language_code=language_code)
         .distinct()
+    )
+
+
+def get_most_commented_posts_for_categories(
+    category_ids,
+    *,
+    exclude_post_id=None,
+    language_code=None,
+    limit=4,
+):
+    """Return published posts sharing the supplied categories, ranked by discussion."""
+    category_ids = list(category_ids)
+    if not category_ids:
+        return []
+
+    posts = get_published_posts_queryset(language_code).filter(
+        categories__pk__in=category_ids,
+    )
+    if exclude_post_id is not None:
+        posts = posts.exclude(pk=exclude_post_id)
+
+    return list(
+        posts.annotate(
+            approved_comment_count=Count(
+                "comments",
+                filter=Q(comments__is_approved=True),
+                distinct=True,
+            ),
+        )
+        .filter(approved_comment_count__gt=0)
+        .select_related("author")
+        .prefetch_related("translations", "translations__featured_image_asset")
+        .order_by("-approved_comment_count", "-published_date")
+        .distinct()[:limit]
     )
 
 

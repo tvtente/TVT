@@ -18,8 +18,8 @@
             <div class="featured-tag-cloud">
                 {% for tag in items %}
                     <a href="{{ tag.get_absolute_url }}"
-                       class="featured-tag-cloud__item featured-tag-cloud__item--{% if tag.recent_clicks >= 10 %}xl{% elif tag.recent_clicks >= 3 %}lg{% else %}md{% endif %}"
-                       style="--tag-delay: {{ forloop.counter0 }}; --tag-score: {{ tag.recent_clicks|default:0 }};">
+                       class="featured-tag-cloud__item {% if tag.cloud_font_size %}featured-tag-cloud__item--contextual{% else %}featured-tag-cloud__item--{% if tag.recent_clicks >= 10 %}xl{% elif tag.recent_clicks >= 3 %}lg{% else %}md{% endif %}{% endif %}"
+                       style="--tag-delay: {{ forloop.counter0 }}; --tag-score: {{ tag.recent_clicks|default:0 }};{% if tag.cloud_font_size %} --tag-cloud-font-size: {{ tag.cloud_font_size }}rem;{% endif %}">
                         {{ tag.label }}
                     </a>
                 {% empty %}

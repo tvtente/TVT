@@ -224,7 +224,7 @@ def _most_favorited_posts_queryset(language_code=None):
     )
 
 
-def _build_widget_items(widget_instance, language_code):
+def _build_widget_items(widget_instance, language_code, *, category=None):
     match widget_instance.widget_type:
         case "recent_posts":
             return list(
@@ -319,6 +319,49 @@ def _build_widget_items(widget_instance, language_code):
                     tag_order.get(tag.slug, len(tag_order)),
                 ),
             )[: widget_instance.item_count]
+
+        case "category_tag_cloud":
+            # This cloud belongs to a concrete post context.  Returning no
+            # items outside a post keeps it out of generic blog sidebars.
+            if category is None:
+                return []
+
+            tags_queryset = (
+                Tag.objects.language(language_code)
+                .filter(
+                    translations__language_code=language_code,
+                    post_links__language=language_code,
+                    post_links__post__status="published",
+                    post_links__post__translations__language_code=language_code,
+                    post_links__post__categories=category,
+                )
+                .annotate(
+                    num_posts=Count("post_links__post", distinct=True),
+                    recent_clicks=Sum(
+                        "daily_metrics__click_count",
+                        filter=Q(
+                            daily_metrics__date__gte=timezone.localdate()
+                            - timezone.timedelta(days=30)
+                        ),
+                    ),
+                )
+                .filter(num_posts__gt=0)
+                .order_by("-recent_clicks", "-click_count", "-num_posts", "translations__label")
+                .distinct()
+            )
+            tags = list(tags_queryset[: widget_instance.item_count])
+
+            # A continuous scale makes frequent tags more prominent without
+            # concealing the less common but still relevant ones.
+            weights = [
+                max(tag.recent_clicks or 0, tag.click_count or 0, tag.num_posts or 0)
+                for tag in tags
+            ]
+            smallest, largest = (min(weights), max(weights)) if weights else (0, 0)
+            for tag, weight in zip(tags, weights):
+                ratio = 0.5 if smallest == largest else (weight - smallest) / (largest - smallest)
+                tag.cloud_font_size = round(0.82 + (ratio * 0.52), 2)
+            return tags
 
         case "post_grid_recent":
             items_qs = _with_featured_image(
@@ -639,7 +682,16 @@ def _decorate_widget_items(widget_instance, items, zone_slug):
     return items
 
 
-def get_widget_items(widget_instance, language_code, zone_slug):
+def get_widget_items(widget_instance, language_code, zone_slug, *, category=None):
+    # A category cloud changes with the post being read.  Do not place it in
+    # the generic widget cache, whose key deliberately has no post/category.
+    if widget_instance.widget_type == Widget.WidgetType.CATEGORY_TAG_CLOUD:
+        return _decorate_widget_items(
+            widget_instance,
+            _build_widget_items(widget_instance, language_code, category=category),
+            zone_slug,
+        )
+
     cache_key = widget_items_cache_key(widget_instance.id, language_code, zone_slug)
 
     if widget_instance.cache_timeout > 0:
@@ -669,7 +721,7 @@ def get_widget_items(widget_instance, language_code, zone_slug):
 
     items = _decorate_widget_items(
         widget_instance,
-        _build_widget_items(widget_instance, language_code),
+        _build_widget_items(widget_instance, language_code, category=category),
         zone_slug,
     )
 
@@ -688,7 +740,7 @@ def get_widget_items(widget_instance, language_code, zone_slug):
     return items
 
 
-def get_processed_widgets_for_zone(zone_slug, language_code=None):
+def get_processed_widgets_for_zone(zone_slug, language_code=None, *, category=None):
     language_code = language_code or settings.LANGUAGE_CODE
 
     try:
@@ -700,7 +752,17 @@ def get_processed_widgets_for_zone(zone_slug, language_code=None):
     processed_widgets = []
     for widget_instance in zone.widgets.all():
         image_format = get_widget_image_format(widget_instance, zone_slug)
-        items = get_widget_items(widget_instance, language_code, zone_slug)
+        items = get_widget_items(
+            widget_instance,
+            language_code,
+            zone_slug,
+            category=category,
+        )
+        if (
+            widget_instance.widget_type == Widget.WidgetType.CATEGORY_TAG_CLOUD
+            and not items
+        ):
+            continue
         processed_widgets.append(
             {
                 "widget": widget_instance,

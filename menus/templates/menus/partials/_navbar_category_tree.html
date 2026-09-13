@@ -1,0 +1,27 @@
+{% load i18n %}
+
+{% for category in categories %}
+    <li class="category-menu-node">
+        {% if category.menu_children %}
+            <details class="category-menu-branch">
+                <summary>
+                    {% if category.menu_icon_class %}<i class="{{ category.menu_icon_class }} me-2" aria-hidden="true"></i>{% endif %}
+                    <span>{{ category.name|default:category.translated_title }}</span>
+                </summary>
+                <ul class="category-menu-branch__children">
+                    <li>
+                        <a class="category-menu-branch__all" href="{{ category.menu_url }}">
+                            {% blocktranslate with title=category.name|default:category.translated_title %}View all in {{ title }}{% endblocktranslate %}
+                        </a>
+                    </li>
+                    {% include "menus/partials/_navbar_category_tree.html" with categories=category.menu_children %}
+                </ul>
+            </details>
+        {% else %}
+            <a class="dropdown-item" href="{{ category.menu_url }}">
+                {% if category.menu_icon_class %}<i class="{{ category.menu_icon_class }} me-2" aria-hidden="true"></i>{% endif %}
+                {{ category.name|default:category.translated_title }}
+            </a>
+        {% endif %}
+    </li>
+{% endfor %}

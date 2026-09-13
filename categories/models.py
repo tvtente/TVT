@@ -57,6 +57,14 @@ class Category(MPTTModel, TranslatableModel):
         verbose_name=_("Parent Category"),
         help_text=_("Select a parent to create a sub-category.")
     )
+    menu_icon_class = models.CharField(
+        max_length=100,
+        blank=True,
+        verbose_name=_("Menu icon class"),
+        help_text=_(
+            "Optional Font Awesome classes, for example: fas fa-shield-alt."
+        ),
+    )
     
     objects = CategoryManager()
 

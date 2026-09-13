@@ -17,7 +17,7 @@
         
         {% include 'widgets/partials/_blog_categories_widget.html' with widget=data.widget items=data.items request=request %}
 
-    {% elif data.widget.widget_type == 'featured_tags' %}
+    {% elif data.widget.widget_type == 'featured_tags' or data.widget.widget_type == 'category_tag_cloud' %}
         
         {% include 'widgets/partials/_featured_tags_widget.html' with widget=data.widget items=data.items request=request %}
     

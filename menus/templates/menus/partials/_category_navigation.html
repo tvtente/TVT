@@ -1,0 +1,37 @@
+{% load i18n %}
+
+{% if categories %}
+    <ul class="category-navbar-menu">
+        <li class="category-navbar-menu__label">
+            <a href="{{ overview_url }}">
+                <i class="fas fa-compass" aria-hidden="true"></i>
+                {% translate "Categories" %}
+            </a>
+        </li>
+        {% for category in categories %}
+            <li class="category-navbar-menu__item">
+                {% if category.menu_children %}
+                    <details class="category-navbar-branch">
+                        <summary>
+                            {% if category.menu_icon_class %}<i class="{{ category.menu_icon_class }}" aria-hidden="true"></i>{% endif %}
+                            <span>{{ category.name|default:category.translated_title }}</span>
+                        </summary>
+                        <ul class="category-navbar-dropdown">
+                            <li>
+                                <a class="category-menu-branch__all" href="{{ category.menu_url }}">
+                                    {% blocktranslate with title=category.name|default:category.translated_title %}View all in {{ title }}{% endblocktranslate %}
+                                </a>
+                            </li>
+                            {% include "menus/partials/_navbar_category_tree.html" with categories=category.menu_children %}
+                        </ul>
+                    </details>
+                {% else %}
+                    <a href="{{ category.menu_url }}">
+                        {% if category.menu_icon_class %}<i class="{{ category.menu_icon_class }}" aria-hidden="true"></i>{% endif %}
+                        {{ category.name|default:category.translated_title }}
+                    </a>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}

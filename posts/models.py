@@ -376,6 +376,14 @@ class PostContentBlock(models.Model):
         verbose_name=_("Image alternative text"),
         help_text=_("Describe the image. If empty, the section title or post title is used."),
     )
+    show_in_listings = models.BooleanField(
+        default=False,
+        verbose_name=_("Show in listings and search"),
+        help_text=_(
+            "Show this complete visual section as a mini-post in latest entries "
+            "and search results."
+        ),
+    )
     related_post = models.ForeignKey(
         Post,
         null=True,
@@ -442,6 +450,17 @@ class PostContentBlock(models.Model):
         if self.block_type == self.BlockType.RELATED_POST:
             return bool(self.related_post_id)
         return False
+
+    @property
+    def is_listable(self):
+        """A public mini-post must be complete and explicitly enabled."""
+        return bool(
+            self.show_in_listings
+            and self.block_type == self.BlockType.CONTENT
+            and self.heading.strip()
+            and self.anchor_or_default
+            and self.is_renderable
+        )
 
     @property
     def anchor_or_default(self):
