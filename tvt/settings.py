@@ -208,9 +208,7 @@ MIDDLEWARE = [
 # In the Passenger deployment the application can receive /static/ requests
 # directly. WhiteNoise serves the files collected in STATIC_ROOT in production,
 # so the site does not depend on an Apache Alias rule for its theme and assets.
-# WhiteNoise must also serve assets in a staging/testing deployment when
-# DEBUG=False. This keeps a testing site behavior aligned with production.
-if not DEBUG:
+if ENVIRONMENT == 'production':
     MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
 
 ROOT_URLCONF = 'tvt.urls'
@@ -526,7 +524,7 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
 
-if not DEBUG:
+if ENVIRONMENT == 'production':
     STORAGES = {
         'staticfiles': {
             'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
