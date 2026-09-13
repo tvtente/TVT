@@ -186,6 +186,15 @@ body.sidebar-right-collapsed .site-sidebar-right {
     min-width: 0;
 }
 
+/* Full-width informational pages, such as 404, do not need empty side rails. */
+.site-content-grid--single-column {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.site-content-grid--single-column .site-sidebar {
+    display: none;
+}
+
 /* Widget panels need a clearer edge than the general content cards. */
 .site-sidebar .card {
     border: 1px solid color-mix(in srgb, var(--tavata-card-box-border) 72%, #6c757d) !important;

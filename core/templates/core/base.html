@@ -100,7 +100,7 @@
 
     {# --- MAIN CONTENT AREA --- #}
     <main class="site-main-layout flex-grow-1 pt-0 pb-4">
-        <div class="site-content-grid">
+        <div class="site-content-grid {% block content_grid_class %}{% endblock %}">
 
             {# Left Sidebar: Hidden on small screens, appears on medium and larger screens #}
             <aside class="site-sidebar site-sidebar-left">

@@ -6599,7 +6599,7 @@ msgstr "Ir a la página de inicio"
 
 #: templates/404.html:25
 msgid "View Posts"
-msgstr "Número de vistas"
+msgstr "Ver publicaciones"
 
 #: templates/admin/gallery/image/change_list.html:81
 msgid "List"
