@@ -2187,6 +2187,19 @@ msgstr "Categoría Padre"
 msgid "Select a parent to create a sub-category."
 msgstr "Seleccione un padre para crear una subcategoría."
 
+#: categories/models.py
+msgid "Show"
+msgstr "Mostrar"
+
+#: categories/models.py
+msgid "Show this category and its associated posts in public category trees, menus, and listings."
+msgstr "Muestra esta categoría y sus posts asociados en árboles, menús y listados públicos."
+
+#: categories/admin.py
+#, python-format
+msgid "The following child categories were also hidden: %(categories)s."
+msgstr "También se ocultaron las siguientes categorías hijas: %(categories)s."
+
 #: categories/templates/admin/categories/category/delete_confirmation.html:9
 #: categories/templates/admin/categories/category/delete_selected_confirmation.html:9
 #, python-format

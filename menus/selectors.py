@@ -81,7 +81,9 @@ def get_dynamic_posts_for_menu_item(item_obj):
 
 def _get_category_menu_tree(root_category):
     """Build a small presentation tree below a category configured as menu root."""
-    categories = list(root_category.get_descendants().order_by("tree_id", "lft"))
+    categories = list(
+        root_category.get_descendants().filter(is_visible=True).order_by("tree_id", "lft")
+    )
     categories_by_id = {category.pk: category for category in categories}
 
     for category in categories:
@@ -103,6 +105,7 @@ def get_blog_category_queryset(item_obj, language_code=None):
     language_code = language_code or get_language()
     categories = Category.objects.language(language_code).filter(
         translations__language_code=language_code,
+        is_visible=True,
     )
     if item_obj.link_category:
         # A bound category acts as the editorial root.  Return its descendants

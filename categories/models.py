@@ -65,6 +65,13 @@ class Category(MPTTModel, TranslatableModel):
             "Optional Font Awesome classes, for example: fas fa-shield-alt."
         ),
     )
+    is_visible = models.BooleanField(
+        default=True,
+        verbose_name=_("Show"),
+        help_text=_(
+            "Show this category and its associated posts in public category trees, menus, and listings."
+        ),
+    )
     
     objects = CategoryManager()
 

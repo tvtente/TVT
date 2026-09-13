@@ -13,6 +13,7 @@ def get_category_by_slug(category_slug):
     category = (
         Category.objects.language(language)
         .translated(language, slug=category_slug)
+        .filter(is_visible=True)
         .distinct()
         .first()
     )
@@ -20,7 +21,7 @@ def get_category_by_slug(category_slug):
         return category
 
     return get_object_or_404(
-        Category.objects.prefetch_related("translations").distinct(),
+        Category.objects.filter(is_visible=True).prefetch_related("translations").distinct(),
         translations__slug=category_slug,
     )
 
@@ -32,7 +33,7 @@ def category_tree_view(request):
     # We fetch ONLY the top-level categories.
     root_nodes = (
         Category.objects.language(get_language())
-        .filter(parent__isnull=True)
+        .filter(parent__isnull=True, is_visible=True)
         .distinct()
     )
 

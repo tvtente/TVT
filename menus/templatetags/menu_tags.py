@@ -1,6 +1,7 @@
 # File: menus/templatetags/menu_tags.py
 from django import template
 from django.conf import settings
+from django.urls import reverse
 
 from menus.selectors import (
     attach_visible_children_for_user,
@@ -59,9 +60,13 @@ def show_category_navigation(context, menu_slug):
     if category_menu is None:
         return {"categories": [], "overview_url": "#"}
 
+    # “Categorías” is the entry point to the complete taxonomy.  The menu
+    # item's optional root only controls which editorial branches are shown in
+    # this navigation bar; it must not turn the overview link into a filtered
+    # post list.
     return {
         "categories": category_menu.dynamic_children,
-        "overview_url": category_menu.get_url_for_user(user),
+        "overview_url": reverse("categories:category_list"),
     }
 
 

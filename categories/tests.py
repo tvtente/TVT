@@ -1,6 +1,8 @@
 from django.core.cache import cache
 from django.contrib.admin.sites import AdminSite
+from django.contrib.messages.storage.fallback import FallbackStorage
 from django.test import TestCase, override_settings
+from django.test.client import RequestFactory
 
 from categories.admin import CategoryAdmin
 from categories.cache_keys import category_tree_cache_key, category_tree_cache_keys
@@ -113,3 +115,23 @@ class CategoryAdminDeletionImpactTests(TestCase):
         self.assertEqual(impact["category_count"], 1)
         self.assertEqual(impact["related_posts_count"], 2)
         self.assertEqual(impact["uncategorized_posts_count"], 1)
+
+    def test_hiding_parent_hides_visible_descendants(self):
+        parent = self._create_category("parent", "Parent")
+        child = Category.objects.create(parent=parent)
+        child.set_current_language("en")
+        child.slug = "child"
+        child.name = "Child"
+        child.save()
+
+        request = RequestFactory().post("/")
+        request.session = {}
+        request._messages = FallbackStorage(request)
+        parent.is_visible = False
+
+        self.admin.save_model(request, parent, form=None, change=True)
+
+        parent.refresh_from_db()
+        child.refresh_from_db()
+        self.assertFalse(parent.is_visible)
+        self.assertFalse(child.is_visible)

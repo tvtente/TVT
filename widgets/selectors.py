@@ -326,6 +326,7 @@ def _build_widget_items(widget_instance, language_code, *, category=None):
             if category is None:
                 return []
 
+            category_tree = category.get_descendants(include_self=True)
             tags_queryset = (
                 Tag.objects.language(language_code)
                 .filter(
@@ -333,7 +334,7 @@ def _build_widget_items(widget_instance, language_code, *, category=None):
                     post_links__language=language_code,
                     post_links__post__status="published",
                     post_links__post__translations__language_code=language_code,
-                    post_links__post__categories=category,
+                    post_links__post__categories__in=category_tree,
                 )
                 .annotate(
                     num_posts=Count("post_links__post", distinct=True),

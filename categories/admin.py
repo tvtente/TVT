@@ -3,7 +3,7 @@ from django.contrib import admin, messages
 from django.contrib.admin import helpers
 from django.core.exceptions import PermissionDenied
 from django.template.response import TemplateResponse
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext, gettext_lazy as _
 from django.utils.translation import ngettext
 from mptt.admin import DraggableMPTTAdmin
 from mptt.forms import MPTTAdminForm
@@ -20,12 +20,20 @@ class CategoryAdminForm(MPTTAdminForm, TranslatableModelForm):
 @admin.register(Category)
 class CategoryAdmin(TranslatableAdmin, DraggableMPTTAdmin):
     form = CategoryAdminForm
+    change_form_template = "admin/categories/category/change_form.html"
     delete_confirmation_template = "admin/categories/category/delete_confirmation.html"
     delete_selected_confirmation_template = (
         "admin/categories/category/delete_selected_confirmation.html"
     )
-    list_display = ("tree_actions", "indented_title", "current_slug", "menu_icon_class")
+    list_display = (
+        "tree_actions",
+        "indented_title",
+        "is_visible",
+        "current_slug",
+        "menu_icon_class",
+    )
     list_display_links = ("indented_title",)
+    list_filter = ("is_visible",)
     search_fields = (
         "translations__name",
         "translations__description",
@@ -35,6 +43,52 @@ class CategoryAdmin(TranslatableAdmin, DraggableMPTTAdmin):
 
     def get_queryset(self, request):
         return super().get_queryset(request).prefetch_related("translations")
+
+    def changeform_view(self, request, object_id=None, form_url="", extra_context=None):
+        """Expose the affected visible descendants to the confirmation UI."""
+        extra_context = extra_context or {}
+        extra_context["visible_descendant_names"] = []
+        category = self.get_object(request, object_id) if object_id else None
+        if category is not None:
+            extra_context["visible_descendant_names"] = [
+                descendant.safe_translation_getter("name", any_language=True)
+                for descendant in category.get_descendants().filter(is_visible=True)
+            ]
+        return super().changeform_view(request, object_id, form_url, extra_context)
+
+    def save_model(self, request, obj, form, change):
+        """Hiding a parent also hides every visible category below it."""
+        previously_visible = None
+        if change and obj.pk:
+            previously_visible = Category.objects.filter(pk=obj.pk).values_list(
+                "is_visible",
+                flat=True,
+            ).first()
+
+        super().save_model(request, obj, form, change)
+
+        if previously_visible and not obj.is_visible:
+            descendants = list(obj.get_descendants().filter(is_visible=True))
+            if not descendants:
+                return
+
+            descendant_names = [
+                descendant.safe_translation_getter("name", any_language=True)
+                for descendant in descendants
+            ]
+            Category.objects.filter(pk__in=[descendant.pk for descendant in descendants]).update(
+                is_visible=False
+            )
+            from categories.signals import clear_category_tree_cache
+
+            clear_category_tree_cache(sender=Category, instance=obj)
+            self.message_user(
+                request,
+                gettext(
+                    "The following child categories were also hidden: %(categories)s."
+                ) % {"categories": ", ".join(descendant_names)},
+                level=messages.WARNING,
+            )
 
     def get_prepopulated_fields(self, request, obj=None):
         return {"slug": ("name",)}

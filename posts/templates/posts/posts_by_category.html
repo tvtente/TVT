@@ -99,12 +99,13 @@
 
 {% block sidebar_left %}
   <div class="sticky-top pt-5">
+    {% include "posts/partials/_category_discussed_posts_sidebar.html" %}
     {% show_widget_zone 'blog-sidebar-left' %}
   </div>
 {% endblock %}
 
 {% block sidebar_right %}
   <div class="sticky-top pt-5">
-    {% show_widget_zone 'blog-sidebar-right' %}
+    {% show_widget_zone 'blog-sidebar-right' category=category %}
   </div>
 {% endblock %}

@@ -1,0 +1,8 @@
+{% extends "admin/change_form.html" %}
+{% load static %}
+
+{% block extrahead %}
+  {{ block.super }}
+  {{ visible_descendant_names|json_script:"category-visible-descendants" }}
+  <script src="{% static 'categories/admin/category_visibility.js' %}" defer></script>
+{% endblock %}

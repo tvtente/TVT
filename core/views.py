@@ -30,7 +30,10 @@ HOMEPAGE_POSTS_CATEGORY_SLUG = "fundamentos-de-la-prevencion-moderna"
 def _get_homepage_posts_queryset():
     """Posts assigned to the editorial category selected for the homepage."""
     category = (
-        Category.objects.filter(translations__slug=HOMEPAGE_POSTS_CATEGORY_SLUG)
+        Category.objects.filter(
+            translations__slug=HOMEPAGE_POSTS_CATEGORY_SLUG,
+            is_visible=True,
+        )
         .distinct()
         .first()
     )
@@ -40,7 +43,13 @@ def _get_homepage_posts_queryset():
             HOMEPAGE_POSTS_CATEGORY_SLUG,
         )
         return Post.objects.none()
-    return Post.objects.filter(categories__in=category.get_descendants(include_self=True)).distinct()
+    return (
+        Post.objects.filter(
+            categories__in=category.get_descendants(include_self=True),
+            categories__is_visible=True,
+        )
+        .distinct()
+    )
 
 
 def public_verification_file(request):

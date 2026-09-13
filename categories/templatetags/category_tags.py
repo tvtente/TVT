@@ -45,7 +45,11 @@ def render_category_tree(context):
         
         # For `recursetree` to work efficiently, we fetch all nodes at once.
         # MPTT ensures they are correctly ordered for tree construction.
-        nodes = Category.objects.language(language_code).all().distinct()
+        nodes = (
+            Category.objects.language(language_code)
+            .filter(is_visible=True)
+            .distinct()
+        )
         
         # Evaluate to a list before caching to store the results, not the lazy queryset.
         nodes = list(nodes)

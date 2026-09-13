@@ -707,7 +707,7 @@ def posts_by_category_view(request, category_slug):
     """
     language = get_language()
     category = get_category_by_slug(category_slug)
-    category_tree = category.get_descendants(include_self=True)
+    category_tree = category.get_descendants(include_self=True).filter(is_visible=True)
 
     all_posts = (
         Post.objects
@@ -716,6 +716,7 @@ def posts_by_category_view(request, category_slug):
             status="published",
             translations__language_code=language,
             categories__in=category_tree,
+            categories__is_visible=True,
         )
         .distinct()
         .order_by("-published_date")
@@ -747,6 +748,10 @@ def posts_by_category_view(request, category_slug):
         language_code=get_language(),
         any_language=True,
     )
+    category_discussed_posts = get_most_commented_posts_for_categories(
+        category_tree.values_list("pk", flat=True),
+        language_code=language,
+    )
 
     context = {
         "category": category,
@@ -754,6 +759,7 @@ def posts_by_category_view(request, category_slug):
         "breadcrumbs": breadcrumbs,
         "fallback_posts": fallback_posts,
         "category_label": category_label,
+        "category_discussed_posts": category_discussed_posts,
         "translatable_object": category,
         "untranslated_post_cards": get_untranslated_post_cards(
             language,

@@ -125,29 +125,6 @@
     document.querySelectorAll("#post_form .summernote-div iframe").forEach(fitSummernoteFrame);
   }
 
-  function installSidebarToggle() {
-    const sidebar = document.getElementById("nav-sidebar");
-    const content = document.getElementById("content");
-    if (!sidebar || !content || document.querySelector(".post-editor-sidebar-toggle")) return;
-
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "post-editor-sidebar-toggle";
-
-    function setCollapsed(collapsed) {
-      document.body.classList.toggle("post-editor-sidebar-collapsed", collapsed);
-      button.textContent = collapsed ? "☰ Mostrar menú" : "◀ Ocultar menú";
-      button.setAttribute("aria-expanded", String(!collapsed));
-      window.localStorage.setItem("post-editor-sidebar-collapsed", collapsed ? "yes" : "no");
-    }
-
-    setCollapsed(window.localStorage.getItem("post-editor-sidebar-collapsed") === "yes");
-    button.addEventListener("click", function () {
-      setCollapsed(!document.body.classList.contains("post-editor-sidebar-collapsed"));
-    });
-    content.insertBefore(button, content.firstChild);
-  }
-
   document.addEventListener("change", function (event) {
     if (!event.target.matches('#content_blocks-group select[name$="-block_type"]')) return;
     updateRow(event.target.closest(".inline-related"));
@@ -168,8 +145,6 @@
     document.querySelectorAll("#content_blocks-group .inline-related").forEach(initialiseMediaPicker);
     fitAllSummernoteFrames();
     renameAddButton();
-    installSidebarToggle();
-
     // Django emits this when the user clicks "Add another" in an inline.
     // Using its event avoids observing and mutating the same DOM tree.
     if (window.django && window.django.jQuery) {
