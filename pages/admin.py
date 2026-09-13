@@ -35,6 +35,7 @@ class PageSectionInline(TranslatableStackedInline):
         "internal_title",
         "section_type",
         "enabled",
+        "allowed_groups",
         "order",
         "heading",
         "content",
@@ -49,6 +50,7 @@ class PageSectionInline(TranslatableStackedInline):
     )
     ordering = ("order", "id")
     classes = ("collapse",)
+    filter_horizontal = ("allowed_groups",)
 
 
 class CitationInline(GenericTabularInline):

@@ -1997,6 +1997,30 @@ nav[aria-label="breadcrumb"] + * {
   font-size: 1rem;
 }
 
+.navbar-right-actions .btn.site-login-button {
+  flex: 0 0 auto;
+  min-width: 7.25rem;
+  padding-inline: .7rem !important;
+  white-space: nowrap;
+}
+
+/* Chrome/Chromium use this hint for their native saved-credentials popover.
+   Keeping it light prevents dark browser UI from rendering dark usernames on
+   a dark background while the site's own theme is active. */
+.auth-login-form input.form-control {
+  color-scheme: light;
+  background-color: #fff;
+  color: #18242a;
+}
+
+.auth-login-form input.form-control:-webkit-autofill,
+.auth-login-form input.form-control:-webkit-autofill:hover,
+.auth-login-form input.form-control:-webkit-autofill:focus {
+  -webkit-text-fill-color: #18242a;
+  -webkit-box-shadow: 0 0 0 1000px #fff inset;
+  caret-color: #18242a;
+}
+
 .navbar-right-actions .position-absolute.badge {
   position: absolute;
   display: flex;
@@ -2622,6 +2646,10 @@ nav[aria-label="breadcrumb"] + * {
   .navbar-right-actions .btn {
     height: 32px !important;
     width: 32px !important;
+  }
+
+  .navbar-right-actions .btn.site-login-button {
+    width: auto !important;
   }
 
   .navbar-right-actions .btn i {

@@ -2,6 +2,7 @@
 import logging
 
 from django.conf import settings
+from django.db.models import Q
 from django.contrib.contenttypes.models import ContentType
 from django.http import Http404
 from django.shortcuts import redirect, render
@@ -55,7 +56,7 @@ def _group_page_sections(page_sections):
     return grouped
 
 
-def build_page_detail_context(page):
+def build_page_detail_context(page, user=None):
     language = get_language()
     page_sections = (
         PageSection.objects.language(language)
@@ -64,6 +65,12 @@ def build_page_detail_context(page):
         .prefetch_related("linked_page__translations", "linked_page__categories")
         .distinct()
     )
+    if user and user.is_authenticated:
+        page_sections = page_sections.filter(
+            Q(allowed_groups__isnull=True) | Q(allowed_groups__user=user)
+        ).distinct()
+    else:
+        page_sections = page_sections.filter(allowed_groups__isnull=True)
     has_page_sections = page_sections.exists()
     uses_modular_sections = has_page_sections
     show_default_page_body = not has_page_sections
@@ -166,7 +173,7 @@ def page_detail_view(request, slug):
         with override(language):
             return redirect(page.get_absolute_url())
 
-    context = build_page_detail_context(page)
+    context = build_page_detail_context(page, user=request.user)
 
     return render(request, 'pages/page_detail.html', context)
 

@@ -100,7 +100,7 @@ def home(request):
         # A more robust solution might render a 500 error page.
 
     context = (
-        build_page_detail_context(homepage)
+        build_page_detail_context(homepage, user=request.user)
         if homepage is not None
         else {
             "page": None,

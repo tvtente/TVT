@@ -371,14 +371,14 @@ menu = get_menu()
 # Publications
 # ============================================================
 
-publications_parent = create_or_update_public_parent(
+publications_parent = create_or_update_private_parent(
     menu=menu,
     title_es="Publicaciones",
     title_en="Publications",
     title_ca="Publicacions",
     order=4,
     icon_class="fas fa-book-open",
-    url="#",
+    group_names=PUBLICATION_GROUPS,
     aliases=[
         "Scientific Admin",
         "Scientific",
@@ -390,7 +390,7 @@ publications_parent = create_or_update_public_parent(
     ],
 )
 
-create_or_update_public_child_item(
+create_or_update_private_child_item(
     menu=menu,
     parent=publications_parent,
     title_es="Ver publicaciones",
@@ -399,6 +399,7 @@ create_or_update_public_child_item(
     url="/publications/",
     order=10,
     icon_class="fas fa-book-open-reader",
+    group_names=PUBLICATION_GROUPS,
 )
 
 create_or_update_private_child_item(

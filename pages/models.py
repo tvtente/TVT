@@ -1,7 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import F, Q
-from django.contrib.auth.models import User
+from django.contrib.auth.models import Group, User
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.contrib.contenttypes.fields import GenericRelation
@@ -341,6 +341,15 @@ class PageSection(TranslatableModel):
         verbose_name=_("Background Image"),
     )
     enabled = models.BooleanField(default=True, db_index=True, verbose_name=_("Enabled"))
+    allowed_groups = models.ManyToManyField(
+        Group,
+        blank=True,
+        related_name="visible_page_sections",
+        verbose_name=_("Visible for groups"),
+        help_text=_(
+            "Leave empty to show this section to everyone. Select groups to restrict it to authenticated members."
+        ),
+    )
     order = models.PositiveIntegerField(default=0, verbose_name=_("Display Order"))
     background_style = models.CharField(
         max_length=20,
@@ -385,6 +394,14 @@ class PageSection(TranslatableModel):
 
     def __str__(self):
         return self.translated_internal_title
+
+    def is_visible_for_user(self, user):
+        """Return whether this section can be displayed to ``user``."""
+        if not self.allowed_groups.exists():
+            return True
+        if not user or not user.is_authenticated:
+            return False
+        return self.allowed_groups.filter(user=user).exists()
 
     def clean(self):
         errors = {}
