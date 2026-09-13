@@ -16,6 +16,10 @@ from posts import views as post_views
 # URLS THAT SHOULD NOT BE TRANSLATED (e.g., admin, auth process)
 # ==============================================================================
 urlpatterns = [
+    # The public site is currently Spanish-first.  Keep the bare domain
+    # deterministic instead of letting LocaleMiddleware choose a language
+    # from an old cookie or the browser's Accept-Language header.
+    path('', RedirectView.as_view(url='/es/', permanent=False), name='spanish_home_redirect'),
     # Browsers often request this path automatically, even when a page uses an
     # SVG favicon. Redirect it to the bundled fallback so the request is not a 404.
     path('favicon.ico', RedirectView.as_view(url=f'{settings.STATIC_URL}images/favicon.svg', permanent=False)),

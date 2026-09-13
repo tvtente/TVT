@@ -5846,6 +5846,22 @@ msgstr "Color principal"
 msgid "Dark Color"
 msgstr "Color oscuro"
 
+#: site_settings/models.py
+msgid "Main navigation background color"
+msgstr "Color de fondo de navegación superior"
+
+#: site_settings/models.py
+msgid "Background color of the upper navigation menu."
+msgstr "Color de fondo del menú de navegación superior."
+
+#: site_settings/models.py
+msgid "Category navigation background color"
+msgstr "Color de fondo de navegación de categorías"
+
+#: site_settings/models.py
+msgid "Background color of the category navigation menu."
+msgstr "Color de fondo del menú de navegación de categorías."
+
 #: site_settings/models.py:18
 msgid "Items per Page in Blog/Category lists"
 msgstr "Posts por Página en el Blog/Lista de Categorias"

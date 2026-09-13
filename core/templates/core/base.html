@@ -38,8 +38,10 @@
     <link rel="stylesheet" href="{% static 'css/theme.css' %}">
     <style>
         :root {
-            --tavata-yellow: {{ site_template.primary_color|default:"#ffc107" }};
-            --tavata-dark: {{ site_template.dark_color|default:"#212529" }};
+            --tavata-yellow: {{ site_template.primary_color|default:"#F8D454" }};
+            --tavata-dark: {{ site_template.dark_color|default:"#003399" }};
+            --tavata-main-navigation-bg: {{ site_template.main_navigation_background_color|default:"#003399" }};
+            --tavata-category-navigation-bg: {{ site_template.category_navigation_background_color|default:"#1B262B" }};
             --tavata-light: {{ site_template.light_color|default:"#f8f9fa" }};
             --tavata-body-bg: {{ site_template.body_background_color|default:"#f8f9fa" }};
             --tavata-body-color: {{ site_template.body_text_color|default:"#212529" }};

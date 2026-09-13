@@ -1,5 +1,6 @@
 from django.template import Context, Template
 from django.test import TestCase
+from django.utils.translation import gettext
 
 from site_settings.models import SiteConfiguration, SiteTemplate
 
@@ -14,7 +15,7 @@ class SiteConfigurationTests(TestCase):
 
         self.assertEqual(config.pk, same_config.pk)
         self.assertEqual(same_config.blog_items_per_page, 12)
-        self.assertEqual(str(same_config), "Site Configuration")
+        self.assertEqual(str(same_config), gettext("Site Configuration"))
 
 
 class SiteTemplateTests(TestCase):
@@ -32,7 +33,7 @@ class SiteTemplateTests(TestCase):
         chosen = SiteTemplate.get_chosen()
 
         self.assertTrue(chosen.chosen)
-        self.assertEqual(chosen.name, "Default")
+        self.assertEqual(chosen.name, gettext("Default"))
 
     def test_get_active_site_template_tag_returns_chosen_template(self):
         SiteTemplate.objects.create(name="Base", chosen=False)

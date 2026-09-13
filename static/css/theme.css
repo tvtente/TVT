@@ -10,8 +10,8 @@
 
 :root {
     /* 1. Definimos nuestros colores base */
-    --tavata-yellow: #ffc107;
-    --tavata-dark: #212529;
+    --tavata-yellow: #F8D454;
+    --tavata-dark: #003399;
     --tavata-light: #f8f9fa;
     --tavata-body-bg: var(--tavata-light);
     --tavata-body-color: var(--tavata-dark);
@@ -33,10 +33,10 @@
 
     /* 2. Sobrescribimos las variables de color principales de Bootstrap */
     --bs-primary: var(--tavata-yellow);       /* El color primario ahora es nuestro amarillo */
-    --bs-primary-rgb: 255, 193, 7;           /* La versión RGB para transparencias (muy importante) */
+    --bs-primary-rgb: 248, 212, 84;          /* La versión RGB para transparencias (muy importante) */
 
     --bs-dark: var(--tavata-dark);
-    --bs-dark-rgb: 33, 37, 41;
+    --bs-dark-rgb: 0, 51, 153;
 
     --bs-light: var(--tavata-light);
     --bs-light-rgb: 248, 249, 250;
@@ -628,7 +628,7 @@ body.sidebar-right-collapsed .site-sidebar-right {
     justify-content: stretch;
     min-height: 360px;
     background:
-        radial-gradient(circle at 78% 22%, rgba(255, 193, 7, 0.22), transparent 22%),
+        radial-gradient(circle at 78% 22%, rgba(248, 212, 84, 0.22), transparent 22%),
         linear-gradient(145deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0)),
         linear-gradient(180deg, #6a6f79 0%, #4f5661 38%, #2d333b 100%);
 }
@@ -1025,10 +1025,14 @@ header,
 
 /* --- Barra independiente para la taxonomía editorial --- */
 .category-navbar {
-    background: #1b262b;
+    background: var(--tavata-category-navigation-bg, #1B262B);
     border-top: 1px solid rgba(255, 255, 255, .10);
     position: relative;
     z-index: 1090;
+}
+
+.site-main-navbar {
+    background-color: var(--tavata-main-navigation-bg, #003399) !important;
 }
 
 .category-navbar-menu {
@@ -1059,7 +1063,7 @@ header,
 }
 
 .category-navbar-menu__label a {
-    background: rgba(255, 193, 7, .14);
+    background: rgba(248, 212, 84, .14);
     color: #ffd45a;
     font-weight: 600;
 }
@@ -1773,7 +1777,7 @@ nav[aria-label="breadcrumb"] + * {
   --bs-pagination-hover-border-color: var(--tavata-yellow);
   --bs-pagination-focus-color: var(--tavata-dark);
   --bs-pagination-focus-bg: var(--tavata-yellow);
-  --bs-pagination-focus-box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+  --bs-pagination-focus-box-shadow: 0 0 0 0.2rem rgba(248, 212, 84, 0.25);
   --bs-pagination-active-color: var(--tavata-dark);
   --bs-pagination-active-bg: var(--tavata-yellow);
   --bs-pagination-active-border-color: var(--tavata-yellow);
@@ -2187,13 +2191,13 @@ nav[aria-label="breadcrumb"] + * {
 }
 
 .user-avatar-toggle img {
-  border: 2px solid rgba(255, 193, 7, 0.85);
+  border: 2px solid rgba(248, 212, 84, 0.85);
 }
 
 .user-avatar-menu {
   min-width: 260px;
   border-radius: 0.9rem;
-  border: 1px solid rgba(255, 193, 7, 0.2);
+  border: 1px solid rgba(248, 212, 84, 0.2);
   z-index: 1202;
 }
 
@@ -2581,5 +2585,55 @@ nav[aria-label="breadcrumb"] + * {
   .main-navbar-menu .navbar-nav,
   .navbar .navbar-nav {
     gap: 0;
+  }
+}
+
+/* --- Desktop header density: align both general-navigation rows with the
+   category bar without making touch controls too small on mobile. --- */
+@media (min-width: 992px) {
+  .navbar {
+    --bs-navbar-padding-y: .15rem;
+  }
+
+  .navbar-collapse-wrapper {
+    gap: .35rem;
+  }
+
+  .navbar-collapse-wrapper.navbar-two-level {
+    gap: .1rem;
+  }
+
+  .navbar-collapse-wrapper.navbar-two-level > .main-navbar-menu {
+    padding-top: .1rem;
+  }
+
+  .main-navbar-menu .nav-link,
+  .navbar .nav-link {
+    font-size: .9rem;
+    min-height: 2.6rem;
+    padding: .65rem .85rem;
+  }
+
+  .navbar-right-actions {
+    gap: .35rem !important;
+    min-height: 2.6rem;
+  }
+
+  .navbar-right-actions .btn {
+    height: 32px !important;
+    width: 32px !important;
+  }
+
+  .navbar-right-actions .btn i {
+    font-size: .9rem;
+  }
+
+  .navbar-right-actions .user-avatar-toggle img {
+    height: 32px !important;
+    width: 32px !important;
+  }
+
+  .navbar-promo-banner {
+    --navbar-banner-height: 32px !important;
   }
 }

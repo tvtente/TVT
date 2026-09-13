@@ -20,6 +20,8 @@ from .models import SiteConfiguration, SiteTemplate
 COLOR_FIELDS = {
     "primary_color",
     "dark_color",
+    "main_navigation_background_color",
+    "category_navigation_background_color",
     "light_color",
     "body_background_color",
     "body_text_color",
@@ -67,6 +69,8 @@ SITE_TEMPLATE_HELP_TEXTS = {
     "footer_copyright_text": _("Text shown in the footer. Use {year} to insert the current year automatically."),
     "primary_color": _("Main accent color. Used by buttons, highlights, separators, and theme accents."),
     "dark_color": _("Dark theme color. Used by dark header areas, strong contrast elements, and dark buttons."),
+    "main_navigation_background_color": _("Background color of the upper navigation menu."),
+    "category_navigation_background_color": _("Background color of the category navigation menu."),
     "light_color": _("Light theme color. Used by light backgrounds and subtle contrast areas."),
     "body_background_color": _("Main page background color. This affects the overall feel of the whole site."),
     "body_text_color": _("Default text color across public pages. Keep strong contrast against the body background."),
@@ -253,6 +257,8 @@ class SiteTemplateAdmin(TranslatableAdmin):
             "fields": (
                 "primary_color",
                 "dark_color",
+                "main_navigation_background_color",
+                "category_navigation_background_color",
                 "light_color",
                 "body_background_color",
                 "body_text_color",

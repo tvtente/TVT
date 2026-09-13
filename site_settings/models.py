@@ -206,8 +206,20 @@ class SiteTemplate(TranslatableModel):
         verbose_name=_("Navigation Banner Link"),
         help_text=_("Destination URL when the navigation banner is clicked."),
     )
-    primary_color = models.CharField(max_length=7, default="#ffc107", verbose_name=_("Primary Color"))
-    dark_color = models.CharField(max_length=7, default="#212529", verbose_name=_("Dark Color"))
+    primary_color = models.CharField(max_length=7, default="#F8D454", verbose_name=_("Primary Color"))
+    dark_color = models.CharField(max_length=7, default="#003399", verbose_name=_("Dark Color"))
+    main_navigation_background_color = models.CharField(
+        max_length=7,
+        default="#003399",
+        verbose_name=_("Main navigation background color"),
+        help_text=_("Background color of the upper navigation menu."),
+    )
+    category_navigation_background_color = models.CharField(
+        max_length=7,
+        default="#1B262B",
+        verbose_name=_("Category navigation background color"),
+        help_text=_("Background color of the category navigation menu."),
+    )
     light_color = models.CharField(max_length=7, default="#f8f9fa", verbose_name=_("Light Color"))
     body_background_color = models.CharField(max_length=7, default="#f8f9fa", verbose_name=_("Body Background Color"))
     body_text_color = models.CharField(max_length=7, default="#212529", verbose_name=_("Body Text Color"))
