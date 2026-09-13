@@ -95,6 +95,29 @@ STATIC_URL=/static/
 MEDIA_URL=/media/
 ```
 
+### SMTP email (recommended)
+
+Create a mailbox in cPanel, such as `no-reply@yourdomain.com`. In **Email
+Accounts → Connect Devices**, copy the outgoing server and port offered by the
+hosting provider. Add the following variables to the Python application; do
+not commit the password to Git:
+
+```env
+EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
+EMAIL_HOST=mail.yourdomain.com
+EMAIL_PORT=587
+EMAIL_HOST_USER=no-reply@yourdomain.com
+EMAIL_HOST_PASSWORD=the-mailbox-password
+EMAIL_USE_TLS=True
+EMAIL_USE_SSL=False
+DEFAULT_FROM_EMAIL=no-reply@yourdomain.com
+SERVER_EMAIL=no-reply@yourdomain.com
+```
+
+If cPanel specifies SSL on port `465`, use `EMAIL_PORT=465`,
+`EMAIL_USE_SSL=True`, and `EMAIL_USE_TLS=False`. Never enable TLS and SSL at
+the same time.
+
 ### Optional hardening flags
 
 ```env

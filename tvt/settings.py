@@ -138,6 +138,26 @@ else:  # production
     DEBUG = False
     ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())  # -> Permite múltiples hosts separados por comas
     EMAIL_BACKEND = config('EMAIL_BACKEND')
+
+# SMTP credentials belong to the runtime environment, never to the repository.
+# They are optional outside SMTP environments so development can continue using
+# Django's console/locmem email backends.
+EMAIL_HOST = config('EMAIL_HOST', default='').strip()
+EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='').strip()
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=False, cast=config_bool)
+EMAIL_USE_SSL = config('EMAIL_USE_SSL', default=False, cast=config_bool)
+EMAIL_TIMEOUT = config('EMAIL_TIMEOUT', default=20, cast=int)
+DEFAULT_FROM_EMAIL = config(
+    'DEFAULT_FROM_EMAIL',
+    default=EMAIL_HOST_USER or ADMIN_EMAIL,
+).strip()
+SERVER_EMAIL = config('SERVER_EMAIL', default=DEFAULT_FROM_EMAIL).strip()
+
+if EMAIL_USE_TLS and EMAIL_USE_SSL:
+    raise ValueError('EMAIL_USE_TLS and EMAIL_USE_SSL cannot both be enabled.')
+
 CSRF_TRUSTED_ORIGINS = config(
     'CSRF_TRUSTED_ORIGINS',
     default='',
@@ -421,6 +441,15 @@ if ENVIRONMENT == 'production':
         raise ValueError(
             "Invalid production configuration: EMAIL_BACKEND must not use the console backend."
         )
+    if EMAIL_BACKEND == 'django.core.mail.backends.smtp.EmailBackend':
+        if not EMAIL_HOST:
+            raise ValueError(
+                'Invalid production configuration: EMAIL_HOST is required for SMTP.'
+            )
+        if not DEFAULT_FROM_EMAIL:
+            raise ValueError(
+                'Invalid production configuration: DEFAULT_FROM_EMAIL is required for SMTP.'
+            )
     if (
         CACHE_BACKEND == 'django.core.cache.backends.locmem.LocMemCache'
         and not ALLOW_PRODUCTION_LOCMEM_CACHE
