@@ -205,6 +205,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# In the Passenger deployment the application can receive /static/ requests
+# directly. WhiteNoise serves the files collected in STATIC_ROOT in production,
+# so the site does not depend on an Apache Alias rule for its theme and assets.
+if ENVIRONMENT == 'production':
+    MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
+
 ROOT_URLCONF = 'tvt.urls'
 
 # Instagram / Meta webhook and local AI. These values are defined in .env for
@@ -517,6 +523,16 @@ else:
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
+
+if ENVIRONMENT == 'production':
+    STORAGES = {
+        'staticfiles': {
+            'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
+        },
+        'default': {
+            'BACKEND': 'django.core.files.storage.FileSystemStorage',
+        },
+    }
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
