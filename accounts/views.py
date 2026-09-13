@@ -50,6 +50,7 @@ from .models import (
     UserFollow,
     UserNotification,
 )
+from .services import create_new_follower_notification
 
 from posts.models import Post
 from comments.models import Comment
@@ -680,6 +681,7 @@ def toggle_follow_view(request, username):
         message = gettext("You stopped following %(user)s.") % {"user": target_user.username}
     else:
         UserFollow.objects.create(follower=request.user, followed=target_user)
+        create_new_follower_notification(follower=request.user, followed=target_user)
         is_following = True
         message = gettext("You are now following %(user)s.") % {"user": target_user.username}
 

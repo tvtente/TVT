@@ -1,10 +1,60 @@
+import logging
+from urllib.parse import urljoin
+
+from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.core.mail import send_mail
+from django.db import transaction
 from django.utils.translation import gettext
 
 from accounts.models import UserFollow, UserNotification
 
 
 User = get_user_model()
+logger = logging.getLogger(__name__)
+
+
+def _absolute_notification_url(url):
+    if not url:
+        return settings.PUBLIC_SITE_URL
+    if url.startswith(("https://", "http://")):
+        return url
+    return urljoin(f"{settings.PUBLIC_SITE_URL.rstrip('/')}/", url.lstrip("/"))
+
+
+def send_notification_email(notification):
+    """Deliver a concise, non-blocking email for a newly created notification."""
+    if not getattr(settings, "EMAIL_NOTIFICATIONS_ENABLED", False):
+        return False
+
+    recipient_email = (getattr(notification.recipient, "email", "") or "").strip()
+    if not recipient_email:
+        return False
+
+    notification_url = _absolute_notification_url(notification.url)
+    body = "\n\n".join(
+        [
+            notification.message,
+            gettext("Open the notification:") + f" {notification_url}",
+            gettext("You receive this email because of activity in your TVTente account."),
+        ]
+    )
+
+    def deliver():
+        try:
+            send_mail(
+                subject=f"[TVTente] {notification.title}",
+                message=body,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[recipient_email],
+                fail_silently=False,
+            )
+        except Exception:
+            # A mail provider outage must never prevent comments or follows.
+            logger.exception("Could not send notification email to user %s", notification.recipient_id)
+
+    transaction.on_commit(deliver)
+    return True
 
 
 def get_user_display_name(user):
@@ -111,26 +161,99 @@ def create_comment_on_post_notification(comment):
     else:
         actor_name = comment.author_name or gettext("Someone")
 
-    _, created = create_notification(
+    post_title = post.safe_translation_getter("title", any_language=True) or ""
+    if comment.is_approved:
+        title = gettext("New comment on your post")
+        message = gettext('%(user)s commented on your post "%(title)s".') % {
+            "user": actor_name,
+            "title": post_title,
+        }
+    else:
+        title = gettext("New comment awaiting review")
+        message = gettext('%(user)s commented on "%(title)s" and it is awaiting review.') % {
+            "user": actor_name,
+            "title": post_title,
+        }
+
+    notification, created = create_notification(
         recipient=recipient,
         actor=actor,
         notification_type=UserNotification.NotificationType.COMMENT_ON_YOUR_POST,
-        title=gettext("New comment on your post"),
-        message=gettext('%(user)s commented on your post "%(title)s".')
-        % {
-            "user": actor_name,
-            "title": post.safe_translation_getter("title", any_language=True) or "",
-        },
+        title=title,
+        message=message,
         url=post.get_absolute_url(),
         related_post=post,
         payload={
             "comment_id": comment.id,
             "post_id": post.id,
-            "post_title": post.safe_translation_getter("title", any_language=True) or "",
+            "post_title": post_title,
             "actor_name": actor_name,
+            "is_approved": comment.is_approved,
         },
         dedupe_key=f"comment-on-post:{comment.id}:{recipient.id}",
     )
+    if created:
+        send_notification_email(notification)
+    return 1 if created else 0
+
+
+def create_reply_to_comment_notification(comment):
+    """Notify the registered author of a parent comment about a reply."""
+    parent = getattr(comment, "parent", None)
+    recipient = getattr(parent, "user", None) if parent else None
+    if recipient is None:
+        return 0
+
+    actor = getattr(comment, "user", None)
+    if actor is not None and actor == recipient:
+        return 0
+
+    # The post author already receives a comment notification.
+    if recipient == getattr(comment.post, "author", None):
+        return 0
+
+    actor_name = get_user_display_name(actor) if actor else (comment.author_name or gettext("Someone"))
+    post_title = comment.post.safe_translation_getter("title", any_language=True) or ""
+    notification, created = create_notification(
+        recipient=recipient,
+        actor=actor,
+        notification_type=UserNotification.NotificationType.REPLY_TO_YOUR_COMMENT,
+        title=gettext("New reply to your comment"),
+        message=gettext('%(user)s replied to your comment on "%(title)s".')
+        % {"user": actor_name, "title": post_title},
+        url=f"{comment.post.get_absolute_url()}#comment-{comment.id}",
+        related_post=comment.post,
+        payload={
+            "comment_id": comment.id,
+            "parent_comment_id": parent.id,
+            "post_id": comment.post_id,
+            "post_title": post_title,
+            "actor_name": actor_name,
+        },
+        dedupe_key=f"reply-to-comment:{comment.id}:{recipient.id}",
+    )
+    if created:
+        send_notification_email(notification)
+    return 1 if created else 0
+
+
+def create_new_follower_notification(*, follower, followed):
+    if not follower or not followed or follower == followed:
+        return 0
+
+    follower_name = get_user_display_name(follower)
+    notification, created = create_notification(
+        recipient=followed,
+        actor=follower,
+        notification_type=UserNotification.NotificationType.NEW_FOLLOWER,
+        title=gettext("You have a new follower"),
+        message=gettext("%(user)s started following you.") % {"user": follower_name},
+        url=f"/es/accounts/profile/{follower.username}/",
+        payload={"follower_id": follower.id, "follower_username": follower.username},
+        dedupe_key=f"new-follower:{follower.id}:{followed.id}",
+    )
+    if created:
+        send_notification_email(notification)
     return 1 if created else 0
 
 

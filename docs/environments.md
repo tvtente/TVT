@@ -112,11 +112,16 @@ EMAIL_USE_TLS=True
 EMAIL_USE_SSL=False
 DEFAULT_FROM_EMAIL=no-reply@yourdomain.com
 SERVER_EMAIL=no-reply@yourdomain.com
+EMAIL_NOTIFICATIONS_ENABLED=True
 ```
 
 If cPanel specifies SSL on port `465`, use `EMAIL_PORT=465`,
 `EMAIL_USE_SSL=True`, and `EMAIL_USE_TLS=False`. Never enable TLS and SSL at
 the same time.
+
+`EMAIL_NOTIFICATIONS_ENABLED=True` activates concise emails for a comment on
+your post, a reply to your comment, and a new follower. Email delivery is
+non-blocking: a temporary SMTP failure never prevents the activity itself.
 
 ### Optional hardening flags
 

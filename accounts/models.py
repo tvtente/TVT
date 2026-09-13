@@ -452,6 +452,7 @@ class UserNotification(models.Model):
         )
         COMMENT_ON_YOUR_POST = ("comment_on_your_post", _("Comment on your post"))
         REPLY_TO_YOUR_COMMENT = ("reply_to_your_comment", _("Reply to your comment"))
+        NEW_FOLLOWER = ("new_follower", _("New follower"))
         POST_FAVORITED = ("post_favorited", _("Post favorited"))
         YOUR_BOOK_PURCHASED = ("your_book_purchased", _("Your book purchased"))
 
@@ -1043,12 +1044,27 @@ def create_or_update_user_profile(sender, instance, created, **kwargs):
         instance.profile.save()
 
 
+def get_user_default_avatar_url(user):
+    """Return the selected static fallback avatar for a user-like object."""
+    chosen_default = Profile.AvatarChoice.PRIVATE
+    if user:
+        try:
+            profile = user.profile
+            selected_choice = getattr(profile, 'default_avatar_choice', '')
+            valid_choices = [choice[0] for choice in Profile.AvatarChoice.choices]
+            if selected_choice in valid_choices:
+                chosen_default = selected_choice
+        except (ObjectDoesNotExist, AttributeError):
+            pass
+    return static(chosen_default)
+
+
 def get_user_avatar_url(user):
     """
     Returns a safe avatar URL for any user-like object.
     Never raises due to missing profile/avatar/missing media file.
     """
-    fallback = static(Profile.AvatarChoice.PRIVATE)
+    fallback = get_user_default_avatar_url(user)
     if not user:
         return fallback
     try:

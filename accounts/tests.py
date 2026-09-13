@@ -5,8 +5,10 @@ from unittest.mock import patch
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Permission
+from django.core import mail
 from django.templatetags.static import static
 from django.test import TestCase, override_settings
+from django.utils.translation import gettext
 
 from comments.models import Comment
 from .models import (
@@ -30,6 +32,7 @@ from .models import (
     ProfileSkillType,
     UserFollow,
     UserNotification,
+    get_user_default_avatar_url,
     get_user_avatar_url,
 )
 from posts.models import Post
@@ -288,17 +291,25 @@ class UserFollowTests(TestCase):
         self.assertTrue(self.followed.profile.is_followed_by(self.follower))
 
     def test_toggle_follow_view_creates_relation(self):
+        self.followed.email = "followed@example.com"
+        self.followed.save(update_fields=["email"])
         self.client.force_login(self.follower)
 
-        response = self.client.post(
-            reverse("accounts:toggle_follow", kwargs={"username": self.followed.username}),
-            {"next": reverse("accounts:public_profile", kwargs={"username": self.followed.username})},
-        )
+        with self.settings(
+            EMAIL_NOTIFICATIONS_ENABLED=True,
+            EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend",
+        ), self.captureOnCommitCallbacks(execute=True):
+            response = self.client.post(
+                reverse("accounts:toggle_follow", kwargs={"username": self.followed.username}),
+                {"next": reverse("accounts:public_profile", kwargs={"username": self.followed.username})},
+            )
 
         self.assertEqual(response.status_code, 302)
         self.assertTrue(
             UserFollow.objects.filter(follower=self.follower, followed=self.followed).exists()
         )
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].to, ["followed@example.com"])
 
     def test_toggle_follow_view_removes_existing_relation(self):
         UserFollow.objects.create(follower=self.follower, followed=self.followed)
@@ -325,13 +336,17 @@ class UserFollowTests(TestCase):
         self.assertEqual(response.status_code, 400)
         payload = response.json()
         self.assertFalse(payload["ok"])
-        self.assertEqual(payload["error"], "You cannot follow your own account.")
+        self.assertEqual(payload["error"], gettext("You cannot follow your own account."))
 
 
 class UserNotificationTests(TestCase):
     def setUp(self):
         self.follower = User.objects.create_user(username="notif-follower", password="testpass123")
-        self.author = User.objects.create_user(username="notif-author", password="testpass123")
+        self.author = User.objects.create_user(
+            username="notif-author",
+            password="testpass123",
+            email="author@example.com",
+        )
         UserFollow.objects.create(follower=self.follower, followed=self.author)
 
     def _create_published_post(self, slug="notif-post", title="Notification post"):
@@ -442,6 +457,26 @@ class UserNotificationTests(TestCase):
         self.assertIn("Commented Post", notification.message)
         self.assertEqual(notification.payload["comment_id"], comment.id)
 
+    def test_approved_comment_sends_email_when_enabled(self):
+        post = self._create_published_post(slug="email-comment", title="Email comment")
+        commenter = User.objects.create_user(username="email-commenter", password="testpass123")
+
+        with self.settings(
+            EMAIL_NOTIFICATIONS_ENABLED=True,
+            EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend",
+        ), self.captureOnCommitCallbacks(execute=True):
+            Comment.objects.create(
+                post=post,
+                user=commenter,
+                content="Interesting read",
+                language="en",
+                is_approved=True,
+            )
+
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].to, ["author@example.com"])
+        self.assertIn("New comment", mail.outbox[0].subject)
+
     def test_comment_notification_is_created_when_comment_is_approved_later(self):
         post = self._create_published_post(slug="moderated-post", title="Moderated Post")
         commenter = User.objects.create_user(username="notif-moderated", password="testpass123")
@@ -455,7 +490,7 @@ class UserNotificationTests(TestCase):
             is_approved=False,
         )
 
-        self.assertFalse(
+        self.assertTrue(
             UserNotification.objects.filter(
                 recipient=self.author,
                 notification_type=UserNotification.NotificationType.COMMENT_ON_YOUR_POST,
@@ -465,12 +500,13 @@ class UserNotificationTests(TestCase):
         comment.is_approved = True
         comment.save()
 
-        self.assertTrue(
+        self.assertEqual(
             UserNotification.objects.filter(
                 recipient=self.author,
                 notification_type=UserNotification.NotificationType.COMMENT_ON_YOUR_POST,
                 dedupe_key=f"comment-on-post:{comment.id}:{self.author.id}",
-            ).exists()
+            ).count(),
+            1,
         )
 
 
@@ -481,6 +517,16 @@ class UserAvatarUrlTests(TestCase):
         self.assertEqual(
             get_user_avatar_url(user_like),
             static("images/avatars/default_private.png"),
+        )
+
+    def test_get_user_default_avatar_url_uses_profile_choice(self):
+        user = User.objects.create_user(username="female-avatar", password="testpass123")
+        user.profile.default_avatar_choice = user.profile.AvatarChoice.FEMALE
+        user.profile.save(update_fields=["default_avatar_choice"])
+
+        self.assertEqual(
+            get_user_default_avatar_url(user),
+            static("images/avatars/default_female.png"),
         )
 
     @override_settings(MEDIA_URL="https://tvtente.com/media/")

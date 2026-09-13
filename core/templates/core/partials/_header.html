@@ -124,8 +124,10 @@
                                     data-bs-title="{% translate 'Account options' %}"
                                 >
                                     <img src="{{ user|avatar_url }}"
-                                         alt="{{ user.username }}'s Avatar"
+                                         alt="{{ user.username }} — {% translate 'Avatar' %}"
                                          class="rounded-circle"
+                                         data-fallback-src="{{ user|default_avatar_url }}"
+                                         onerror="this.onerror=null;this.src=this.dataset.fallbackSrc;"
                                          style="width: 36px; height: 36px; object-fit: cover;">
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-end shadow-sm user-avatar-menu" aria-labelledby="userAvatarMenu">

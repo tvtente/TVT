@@ -7336,3 +7336,42 @@ msgstr ""
 
 #~ msgid "Show sidebars"
 #~ msgstr "Mostrar barras laterales"
+
+#: accounts/models.py accounts/services.py
+msgid "New follower"
+msgstr "Nuevo seguidor"
+
+#: accounts/services.py
+msgid "Open the notification:"
+msgstr "Abrir la notificación:"
+
+#: accounts/services.py
+msgid "You receive this email because of activity in your TVTente account."
+msgstr "Recibes este correo por actividad en tu cuenta de TVTente."
+
+#: accounts/services.py
+msgid "New reply to your comment"
+msgstr "Nueva respuesta a tu comentario"
+
+#, python-format
+#: accounts/services.py
+msgid "%(user)s replied to your comment on \"%(title)s\"."
+msgstr "%(user)s respondió a tu comentario en «%(title)s»."
+
+#: accounts/services.py
+msgid "You have a new follower"
+msgstr "Tienes un nuevo seguidor"
+
+#, python-format
+#: accounts/services.py
+msgid "%(user)s started following you."
+msgstr "%(user)s ha empezado a seguirte."
+
+#: accounts/services.py
+msgid "New comment awaiting review"
+msgstr "Nuevo comentario pendiente de revisión"
+
+#, python-format
+#: accounts/services.py
+msgid "%(user)s commented on \"%(title)s\" and it is awaiting review."
+msgstr "%(user)s comentó en «%(title)s» y está pendiente de revisión."

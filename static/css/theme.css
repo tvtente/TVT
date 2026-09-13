@@ -2008,8 +2008,10 @@ nav[aria-label="breadcrumb"] + * {
 
 .navbar-right-actions .btn.site-login-button {
   flex: 0 0 auto;
-  min-width: 7.25rem;
-  padding-inline: .7rem !important;
+  min-width: 8.75rem;
+  min-height: 2rem;
+  padding-inline: .85rem !important;
+  line-height: 1;
   white-space: nowrap;
 }
 

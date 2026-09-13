@@ -111,6 +111,11 @@ PUBLIC_SITE_URL = config('PUBLIC_SITE_URL', default='https://tvtente.com').rstri
 GOOGLE_CLIENT_ID = config('GOOGLE_CLIENT_ID', default='').strip()
 GOOGLE_CLIENT_SECRET = config('GOOGLE_CLIENT_SECRET', default='').strip()
 GOOGLE_AUTH_ENABLED = bool(GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET)
+EMAIL_NOTIFICATIONS_ENABLED = config(
+    'EMAIL_NOTIFICATIONS_ENABLED',
+    default=False,
+    cast=config_bool,
+)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/

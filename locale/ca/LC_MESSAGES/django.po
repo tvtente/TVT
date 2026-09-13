@@ -5894,3 +5894,42 @@ msgstr "Últimes entrades"
 #: pages/templates/pages/partials/_homepage_latest_posts.html:7
 msgid "View all"
 msgstr "Veure-les totes"
+
+#: accounts/models.py accounts/services.py
+msgid "New follower"
+msgstr "Seguidor nou"
+
+#: accounts/services.py
+msgid "Open the notification:"
+msgstr "Obre la notificació:"
+
+#: accounts/services.py
+msgid "You receive this email because of activity in your TVTente account."
+msgstr "Reps aquest correu per activitat al teu compte de TVTente."
+
+#: accounts/services.py
+msgid "New reply to your comment"
+msgstr "Resposta nova al teu comentari"
+
+#, python-format
+#: accounts/services.py
+msgid "%(user)s replied to your comment on \"%(title)s\"."
+msgstr "%(user)s ha respost al teu comentari a «%(title)s»."
+
+#: accounts/services.py
+msgid "You have a new follower"
+msgstr "Tens un seguidor nou"
+
+#, python-format
+#: accounts/services.py
+msgid "%(user)s started following you."
+msgstr "%(user)s ha començat a seguir-te."
+
+#: accounts/services.py
+msgid "New comment awaiting review"
+msgstr "Comentari nou pendent de revisió"
+
+#, python-format
+#: accounts/services.py
+msgid "%(user)s commented on \"%(title)s\" and it is awaiting review."
+msgstr "%(user)s ha comentat a «%(title)s» i està pendent de revisió."
