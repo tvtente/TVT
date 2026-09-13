@@ -73,17 +73,20 @@ urlpatterns += i18n_patterns(
 # ==============================================================================
 # SERVING MEDIA FILES IN DEVELOPMENT
 # ==============================================================================
-# This is normally only for development.  The opt-in production fallback is
-# useful on shared Passenger hosting until Apache aliases for /static/ and
-# /media/ are available.
-if settings.DEBUG or getattr(settings, 'SERVE_STATIC_MEDIA_WITH_DJANGO', False):
+# Django's helper functions intentionally return no URL patterns when
+# DEBUG=False.  Therefore the production Passenger fallback must use explicit
+# routes rather than static() / staticfiles_urlpatterns().
+if settings.DEBUG:
     # Añadimos las URLs para los archivos MEDIA
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     
     # Este es para tus archivos de app (CSS, JS, imágenes por defecto)
     # Es la forma recomendada por Django para desarrollo.
     urlpatterns += staticfiles_urlpatterns()
-elif getattr(settings, 'ENVIRONMENT', '') == 'development':
+elif (
+    getattr(settings, 'ENVIRONMENT', '') == 'development'
+    or getattr(settings, 'SERVE_STATIC_MEDIA_WITH_DJANGO', False)
+):
     urlpatterns += [
         re_path(r'^static/(?P<path>.*)$', staticfiles_serve, {'insecure': True}),
         re_path(r'^media/(?P<path>.*)$', media_serve, {'document_root': settings.MEDIA_ROOT}),
