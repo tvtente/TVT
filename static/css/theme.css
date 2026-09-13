@@ -2128,15 +2128,17 @@ nav[aria-label="breadcrumb"] + * {
   flex: 0 0 auto;
   align-items: center;
   justify-content: center;
-  height: var(--navbar-banner-height, 36px);
-  max-width: calc(var(--navbar-banner-height, 36px) * 2);
+  height: var(--navbar-banner-height, 42px);
+  max-height: 2.6rem;
+  max-width: none;
   overflow: hidden;
   background: transparent;
 }
 
 .navbar-promo-banner img {
   display: block;
-  max-width: 100%;
+  width: auto;
+  max-width: none;
   height: 100%;
   object-fit: contain;
 }
