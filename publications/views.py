@@ -1,9 +1,12 @@
 # File: publications/views.py
 
 import logging
+from functools import wraps
 
 from django.conf import settings
+from django.contrib.auth.views import redirect_to_login
 from django.contrib.contenttypes.models import ContentType
+from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
@@ -18,6 +21,31 @@ from sources.models import Citation
 
 
 logger = logging.getLogger(__name__)
+
+
+PUBLICATION_ACCESS_GROUPS = (
+    "Researcher",
+    "Reviewer",
+    "Admin",
+    "Site Manager",
+)
+
+
+def publication_access_required(view_func):
+    """Restrict scientific publications to the authorised CMS roles."""
+
+    @wraps(view_func)
+    def wrapped_view(request, *args, **kwargs):
+        user = request.user
+        if not user.is_authenticated:
+            return redirect_to_login(request.get_full_path())
+        if not user.is_superuser and not user.groups.filter(
+            name__in=PUBLICATION_ACCESS_GROUPS
+        ).exists():
+            raise PermissionDenied(_("You do not have permission to access publications."))
+        return view_func(request, *args, **kwargs)
+
+    return wrapped_view
 
 
 def get_available_translation_urls(obj):
@@ -41,9 +69,10 @@ def get_available_translation_urls(obj):
     return available
 
 
+@publication_access_required
 def publication_list_view(request):
     """
-    📚 Shows the public list of published scientific publications.
+    📚 Shows the list of published scientific publications to authorised users.
     """
     language = get_language()
 
@@ -88,6 +117,7 @@ def publication_list_view(request):
     )
 
 
+@publication_access_required
 def publication_detail_view(request, slug):
     """
     📘 Shows the detail of a single published scientific publication.
@@ -242,6 +272,7 @@ def publication_detail_view(request, slug):
         context,
     )
 
+@publication_access_required
 def publication_document_view(request, slug):
     """
     📄 Shows the publication PDF/document in a free reading page.

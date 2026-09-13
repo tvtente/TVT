@@ -1,7 +1,7 @@
 import tempfile
 
 from django.contrib import admin
-from django.contrib.auth.models import User
+from django.contrib.auth.models import Group, User
 from django.core.files.base import ContentFile
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.forms import ModelForm
@@ -15,10 +15,12 @@ from publications.admin import PublicationAdmin
 from publications.models import Publication
 
 
-@override_settings(MEDIA_ROOT=tempfile.mkdtemp())
+@override_settings(MEDIA_ROOT=tempfile.mkdtemp(), LANGUAGE_CODE="en")
 class PublicationViewsTests(TestCase):
     def setUp(self):
         self.author = User.objects.create_user(username="publication-author", password="p")
+        self.author.groups.add(Group.objects.create(name="Researcher"))
+        self.client.force_login(self.author)
 
     def _create_publication(self, *, slug, title, is_published=True):
         publication = Publication.objects.create(is_published=is_published)
@@ -42,6 +44,14 @@ class PublicationViewsTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(list(response.context["publications"]), [visible])
+
+    def test_anonymous_user_is_redirected_to_login(self):
+        self.client.logout()
+
+        response = self.client.get(reverse("publications:publication_list"))
+
+        self.assertEqual(response.status_code, 302)
+        self.assertIn(reverse("login"), response.url)
 
     def test_publication_detail_renders_published_publication(self):
         publication = self._create_publication(slug="detail-publication", title="Detail publication")
