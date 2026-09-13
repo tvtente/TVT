@@ -240,12 +240,20 @@ class Citation(models.Model):
         verbose_name=_("Page, section or locator"),
         help_text=_("For example: Article 14, page 24, or section 3."),
     )
+    context = models.TextField(
+        blank=True,
+        verbose_name=_("Context in this content"),
+        help_text=_(
+            "Explain the specific situation, question or section of this "
+            "post, page or publication in which the source is used."
+        ),
+    )
     note = models.TextField(
         blank=True,
-        verbose_name=_("Editorial note"),
+        verbose_name=_("Relevance for this content"),
         help_text=_(
-            "Optional explanation of how this source supports this content, "
-            "including relevant sections or pages. It is shown in a collapsible panel."
+            "Explain how this source supports this specific content, including "
+            "the relevant sections or pages. It is shown in a collapsible panel."
         ),
     )
     created_at = models.DateTimeField(auto_now_add=True)

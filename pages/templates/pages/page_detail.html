@@ -800,11 +800,17 @@
                                         {% if citation.locator %}<span class="text-muted"> — {{ citation.locator }}</span>{% endif %}
                                         {% if citation.source.document_url %}<a class="prl-source-entry__document" href="{{ citation.source.document_url }}" target="_blank" rel="noopener noreferrer">{% trans "Open original document" %}</a>{% endif %}
                                     </div>
-                                    {% if citation.note or citation.source.display_summary %}
+                                    {% if citation.context or citation.note %}
                                         <details class="prl-source-entry__details">
                                             <summary>{% trans "Context and relevance" %}</summary>
-                                            {% if citation.note %}<div>{{ citation.note|linebreaksbr }}</div>{% endif %}
-                                            {% if citation.source.display_summary %}<div class="mt-2">{{ citation.source.display_summary|linebreaksbr }}</div>{% endif %}
+                                            {% if citation.context %}<div><strong>{% trans "Context in this content" %}</strong><br>{{ citation.context|linebreaksbr }}</div>{% endif %}
+                                            {% if citation.note %}<div{% if citation.context %} class="mt-2"{% endif %}><strong>{% trans "Relevance for this content" %}</strong><br>{{ citation.note|linebreaksbr }}</div>{% endif %}
+                                        </details>
+                                    {% endif %}
+                                    {% if citation.source.display_summary %}
+                                        <details class="prl-source-entry__details mt-2">
+                                            <summary>{% trans "About this source" %}</summary>
+                                            <div>{{ citation.source.display_summary|linebreaksbr }}</div>
                                         </details>
                                     {% endif %}
                                     {% if citation.source.original_document_availability_note %}<div class="small text-muted mt-1"><i class="fa-solid fa-language me-1" aria-hidden="true"></i>{{ citation.source.original_document_availability_note }}</div>{% endif %}

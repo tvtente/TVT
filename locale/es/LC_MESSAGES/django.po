@@ -3965,6 +3965,21 @@ msgstr "Abrir documento original"
 msgid "Context and relevance"
 msgstr "Contexto y relevancia"
 
+msgid "Context in this content"
+msgstr "Contexto en este contenido"
+
+msgid "Explain the specific situation, question or section of this post, page or publication in which the source is used."
+msgstr "Explica la situación, pregunta o sección concreta de este post, página o publicación en la que se utiliza la fuente."
+
+msgid "Relevance for this content"
+msgstr "Relevancia para este contenido"
+
+msgid "Explain how this source supports this specific content, including the relevant sections or pages. It is shown in a collapsible panel."
+msgstr "Explica cómo esta fuente respalda este contenido concreto, incluidas las secciones o páginas relevantes. Se muestra en un panel desplegable."
+
+msgid "About this source"
+msgstr "Sobre esta fuente"
+
 #: pages/templates/pages/page_directory.html:8
 msgid "Pages by Category"
 msgstr "Páginas por Categoría"
@@ -7375,3 +7390,27 @@ msgstr "Nuevo comentario pendiente de revisión"
 #: accounts/services.py
 msgid "%(user)s commented on \"%(title)s\" and it is awaiting review."
 msgstr "%(user)s comentó en «%(title)s» y está pendiente de revisión."
+
+#: site_settings/admin.py site_settings/models.py
+msgid "Digital BeeB system icon (media library)"
+msgstr "Icono de sistema de Digital BeeB (biblioteca multimedia)"
+
+#: site_settings/models.py
+msgid "Icon shown beside the Digital BeeB category in the category navigation."
+msgstr "Icono mostrado junto a la categoría Digital BeeB en la navegación de categorías."
+
+#: site_settings/admin.py
+msgid "Digital BeeB system icon"
+msgstr "Icono de sistema de Digital BeeB"
+
+#: site_settings/admin.py
+msgid "System icons"
+msgstr "Iconos del sistema"
+
+#: site_settings/admin.py
+msgid "Icons used by named areas of the site. The Digital BeeB icon replaces its standard menu icon."
+msgstr "Iconos usados por áreas identificadas del sitio. El icono de Digital BeeB sustituye su icono habitual del menú."
+
+#: site_settings/admin.py
+msgid "Digital BeeB system icon — media library"
+msgstr "Icono de sistema de Digital BeeB — biblioteca multimedia"

@@ -1,4 +1,7 @@
 {% load i18n %}
+{% load settings_tags %}
+
+{% get_active_site_template as site_template %}
 
 {% if categories %}
     <ul class="category-navbar-menu">
@@ -13,7 +16,9 @@
                 {% if category.menu_children %}
                     <details class="category-navbar-branch">
                         <summary>
-                            {% if category.menu_icon_class %}<i class="{{ category.menu_icon_class }}" aria-hidden="true"></i>{% endif %}
+                            {% if category.slug == "digital-beeb" and site_template.digital_beeb_system_icon_url %}
+                                <img class="category-navigation-system-icon" src="{{ site_template.digital_beeb_system_icon_url }}" alt="" aria-hidden="true">
+                            {% elif category.menu_icon_class %}<i class="{{ category.menu_icon_class }}" aria-hidden="true"></i>{% endif %}
                             <span>{{ category.name|default:category.translated_title }}</span>
                         </summary>
                         <ul class="category-navbar-dropdown">
@@ -27,7 +32,9 @@
                     </details>
                 {% else %}
                     <a href="{{ category.menu_url }}">
-                        {% if category.menu_icon_class %}<i class="{{ category.menu_icon_class }}" aria-hidden="true"></i>{% endif %}
+                        {% if category.slug == "digital-beeb" and site_template.digital_beeb_system_icon_url %}
+                            <img class="category-navigation-system-icon" src="{{ site_template.digital_beeb_system_icon_url }}" alt="" aria-hidden="true">
+                        {% elif category.menu_icon_class %}<i class="{{ category.menu_icon_class }}" aria-hidden="true"></i>{% endif %}
                         {{ category.name|default:category.translated_title }}
                     </a>
                 {% endif %}

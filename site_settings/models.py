@@ -159,6 +159,11 @@ class SiteTemplate(TranslatableModel):
         "gallery.Image", null=True, blank=True, on_delete=models.SET_NULL,
         related_name="+", verbose_name=_("Favicon (media library)"),
     )
+    digital_beeb_system_icon_asset = models.ForeignKey(
+        "gallery.Image", null=True, blank=True, on_delete=models.SET_NULL,
+        related_name="+", verbose_name=_("Digital BeeB system icon (media library)"),
+        help_text=_("Icon shown beside the Digital BeeB category in the category navigation."),
+    )
     translations = TranslatedFields(
         site_slogan=models.CharField(
             max_length=150,
@@ -296,6 +301,12 @@ class SiteTemplate(TranslatableModel):
     @property
     def favicon_url(self):
         return self._asset_url("favicon_asset") or self._safe_file_url("favicon")
+
+    @property
+    def digital_beeb_system_icon_url(self):
+        return self._asset_url("digital_beeb_system_icon_asset") or static(
+            "images/branding/digital-beeb-system-icon.png"
+        )
 
     @property
     def top_bar_banner_image_url(self):

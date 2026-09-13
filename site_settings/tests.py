@@ -44,3 +44,11 @@ class SiteTemplateTests(TestCase):
         ).render(Context({}))
 
         self.assertEqual(rendered, chosen.name)
+
+    def test_digital_beeb_system_icon_uses_bundled_fallback(self):
+        template = SiteTemplate.objects.create(name="Digital BeeB", chosen=True)
+
+        self.assertEqual(
+            template.digital_beeb_system_icon_url,
+            "/static/images/branding/digital-beeb-system-icon.png",
+        )

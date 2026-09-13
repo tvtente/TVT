@@ -5933,3 +5933,42 @@ msgstr "Comentari nou pendent de revisió"
 #: accounts/services.py
 msgid "%(user)s commented on \"%(title)s\" and it is awaiting review."
 msgstr "%(user)s ha comentat a «%(title)s» i està pendent de revisió."
+
+#: site_settings/admin.py site_settings/models.py
+msgid "Digital BeeB system icon (media library)"
+msgstr "Icona de sistema de Digital BeeB (biblioteca multimèdia)"
+
+#: site_settings/models.py
+msgid "Icon shown beside the Digital BeeB category in the category navigation."
+msgstr "Icona mostrada al costat de la categoria Digital BeeB a la navegació de categories."
+
+#: site_settings/admin.py
+msgid "Digital BeeB system icon"
+msgstr "Icona de sistema de Digital BeeB"
+
+#: site_settings/admin.py
+msgid "System icons"
+msgstr "Icones del sistema"
+
+#: site_settings/admin.py
+msgid "Icons used by named areas of the site. The Digital BeeB icon replaces its standard menu icon."
+msgstr "Icones utilitzades per àrees identificades del lloc. La icona de Digital BeeB substitueix la seva icona habitual del menú."
+
+#: site_settings/admin.py
+msgid "Digital BeeB system icon — media library"
+msgstr "Icona de sistema de Digital BeeB — biblioteca multimèdia"
+
+msgid "Context in this content"
+msgstr "Context en aquest contingut"
+
+msgid "Explain the specific situation, question or section of this post, page or publication in which the source is used."
+msgstr "Explica la situació, la pregunta o la secció concreta d'aquest post, pàgina o publicació en què s'utilitza la font."
+
+msgid "Relevance for this content"
+msgstr "Rellevància per a aquest contingut"
+
+msgid "Explain how this source supports this specific content, including the relevant sections or pages. It is shown in a collapsible panel."
+msgstr "Explica com aquesta font dona suport a aquest contingut concret, incloses les seccions o pàgines rellevants. Es mostra en un panell desplegable."
+
+msgid "About this source"
+msgstr "Sobre aquesta font"

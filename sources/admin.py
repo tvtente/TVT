@@ -43,7 +43,7 @@ class SourceAdmin(TranslatableAdmin):
 class CitationAdmin(admin.ModelAdmin):
     list_display = ("source", "content_label", "is_primary", "language", "order", "locator", "created_at")
     list_filter = ("is_primary", "language", "content_type")
-    search_fields = ("source__title", "note", "locator")
+    search_fields = ("source__title", "context", "note", "locator")
     autocomplete_fields = ("source",)
     readonly_fields = ("created_at",)
     fields = (
@@ -54,6 +54,7 @@ class CitationAdmin(admin.ModelAdmin):
         "is_primary",
         "order",
         "locator",
+        "context",
         "note",
         "created_at",
     )

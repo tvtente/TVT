@@ -116,6 +116,14 @@ BRANDING_MEDIA_FIELDS = {
         "slug": "favicon",
         "aspect": "1_1",
     },
+    "digital_beeb_system_icon": {
+        "asset": "digital_beeb_system_icon_asset",
+        "staging": "digital_beeb_system_icon_staging_id",
+        "clear": "digital_beeb_system_icon_clear_selection",
+        "label": _("Digital BeeB system icon"),
+        "slug": "digital-beeb-system-icon",
+        "aspect": "1_1",
+    },
     "top_bar_banner_image": {
         "asset": "top_bar_banner_image_asset",
         "staging": "top_bar_banner_staging_id",
@@ -234,6 +242,12 @@ class SiteTemplateAdmin(TranslatableAdmin):
                 "top_bar_banner_link",
             )
         }),
+        (_("System icons"), {
+            "description": _(
+                "Icons used by named areas of the site. The Digital BeeB icon replaces its standard menu icon."
+            ),
+            "fields": ("digital_beeb_system_icon_media_picker",)
+        }),
         (_("Navigation banner"), {
             "description": _(
                 "A compact optional image placed immediately before the shopping cart in the main navigation."
@@ -296,6 +310,7 @@ class SiteTemplateAdmin(TranslatableAdmin):
         for name in (
             "site_logo_media_picker",
             "favicon_media_picker",
+            "digital_beeb_system_icon_media_picker",
             "top_bar_banner_media_picker",
             "navigation_banner_media_picker",
         ):
@@ -356,6 +371,10 @@ class SiteTemplateAdmin(TranslatableAdmin):
     @admin.display(description=_("Favicon — media library"))
     def favicon_media_picker(self, obj):
         return self._branding_picker(obj, "favicon")
+
+    @admin.display(description=_("Digital BeeB system icon — media library"))
+    def digital_beeb_system_icon_media_picker(self, obj):
+        return self._branding_picker(obj, "digital_beeb_system_icon")
 
     @admin.display(description=_("Top bar banner — media library"))
     def top_bar_banner_media_picker(self, obj):

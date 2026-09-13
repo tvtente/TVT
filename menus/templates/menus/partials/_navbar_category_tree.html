@@ -5,7 +5,9 @@
         {% if category.menu_children %}
             <details class="category-menu-branch">
                 <summary>
-                    {% if category.menu_icon_class %}<i class="{{ category.menu_icon_class }} me-2" aria-hidden="true"></i>{% endif %}
+                    {% if category.slug == "digital-beeb" and site_template.digital_beeb_system_icon_url %}
+                        <img class="category-navigation-system-icon" src="{{ site_template.digital_beeb_system_icon_url }}" alt="" aria-hidden="true">
+                    {% elif category.menu_icon_class %}<i class="{{ category.menu_icon_class }} me-2" aria-hidden="true"></i>{% endif %}
                     <span>{{ category.name|default:category.translated_title }}</span>
                 </summary>
                 <ul class="category-menu-branch__children">
@@ -19,7 +21,9 @@
             </details>
         {% else %}
             <a class="dropdown-item" href="{{ category.menu_url }}">
-                {% if category.menu_icon_class %}<i class="{{ category.menu_icon_class }} me-2" aria-hidden="true"></i>{% endif %}
+                {% if category.slug == "digital-beeb" and site_template.digital_beeb_system_icon_url %}
+                    <img class="category-navigation-system-icon" src="{{ site_template.digital_beeb_system_icon_url }}" alt="" aria-hidden="true">
+                {% elif category.menu_icon_class %}<i class="{{ category.menu_icon_class }} me-2" aria-hidden="true"></i>{% endif %}
                 {{ category.name|default:category.translated_title }}
             </a>
         {% endif %}

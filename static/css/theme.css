@@ -45,6 +45,12 @@
     --bs-body-color-rgb: 33, 37, 41; /* Texto principal oscuro */
 }
 
+/* El resaltado del navegador debe conservar contraste en cualquier tema. */
+::selection {
+    background: var(--tavata-dark);
+    color: #fff;
+}
+
 .site-main-layout {
     box-sizing: border-box;
     width: 100%;
@@ -1071,6 +1077,14 @@ header,
     text-decoration: none;
 }
 
+.category-navigation-system-icon {
+    display: inline-block;
+    flex: 0 0 auto;
+    height: 1.15rem;
+    object-fit: contain;
+    width: 1.15rem;
+}
+
 .category-navbar-menu__label a {
     background: rgba(248, 212, 84, .14);
     color: #ffd45a;
@@ -1701,7 +1715,10 @@ nav[aria-label="breadcrumb"] + * {
     background: var(--prl-success);
 }
 
+.prl-conclusion { color: var(--tavata-body-color); }
 .prl-conclusion h2 { margin-top: 0; color: #276a40; }
+.prl-conclusion p,
+.prl-conclusion li { color: var(--tavata-body-color); }
 
 .prl-manifesto {
     display: flex;
@@ -1714,6 +1731,9 @@ nav[aria-label="breadcrumb"] + * {
 }
 
 .prl-manifesto span { padding: .45rem .8rem; border: 1px solid rgba(255, 255, 255, .25); border-radius: 2rem; font-weight: 750; }
+.prl-manifesto p,
+.prl-manifesto strong { color: #fff; }
+.prl-manifesto p { margin: 0; }
 
 .prl-question { border: 1px solid #dedede; background: #f8f8f5; text-align: center; }
 .prl-question i { display: block; margin-bottom: .7rem; color: var(--prl-secondary); font-size: 1.7rem; }
@@ -1722,9 +1742,10 @@ nav[aria-label="breadcrumb"] + * {
 .prl-sources { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid #e1e1dc; }
 .prl-sources h2 { margin-top: 0; font-size: 1.25rem; }
 .prl-sources ol { margin: 0; padding-left: 1.35rem; }
-.prl-sources li { margin-bottom: .75rem; color: var(--prl-muted); font-size: .92rem; }
-.prl-sources a { color: #7a5700; overflow-wrap: anywhere; text-underline-offset: 2px; }
-.prl-sources a:hover { color: var(--prl-dark); }
+.prl-sources li { margin-bottom: .75rem; color: #3f4a52; font-size: .92rem; }
+.prl-sources a { color: #594000; font-weight: 600; overflow-wrap: anywhere; text-decoration-thickness: 1.5px; text-underline-offset: 2px; }
+.prl-sources a:hover,
+.prl-sources a:focus-visible { color: var(--prl-dark); }
 .prl-source-entry { margin-bottom: 1rem; }
 .prl-source-entry__reference { line-height: 1.55; }
 .prl-source-entry__badge {
@@ -2128,6 +2149,7 @@ nav[aria-label="breadcrumb"] + * {
 
 .topbar-slogan {
   font-size: var(--tavata-slogan-font-size);
+  color: var(--tavata-dark) !important;
 }
 
 .topbar-actions {
