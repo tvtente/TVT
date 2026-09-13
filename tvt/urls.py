@@ -71,11 +71,12 @@ urlpatterns += i18n_patterns(
 # ==============================================================================
 # STATIC AND PUBLIC MEDIA FILES
 # ==============================================================================
-# In shared Passenger hosting Apache may not have aliases for these folders.
-# Explicit routes give every environment a reliable fallback.  A configured
-# web server can still serve the same URLs directly before they reach Django.
-urlpatterns += [
-    re_path(r'^static/(?P<path>.*)$', staticfiles_serve, {'insecure': True}),
-    re_path(r'^media/(?P<path>.*)$', media_serve, {'document_root': settings.MEDIA_ROOT}),
-]
+# Testing must render faithfully with DEBUG=False, so it has the same explicit
+# fallback as local development.  Production remains the web server's
+# responsibility: it should serve these public folders directly.
+if settings.DEBUG or getattr(settings, 'ENVIRONMENT', '') in {'development', 'testing'}:
+    urlpatterns += [
+        re_path(r'^static/(?P<path>.*)$', staticfiles_serve, {'insecure': True}),
+        re_path(r'^media/(?P<path>.*)$', media_serve, {'document_root': settings.MEDIA_ROOT}),
+    ]
 # ==============================================================================
