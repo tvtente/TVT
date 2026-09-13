@@ -5,6 +5,7 @@ from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.core.files.base import ContentFile
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.core.exceptions import ValidationError
 from django.forms import ModelForm
 from django.test import RequestFactory
 from django.test import TestCase, override_settings
@@ -16,7 +17,7 @@ from gallery.models import Image
 from gallery.models import StagedUpload
 from accounts.models import UserFollow, UserNotification
 from posts.admin import PostAdmin
-from posts.models import Post, PostFavorite, PostPointAllocation
+from posts.models import Post, PostContentBlock, PostFavorite, PostPointAllocation
 from posts.selectors import get_posts_for_list_type
 from posts.services import get_post_points_summary
 from site_settings.models import SiteConfiguration
@@ -119,6 +120,25 @@ class PostGalleryAssetDualReadTests(TestCase):
 
         self.assertIsNotNone(form.instance.featured_image_asset)
         self.assertTrue(form.instance.featured_image_asset.image.name.endswith("post-con-imagen-16_9.png"))
+
+
+class PostContentBlockSummaryTests(TestCase):
+    def setUp(self):
+        self.user = get_user_model().objects.create_user(username="summary-editor", password="p")
+        self.post = Post.objects.create(author=self.user)
+
+    def test_mini_post_requires_its_own_summary(self):
+        block = PostContentBlock(
+            post=self.post,
+            language="es",
+            heading="Una sección indexable",
+            content="Contenido de la sección.",
+        )
+
+        with self.assertRaises(ValidationError) as error:
+            block.clean()
+
+        self.assertIn("summary", error.exception.message_dict)
 
 
 @override_settings(MEDIA_ROOT=tempfile.mkdtemp(), LANGUAGES=(("es", "Español"), ("en", "English")))

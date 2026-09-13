@@ -62,7 +62,7 @@ class EditorialListingEntry:
     @property
     def summary(self):
         if self.content_block:
-            return strip_tags(self.content_block.content).strip()
+            return self.content_block.summary or strip_tags(self.content_block.content).strip()
         return self.post.summary
 
     @property
@@ -149,7 +149,11 @@ def get_matching_mini_post_entries(query, *, language_code=None):
             post__status="published",
             post__translations__language_code=language_code,
         )
-        .filter(Q(heading__icontains=query) | Q(content__icontains=query))
+        .filter(
+            Q(heading__icontains=query)
+            | Q(summary__icontains=query)
+            | Q(content__icontains=query)
+        )
         .select_related("post__author", "image_asset")
         .prefetch_related("post__translations")
         .order_by("-post__published_date", "order", "pk")

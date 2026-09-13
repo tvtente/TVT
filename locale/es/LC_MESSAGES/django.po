@@ -4320,6 +4320,14 @@ msgstr ""
 msgid "Section title"
 msgstr "Ubicación"
 
+#: posts/models.py
+msgid "Mini-post summary (SEO)"
+msgstr "Resumen del minipost (SEO)"
+
+#: posts/models.py
+msgid "Brief, self-contained summary used before the section content and in search and listing cards. Recommended: 140–160 characters."
+msgstr "Resumen breve y autónomo utilizado antes del contenido de la sección y en las tarjetas de búsqueda y listados. Recomendado: entre 140 y 160 caracteres."
+
 #: posts/models.py:364
 #, fuzzy
 #| msgid "Core content"
@@ -4355,6 +4363,14 @@ msgstr "Posts en la categoría:"
 #: posts/models.py:405
 msgid "A content block needs text."
 msgstr ""
+
+#: posts/models.py
+msgid "Add a brief SEO summary before showing this mini-post in listings."
+msgstr "Añade un resumen SEO breve antes de mostrar este minipost en los listados."
+
+#: posts/models.py
+msgid "Add a brief SEO summary for this mini-post."
+msgstr "Añade un resumen SEO breve para este minipost."
 
 #: posts/models.py:407
 msgid "A content block needs a 16:9 image."
@@ -4955,9 +4971,13 @@ msgstr ""
 "Interpret findings, compare them with the literature, and discuss "
 "implications and limitations. Recommended length: 400–800 words."
 
-#: publications/models.py:97 publications/views.py:208
+#: posts/models.py publications/models.py:97 publications/views.py:208
 msgid "Conclusions"
-msgstr "Conclusions"
+msgstr "Conclusiones"
+
+#: posts/models.py
+msgid "Optional closing content shown after all mini-posts. Use it for a conclusion, synthesis, open question, or next step."
+msgstr "Contenido final opcional que se muestra después de todos los miniposts. Úsalo para una conclusión, síntesis, pregunta abierta o siguiente paso."
 
 #: publications/models.py:99
 msgid ""

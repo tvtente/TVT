@@ -41,6 +41,7 @@
                     <div class="flex-grow-1">
                         <a href="{{ post.get_absolute_url }}" class="fs-5 text-decoration-none">{{ post.title }}</a>
                         <p class="text-muted mb-0"><small>{% translate "Published on" %} {{ post.published_date|date:"DATE_FORMAT" }}</small></p>
+                        {% if post.summary %}<p class="mb-0 mt-2">{{ post.summary }}</p>{% endif %}
                     </div>
                 </div>
                 {% endwith %}

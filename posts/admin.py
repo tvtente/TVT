@@ -219,6 +219,7 @@ class PostContentBlockInline(admin.StackedInline):
         "block_type",
         "heading",
         "anchor",
+        "summary",
         "content",
         "image_asset",
         "image_alt",
@@ -352,6 +353,7 @@ class PostAdmin(TranslatableAdmin, SummernoteModelAdmin):
         'translations__title',
         'translations__summary',
         'translations__content',
+        'translations__conclusions',
         'translations__meta_title',
         'translations__meta_description'
     )
@@ -368,7 +370,7 @@ class PostAdmin(TranslatableAdmin, SummernoteModelAdmin):
         {"featured_image_staging_id", "social_image_staging_id", "mobile_image_staging_id"}
     )
 
-    summernote_fields = ('content',)
+    summernote_fields = ('content', 'conclusions')
 
     def _is_post_manager(self, request):
         """
@@ -395,9 +397,11 @@ class PostAdmin(TranslatableAdmin, SummernoteModelAdmin):
             if field:
                 field.widget = forms.HiddenInput()
                 field.required = False
-        if "content" in LanguageAwarePostForm.base_fields:
+        for field_name in ("content", "conclusions"):
+            if field_name not in LanguageAwarePostForm.base_fields:
+                continue
             summernote_widget = SummernoteWidget if get_config()["iframe"] else SummernoteInplaceWidget
-            LanguageAwarePostForm.base_fields["content"].widget = summernote_widget()
+            LanguageAwarePostForm.base_fields[field_name].widget = summernote_widget()
         if "summary" in LanguageAwarePostForm.base_fields:
             LanguageAwarePostForm.base_fields["summary"].widget = forms.Textarea(attrs={
                 "rows": 3,

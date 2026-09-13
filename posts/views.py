@@ -709,7 +709,7 @@ def posts_by_category_view(request, category_slug):
     category = get_category_by_slug(category_slug)
     category_tree = category.get_descendants(include_self=True).filter(is_visible=True)
 
-    all_posts = (
+    category_posts_queryset = (
         Post.objects
         .language(language)
         .filter(
@@ -721,6 +721,10 @@ def posts_by_category_view(request, category_slug):
         .distinct()
         .order_by("-published_date")
     )
+    category_entries = get_post_listing_entries(
+        category_posts_queryset,
+        language_code=language,
+    )
 
     posts_per_page = get_site_config_int(
         "blog_items_per_page",
@@ -728,13 +732,13 @@ def posts_by_category_view(request, category_slug):
         logger=logger,
         warning_message="⚠️ SiteConfiguration no encontrada. Usando paginación por defecto.",
     )
-    posts = paginate_queryset(all_posts, request.GET.get("page"), posts_per_page)
+    posts = paginate_queryset(category_entries, request.GET.get("page"), posts_per_page)
 
     fallback_posts = (
         Post.objects
         .language(language)
         .filter(status="published", translations__language_code=language)
-        .exclude(pk__in=all_posts.values("pk"))
+        .exclude(pk__in=category_posts_queryset.values("pk"))
         .order_by("-published_date")[:3]
     )
 

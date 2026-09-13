@@ -4,7 +4,7 @@
 
   const CONTENT = "content";
   const RELATED_POST = "related_post";
-  const CONTENT_FIELDS = ["content", "image_asset", "image_alt", "show_in_listings"];
+  const CONTENT_FIELDS = ["summary", "content", "image_asset", "image_alt", "show_in_listings"];
   const RELATED_FIELDS = ["related_post"];
 
   function fieldCell(row, fieldName) {

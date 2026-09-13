@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.db.models import Q
 from django.contrib.auth import get_user_model
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
@@ -70,6 +71,14 @@ class Post(TranslatableModel):
         ),
         content=models.TextField(
             verbose_name=_("Content")
+        ),
+        conclusions=models.TextField(
+            blank=True,
+            verbose_name=_("Conclusions"),
+            help_text=_(
+                "Optional closing content shown after all mini-posts. Use it for a "
+                "conclusion, synthesis, open question, or next step."
+            ),
         ),
         meta_title=models.CharField(
             max_length=70,
@@ -361,6 +370,15 @@ class PostContentBlock(models.Model):
         help_text=_("Optional URL fragment for linking directly to this section."),
     )
     heading = models.CharField(max_length=250, blank=True, verbose_name=_("Section title"))
+    summary = models.CharField(
+        max_length=160,
+        blank=True,
+        verbose_name=_("Mini-post summary (SEO)"),
+        help_text=_(
+            "Brief, self-contained summary used before the section content and in search "
+            "and listing cards. Recommended: 140–160 characters."
+        ),
+    )
     content = models.TextField(blank=True, verbose_name=_("Section content"))
     image_asset = models.ForeignKey(
         "gallery.Image",
@@ -399,6 +417,12 @@ class PostContentBlock(models.Model):
         ordering = ("language", "order", "pk")
         verbose_name = _("Post content block")
         verbose_name_plural = _("Post content blocks")
+        constraints = [
+            models.CheckConstraint(
+                condition=Q(block_type="related_post") | ~Q(summary=""),
+                name="post_content_block_content_summary_required",
+            ),
+        ]
 
     def __str__(self):
         return self.heading or f"{self.post} · {self.order}"
@@ -411,6 +435,10 @@ class PostContentBlock(models.Model):
         if self.block_type == self.BlockType.CONTENT:
             if not self.content.strip():
                 errors["content"] = _("A content block needs text.")
+            if not self.summary.strip():
+                errors["summary"] = _(
+                    "Add a brief SEO summary for this mini-post."
+                )
             if not self.image_asset_id and not getattr(self, "_has_staged_image", False):
                 errors["image_asset"] = _("A content block needs a 16:9 image.")
             if self.related_post_id:

@@ -51,6 +51,21 @@
     }
   }
   </script>
+  {% for block in content_blocks %}
+    {% if block.is_listable and block.summary %}
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "@id": "{{ canonical_url }}#{{ block.anchor_or_default }}",
+        "url": "{{ canonical_url }}#{{ block.anchor_or_default }}",
+        "headline": "{{ block.heading|escapejs }}",
+        "description": "{{ block.summary|escapejs }}",
+        "isPartOf": {"@id": "{{ canonical_url }}"}
+      }
+      </script>
+    {% endif %}
+  {% endfor %}
   {% endwith %}
 {% endblock %}
 
@@ -522,6 +537,7 @@
         {% if block.is_renderable and block.block_type == 'content' %}
           <section id="{{ block.anchor_or_default }}" class="post-content-block">
             {% if block.heading %}<h2>{{ block.heading }}</h2>{% endif %}
+            {% if block.summary %}<p class="lead post-content-block-summary">{{ block.summary }}</p>{% endif %}
             {% if block.image_url %}
               <figure class="post-content-block-figure">
                 <img src="{{ block.image_url }}" alt="{{ block.image_alt_or_default }}" class="zoomable img-fluid rounded shadow-sm" loading="lazy">
@@ -544,6 +560,12 @@
         {% endif %}
       {% endfor %}
     </div>
+  {% endif %}
+
+  {% if post.conclusions %}
+    <section class="post-conclusions post-content fs-5" aria-label="{% trans 'Conclusions' %}">
+      {{ post.conclusions|add_zoom_class_to_images|safe }}
+    </section>
   {% endif %}
 
   {% if citations %}

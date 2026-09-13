@@ -39,6 +39,7 @@
           {% endwith %}
           <div class="card-body d-flex flex-column">
             <h5 class="card-title">{{ post.title }}</h5>
+            {% if post.summary %}<p class="card-text">{{ post.summary }}</p>{% endif %}
             <p class="card-text text-muted">
               {% firstof post.author.get_full_name post.author.username as author_name %}
               <small>
