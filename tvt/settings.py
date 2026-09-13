@@ -539,6 +539,14 @@ USE_TZ = config('USE_TZ', default=True, cast=config_bool)
 
 STATIC_URL = config('STATIC_URL', default='/static/')
 
+# Shared-hosting fallback.  Some Passenger installations do not expose the
+# application's STATIC_ROOT and MEDIA_ROOT through Apache.  Keep this opt-in:
+# when enabled Django serves those public files until the web-server aliases
+# are configured correctly.
+SERVE_STATIC_MEDIA_WITH_DJANGO = config(
+    'SERVIR_ARCHIVOS_CON_DJANGO', default=False, cast=config_bool
+)
+
 # La ruta donde `collectstatic` copiará todos los archivos para producción.
 # Es bueno tenerla definida aunque en desarrollo no se use directamente.
 if ENVIRONMENT == 'production':

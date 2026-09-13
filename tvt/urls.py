@@ -73,9 +73,10 @@ urlpatterns += i18n_patterns(
 # ==============================================================================
 # SERVING MEDIA FILES IN DEVELOPMENT
 # ==============================================================================
-# This is only for development (DEBUG=True) and should not be used in production.
-# The web server (e.g., Nginx) should be configured to serve media files.
-if settings.DEBUG:
+# This is normally only for development.  The opt-in production fallback is
+# useful on shared Passenger hosting until Apache aliases for /static/ and
+# /media/ are available.
+if settings.DEBUG or getattr(settings, 'SERVE_STATIC_MEDIA_WITH_DJANGO', False):
     # Añadimos las URLs para los archivos MEDIA
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     
