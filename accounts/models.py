@@ -456,6 +456,12 @@ class UserNotification(models.Model):
         POST_FAVORITED = ("post_favorited", _("Post favorited"))
         YOUR_BOOK_PURCHASED = ("your_book_purchased", _("Your book purchased"))
 
+    class EmailDeliveryStatus(models.TextChoices):
+        PENDING = ("pending", _("Pending"))
+        SENT = ("sent", _("Sent"))
+        SKIPPED = ("skipped", _("Not sent"))
+        FAILED = ("failed", _("Failed"))
+
     recipient = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -495,6 +501,22 @@ class UserNotification(models.Model):
     )
     is_read = models.BooleanField(default=False, db_index=True, verbose_name=_("Is read"))
     read_at = models.DateTimeField(null=True, blank=True, verbose_name=_("Read at"))
+    email_delivery_status = models.CharField(
+        max_length=16,
+        choices=EmailDeliveryStatus.choices,
+        default=EmailDeliveryStatus.PENDING,
+        db_index=True,
+        verbose_name=_("Email delivery status"),
+    )
+    email_sent_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name=_("Email sent at"),
+    )
+    email_error = models.TextField(
+        blank=True,
+        verbose_name=_("Email delivery error"),
+    )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
 
     class Meta:

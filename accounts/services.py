@@ -5,13 +5,16 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
 from django.db import transaction
+from django.utils import timezone
 from django.utils.translation import gettext
 
 from accounts.models import UserFollow, UserNotification
 
 
 User = get_user_model()
-logger = logging.getLogger(__name__)
+# Use the Django logger namespace so SMTP failures reach the configured
+# rotating error log in every deployed environment.
+logger = logging.getLogger("django.accounts.notifications")
 
 
 def _absolute_notification_url(url):
@@ -25,10 +28,18 @@ def _absolute_notification_url(url):
 def send_notification_email(notification):
     """Deliver a concise, non-blocking email for a newly created notification."""
     if not getattr(settings, "EMAIL_NOTIFICATIONS_ENABLED", False):
+        notification.email_delivery_status = UserNotification.EmailDeliveryStatus.SKIPPED
+        notification.email_error = "Email notifications are disabled by configuration."
+        notification.save(update_fields=["email_delivery_status", "email_error"])
+        logger.warning("Notification email skipped because notifications are disabled: %s", notification.id)
         return False
 
     recipient_email = (getattr(notification.recipient, "email", "") or "").strip()
     if not recipient_email:
+        notification.email_delivery_status = UserNotification.EmailDeliveryStatus.SKIPPED
+        notification.email_error = "The recipient has no email address."
+        notification.save(update_fields=["email_delivery_status", "email_error"])
+        logger.warning("Notification email skipped because recipient has no email: %s", notification.id)
         return False
 
     notification_url = _absolute_notification_url(notification.url)
@@ -49,9 +60,24 @@ def send_notification_email(notification):
                 recipient_list=[recipient_email],
                 fail_silently=False,
             )
-        except Exception:
+        except Exception as exc:
             # A mail provider outage must never prevent comments or follows.
-            logger.exception("Could not send notification email to user %s", notification.recipient_id)
+            notification.email_delivery_status = UserNotification.EmailDeliveryStatus.FAILED
+            notification.email_error = str(exc)[:2000]
+            notification.save(update_fields=["email_delivery_status", "email_error"])
+            logger.exception(
+                "Could not send notification email to user %s (notification %s)",
+                notification.recipient_id,
+                notification.id,
+            )
+        else:
+            notification.email_delivery_status = UserNotification.EmailDeliveryStatus.SENT
+            notification.email_sent_at = timezone.now()
+            notification.email_error = ""
+            notification.save(
+                update_fields=["email_delivery_status", "email_sent_at", "email_error"]
+            )
+            logger.info("Notification email sent: %s", notification.id)
 
     transaction.on_commit(deliver)
     return True

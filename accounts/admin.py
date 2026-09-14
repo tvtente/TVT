@@ -240,9 +240,11 @@ class UserNotificationAdmin(admin.ModelAdmin):
         "actor",
         "short_title",
         "is_read",
+        "email_delivery_status",
+        "email_sent_at",
         "created_at",
     )
-    list_filter = ("notification_type", "is_read", "created_at")
+    list_filter = ("notification_type", "is_read", "email_delivery_status", "created_at")
     search_fields = (
         "recipient__username",
         "actor__username",
@@ -251,6 +253,7 @@ class UserNotificationAdmin(admin.ModelAdmin):
         "dedupe_key",
     )
     autocomplete_fields = ("recipient", "actor", "related_post")
+    readonly_fields = ("email_delivery_status", "email_sent_at", "email_error", "created_at")
     date_hierarchy = "created_at"
 
     @admin.display(description=_("Title"))

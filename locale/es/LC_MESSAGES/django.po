@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tvt-cms 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-11 22:12+0200\n"
+"POT-Creation-Date: 2026-09-14 00:18+0000\n"
 "PO-Revision-Date: 2025-06-29 22:05+0200\n"
 "Last-Translator: Gustavo <tu_email@ejemplo.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
@@ -26,14 +26,15 @@ msgstr "Identidad"
 msgid "Professional"
 msgstr "Profesional"
 
-#: accounts/admin.py:49 accounts/admin.py:191 accounts/models.py:524
-#: accounts/models.py:630 accounts/models.py:717 accounts/models.py:806
-#: accounts/models.py:841 accounts/models.py:882 accounts/models.py:923
-#: accounts/models.py:975
+#: accounts/admin.py:49 accounts/admin.py:191 accounts/models.py:547
+#: accounts/models.py:653 accounts/models.py:740 accounts/models.py:829
+#: accounts/models.py:864 accounts/models.py:905 accounts/models.py:946
+#: accounts/models.py:998
 msgid "Profile"
 msgstr "Perfil"
 
 #: accounts/admin.py:58 accounts/admin.py:194 accounts/models.py:283
+#: core/templates/core/partials/_header.html:127
 msgid "Avatar"
 msgstr "Avatar"
 
@@ -60,7 +61,7 @@ msgstr "Fechas importantes"
 #: accounts/admin.py:124 accounts/models.py:60 accounts/models.py:71
 #: accounts/models.py:82 accounts/models.py:100 accounts/models.py:118
 #: accounts/models.py:128 accounts/models.py:139 accounts/models.py:150
-#: accounts/models.py:161 accounts/models.py:172 accounts/models.py:764
+#: accounts/models.py:161 accounts/models.py:172 accounts/models.py:787
 #: categories/models.py:20 contact/models.py:21
 msgid "Name"
 msgstr "Nombre"
@@ -68,7 +69,7 @@ msgstr "Nombre"
 #: accounts/admin.py:141
 #: accounts/templates/registration/profile_cv_edit.html:654
 #: accounts/templates/registration/profile_cv_edit.html:673
-#: categories/models.py:65
+#: categories/models.py:80
 msgid "Category"
 msgstr "Categoría"
 
@@ -84,14 +85,14 @@ msgstr "Nombre a mostrar"
 msgid "Professional Title"
 msgstr "Título profesional"
 
-#: accounts/admin.py:222 accounts/models.py:255 accounts/models.py:575
+#: accounts/admin.py:222 accounts/models.py:255 accounts/models.py:598
 msgid "Institution"
 msgstr "Institución"
 
-#: accounts/admin.py:256 accounts/models.py:477 accounts/models.py:1006
+#: accounts/admin.py:259 accounts/models.py:484 accounts/models.py:1029
 #: books/models.py:24 gallery/models.py:44 notebooks/admin.py:56
-#: notebooks/models.py:23 pages/admin.py:118 pages/models.py:21
-#: posts/models.py:58 publications/models.py:28 sources/admin.py:37
+#: notebooks/models.py:23 pages/admin.py:120 pages/models.py:21
+#: posts/models.py:59 publications/models.py:28 sources/admin.py:37
 #: sources/models.py:57
 msgid "Title"
 msgstr "Título"
@@ -108,11 +109,11 @@ msgstr "Introduzca contraseña"
 msgid "Confirm password"
 msgstr "Confirmar contraseña"
 
-#: accounts/forms.py:87 accounts/templates/registration/login.html:37
+#: accounts/forms.py:87 accounts/templates/registration/login.html:43
 msgid "Username"
 msgstr "Nombre de usuario"
 
-#: accounts/forms.py:88 accounts/templates/registration/login.html:41
+#: accounts/forms.py:88 accounts/templates/registration/login.html:47
 msgid "Password"
 msgstr "Contraseña"
 
@@ -161,8 +162,8 @@ msgstr ""
 "La fecha de finalización es obligatoria salvo que la entrada esté marcada "
 "como actual."
 
-#: accounts/forms.py:319 accounts/forms.py:380 accounts/models.py:618
-#: accounts/models.py:705
+#: accounts/forms.py:319 accounts/forms.py:380 accounts/models.py:641
+#: accounts/models.py:728
 msgid "End date cannot be earlier than start date."
 msgstr "La fecha de finalización no puede ser anterior a la fecha de inicio."
 
@@ -176,20 +177,20 @@ msgstr ""
 "La fecha de vencimiento es obligatoria salvo que la certificación no tenga "
 "caducidad."
 
-#: accounts/forms.py:424 accounts/models.py:794
+#: accounts/forms.py:424 accounts/models.py:817
 msgid "Expiration date cannot be earlier than issue date."
 msgstr "La fecha de vencimiento no puede ser anterior a la fecha de emisión."
 
-#: accounts/models.py:23 books/models.py:29 categories/admin.py:141
+#: accounts/models.py:23 books/models.py:29 categories/admin.py:195
 #: categories/models.py:24 gallery/models.py:48 menus/models.py:32
-#: notebooks/models.py:24 posts/models.py:63 publications/models.py:34
+#: notebooks/models.py:24 posts/models.py:64 publications/models.py:34
 #: tags/models.py:22
 msgid "Slug"
 msgstr "Slug"
 
-#: accounts/models.py:27 accounts/models.py:570 accounts/models.py:660
-#: accounts/models.py:759 accounts/models.py:817 accounts/models.py:859
-#: accounts/models.py:900 accounts/models.py:938 accounts/models.py:1001
+#: accounts/models.py:27 accounts/models.py:593 accounts/models.py:683
+#: accounts/models.py:782 accounts/models.py:840 accounts/models.py:882
+#: accounts/models.py:923 accounts/models.py:961 accounts/models.py:1024
 #: shop/models.py:76 shop/models.py:88
 msgid "Order"
 msgstr "Pedido"
@@ -198,7 +199,7 @@ msgstr "Pedido"
 msgid "Is active"
 msgstr "Activo"
 
-#: accounts/models.py:35 accounts/models.py:497 notebooks/models.py:96
+#: accounts/models.py:35 accounts/models.py:520 notebooks/models.py:96
 msgid "Created at"
 msgstr "Creado el"
 
@@ -209,8 +210,8 @@ msgstr "Actualizado el"
 #: accounts/models.py:61 accounts/models.py:72 accounts/models.py:83
 #: accounts/models.py:101 accounts/models.py:119 accounts/models.py:129
 #: accounts/models.py:140 accounts/models.py:151 accounts/models.py:162
-#: accounts/models.py:173 accounts/models.py:589 accounts/models.py:773
-#: accounts/models.py:864 accounts/models.py:905 accounts/models.py:1015
+#: accounts/models.py:173 accounts/models.py:612 accounts/models.py:796
+#: accounts/models.py:887 accounts/models.py:928 accounts/models.py:1038
 #: books/models.py:38 books/templates/books/book_detail.html:237
 #: categories/models.py:28
 msgid "Description"
@@ -246,7 +247,7 @@ msgstr "Niveles de competencia"
 msgid "Parent category"
 msgstr "Categoría Padre"
 
-#: accounts/models.py:105 accounts/models.py:848
+#: accounts/models.py:105 accounts/models.py:871
 msgid "Skill type"
 msgstr "Tipo de habilidad"
 
@@ -254,7 +255,7 @@ msgstr "Tipo de habilidad"
 msgid "Skill types"
 msgstr "Tipos de habilidad"
 
-#: accounts/models.py:123 accounts/models.py:889
+#: accounts/models.py:123 accounts/models.py:912
 msgid "Competency type"
 msgstr "Tipo de competencia"
 
@@ -278,7 +279,7 @@ msgstr "Tipo de publicación externa"
 msgid "External publication types"
 msgstr "Tipos de publicación externa"
 
-#: accounts/models.py:155 accounts/models.py:637
+#: accounts/models.py:155 accounts/models.py:660
 msgid "Experience type"
 msgstr "Tipo de experiencia"
 
@@ -286,7 +287,7 @@ msgstr "Tipo de experiencia"
 msgid "Experience types"
 msgstr "Tipos de experiencia"
 
-#: accounts/models.py:166 accounts/models.py:531
+#: accounts/models.py:166 accounts/models.py:554
 msgid "Education type"
 msgstr "Tipo de educación"
 
@@ -294,7 +295,7 @@ msgstr "Tipo de educación"
 msgid "Education types"
 msgstr "Tipos de educación"
 
-#: accounts/models.py:177 accounts/models.py:724
+#: accounts/models.py:177 accounts/models.py:747
 msgid "Certification type"
 msgstr "Tipo de certificación"
 
@@ -360,7 +361,7 @@ msgstr "Marca si esta persona contribuye al proyecto o a la comunidad."
 msgid "Your full name or a nickname, which will be shown publicly."
 msgstr "Su nombre completo o un apodo, que se mostrará públicamente."
 
-#: accounts/models.py:238 accounts/models.py:674
+#: accounts/models.py:238 accounts/models.py:697
 msgid "Location"
 msgstr "Ubicación"
 
@@ -480,8 +481,8 @@ msgid "Followed user"
 msgstr "Usuario seguido"
 
 #: accounts/models.py:422 books/models.py:174 comments/models.py:77
-#: comments/models.py:221 posts/models.py:183 posts/models.py:495
-#: posts/models.py:530 publications/models.py:205 shop/models.py:67
+#: comments/models.py:221 posts/models.py:192 posts/models.py:542
+#: posts/models.py:577 publications/models.py:205 shop/models.py:67
 msgid "Created At"
 msgstr "Fecha de Creación"
 
@@ -512,293 +513,327 @@ msgid "Reply to your comment"
 msgstr ""
 
 #: accounts/models.py:455
+msgid "New follower"
+msgstr "Nuevo seguidor"
+
+#: accounts/models.py:456
 #, fuzzy
 #| msgid "Post author"
 msgid "Post favorited"
 msgstr "Autor del post"
 
-#: accounts/models.py:456
+#: accounts/models.py:457
 msgid "Your book purchased"
 msgstr ""
 
+#: accounts/models.py:460
+#, fuzzy
+#| msgid "Preview"
+msgid "Pending"
+msgstr "Pendiente"
+
+#: accounts/models.py:461
+msgid "Sent"
+msgstr "Enviado"
+
 #: accounts/models.py:462
+msgid "Not sent"
+msgstr "No enviado"
+
+#: accounts/models.py:463
+msgid "Failed"
+msgstr "Fallido"
+
+#: accounts/models.py:469
 msgid "Recipient"
 msgstr ""
 
-#: accounts/models.py:470
+#: accounts/models.py:477
 msgid "Actor"
 msgstr ""
 
-#: accounts/models.py:475
+#: accounts/models.py:482
 #, fuzzy
 #| msgid "Certification type"
 msgid "Notification type"
 msgstr "Tipo de certificación"
 
-#: accounts/models.py:478 contact/models.py:24
+#: accounts/models.py:485 contact/models.py:24
 msgid "Message"
 msgstr "Mensaje"
 
-#: accounts/models.py:479 accounts/models.py:927 accounts/models.py:992
+#: accounts/models.py:486 accounts/models.py:950 accounts/models.py:1015
 msgid "URL"
 msgstr "URL"
 
-#: accounts/models.py:480
+#: accounts/models.py:487
 msgid "Payload"
 msgstr ""
 
-#: accounts/models.py:485
+#: accounts/models.py:492
 msgid "Dedupe key"
 msgstr ""
 
-#: accounts/models.py:493
+#: accounts/models.py:500
 #, fuzzy
 #| msgid "Relations"
 msgid "Related post"
 msgstr "Relaciones"
 
-#: accounts/models.py:495
+#: accounts/models.py:502
 msgid "Is read"
 msgstr ""
 
-#: accounts/models.py:496
+#: accounts/models.py:503
 #, fuzzy
 #| msgid "Created at"
 msgid "Read at"
 msgstr "Creado el"
 
-#: accounts/models.py:500
+#: accounts/models.py:509
+msgid "Email delivery status"
+msgstr "Estado de entrega del correo"
+
+#: accounts/models.py:514
+msgid "Email sent at"
+msgstr "Correo enviado el"
+
+#: accounts/models.py:518
+msgid "Email delivery error"
+msgstr "Error de entrega del correo"
+
+#: accounts/models.py:523
 #, fuzzy
 #| msgid "Certification"
 msgid "User notification"
 msgstr "Certificación"
 
-#: accounts/models.py:501
+#: accounts/models.py:524
 #, fuzzy
 #| msgid "Certifications"
 msgid "User notifications"
 msgstr "Certificaciones"
 
-#: accounts/models.py:536
+#: accounts/models.py:559
 msgid "Institution URL"
 msgstr "URL de la institución"
 
-#: accounts/models.py:541
+#: accounts/models.py:564
 msgid "Number of credits"
 msgstr "Número de créditos"
 
-#: accounts/models.py:542
+#: accounts/models.py:565
 msgid "Total hours or credits completed for this course of study."
 msgstr "Total de horas o créditos completados en este estudio."
 
-#: accounts/models.py:547 accounts/models.py:647
+#: accounts/models.py:570 accounts/models.py:670
 msgid "Start date"
 msgstr "Fecha de inicio"
 
-#: accounts/models.py:552 accounts/models.py:652
+#: accounts/models.py:575 accounts/models.py:675
 msgid "End date"
 msgstr "Fecha de finalización"
 
-#: accounts/models.py:557
+#: accounts/models.py:580
 msgid "Start year"
 msgstr "Año de inicio"
 
-#: accounts/models.py:562
+#: accounts/models.py:585
 msgid "End year"
 msgstr "Año de finalización"
 
-#: accounts/models.py:566 accounts/models.py:656
+#: accounts/models.py:589 accounts/models.py:679
 msgid "Is current"
 msgstr "Actual"
 
-#: accounts/models.py:580
+#: accounts/models.py:603
 msgid "Degree"
 msgstr "Título / grado"
 
-#: accounts/models.py:585
+#: accounts/models.py:608
 msgid "Field of study"
 msgstr "Área de estudio"
 
-#: accounts/models.py:594 accounts/models.py:595 accounts/reportlab_pdf.py:433
+#: accounts/models.py:617 accounts/models.py:618 accounts/reportlab_pdf.py:433
 #: accounts/templates/accounts/_public_profile_cv_content.html:295
 #: accounts/templates/registration/profile_cv_edit.html:198
 #: accounts/templates/registration/profile_cv_edit.html:993
-#: accounts/views.py:134
+#: accounts/views.py:135
 msgid "Education"
 msgstr "Educación"
 
-#: accounts/models.py:642
+#: accounts/models.py:665
 msgid "Organization URL"
 msgstr "URL de la organización"
 
-#: accounts/models.py:665
+#: accounts/models.py:688
 msgid "Organization"
 msgstr "Organización"
 
-#: accounts/models.py:669
+#: accounts/models.py:692
 msgid "Position"
 msgstr "Cargo"
 
-#: accounts/models.py:678 accounts/reportlab_pdf.py:424
+#: accounts/models.py:701 accounts/reportlab_pdf.py:424
 #: accounts/templates/accounts/_public_profile_cv_content.html:268
 msgid "Company description"
 msgstr "Descripción de la empresa"
 
-#: accounts/models.py:682 accounts/reportlab_pdf.py:426
+#: accounts/models.py:705 accounts/reportlab_pdf.py:426
 #: accounts/templates/accounts/_public_profile_cv_content.html:274
 msgid "Main responsibilities"
 msgstr "Responsabilidades principales"
 
-#: accounts/models.py:686 accounts/reportlab_pdf.py:428
+#: accounts/models.py:709 accounts/reportlab_pdf.py:428
 #: accounts/templates/accounts/_public_profile_cv_content.html:280
 msgid "Key achievements or projects"
 msgstr "Logros o proyectos destacados"
 
-#: accounts/models.py:691 accounts/models.py:692 accounts/reportlab_pdf.py:404
+#: accounts/models.py:714 accounts/models.py:715 accounts/reportlab_pdf.py:404
 #: accounts/templates/accounts/_public_profile_cv_content.html:229
 #: accounts/templates/registration/profile_cv_edit.html:313
 #: accounts/templates/registration/profile_cv_edit.html:990
-#: accounts/views.py:135
+#: accounts/views.py:136
 msgid "Experience"
 msgstr "Experiencia"
 
-#: accounts/models.py:729
+#: accounts/models.py:752
 msgid "Issue date"
 msgstr "Fecha de emisión"
 
-#: accounts/models.py:734
+#: accounts/models.py:757
 msgid "Expiration date"
 msgstr "Fecha de vencimiento"
 
-#: accounts/models.py:738
+#: accounts/models.py:761
 msgid "No expiration"
 msgstr "Sin caducidad"
 
-#: accounts/models.py:743
+#: accounts/models.py:766
 msgid "Number of hours"
 msgstr "Número de horas"
 
-#: accounts/models.py:744
+#: accounts/models.py:767
 msgid "Total hours completed for this certification, if applicable."
 msgstr "Total de horas completadas en esta certificación, si aplica."
 
-#: accounts/models.py:749
+#: accounts/models.py:772
 msgid "Reference or record number"
 msgstr "Referencia o número de registro"
 
-#: accounts/models.py:750
+#: accounts/models.py:773
 msgid ""
 "Internal reference, folio, or registration number associated with the "
 "credential."
 msgstr ""
 "Referencia interna, folio o número de registro asociado a la credencial."
 
-#: accounts/models.py:755
+#: accounts/models.py:778
 msgid "Credential URL"
 msgstr "URL de credencial"
 
-#: accounts/models.py:769
+#: accounts/models.py:792
 msgid "Issuer"
 msgstr "Entidad emisora"
 
-#: accounts/models.py:778
+#: accounts/models.py:801
 msgid "Certification"
 msgstr "Certificación"
 
-#: accounts/models.py:779 accounts/reportlab_pdf.py:453
+#: accounts/models.py:802 accounts/reportlab_pdf.py:453
 #: accounts/templates/accounts/_public_profile_cv_content.html:366
 #: accounts/templates/registration/profile_cv_edit.html:428
 #: accounts/templates/registration/profile_cv_edit.html:996
-#: accounts/views.py:136
+#: accounts/views.py:137
 msgid "Certifications"
 msgstr "Certificaciones"
 
-#: accounts/models.py:813 accounts/models.py:855 accounts/models.py:896
+#: accounts/models.py:836 accounts/models.py:878 accounts/models.py:919
 msgid "Level"
 msgstr "Nivel"
 
-#: accounts/models.py:822 accounts/models.py:827 comments/models.py:30
+#: accounts/models.py:845 accounts/models.py:850 comments/models.py:30
 #: gallery/models.py:57 tags/models.py:64
 msgid "Language"
 msgstr "Idioma"
 
-#: accounts/models.py:828 accounts/reportlab_pdf.py:482
+#: accounts/models.py:851 accounts/reportlab_pdf.py:482
 #: accounts/templates/accounts/_public_profile_cv_content.html:436
 #: accounts/templates/registration/profile_cv_edit.html:543
 #: accounts/templates/registration/profile_cv_edit.html:999
-#: accounts/views.py:137 posts/admin.py:741
+#: accounts/views.py:138 posts/admin.py:755
 msgid "Languages"
 msgstr "Idiomas"
 
-#: accounts/models.py:869 accounts/models.py:874
+#: accounts/models.py:892 accounts/models.py:897
 msgid "Skill"
 msgstr "Habilidad"
 
-#: accounts/models.py:870
+#: accounts/models.py:893
 msgid "Skills"
 msgstr "Habilidades"
 
-#: accounts/models.py:910 accounts/models.py:915
+#: accounts/models.py:933 accounts/models.py:938
 msgid "Competency"
 msgstr "Competencia"
 
-#: accounts/models.py:911
+#: accounts/models.py:934
 msgid "Competencies"
 msgstr "Competencias"
 
-#: accounts/models.py:934
+#: accounts/models.py:957
 msgid "Link type"
 msgstr "Tipo de enlace"
 
-#: accounts/models.py:944 tags/models.py:14
+#: accounts/models.py:967 tags/models.py:14
 msgid "Label"
 msgstr "Etiqueta"
 
-#: accounts/models.py:949
+#: accounts/models.py:972
 msgid "Profile Link"
 msgstr "Enlace de perfil"
 
-#: accounts/models.py:950
+#: accounts/models.py:973
 msgid "Profile Links"
 msgstr "Enlaces de perfil"
 
-#: accounts/models.py:982
+#: accounts/models.py:1005
 msgid "Publication type"
 msgstr "Tipo de publicación"
 
-#: accounts/models.py:987 books/templates/books/book_detail.html:85
+#: accounts/models.py:1010 books/templates/books/book_detail.html:85
 #: publications/templates/publications/publication_detail.html:42
 #: sources/models.py:84
 msgid "Publication date"
 msgstr "Fecha de Creación"
 
-#: accounts/models.py:997 publications/models.py:182
+#: accounts/models.py:1020 publications/models.py:182
 #: publications/templates/publications/publication_detail.html:61
 msgid "DOI"
 msgstr "DOI"
 
-#: accounts/models.py:1011
+#: accounts/models.py:1034
 msgid "Publisher"
 msgstr "Editorial / entidad publicadora"
 
-#: accounts/models.py:1020
+#: accounts/models.py:1043
 msgid "External Publication"
 msgstr "Publicación externa"
 
-#: accounts/models.py:1021 accounts/reportlab_pdf.py:533
+#: accounts/models.py:1044 accounts/reportlab_pdf.py:533
 #: accounts/templates/accounts/_public_profile_cv_content.html:580
 #: accounts/templates/registration/profile_cv_edit.html:891
 #: accounts/templates/registration/profile_cv_edit.html:1011
-#: accounts/views.py:139
+#: accounts/views.py:140
 msgid "External Publications"
 msgstr "Publicaciones externas"
 
-#: accounts/models.py:1060
+#: accounts/models.py:1098
 msgid "Failed to resolve the user profile while building the avatar URL."
 msgstr ""
 "No se pudo resolver el perfil del usuario al construir la URL del avatar."
 
-#: accounts/models.py:1070
+#: accounts/models.py:1108
 msgid "Failed to resolve the user avatar URL from the profile."
 msgstr "No se pudo resolver la URL del avatar del usuario desde el perfil."
 
@@ -899,64 +934,99 @@ msgstr "Competencias transversales"
 msgid "TVTente Scientific Publications"
 msgstr "Publicaciones externas"
 
-#: accounts/services.py:78
+#: accounts/services.py:49
+msgid "Open the notification:"
+msgstr "Abrir la notificación:"
+
+#: accounts/services.py:50
+msgid "You receive this email because of activity in your TVTente account."
+msgstr "Recibes este correo por actividad en tu cuenta de TVTente."
+
+#: accounts/services.py:154
 #, fuzzy, python-format
 #| msgid "Translated by"
 msgid "New post from %(user)s"
 msgstr "Traducido por"
 
-#: accounts/services.py:79
+#: accounts/services.py:155
 #, python-format
 msgid "%(user)s published the post \"%(title)s\"."
 msgstr ""
 
-#: accounts/services.py:112
+#: accounts/services.py:188 accounts/services.py:241
 msgid "Someone"
 msgstr ""
 
-#: accounts/services.py:118
+#: accounts/services.py:192
 msgid "New comment on your post"
 msgstr ""
 
-#: accounts/services.py:119
+#: accounts/services.py:193
 #, python-format
 msgid "%(user)s commented on your post \"%(title)s\"."
 msgstr ""
 
-#: accounts/services.py:148
+#: accounts/services.py:198
+msgid "New comment awaiting review"
+msgstr "Nuevo comentario pendiente de revisión"
+
+#: accounts/services.py:199
+#, python-format
+msgid "%(user)s commented on \"%(title)s\" and it is awaiting review."
+msgstr "%(user)s comentó en «%(title)s» y está pendiente de revisión."
+
+#: accounts/services.py:247
+msgid "New reply to your comment"
+msgstr "Nueva respuesta a tu comentario"
+
+#: accounts/services.py:248
+#, python-format
+msgid "%(user)s replied to your comment on \"%(title)s\"."
+msgstr "%(user)s respondió a tu comentario en «%(title)s»."
+
+#: accounts/services.py:275
+msgid "You have a new follower"
+msgstr "Tienes un nuevo seguidor"
+
+#: accounts/services.py:276
+#, python-format
+msgid "%(user)s started following you."
+msgstr "%(user)s ha empezado a seguirte."
+
+#: accounts/services.py:297
 msgid "New favorite on your post"
 msgstr ""
 
-#: accounts/services.py:149
+#: accounts/services.py:298
 #, fuzzy, python-format
 #| msgid "You added this post to your favorites."
 msgid "%(user)s added your post \"%(title)s\" to favorites."
 msgstr "Agregaste este post a tus favoritos."
 
 #: accounts/templates/accounts/_public_profile_cv_content.html:18
-#: posts/templates/posts/post_detail.html:605
+#: posts/templates/posts/post_detail.html:634
 msgid "followers"
 msgstr "seguidores"
 
 #: accounts/templates/accounts/_public_profile_cv_content.html:21
 #: publications/models.py:214
 #: publications/templates/publications/publication_list.html:5
-#: publications/views.py:72 publications/views.py:82 publications/views.py:160
-#: publications/views.py:273
+#: publications/views.py:101 publications/views.py:111
+#: publications/views.py:190 publications/views.py:304
 msgid "Publications"
 msgstr "Publicaciones"
 
 #: accounts/templates/accounts/_public_profile_cv_content.html:43
 #: core/templates/core/partials/_header.html:88
-#: posts/templates/posts/post_detail.html:624
-#: posts/templates/posts/post_detail.html:1221 posts/views.py:141
+#: posts/templates/posts/post_detail.html:653
+#: posts/templates/posts/post_detail.html:1250 posts/views.py:154
 msgid "Following"
 msgstr "Siguiendo"
 
 #: accounts/templates/accounts/_public_profile_cv_content.html:45
-#: posts/templates/posts/post_detail.html:626
-#: posts/templates/posts/post_detail.html:633
-#: posts/templates/posts/post_detail.html:1222
+#: posts/templates/posts/post_detail.html:655
+#: posts/templates/posts/post_detail.html:662
+#: posts/templates/posts/post_detail.html:1251
 msgid "Follow"
 msgstr "Seguir"
 
@@ -983,7 +1053,7 @@ msgid "View credential"
 msgstr "ID de credencial"
 
 #: accounts/templates/accounts/inbox.html:4
-#: accounts/templates/accounts/inbox.html:14 accounts/views.py:715
+#: accounts/templates/accounts/inbox.html:14 accounts/views.py:717
 #: core/templates/core/partials/_header.html:76 menus/models.py:67
 msgid "Inbox"
 msgstr ""
@@ -1092,7 +1162,7 @@ msgstr "Ver en contexto"
 msgid "This user has not posted any comments yet."
 msgstr "Este usuario no ha publicado ningún comentario todavía."
 
-#: accounts/templates/accounts/user_directory.html:7 widgets/models.py:59
+#: accounts/templates/accounts/user_directory.html:7 widgets/models.py:60
 msgid "User Directory"
 msgstr "Directorio de Usuarios"
 
@@ -1110,32 +1180,32 @@ msgid "No users found in the directory."
 msgstr "No se encuentran usuarios en el directorio."
 
 #: accounts/templates/registration/login.html:6
-#: accounts/templates/registration/login.html:13
-#: accounts/templates/registration/login.html:52
+#: accounts/templates/registration/login.html:19
+#: accounts/templates/registration/login.html:58
 #: accounts/templates/registration/password_reset_complete.html:15
-#: core/templates/core/partials/_header.html:155
+#: core/templates/core/partials/_header.html:157
 msgid "Log In"
 msgstr "Iniciar sesión"
 
-#: accounts/templates/registration/login.html:18
+#: accounts/templates/registration/login.html:24
 #: templates/socialaccount/login.html:4
 msgid "Continue with Google"
 msgstr "Continuar con Google"
 
-#: accounts/templates/registration/login.html:24
+#: accounts/templates/registration/login.html:30
 #: accounts/templates/registration/signup.html:24
 msgid "or"
 msgstr "o"
 
-#: accounts/templates/registration/login.html:31
+#: accounts/templates/registration/login.html:37
 msgid "Your username and password didn't match. Please try again."
 msgstr "Tu nombre de usuario y tu contraseña no coinciden. Inténtalo de nuevo."
 
-#: accounts/templates/registration/login.html:47
+#: accounts/templates/registration/login.html:53
 msgid "Forgot password?"
 msgstr "¿Olvidó la contraseña?"
 
-#: accounts/templates/registration/login.html:62
+#: accounts/templates/registration/login.html:68
 #, python-format
 msgid "Don't have an account? <a href=\"%(signup_url)s\">Sign up here</a>."
 msgstr "¿No tienes una cuenta? <a href=\"%(signup_url)s\">Registrate aquí</a>."
@@ -1265,7 +1335,7 @@ msgid "Password reset for"
 msgstr "Restablecimiento de contraseña para"
 
 #: accounts/templates/registration/profile_cv_edit.html:5
-#: accounts/templates/registration/profile_edit.html:35 accounts/views.py:974
+#: accounts/templates/registration/profile_edit.html:35 accounts/views.py:976
 #: menus/models.py:65
 msgid "Edit CV"
 msgstr "Editar hoja de vida"
@@ -1428,7 +1498,7 @@ msgstr ""
 "publicadas fuera de TVTente."
 
 #: accounts/templates/registration/profile_cv_edit.html:1008
-#: accounts/views.py:138
+#: accounts/views.py:139
 msgid "Professional Links"
 msgstr "Enlaces profesionales"
 
@@ -1436,8 +1506,8 @@ msgstr "Enlaces profesionales"
 msgid "Save CV"
 msgstr "Guardar hoja de vida"
 
-#: accounts/templates/registration/profile_edit.html:6 accounts/views.py:866
-#: accounts/views.py:973 menus/models.py:64
+#: accounts/templates/registration/profile_edit.html:6 accounts/views.py:868
+#: accounts/views.py:975 menus/models.py:64
 msgid "Edit Profile"
 msgstr "Editar Perfil"
 
@@ -1498,139 +1568,139 @@ msgstr "¿Ya tienes una cuenta?"
 msgid "Log in here"
 msgstr "Iniciar sesión aquí"
 
-#: accounts/templatetags/avatar_tags.py:31
+#: accounts/templatetags/avatar_tags.py:37
 msgid "Failed to resolve the user display name from the profile."
 msgstr "No se pudo resolver el nombre visible del usuario desde el perfil."
 
-#: accounts/templatetags/avatar_tags.py:48
+#: accounts/templatetags/avatar_tags.py:54
 msgid "Failed to resolve the user biography from the profile."
 msgstr "No se pudo resolver la biografía del usuario desde el perfil."
 
-#: accounts/views.py:117
+#: accounts/tests.py:339 accounts/views.py:671
+msgid "You cannot follow your own account."
+msgstr "No puedes seguir tu propia cuenta."
+
+#: accounts/views.py:118
 msgid "Failed to delete the previous custom avatar file."
 msgstr "No se pudo eliminar el archivo de avatar personalizado anterior."
 
-#: accounts/views.py:307
+#: accounts/views.py:308
 #, fuzzy
 #| msgid "Posts in category:"
 msgid "Choose a category."
 msgstr "Posts en la categoría:"
 
-#: accounts/views.py:309
+#: accounts/views.py:310
 #, fuzzy
 #| msgid "Selected library image is no longer available."
 msgid "Selected category is no longer available."
 msgstr "La imagen seleccionada de la biblioteca ya no está disponible."
 
-#: accounts/views.py:316
+#: accounts/views.py:317
 #, fuzzy
 #| msgid "Select a parent to create a sub-category."
 msgid "Select at least one technology in this category."
 msgstr "Seleccione un padre para crear una subcategoría."
 
-#: accounts/views.py:318
+#: accounts/views.py:319
 msgid "One or more selected technologies do not belong to the chosen category."
 msgstr ""
 
-#: accounts/views.py:331
+#: accounts/views.py:332
 msgid "Each category can only be selected once."
 msgstr ""
 
-#: accounts/views.py:373
+#: accounts/views.py:374
 msgid "You can select up to five transversal competencies."
 msgstr ""
 
-#: accounts/views.py:376
+#: accounts/views.py:377
 #, fuzzy
 #| msgid "Selected library image is no longer available."
 msgid "One or more selected transversal competencies are no longer available."
 msgstr "La imagen seleccionada de la biblioteca ya no está disponible."
 
-#: accounts/views.py:622 accounts/views.py:714 accounts/views.py:865
-#: accounts/views.py:972 accounts/views.py:1107 books/views.py:165
+#: accounts/views.py:623 accounts/views.py:716 accounts/views.py:867
+#: accounts/views.py:974 accounts/views.py:1109 books/views.py:165
 #: books/views.py:206 books/views.py:313 books/views.py:370
-#: categories/views.py:40 categories/views.py:85
+#: categories/views.py:41 categories/views.py:86
 #: core/templates/core/partials/_breadcrumbs.html:20
 #: core/templates/core/partials/_breadcrumbs.html:24
-#: core/templates/core/partials/_breadcrumbs.html:28 core/views.py:102
-#: core/views.py:155 core/views.py:182 core/views.py:231 gallery/views.py:174
+#: core/templates/core/partials/_breadcrumbs.html:28 core/views.py:115
+#: core/views.py:174 core/views.py:201 core/views.py:250 gallery/views.py:174
 #: menus/views.py:11 notebooks/views.py:52 notebooks/views.py:123
-#: pages/views.py:73 pages/views.py:213 posts/views.py:98 posts/views.py:144
-#: posts/views.py:184 posts/views.py:526 posts/views.py:716 posts/views.py:820
-#: publications/views.py:71 publications/views.py:159 publications/views.py:272
-#: shop/views.py:19 testimonials/views.py:9
+#: pages/views.py:80 pages/views.py:220 posts/views.py:111 posts/views.py:157
+#: posts/views.py:197 posts/views.py:549 posts/views.py:746 posts/views.py:855
+#: publications/views.py:100 publications/views.py:189
+#: publications/views.py:303 shop/views.py:19 testimonials/views.py:9
 msgid "Home"
 msgstr "Inicio"
 
-#: accounts/views.py:623 accounts/views.py:1108
+#: accounts/views.py:624 accounts/views.py:1110
 msgid "Users"
 msgstr "Usuarios"
 
-#: accounts/views.py:660
+#: accounts/views.py:661
 #, fuzzy
 #| msgid "Page not found."
 msgid "Profile not found."
 msgstr "Página no encontrada."
 
-#: accounts/views.py:670
-msgid "You cannot follow your own account."
-msgstr "No puedes seguir tu propia cuenta."
-
-#: accounts/views.py:680
+#: accounts/views.py:681
 #, python-format
 msgid "You stopped following %(user)s."
 msgstr "Has dejado de seguir a %(user)s."
 
-#: accounts/views.py:684
+#: accounts/views.py:686
 #, python-format
 msgid "You are now following %(user)s."
 msgstr "Ahora sigues a %(user)s."
 
-#: accounts/views.py:728
+#: accounts/views.py:730
 #, fuzzy
 #| msgid "Publication not found."
 msgid "Notification not found."
 msgstr "No se encontraron publicaciones."
 
-#: accounts/views.py:742
+#: accounts/views.py:744
 msgid "Notification marked as read."
 msgstr ""
 
-#: accounts/views.py:749
+#: accounts/views.py:751
 #, fuzzy
 #| msgid "Book not found."
 msgid "Inbox not found."
 msgstr "Libro no encontrado."
 
-#: accounts/views.py:759
+#: accounts/views.py:761
 msgid "All notifications were marked as read."
 msgstr ""
 
-#: accounts/views.py:774
+#: accounts/views.py:776
 msgid "Welcome! Your account has been created successfully."
 msgstr "¡Bienvenido! Su acceso ha sido creado con éxito."
 
-#: accounts/views.py:852
+#: accounts/views.py:854
 msgid "Your profile has been updated successfully!"
 msgstr "¡Su perfil ha sido actualizado con éxito!"
 
-#: accounts/views.py:891
+#: accounts/views.py:893
 msgid "You do not have permission to edit a CV."
 msgstr "No tienes permiso para editar un CV."
 
-#: accounts/views.py:954
+#: accounts/views.py:956
 msgid "Your CV has been updated successfully."
 msgstr "Tu hoja de vida se ha actualizado correctamente."
 
-#: accounts/views.py:957
+#: accounts/views.py:959
 msgid "Please review the highlighted errors before saving."
 msgstr "Revisa los errores resaltados antes de guardar."
 
-#: accounts/views.py:1020 accounts/views.py:1021
+#: accounts/views.py:1022 accounts/views.py:1023
 msgid "CV not available in this language"
 msgstr "Publicación no disponible en este idioma"
 
-#: accounts/views.py:1023 core/templates/core/translation_unavailable.html:41
+#: accounts/views.py:1025 core/templates/core/translation_unavailable.html:41
 msgid ""
 "This profile exists, but its CV has not been entered in the selected "
 "language yet."
@@ -1638,11 +1708,11 @@ msgstr ""
 "Este perfil existe, pero su CV aún no se ha introducido en el idioma "
 "seleccionado."
 
-#: accounts/views.py:1052 accounts/views.py:1063
+#: accounts/views.py:1054 accounts/views.py:1065
 msgid "CV not available in this language."
 msgstr "Publicación no disponible en este idioma"
 
-#: accounts/views.py:1071
+#: accounts/views.py:1073
 msgid "The PDF could not be generated at this time."
 msgstr "The PDF could not be generated at this time."
 
@@ -1684,18 +1754,19 @@ msgid "Authors"
 msgstr "Autor"
 
 #: books/admin.py:162 books/models.py:122
-#: books/templates/books/book_detail.html:119 categories/models.py:66
-#: categories/views.py:41 notebooks/models.py:82 pages/admin.py:274
-#: pages/models.py:44 pages/templates/pages/page_detail.html:561
-#: posts/admin.py:717 posts/models.py:200
-#: posts/templates/posts/post_detail.html:486
-#: posts/templates/posts/post_detail.html:787 publications/admin.py:209
+#: books/templates/books/book_detail.html:119 categories/models.py:81
+#: categories/views.py:42 core/templates/core/partials/_header.html:169
+#: menus/templates/menus/partials/_category_navigation.html:11
+#: notebooks/models.py:82 pages/admin.py:276 pages/models.py:44
+#: pages/templates/pages/page_detail.html:561 posts/admin.py:731
+#: posts/models.py:209 posts/templates/posts/post_detail.html:502
+#: posts/templates/posts/post_detail.html:816 publications/admin.py:209
 #: publications/models.py:174
 #: publications/templates/publications/publication_detail.html:71
 msgid "Categories"
 msgstr "Categorías"
 
-#: books/admin.py:203 pages/admin.py:160 publications/admin.py:256
+#: books/admin.py:203 pages/admin.py:162 publications/admin.py:256
 msgid "Failed to resolve the media asset preview URL in the admin."
 msgstr ""
 "No se pudo resolver la URL de vista previa del recurso multimedia en la "
@@ -1705,11 +1776,11 @@ msgstr ""
 msgid "Cover image — media library"
 msgstr "Imagen Destacada"
 
-#: books/admin.py:259 posts/admin.py:526 publications/admin.py:321
+#: books/admin.py:259 posts/admin.py:540 publications/admin.py:321
 msgid "Social image — media library"
 msgstr "Imagen social — biblioteca multimedia"
 
-#: books/admin.py:267 posts/admin.py:550 publications/admin.py:329
+#: books/admin.py:267 posts/admin.py:564 publications/admin.py:329
 #, fuzzy
 #| msgid "Social image — media library"
 msgid "Mobile image — media library"
@@ -1719,9 +1790,9 @@ msgstr "Imagen social — biblioteca multimedia"
 msgid "Invalid media library image selection."
 msgstr "Selección de imagen de la biblioteca multimedia no válida."
 
-#: books/admin.py:345 gallery/admin.py:208 pages/admin.py:269
-#: posts/admin.py:203 posts/admin.py:846 posts/admin.py:924
-#: publications/admin.py:421 site_settings/admin.py:392
+#: books/admin.py:345 gallery/admin.py:208 pages/admin.py:271
+#: posts/admin.py:203 posts/admin.py:860 posts/admin.py:938
+#: publications/admin.py:421 site_settings/admin.py:417
 msgid "The staged upload expired or was already removed. Upload again."
 msgstr "La carga temporal caducó o ya fue eliminada. Vuelve a subirla."
 
@@ -1745,12 +1816,12 @@ msgstr "Excerpt"
 msgid "Table of contents"
 msgstr "Contenido"
 
-#: books/models.py:52 notebooks/models.py:48 posts/models.py:78
+#: books/models.py:52 notebooks/models.py:48 posts/models.py:87
 #: publications/models.py:127
 msgid "Meta Title"
 msgstr "Meta Título"
 
-#: books/models.py:58 notebooks/models.py:54 posts/models.py:84
+#: books/models.py:58 notebooks/models.py:54 posts/models.py:93
 #: publications/models.py:133
 msgid "Meta Description"
 msgstr "Meta Descripción"
@@ -1763,7 +1834,7 @@ msgstr "Imagen Destacada"
 msgid "Primary book cover from Media Library."
 msgstr "Primary book cover from Media Library."
 
-#: books/models.py:75 posts/models.py:107 publications/models.py:150
+#: books/models.py:75 posts/models.py:116 publications/models.py:150
 msgid "Social image (library)"
 msgstr "Imagen social (biblioteca)"
 
@@ -1771,7 +1842,7 @@ msgstr "Imagen social (biblioteca)"
 msgid "Square or social-preview image from Media Library."
 msgstr "Square or social-preview image from Media Library."
 
-#: books/models.py:84 posts/models.py:122 publications/models.py:159
+#: books/models.py:84 posts/models.py:131 publications/models.py:159
 #, fuzzy
 #| msgid "Social image (library)"
 msgid "Mobile image (library)"
@@ -1847,8 +1918,8 @@ msgstr "Disponible desde"
 msgid "Optional release date for the purchasable full edition."
 msgstr "Fecha opcional de lanzamiento para la edición completa vendible."
 
-#: books/models.py:178 comments/models.py:81 posts/models.py:184
-#: posts/models.py:496 publications/models.py:209 shop/models.py:71
+#: books/models.py:178 comments/models.py:81 posts/models.py:193
+#: posts/models.py:543 publications/models.py:209 shop/models.py:71
 msgid "Updated At"
 msgstr "Actualizado En"
 
@@ -1862,11 +1933,11 @@ msgstr "Libro"
 msgid "Books"
 msgstr "Libros"
 
-#: books/models.py:188 categories/models.py:74 categories/models.py:76
-#: categories/models.py:82 menus/admin.py:76 menus/models.py:211
+#: books/models.py:188 categories/models.py:89 categories/models.py:91
+#: categories/models.py:97 menus/admin.py:76 menus/models.py:211
 #: notebooks/models.py:109 notebooks/models.py:132 pages/models.py:110
 #: pages/models.py:184 pages/models.py:252 pages/models.py:256
-#: pages/models.py:412 publications/models.py:219 widgets/models.py:187
+#: pages/models.py:429 publications/models.py:219 widgets/models.py:188
 msgid "Untitled"
 msgstr "Título"
 
@@ -1891,7 +1962,6 @@ msgid "Original PDF"
 msgstr "PDF original"
 
 #: books/templates/books/book_detail.html:130
-#| msgid "External Publication"
 msgid "External free publication"
 msgstr "Publicación externa de acceso gratuito"
 
@@ -1901,7 +1971,12 @@ msgid ""
 "and Health at Work (EU-OSHA). TVTente facilitates its location and download, "
 "but is not the author, editor or translator of this publication. "
 "Reproduction is authorised by the editor provided the source is acknowledged."
-msgstr "Este documento fue elaborado por sus autores para la Agencia Europea para la Seguridad y la Salud en el Trabajo (EU-OSHA). TVTente facilita su localización y descarga, pero no es autor, editor ni traductor de esta publicación. La reproducción está autorizada por el editor siempre que se reconozca la fuente."
+msgstr ""
+"Este documento fue elaborado por sus autores para la Agencia Europea para la "
+"Seguridad y la Salud en el Trabajo (EU-OSHA). TVTente facilita su "
+"localización y descarga, pero no es autor, editor ni traductor de esta "
+"publicación. La reproducción está autorizada por el editor siempre que se "
+"reconozca la fuente."
 
 #: books/templates/books/book_detail.html:167
 #: books/templates/books/book_list.html:125
@@ -2049,8 +2124,8 @@ msgstr ""
 "This book exists, but it has not been translated into the selected language "
 "yet."
 
-#: books/views.py:235 books/views.py:263 core/views.py:199 core/views.py:226
-#: core/views.py:248 core/views.py:251 pages/views.py:137
+#: books/views.py:235 books/views.py:263 core/views.py:218 core/views.py:245
+#: core/views.py:267 core/views.py:270 pages/views.py:144
 msgid "Page not found."
 msgstr "Página no encontrada."
 
@@ -2128,17 +2203,22 @@ msgstr ""
 msgid "Book document not available in this language."
 msgstr "Documento del libro no disponible en este idioma"
 
-#: categories/admin.py:84 tags/admin.py:114
+#: categories/admin.py:88
+#, python-format
+msgid "The following child categories were also hidden: %(categories)s."
+msgstr "También se ocultaron las siguientes categorías hijas: %(categories)s."
+
+#: categories/admin.py:138 tags/admin.py:114
 #, python-format
 msgid "Delete selected %(verbose_name_plural)s"
 msgstr ""
 
-#: categories/admin.py:103 tags/admin.py:133
+#: categories/admin.py:157 tags/admin.py:133
 #, python-format
 msgid "Successfully deleted %(count)d %(items)s."
 msgstr ""
 
-#: categories/admin.py:106
+#: categories/admin.py:160
 #, fuzzy
 #| msgid "Category"
 msgid "category"
@@ -2146,12 +2226,12 @@ msgid_plural "categories"
 msgstr[0] "Categoría"
 msgstr[1] "Categoría"
 
-#: categories/admin.py:114 tags/admin.py:144
+#: categories/admin.py:168 tags/admin.py:144
 #, python-format
 msgid "Cannot delete %(name)s"
 msgstr ""
 
-#: categories/admin.py:116 tags/admin.py:146
+#: categories/admin.py:170 tags/admin.py:146
 msgid "Delete multiple objects"
 msgstr ""
 
@@ -2187,18 +2267,27 @@ msgstr "Categoría Padre"
 msgid "Select a parent to create a sub-category."
 msgstr "Seleccione un padre para crear una subcategoría."
 
-#: categories/models.py
+#: categories/models.py:63
+#, fuzzy
+#| msgid "Icon Class"
+msgid "Menu icon class"
+msgstr "Class de Icono"
+
+#: categories/models.py:65
+msgid "Optional Font Awesome classes, for example: fas fa-shield-alt."
+msgstr ""
+
+#: categories/models.py:70
 msgid "Show"
 msgstr "Mostrar"
 
-#: categories/models.py
-msgid "Show this category and its associated posts in public category trees, menus, and listings."
-msgstr "Muestra esta categoría y sus posts asociados en árboles, menús y listados públicos."
-
-#: categories/admin.py
-#, python-format
-msgid "The following child categories were also hidden: %(categories)s."
-msgstr "También se ocultaron las siguientes categorías hijas: %(categories)s."
+#: categories/models.py:72
+msgid ""
+"Show this category and its associated posts in public category trees, menus, "
+"and listings."
+msgstr ""
+"Muestra esta categoría y sus posts asociados en árboles, menús y listados "
+"públicos."
 
 #: categories/templates/admin/categories/category/delete_confirmation.html:9
 #: categories/templates/admin/categories/category/delete_selected_confirmation.html:9
@@ -2232,9 +2321,9 @@ msgstr "Explore Nuestros Temas"
 msgid "Navigate through our content organized by category."
 msgstr "Navega por nuestro contenido organizado por categoría."
 
-#: categories/views.py:86 posts/models.py:206 posts/views.py:99
-#: posts/views.py:145 posts/views.py:185 posts/views.py:527 posts/views.py:717
-#: posts/views.py:821
+#: categories/views.py:87 posts/models.py:215 posts/views.py:112
+#: posts/views.py:158 posts/views.py:198 posts/views.py:550 posts/views.py:747
+#: posts/views.py:856
 msgid "Posts"
 msgstr "Posts"
 
@@ -2266,9 +2355,9 @@ msgstr "traducciones de comentarios"
 msgid "Comment"
 msgstr "comentario"
 
-#: comments/admin.py:160 comments/models.py:185 posts/models.py:205
-#: posts/models.py:342 posts/models.py:456 posts/models.py:485
-#: posts/models.py:528 tags/models.py:52
+#: comments/admin.py:160 comments/models.py:185 posts/models.py:214
+#: posts/models.py:351 posts/models.py:503 posts/models.py:532
+#: posts/models.py:575 tags/models.py:52
 msgid "Post"
 msgstr "Post"
 
@@ -2347,7 +2436,7 @@ msgstr "Tu Nombre (requerido)"
 msgid "Your Email (required, not published)"
 msgstr "Su correo electrónico (requerido, no es público)"
 
-#: comments/forms.py:66 posts/templates/posts/post_detail.html:922
+#: comments/forms.py:66 posts/templates/posts/post_detail.html:951
 msgid "Suggest a better translation..."
 msgstr "Sugiere una mejor traducción..."
 
@@ -2431,7 +2520,7 @@ msgstr "traducciones de comentarios"
 msgid "Parent Comment"
 msgstr "Comentario Padre"
 
-#: comments/models.py:204 posts/models.py:479 posts/models.py:522
+#: comments/models.py:204 posts/models.py:526 posts/models.py:569
 #: shop/models.py:31
 msgid "User"
 msgstr "Usuario"
@@ -2444,9 +2533,9 @@ msgstr "Nombre del Autor"
 msgid "Author Email"
 msgstr "Email del Autor"
 
-#: comments/models.py:218 pages/admin.py:319 pages/models.py:23
-#: pages/models.py:214 pages/models.py:296 posts/models.py:72
-#: sources/admin.py:61
+#: comments/models.py:218 pages/admin.py:321 pages/models.py:23
+#: pages/models.py:214 pages/models.py:296 posts/models.py:73
+#: sources/admin.py:62
 msgid "Content"
 msgstr "Contenido"
 
@@ -2462,7 +2551,7 @@ msgstr "¿Está aprobado?"
 msgid "Translation Language"
 msgstr "Idioma de traducción"
 
-#: comments/models.py:257 site_settings/admin.py:161
+#: comments/models.py:257 site_settings/admin.py:173
 msgid "Comments"
 msgstr "comentarios"
 
@@ -2472,13 +2561,13 @@ msgstr ""
 "No se pudo resolver el nombre visible del autor del comentario desde el "
 "perfil."
 
-#: comments/models.py:356 posts/templates/posts/post_detail.html:1245
+#: comments/models.py:356 posts/templates/posts/post_detail.html:1274
 #, fuzzy
 #| msgid "Submit translation"
 msgid "Automatic translation"
 msgstr "Enviar traducción"
 
-#: comments/models.py:357 posts/templates/posts/post_detail.html:1246
+#: comments/models.py:357 posts/templates/posts/post_detail.html:1275
 #, fuzzy
 #| msgid "Comment translation"
 msgid "Community translation"
@@ -2498,7 +2587,7 @@ msgstr ""
 msgid "Translated by %(user)s"
 msgstr "Traducido por"
 
-#: comments/models.py:386 posts/templates/posts/post_detail.html:1247
+#: comments/models.py:386 posts/templates/posts/post_detail.html:1276
 #, fuzzy
 #| msgid "Translated by"
 msgid "Translated by community"
@@ -2513,7 +2602,7 @@ msgid "The translation provider could not be reached right now."
 msgstr ""
 
 #: comments/services.py:89 comments/views.py:52
-#: posts/templates/posts/post_detail.html:1369
+#: posts/templates/posts/post_detail.html:1398
 #, fuzzy
 #| msgid "The requested page could not be found."
 msgid "The requested translation could not be generated."
@@ -2541,7 +2630,7 @@ msgid ""
 msgstr ""
 "La traducción debe dirigirse a un idioma distinto del comentario original."
 
-#: comments/views.py:100 posts/templates/posts/post_detail.html:1466
+#: comments/views.py:100 posts/templates/posts/post_detail.html:1495
 msgid "Invalid translation content."
 msgstr "Contenido de traducción no válido."
 
@@ -2697,26 +2786,26 @@ msgid "Failed to resolve the translated URL under the language override."
 msgstr ""
 "No se pudo resolver la URL traducida bajo el cambio temporal de idioma."
 
-#: core/templates/core/base.html:187
+#: core/templates/core/base.html:189
 #: core/templates/core/partials/_breadcrumbs.html:36
 msgid "Hide left sidebar"
 msgstr "Ocultar barra lateral izquierda"
 
-#: core/templates/core/base.html:187
+#: core/templates/core/base.html:189
 #: core/templates/core/partials/_breadcrumbs.html:44
 msgid "Hide right sidebar"
 msgstr "Ocultar barra lateral derecha"
 
-#: core/templates/core/base.html:188
+#: core/templates/core/base.html:190
 msgid "Show left sidebar"
 msgstr "Mostrar barra lateral izquierda"
 
-#: core/templates/core/base.html:188
+#: core/templates/core/base.html:190
 msgid "Show right sidebar"
 msgstr "Mostrar barra lateral derecha"
 
-#: core/templates/core/cart_detail.html:14 core/views.py:156 core/views.py:158
-#: core/views.py:159 core/views.py:183 core/views.py:232
+#: core/templates/core/cart_detail.html:14 core/views.py:175 core/views.py:177
+#: core/views.py:178 core/views.py:202 core/views.py:251
 msgid "Shopping cart"
 msgstr "Carrito de compra"
 
@@ -2765,8 +2854,8 @@ msgid "Continue browsing"
 msgstr "Seguir explorando"
 
 #: core/templates/core/cart_detail.html:89
-#: core/templates/core/checkout_detail.html:14 core/views.py:184
-#: core/views.py:186 core/views.py:187 core/views.py:233
+#: core/templates/core/checkout_detail.html:14 core/views.py:203
+#: core/views.py:205 core/views.py:206 core/views.py:252
 msgid "Checkout"
 msgstr "Finalizar compra"
 
@@ -2846,7 +2935,7 @@ msgid "Order items"
 msgstr "Artículos del pedido"
 
 #: core/templates/core/checkout_order_pending.html:57 notebooks/models.py:76
-#: pages/models.py:39 posts/models.py:153 shop/models.py:46
+#: pages/models.py:39 posts/models.py:162 shop/models.py:46
 msgid "Status"
 msgstr "Estado"
 
@@ -2900,14 +2989,14 @@ msgid "View shopping cart"
 msgstr "Ver carrito"
 
 #: core/templates/core/partials/_header.html:64
-#: core/templates/core/partials/_header.html:177
-#: core/templates/core/partials/_header.html:180
-#: search/templates/search/search_results.html:22 site_settings/admin.py:150
-#: templates/404.html:31 templates/404.html:33
+#: core/templates/core/partials/_header.html:185
+#: core/templates/core/partials/_header.html:188
+#: search/templates/search/search_results.html:22 site_settings/admin.py:162
+#: templates/404.html:32 templates/404.html:34
 msgid "Search"
 msgstr "Buscar"
 
-#: core/templates/core/partials/_header.html:99 posts/views.py:181
+#: core/templates/core/partials/_header.html:99 posts/views.py:194
 msgid "My favorites"
 msgstr "Mis favoritos"
 
@@ -2921,13 +3010,13 @@ msgstr "Mis pedidos"
 msgid "Account options"
 msgstr ""
 
-#: core/templates/core/partials/_header.html:142
+#: core/templates/core/partials/_header.html:144
 #, fuzzy
 #| msgid "Log Out"
 msgid "Log out"
 msgstr "Cerrar sesión"
 
-#: core/templates/core/partials/_header.html:176 templates/404.html:31
+#: core/templates/core/partials/_header.html:184 templates/404.html:32
 msgid "Search..."
 msgstr "Búsqueda..."
 
@@ -3035,32 +3124,32 @@ msgstr "Contactar con la administración"
 msgid "Go to home"
 msgstr "Ir al inicio"
 
-#: core/views.py:161
+#: core/views.py:180
 msgid "Review the books you want to buy before continuing to checkout."
 msgstr "Review the books you want to buy before continuing to checkout."
 
-#: core/views.py:189
+#: core/views.py:208
 #, fuzzy
 #| msgid "Review your books and continue to the payment step."
 msgid "Review your books and confirm free access to their full editions."
 msgstr "Revisa tus libros y continúa al paso de pago."
 
-#: core/views.py:205
+#: core/views.py:224
 msgid "Your cart is empty. Add at least one book before creating an order."
 msgstr ""
 "Tu carrito está vacío. Añade al menos un libro antes de crear un pedido."
 
-#: core/views.py:211
+#: core/views.py:230
 #, fuzzy
 #| msgid "Welcome! Your account has been created successfully."
 msgid "Access to the selected books has been granted successfully."
 msgstr "¡Bienvenido! Su acceso ha sido creado con éxito."
 
-#: core/views.py:234 core/views.py:236 core/views.py:237
+#: core/views.py:253 core/views.py:255 core/views.py:256
 msgid "Order created"
 msgstr "Pedido creado"
 
-#: core/views.py:239
+#: core/views.py:258
 msgid "Your access to the selected books has been granted at no cost."
 msgstr ""
 
@@ -3274,23 +3363,23 @@ msgstr "Blog Categorías Árbol (Desplegable)"
 msgid "Important Pages List (Dropdown)"
 msgstr "Lista de Páginas Importantes (Desplegable)"
 
-#: menus/models.py:79 posts/selectors.py:18
+#: menus/models.py:79 posts/selectors.py:20
 msgid "Latest Posts"
 msgstr "Últimos posts"
 
-#: menus/models.py:80 posts/selectors.py:22
+#: menus/models.py:80 posts/selectors.py:24
 msgid "New Posts Today"
 msgstr "Nuevos de hoy"
 
-#: menus/models.py:81 posts/selectors.py:26
+#: menus/models.py:81 posts/selectors.py:28
 msgid "Most Discussed Posts"
 msgstr "Más debatidos"
 
-#: menus/models.py:82 posts/selectors.py:30
+#: menus/models.py:82 posts/selectors.py:32
 msgid "Trending Posts"
 msgstr "Tendencias"
 
-#: menus/models.py:83 posts/selectors.py:34
+#: menus/models.py:83 posts/selectors.py:36
 msgid "Recommended Posts"
 msgstr "Recomendados"
 
@@ -3303,7 +3392,7 @@ msgid "Select a parent item to nest this menu item within it."
 msgstr ""
 "Selecciona un elemento padre para anidar este elemento de menú dentro de él."
 
-#: menus/models.py:112
+#: menus/models.py:112 pages/models.py:348
 msgid "Visible for groups"
 msgstr "Visible para grupos"
 
@@ -3319,8 +3408,8 @@ msgstr ""
 msgid "Link Text"
 msgstr "Texto del Enlace"
 
-#: menus/models.py:126 pages/models.py:219 pages/models.py:344
-#: widgets/models.py:106
+#: menus/models.py:126 pages/models.py:219 pages/models.py:353
+#: widgets/models.py:107
 msgid "Display Order"
 msgstr "Mostrar Orden"
 
@@ -3417,6 +3506,12 @@ msgid "Post List Type is required for this link type."
 msgstr ""
 "El tipo de lista de publicaciones es obligatorio para este tipo de enlace."
 
+#: menus/templates/menus/partials/_category_navigation.html:27
+#: menus/templates/menus/partials/_navbar_category_tree.html:16
+#, python-format
+msgid "View all in %(title)s"
+msgstr "Ver todo en %(title)s"
+
 #: menus/templates/menus/partials/_profile_links_partial.html:12
 msgid "No profile options configured."
 msgstr ""
@@ -3434,13 +3529,13 @@ msgid "No rendered HTML has been generated for this translation yet."
 msgstr ""
 
 #: notebooks/models.py:19 pages/models.py:17
-#: posts/migrations/0006_post_archived_status.py:17 posts/models.py:148
+#: posts/migrations/0006_post_archived_status.py:17 posts/models.py:157
 #: sources/models.py:52
 msgid "Draft"
 msgstr "Borrador"
 
 #: notebooks/models.py:20 pages/models.py:18
-#: posts/migrations/0006_post_archived_status.py:18 posts/models.py:149
+#: posts/migrations/0006_post_archived_status.py:18 posts/models.py:158
 msgid "Published"
 msgstr "Publicado"
 
@@ -3481,7 +3576,7 @@ msgstr ""
 msgid "Keywords"
 msgstr "Palabras clave"
 
-#: notebooks/models.py:70 pages/models.py:38 posts/models.py:137
+#: notebooks/models.py:70 pages/models.py:38 posts/models.py:146
 #: testimonials/models.py:8
 msgid "Author"
 msgstr "Autor"
@@ -3573,28 +3668,28 @@ msgstr ""
 "This book exists, but it has not been translated into the selected language "
 "yet."
 
-#: pages/admin.py:61 posts/admin.py:128 publications/admin.py:35
-#: sources/models.py:254
+#: pages/admin.py:63 posts/admin.py:128 publications/admin.py:35
+#: sources/models.py:262
 #, fuzzy
 #| msgid "Certification"
 msgid "Citation"
 msgstr "Certificación"
 
-#: pages/admin.py:62 posts/admin.py:129 publications/admin.py:36
+#: pages/admin.py:64 posts/admin.py:129 publications/admin.py:36
 #, fuzzy
 #| msgid "Translation source"
 msgid "Citations and sources"
 msgstr "Fuente de traducción"
 
-#: pages/admin.py:89
+#: pages/admin.py:91
 msgid "Core content"
 msgstr "Contenido"
 
-#: pages/admin.py:104
+#: pages/admin.py:106
 msgid "SEO"
 msgstr "SEO"
 
-#: pages/admin.py:106
+#: pages/admin.py:108
 msgid ""
 "SEO fields control previews in search engines and social metadata; they do "
 "not replace the public abstract."
@@ -3602,43 +3697,43 @@ msgstr ""
 "Los campos SEO controlan las vistas previas en buscadores y los metadatos "
 "sociales; no sustituyen el resumen público."
 
-#: pages/admin.py:110
+#: pages/admin.py:112
 msgid "Publishing"
 msgstr "Publicado"
 
-#: pages/admin.py:196
+#: pages/admin.py:198
 msgid "Media library picker [es]"
 msgstr "Selector de biblioteca multimedia [es]"
 
-#: pages/admin.py:200
+#: pages/admin.py:202
 msgid "Spanish"
 msgstr "Español"
 
-#: pages/admin.py:203
+#: pages/admin.py:205
 msgid "Media library picker [en]"
 msgstr "Selector de biblioteca multimedia [en]"
 
-#: pages/admin.py:207 tvt/settings.py:470
+#: pages/admin.py:209 tvt/settings.py:504
 msgid "English"
 msgstr "Inglés"
 
-#: pages/admin.py:210
+#: pages/admin.py:212
 msgid "Media library picker [ca]"
 msgstr "Selector de biblioteca multimedia [ca]"
 
-#: pages/admin.py:214
+#: pages/admin.py:216
 msgid "Catalan"
 msgstr "Catalán"
 
-#: pages/admin.py:316
+#: pages/admin.py:318
 msgid "Section"
 msgstr "Ubicación"
 
-#: pages/admin.py:322
+#: pages/admin.py:324
 msgid "Widgets and layout"
 msgstr "Widgets y disposición"
 
-#: pages/admin.py:340 pages/models.py:209 pages/models.py:286
+#: pages/admin.py:342 pages/models.py:209 pages/models.py:286
 msgid "Internal Title"
 msgstr "Título del Menú"
 
@@ -3712,7 +3807,8 @@ msgstr "página"
 msgid "pages"
 msgstr "páginas"
 
-#: pages/models.py:201 pages/models.py:271 site_settings/models.py:313
+#: pages/models.py:201 pages/models.py:271 site_settings/models.py:336
+#: site_settings/tests.py:36
 msgid "Default"
 msgstr "Predeterminado"
 
@@ -3750,23 +3846,23 @@ msgstr ""
 "Zona de widgets opcional que se renderiza después del contenido de esta "
 "sección."
 
-#: pages/models.py:231 pages/models.py:358
+#: pages/models.py:231 pages/models.py:367
 msgid "Show Separator After"
 msgstr "Mostrar separador después"
 
-#: pages/models.py:232 pages/models.py:359
+#: pages/models.py:232 pages/models.py:368
 msgid "Displays a separator after this section."
 msgstr "Muestra un separador después de esta sección."
 
-#: pages/models.py:238 pages/models.py:349
+#: pages/models.py:238 pages/models.py:358
 msgid "Background Style"
 msgstr "Estilo de fondo"
 
-#: pages/models.py:242 pages/models.py:353
+#: pages/models.py:242 pages/models.py:362
 msgid "Full Width"
 msgstr "Ancho completo"
 
-#: pages/models.py:243 pages/models.py:354
+#: pages/models.py:243 pages/models.py:363
 msgid "If enabled, the section content can span the full content column width."
 msgstr ""
 "Si se activa, el contenido de la sección puede ocupar todo el ancho de la "
@@ -3780,7 +3876,7 @@ msgstr "Ubicación"
 msgid "Home Sections"
 msgstr "Secciones de inicio"
 
-#: pages/models.py:265 posts/admin.py:218
+#: pages/models.py:265 posts/admin.py:229
 #, fuzzy
 #| msgid "Content"
 msgid "Content block"
@@ -3854,7 +3950,7 @@ msgstr ""
 msgid "Section Type"
 msgstr "Ubicación"
 
-#: pages/models.py:323 widgets/models.py:16 widgets/models.py:76
+#: pages/models.py:323 widgets/models.py:16 widgets/models.py:77
 msgid "Widget Zone"
 msgstr "Zona del Widget"
 
@@ -3887,32 +3983,44 @@ msgstr ""
 msgid "Background Image"
 msgstr "Estilo de fondo"
 
-#: pages/models.py:364
+#: pages/models.py:350
+#, fuzzy
+#| msgid ""
+#| "Leave empty to show this menu item to everyone. Select one or more groups "
+#| "to restrict visibility."
+msgid ""
+"Leave empty to show this section to everyone. Select groups to restrict it "
+"to authenticated members."
+msgstr ""
+"Déjalo vacío para mostrar este elemento de menú a todo el mundo. Selecciona "
+"uno o más grupos para restringir la visibilidad."
+
+#: pages/models.py:373
 #, fuzzy
 #| msgid "Home Section"
 msgid "Page Section"
 msgstr "Ubicación"
 
-#: pages/models.py:365
+#: pages/models.py:374
 #, fuzzy
 #| msgid "Home Sections"
 msgid "Page Sections"
 msgstr "Secciones de inicio"
 
-#: pages/models.py:394
+#: pages/models.py:411
 msgid "Embedded page sections must select a linked page."
 msgstr ""
 
-#: pages/models.py:399
+#: pages/models.py:416
 msgid "Hero and widget-zone sections must select a widget zone."
 msgstr ""
 
-#: pages/models.py:404
+#: pages/models.py:421
 msgid "A page section cannot embed its own page."
 msgstr ""
 
 #: pages/templates/pages/page_detail.html:19
-#: pages/templates/pages/page_detail.html:823
+#: pages/templates/pages/page_detail.html:829
 msgid "Welcome to Tavata CMS!"
 msgstr "¡Bienvenido a Tavata CMS!"
 
@@ -3921,7 +4029,7 @@ msgid "Welcome"
 msgstr "Bienvenido"
 
 #: pages/templates/pages/page_detail.html:37
-#: pages/templates/pages/page_detail.html:824
+#: pages/templates/pages/page_detail.html:830
 msgid ""
 "Content is being prepared. An administrator needs to configure a homepage "
 "from the admin panel."
@@ -3941,42 +4049,47 @@ msgstr ""
 "%(updated_date)s\n"
 "                        "
 
-#: pages/templates/pages/page_detail.html:788 posts/admin.py:255
-#: posts/templates/posts/post_detail.html:552
+#: pages/templates/pages/page_detail.html:788 posts/admin.py:266
+#: posts/templates/posts/post_detail.html:575
 msgid "Sources consulted"
 msgstr "Fuentes consultadas"
 
 #: pages/templates/pages/page_detail.html:794
-#: posts/templates/posts/post_detail.html:558
+#: posts/templates/posts/post_detail.html:581
 #: publications/templates/publications/publication_detail.html:147
 #: sources/models.py:234
 msgid "Primary source"
 msgstr "Fuente principal"
 
 #: pages/templates/pages/page_detail.html:801
-#: posts/templates/posts/post_detail.html:565
+#: posts/templates/posts/post_detail.html:588
 #: publications/templates/publications/publication_detail.html:154
 msgid "Open original document"
 msgstr "Abrir documento original"
 
 #: pages/templates/pages/page_detail.html:805
-#: posts/templates/posts/post_detail.html:569
+#: posts/templates/posts/post_detail.html:592
 #: publications/templates/publications/publication_detail.html:158
 msgid "Context and relevance"
 msgstr "Contexto y relevancia"
 
+#: pages/templates/pages/page_detail.html:806
+#: posts/templates/posts/post_detail.html:593
+#: publications/templates/publications/publication_detail.html:159
+#: sources/models.py:245
 msgid "Context in this content"
 msgstr "Contexto en este contenido"
 
-msgid "Explain the specific situation, question or section of this post, page or publication in which the source is used."
-msgstr "Explica la situación, pregunta o sección concreta de este post, página o publicación en la que se utiliza la fuente."
-
+#: pages/templates/pages/page_detail.html:807
+#: posts/templates/posts/post_detail.html:594
+#: publications/templates/publications/publication_detail.html:160
+#: sources/models.py:253
 msgid "Relevance for this content"
 msgstr "Relevancia para este contenido"
 
-msgid "Explain how this source supports this specific content, including the relevant sections or pages. It is shown in a collapsible panel."
-msgstr "Explica cómo esta fuente respalda este contenido concreto, incluidas las secciones o páginas relevantes. Se muestra en un panel desplegable."
-
+#: pages/templates/pages/page_detail.html:812
+#: posts/templates/posts/post_detail.html:599
+#: publications/templates/publications/publication_detail.html:165
 msgid "About this source"
 msgstr "Sobre esta fuente"
 
@@ -4039,9 +4152,10 @@ msgstr ""
 "                                "
 
 #: pages/templates/pages/partials/_homepage_latest_posts.html:30
-#: posts/templates/posts/post_list.html:61
-#: posts/templates/posts/posts_by_category.html:50
-#: posts/templates/posts/posts_by_category.html:87
+#: posts/templates/posts/partials/_category_discussed_posts_sidebar.html:26
+#: posts/templates/posts/post_list.html:62
+#: posts/templates/posts/posts_by_category.html:51
+#: posts/templates/posts/posts_by_category.html:88
 #: posts/templates/posts/posts_by_tag.html:52
 #: posts/templates/posts/posts_by_tag.html:83
 #: widgets/templates/widgets/partials/_page_card.html:32
@@ -4052,21 +4166,21 @@ msgid "Read More"
 msgstr "Leer Más"
 
 #: pages/templates/pages/partials/_homepage_latest_posts.html:36
-#: posts/templates/posts/post_list.html:69
+#: posts/templates/posts/post_list.html:70
 msgid "There are no posts yet. Come back soon!"
 msgstr "Aún no hay entradas en el blog. ¡Vuelve pronto!"
 
-#: pages/views.py:74 pages/views.py:214
+#: pages/views.py:81 pages/views.py:221
 msgid "Pages"
 msgstr "Páginas"
 
-#: pages/views.py:153 pages/views.py:154
+#: pages/views.py:160 pages/views.py:161
 #, fuzzy
 #| msgid "Post not available in this language"
 msgid "Page not available in this language"
 msgstr "Publicación no disponible en este idioma"
 
-#: pages/views.py:156
+#: pages/views.py:163
 #, fuzzy
 #| msgid ""
 #| "This post exists, but it has not been translated into the selected "
@@ -4090,100 +4204,113 @@ msgstr "Asignado a"
 msgid "Assigned Tags"
 msgstr "Asignado a"
 
-#: posts/admin.py:219 posts/models.py:393
+#: posts/admin.py:230 posts/models.py:419
 #, fuzzy
 #| msgid "Posts in category:"
 msgid "Post content blocks"
 msgstr "Posts en la categoría:"
 
-#: posts/admin.py:256
+#: posts/admin.py:267
 msgid "Select the sources to show at the end of this post."
 msgstr ""
 
-#: posts/admin.py:473 posts/admin.py:485
+#: posts/admin.py:487 posts/admin.py:499
 msgid "Short URL"
 msgstr ""
 
-#: posts/admin.py:476
+#: posts/admin.py:490
 msgid ""
 "It will be generated automatically when this post is saved for the first "
 "time."
 msgstr ""
 
-#: posts/admin.py:486
+#: posts/admin.py:500
 msgid "Copy"
 msgstr ""
 
-#: posts/admin.py:502 publications/admin.py:313
+#: posts/admin.py:516 publications/admin.py:313
 msgid "Featured image — media library"
 msgstr "Imagen destacada — biblioteca multimedia"
 
-#: posts/admin.py:721
+#: posts/admin.py:735
 msgid "7d Views"
 msgstr "Vistas 7d"
 
-#: posts/admin.py:725
+#: posts/admin.py:739
 msgid "Points Today"
 msgstr "Puntos hoy"
 
-#: posts/admin.py:729
+#: posts/admin.py:743
 msgid "7d Points"
 msgstr "Puntos 7d"
 
-#: posts/admin.py:733
+#: posts/admin.py:747
 msgid "Community Score"
 msgstr "Puntuacion comunitaria"
 
-#: posts/admin.py:737
+#: posts/admin.py:751
 msgid "Approved Comments"
 msgstr "Comentario auto aprobado"
 
-#: posts/admin.py:752
+#: posts/admin.py:766
 msgid "Editorial Readiness"
 msgstr "Calificación del Editor"
 
-#: posts/admin.py:755 posts/models.py:68
+#: posts/admin.py:769 posts/models.py:69
 msgid "Summary"
 msgstr "Resumen"
 
-#: posts/admin.py:756
+#: posts/admin.py:770
 msgid "Featured Image"
 msgstr "Imagen Destacada"
 
-#: posts/admin.py:757
+#: posts/admin.py:771
 msgid "Social Image"
 msgstr "Imagen social"
 
-#: posts/admin.py:758
+#: posts/admin.py:772
 #, fuzzy
 #| msgid "Social Image"
 msgid "Mobile Image"
 msgstr "Imagen social"
 
-#: posts/admin.py:759 posts/admin.py:771 posts/models.py:190
-#: posts/templates/posts/post_detail.html:499
-#: posts/templates/posts/post_detail.html:801 tags/models.py:32
+#: posts/admin.py:773 posts/admin.py:785 posts/models.py:199
+#: posts/templates/posts/post_detail.html:515
+#: posts/templates/posts/post_detail.html:830 tags/models.py:32
 msgid "Tags"
 msgstr "Etiquetas"
 
-#: posts/forms.py:8 posts/models.py:493
+#: posts/forms.py:8 posts/models.py:540
 msgid "Points"
 msgstr ""
 
-#: posts/migrations/0006_post_archived_status.py:19 posts/models.py:150
+#: posts/migrations/0006_post_archived_status.py:19 posts/models.py:159
 #: sources/models.py:54
 msgid "Archived"
 msgstr ""
 
-#: posts/models.py:69
+#: posts/models.py:70
 msgid "Short text used as the social sharing description."
 msgstr "Texto breve usado como descripción para compartir en redes."
 
-#: posts/models.py:92 publications/models.py:141
+#: posts/models.py:77 posts/templates/posts/post_detail.html:566
+#: publications/models.py:97 publications/views.py:238
+msgid "Conclusions"
+msgstr "Conclusiones"
+
+#: posts/models.py:79
+msgid ""
+"Optional closing content shown after all mini-posts. Use it for a "
+"conclusion, synthesis, open question, or next step."
+msgstr ""
+"Contenido final opcional que se muestra después de todos los miniposts. "
+"Úsalo para una conclusión, síntesis, pregunta abierta o siguiente paso."
+
+#: posts/models.py:101 publications/models.py:141
 msgid "Featured image (library)"
 msgstr "Imagen Destacada"
 
-#: posts/models.py:93
+#: posts/models.py:102
 msgid ""
 "Optional gallery row for the featured image; overrides the upload below when "
 "set."
@@ -4191,17 +4318,17 @@ msgstr ""
 "Fila opcional de galería para la imagen destacada; cuando se define, "
 "reemplaza la carga inferior."
 
-#: posts/models.py:98
+#: posts/models.py:107
 #, fuzzy
 #| msgid "Featured image (library)"
 msgid "Featured image alternative text"
 msgstr "Imagen Destacada"
 
-#: posts/models.py:99 posts/models.py:114 posts/models.py:129
+#: posts/models.py:108 posts/models.py:123 posts/models.py:138
 msgid "Describe the image. If empty, the post title is used."
 msgstr ""
 
-#: posts/models.py:108
+#: posts/models.py:117
 msgid ""
 "Optional gallery row for the square social image; overrides the upload below "
 "when set."
@@ -4209,13 +4336,13 @@ msgstr ""
 "Fila opcional de galería para la imagen social cuadrada; cuando se define, "
 "reemplaza la carga inferior."
 
-#: posts/models.py:113
+#: posts/models.py:122
 #, fuzzy
 #| msgid "Social image (library)"
 msgid "Social image alternative text"
 msgstr "Imagen social (biblioteca)"
 
-#: posts/models.py:123
+#: posts/models.py:132
 #, fuzzy
 #| msgid ""
 #| "Optional gallery row for the square social image; overrides the upload "
@@ -4226,23 +4353,23 @@ msgstr ""
 "Fila opcional de galería para la imagen social cuadrada; cuando se define, "
 "reemplaza la carga inferior."
 
-#: posts/models.py:128
+#: posts/models.py:137
 msgid "Mobile image alternative text"
 msgstr ""
 
-#: posts/models.py:142
+#: posts/models.py:151
 msgid "Published Date"
 msgstr "Fecha de Publicación"
 
-#: posts/models.py:156
+#: posts/models.py:165
 msgid "View Count"
 msgstr "Número de vistas"
 
-#: posts/models.py:159
+#: posts/models.py:168
 msgid "Editor's Rating"
 msgstr "Calificación del Editor"
 
-#: posts/models.py:160
+#: posts/models.py:169
 msgid ""
 "A score from 0-100. Higher numbers can be used for ordering or editor’s "
 "picks."
@@ -4250,22 +4377,22 @@ msgstr ""
 "Puntuación de 0 a 100. Los valores altos pueden usarse para ordenación o "
 "selecciones editoriales."
 
-#: posts/models.py:165
+#: posts/models.py:174
 msgid "Show in Post Grids"
 msgstr "Mostrar en cuadrículas de publicaciones"
 
-#: posts/models.py:166
+#: posts/models.py:175
 msgid ""
 "Controls whether this post can appear in homepage/category grid widgets."
 msgstr ""
 "Controla si esta publicación puede aparecer en widgets de cuadrícula de "
 "inicio o categoría."
 
-#: posts/models.py:171
+#: posts/models.py:180
 msgid "Migrated"
 msgstr "Migrado"
 
-#: posts/models.py:172
+#: posts/models.py:181
 msgid ""
 "Internal admin flag used to avoid exporting or importing this post more than "
 "once."
@@ -4273,55 +4400,55 @@ msgstr ""
 "Indicador interno de administración usado para evitar exportar o importar "
 "esta publicación más de una vez."
 
-#: posts/models.py:180
+#: posts/models.py:189
 msgid "Short link code"
 msgstr ""
 
-#: posts/models.py:192
+#: posts/models.py:201
 msgid "Tags assigned to this post. Managed via TaggedPost intermediate model."
 msgstr ""
 "Etiquetas asignadas a esta publicación. Se gestionan mediante el modelo "
 "intermedio TaggedPost."
 
-#: posts/models.py:210
+#: posts/models.py:219
 msgid "(No title)"
 msgstr "(Sin título)"
 
-#: posts/models.py:335
+#: posts/models.py:344
 #, fuzzy
 #| msgid "Continue with Google"
 msgid "Content with image"
 msgstr "Continuar con Google"
 
-#: posts/models.py:336
+#: posts/models.py:345
 msgid "Reference to another post"
 msgstr ""
 
-#: posts/models.py:348 sources/models.py:229
+#: posts/models.py:357 sources/models.py:229
 #, fuzzy
 #| msgid "Comment in %(language)s"
 msgid "Content language"
 msgstr "Comentario en %(language)s"
 
-#: posts/models.py:350 sources/models.py:231
+#: posts/models.py:359 sources/models.py:231
 #, fuzzy
 #| msgid "Display Order"
 msgid "Display order"
 msgstr "Mostrar Orden"
 
-#: posts/models.py:355
+#: posts/models.py:364
 #, fuzzy
 #| msgid "Link type"
 msgid "Block type"
 msgstr "Tipo de enlace"
 
-#: posts/models.py:360
+#: posts/models.py:369
 #, fuzzy
 #| msgid "Section"
 msgid "Section anchor"
 msgstr "Ubicación"
 
-#: posts/models.py:361
+#: posts/models.py:370
 #, fuzzy
 #| msgid "Optional widget zone rendered after this section content."
 msgid "Optional URL fragment for linking directly to this section."
@@ -4329,149 +4456,161 @@ msgstr ""
 "Zona de widgets opcional que se renderiza después del contenido de esta "
 "sección."
 
-#: posts/models.py:363
+#: posts/models.py:372
 #, fuzzy
 #| msgid "Section"
 msgid "Section title"
 msgstr "Ubicación"
 
-#: posts/models.py
+#: posts/models.py:376
 msgid "Mini-post summary (SEO)"
 msgstr "Resumen del minipost (SEO)"
 
-#: posts/models.py
-msgid "Brief, self-contained summary used before the section content and in search and listing cards. Recommended: 140–160 characters."
-msgstr "Resumen breve y autónomo utilizado antes del contenido de la sección y en las tarjetas de búsqueda y listados. Recomendado: entre 140 y 160 caracteres."
+#: posts/models.py:378
+msgid ""
+"Brief, self-contained summary used before the section content and in search "
+"and listing cards. Recommended: 140–160 characters."
+msgstr ""
+"Resumen breve y autónomo utilizado antes del contenido de la sección y en "
+"las tarjetas de búsqueda y listados. Recomendado: entre 140 y 160 caracteres."
 
-#: posts/models.py:364
+#: posts/models.py:382
 #, fuzzy
 #| msgid "Core content"
 msgid "Section content"
 msgstr "Contenido"
 
-#: posts/models.py:371
+#: posts/models.py:389
 #, fuzzy
 #| msgid "Cover image — media library"
 msgid "16:9 image from media library"
 msgstr "Imagen Destacada"
 
-#: posts/models.py:376
+#: posts/models.py:394
 msgid "Image alternative text"
 msgstr ""
 
-#: posts/models.py:377
+#: posts/models.py:395
 msgid "Describe the image. If empty, the section title or post title is used."
 msgstr ""
 
-#: posts/models.py:385
+#: posts/models.py:399
+msgid "Show in listings and search"
+msgstr "Mostrar en listados y búsqueda"
+
+#: posts/models.py:401
+msgid ""
+"Show this complete visual section as a mini-post in latest entries and "
+"search results."
+msgstr ""
+"Muestra esta sección visual completa como minipost en últimas entradas y "
+"resultados de búsqueda."
+
+#: posts/models.py:411
 #, fuzzy
 #| msgid "Reference"
 msgid "Referenced post"
 msgstr "Referencia"
 
-#: posts/models.py:392
+#: posts/models.py:418
 #, fuzzy
 #| msgid "Posts in category:"
 msgid "Post content block"
 msgstr "Posts en la categoría:"
 
-#: posts/models.py:405
+#: posts/models.py:437
 msgid "A content block needs text."
 msgstr ""
 
-#: posts/models.py
-msgid "Add a brief SEO summary before showing this mini-post in listings."
-msgstr "Añade un resumen SEO breve antes de mostrar este minipost en los listados."
-
-#: posts/models.py
+#: posts/models.py:440
 msgid "Add a brief SEO summary for this mini-post."
 msgstr "Añade un resumen SEO breve para este minipost."
 
-#: posts/models.py:407
+#: posts/models.py:443
 msgid "A content block needs a 16:9 image."
 msgstr ""
 
-#: posts/models.py:409
+#: posts/models.py:445
 msgid "Content blocks cannot also reference another post."
 msgstr ""
 
-#: posts/models.py:412
+#: posts/models.py:448
 msgid "Select the post to reference."
 msgstr ""
 
-#: posts/models.py:414
+#: posts/models.py:450
 msgid "A post cannot reference itself."
 msgstr ""
 
-#: posts/models.py:416
+#: posts/models.py:452
 msgid "Referenced posts use their own featured image."
 msgstr ""
 
-#: posts/models.py:458 posts/models.py:489 tags/models.py:91
+#: posts/models.py:505 posts/models.py:536 tags/models.py:91
 msgid "Date"
 msgstr "Fecha"
 
-#: posts/models.py:459
+#: posts/models.py:506
 msgid "Daily View Count"
 msgstr "Número de vistas"
 
-#: posts/models.py:462
+#: posts/models.py:509
 msgid "Post Daily Metric"
 msgstr "Métrica diaria de publicación"
 
-#: posts/models.py:463
+#: posts/models.py:510
 msgid "Post Daily Metrics"
 msgstr "Métricas diarias de publicaciones"
 
-#: posts/models.py:499
+#: posts/models.py:546
 #, fuzzy
 #| msgid "Posts in category:"
 msgid "Post point allocation"
 msgstr "Posts en la categoría:"
 
-#: posts/models.py:500
+#: posts/models.py:547
 #, fuzzy
 #| msgid "Posts in category:"
 msgid "Post point allocations"
 msgstr "Posts en la categoría:"
 
-#: posts/models.py:533
+#: posts/models.py:580
 #, fuzzy
 #| msgid "Post author"
 msgid "Post favorite"
 msgstr "Autor del post"
 
-#: posts/models.py:534
+#: posts/models.py:581
 #, fuzzy
 #| msgid "Posts"
 msgid "Post favorites"
 msgstr "Posts"
 
-#: posts/selectors.py:19
+#: posts/selectors.py:21
 msgid "The newest published posts."
 msgstr "Las publicaciones más recientes."
 
-#: posts/selectors.py:23
+#: posts/selectors.py:25
 msgid "Posts published today."
 msgstr "Publicaciones hechas hoy."
 
-#: posts/selectors.py:27
+#: posts/selectors.py:29
 msgid "Posts with the most active discussion threads."
 msgstr "Publicaciones con los hilos de debate más activos."
 
-#: posts/selectors.py:31
+#: posts/selectors.py:33
 msgid "Posts with the most activity in the last 7 days."
 msgstr "Publicaciones con más actividad en los últimos 7 días."
 
-#: posts/selectors.py:35
+#: posts/selectors.py:37
 msgid "Editorially recommended posts."
 msgstr "Publicaciones recomendadas editorialmente."
 
-#: posts/selectors.py:38
+#: posts/selectors.py:40
 msgid "Community Picks"
 msgstr "Selecciones de la comunidad"
 
-#: posts/selectors.py:39
+#: posts/selectors.py:41
 msgid "Posts highlighted by the community and refined by editorial curation."
 msgstr ""
 "Publicaciones destacadas por la comunidad y afinadas por la curaduria "
@@ -4519,6 +4658,17 @@ msgstr ""
 msgid "You only have %(points)s point(s) left for today."
 msgstr ""
 
+#: posts/templates/posts/partials/_category_discussed_posts_sidebar.html:7
+msgid "Most commented in this category"
+msgstr "Más comentados en esta categoría"
+
+#: posts/templates/posts/partials/_category_discussed_posts_sidebar.html:24
+#, python-format
+msgid "%(comments)s approved comment"
+msgid_plural "%(comments)s approved comments"
+msgstr[0] "%(comments)s comentario aprobado"
+msgstr[1] "%(comments)s comentarios aprobados"
+
 #: posts/templates/posts/partials/_untranslated_posts_notice.html:6
 msgid "Posts available in other languages"
 msgstr "Posts disponibles en otros idiomas"
@@ -4533,7 +4683,7 @@ msgstr ""
 msgid "automatic translation"
 msgstr "traducción automática"
 
-#: posts/templates/posts/post_detail.html:464
+#: posts/templates/posts/post_detail.html:480
 #, python-format
 msgid ""
 "\n"
@@ -4544,176 +4694,176 @@ msgstr ""
 "      Publicado el %(published_date)s por %(author)s\n"
 "    "
 
-#: posts/templates/posts/post_detail.html:540
+#: posts/templates/posts/post_detail.html:557
 #, fuzzy
 #| msgid "Relations"
 msgid "Read post"
 msgstr "Relaciones"
 
-#: posts/templates/posts/post_detail.html:602
+#: posts/templates/posts/post_detail.html:631
 #, fuzzy
 #| msgid "Posts"
 msgid "posts"
 msgstr "Posts"
 
-#: posts/templates/posts/post_detail.html:641
+#: posts/templates/posts/post_detail.html:670
 msgid "Rate"
 msgstr "Valorar"
 
-#: posts/templates/posts/post_detail.html:655
+#: posts/templates/posts/post_detail.html:684
 msgid "Decrease points"
 msgstr "Reducir puntos"
 
-#: posts/templates/posts/post_detail.html:661
+#: posts/templates/posts/post_detail.html:690
 msgid "Increase points"
 msgstr "Aumentar puntos"
 
-#: posts/templates/posts/post_detail.html:672
+#: posts/templates/posts/post_detail.html:701
 msgid "Assign"
 msgstr "Asignar"
 
-#: posts/templates/posts/post_detail.html:690
-#: posts/templates/posts/post_detail.html:721
-#: posts/templates/posts/post_detail.html:1175
+#: posts/templates/posts/post_detail.html:719
+#: posts/templates/posts/post_detail.html:750
+#: posts/templates/posts/post_detail.html:1204
 msgid "Favorited"
 msgstr "En favoritos"
 
-#: posts/templates/posts/post_detail.html:692
-#: posts/templates/posts/post_detail.html:723
-#: posts/templates/posts/post_detail.html:742
-#: posts/templates/posts/post_detail.html:1176
+#: posts/templates/posts/post_detail.html:721
+#: posts/templates/posts/post_detail.html:752
+#: posts/templates/posts/post_detail.html:771
+#: posts/templates/posts/post_detail.html:1205
 msgid "Add to favorites"
 msgstr "Agregar a favoritos"
 
-#: posts/templates/posts/post_detail.html:737
+#: posts/templates/posts/post_detail.html:766
 msgid "Log in to assign points"
 msgstr "Inicia sesión para asignar puntos"
 
-#: posts/templates/posts/post_detail.html:748
+#: posts/templates/posts/post_detail.html:777
 msgid "Points received today:"
 msgstr "Puntos recibidos hoy:"
 
-#: posts/templates/posts/post_detail.html:753
+#: posts/templates/posts/post_detail.html:782
 msgid "Your points here:"
 msgstr "Tus puntos aquí:"
 
-#: posts/templates/posts/post_detail.html:756
+#: posts/templates/posts/post_detail.html:785
 msgid "Left today:"
 msgstr "Disponibles hoy:"
 
-#: posts/templates/posts/post_detail.html:759
+#: posts/templates/posts/post_detail.html:788
 msgid "Daily budget:"
 msgstr "Límite diario:"
 
-#: posts/templates/posts/post_detail.html:762
+#: posts/templates/posts/post_detail.html:791
 msgid "Views:"
 msgstr "Vistas:"
 
-#: posts/templates/posts/post_detail.html:765
+#: posts/templates/posts/post_detail.html:794
 msgid "Comments:"
 msgstr "Comentarios:"
 
-#: posts/templates/posts/post_detail.html:768
+#: posts/templates/posts/post_detail.html:797
 msgid "Favorites:"
 msgstr "Favoritos:"
 
-#: posts/templates/posts/post_detail.html:817
+#: posts/templates/posts/post_detail.html:846
 #, python-format
 msgid "%(count)s Comment"
 msgid_plural "%(count)s Comments"
 msgstr[0] "%(count)s Comentario"
 msgstr[1] "%(count)s Comentarios"
 
-#: posts/templates/posts/post_detail.html:834
+#: posts/templates/posts/post_detail.html:863
 #, python-format
 msgid "Comment in %(language)s"
 msgstr "Comentario en %(language)s"
 
-#: posts/templates/posts/post_detail.html:843
-#: posts/templates/posts/post_detail.html:1389
+#: posts/templates/posts/post_detail.html:872
+#: posts/templates/posts/post_detail.html:1418
 msgid "View original"
 msgstr "Ver original"
 
-#: posts/templates/posts/post_detail.html:851
-#: posts/templates/posts/post_detail.html:1396
+#: posts/templates/posts/post_detail.html:880
+#: posts/templates/posts/post_detail.html:1425
 msgid "View translation"
 msgstr "Ver traducción"
 
-#: posts/templates/posts/post_detail.html:860
+#: posts/templates/posts/post_detail.html:889
 msgid "Translate"
 msgstr "Traducir"
 
-#: posts/templates/posts/post_detail.html:869
+#: posts/templates/posts/post_detail.html:898
 msgid "Suggest translation"
 msgstr "Sugerir traducción"
 
-#: posts/templates/posts/post_detail.html:890
-#: posts/templates/posts/post_detail.html:899
+#: posts/templates/posts/post_detail.html:919
+#: posts/templates/posts/post_detail.html:928
 msgid "Demo profile"
 msgstr "Perfil de demostración"
 
-#: posts/templates/posts/post_detail.html:890
-#: posts/templates/posts/post_detail.html:899
+#: posts/templates/posts/post_detail.html:919
+#: posts/templates/posts/post_detail.html:928
 #, fuzzy
 #| msgid "View original"
 msgid "Original"
 msgstr "Ver original"
 
-#: posts/templates/posts/post_detail.html:926
+#: posts/templates/posts/post_detail.html:955
 msgid "Submit translation"
 msgstr "Enviar traducción"
 
-#: posts/templates/posts/post_detail.html:928
+#: posts/templates/posts/post_detail.html:957
 msgid "Your version will be linked to this comment."
 msgstr "Tu versión quedará vinculada a este comentario."
 
-#: posts/templates/posts/post_detail.html:937
+#: posts/templates/posts/post_detail.html:966
 msgid "Reply"
 msgstr "Respuesta"
 
-#: posts/templates/posts/post_detail.html:939
+#: posts/templates/posts/post_detail.html:968
 msgid "Log in to reply"
 msgstr "Iniciar sesión aquí"
 
-#: posts/templates/posts/post_detail.html:969
+#: posts/templates/posts/post_detail.html:998
 msgid "Leave a Comment"
 msgstr "Deja un Comentario"
 
-#: posts/templates/posts/post_detail.html:980
+#: posts/templates/posts/post_detail.html:1009
 msgid "Submit Comment"
 msgstr "Comenta"
 
-#: posts/templates/posts/post_detail.html:984
+#: posts/templates/posts/post_detail.html:1013
 msgid "You need to log in to leave a comment."
 msgstr "Necesitas iniciar sesión para dejar un comentario."
 
-#: posts/templates/posts/post_detail.html:985
+#: posts/templates/posts/post_detail.html:1014
 msgid "Log in"
 msgstr "Iniciar sesión"
 
-#: posts/templates/posts/post_detail.html:1093 posts/views.py:638
+#: posts/templates/posts/post_detail.html:1122 posts/views.py:663
 msgid "Please choose a valid number of points."
 msgstr ""
 
-#: posts/templates/posts/post_detail.html:1171
+#: posts/templates/posts/post_detail.html:1200
 msgid "The favorite action could not be completed."
 msgstr "La accion de favoritos no se pudo completar."
 
-#: posts/templates/posts/post_detail.html:1217
+#: posts/templates/posts/post_detail.html:1246
 msgid "The follow action could not be completed."
 msgstr "La accion de seguimiento no se pudo completar."
 
-#: posts/templates/posts/post_detail.html:1290
+#: posts/templates/posts/post_detail.html:1319
 msgid "Cancel Reply"
 msgstr "Cancelar respuesta"
 
-#: posts/templates/posts/post_detail.html:1298
+#: posts/templates/posts/post_detail.html:1327
 msgid "Reply to"
 msgstr "Responder a"
 
 #: posts/templates/posts/post_list.html:6
 #: posts/templates/posts/post_list.html:8
-#: posts/templates/posts/post_list.html:19 posts/views.py:90 tags/admin.py:171
+#: posts/templates/posts/post_list.html:19 posts/views.py:103 tags/admin.py:171
 msgid "Published Posts"
 msgstr "📚 Publicaciones Publicadas"
 
@@ -4721,12 +4871,12 @@ msgstr "📚 Publicaciones Publicadas"
 msgid "Latest updates and insights from the Tavata project."
 msgstr "Noticias, artículos e ideas de nuestro equipo."
 
-#: posts/templates/posts/post_list.html:24 posts/views.py:94
+#: posts/templates/posts/post_list.html:24 posts/views.py:107
 msgid "Latest news and articles from the Tavata platform."
 msgstr "Últimas noticias y artículos de la plataforma Tavata."
 
-#: posts/templates/posts/post_list.html:45
-#: posts/templates/posts/posts_by_category.html:45
+#: posts/templates/posts/post_list.html:46
+#: posts/templates/posts/posts_by_category.html:46
 #: posts/templates/posts/posts_by_tag.html:47
 #, python-format
 msgid ""
@@ -4738,12 +4888,12 @@ msgstr ""
 "                  Publicado el %(published_date)s por %(author)s\n"
 "                "
 
-#: posts/templates/posts/post_list.html:52
+#: posts/templates/posts/post_list.html:53
 #, python-format
 msgid "%(points)s community point(s) in the last period"
 msgstr "%(points)s punto(s) de la comunidad en el ultimo periodo"
 
-#: posts/templates/posts/post_list.html:57
+#: posts/templates/posts/post_list.html:58
 #: widgets/templates/widgets/partials/_post_grid.html:69
 #, python-format
 msgid "Community score %(score)s · Editorial rating %(rating)s"
@@ -4758,16 +4908,16 @@ msgstr "Entradas en %(category_name)s"
 msgid "Posts in category:"
 msgstr "Posts en la categoría:"
 
-#: posts/templates/posts/posts_by_category.html:57
+#: posts/templates/posts/posts_by_category.html:58
 msgid "There are currently no published posts in this category."
 msgstr "Actualmente no hay entradas publicadas en esta categoría."
 
-#: posts/templates/posts/posts_by_category.html:67
+#: posts/templates/posts/posts_by_category.html:68
 #: posts/templates/posts/posts_by_tag.html:63
 msgid "You might be interested in these recent posts:"
 msgstr "Quizá te interesen estas publicaciones recientes:"
 
-#: posts/templates/posts/posts_by_category.html:82
+#: posts/templates/posts/posts_by_category.html:83
 #, python-format
 msgid ""
 "\n"
@@ -4778,7 +4928,7 @@ msgstr ""
 "                  Publicado el %(published_date)s\n"
 "                "
 
-#: posts/templates/posts/posts_by_category.html:93
+#: posts/templates/posts/posts_by_category.html:94
 msgid "No suggestions available."
 msgstr "Sin usuarios disponibles."
 
@@ -4818,35 +4968,35 @@ msgstr ""
 "                        Publicado el %(published_date)s\n"
 "                      "
 
-#: posts/views.py:68 posts/views.py:205 posts/views.py:370 posts/views.py:601
+#: posts/views.py:70 posts/views.py:218 posts/views.py:383 posts/views.py:626
 msgid "Post not found."
 msgstr "No se encontraron publicaciones."
 
-#: posts/views.py:77
+#: posts/views.py:79
 msgid "Post list not found."
 msgstr "No se encontraron publicaciones."
 
-#: posts/views.py:142
+#: posts/views.py:155
 msgid "Latest posts from authors you follow."
 msgstr "Ultimas publicaciones de los autores a los que sigues."
 
-#: posts/views.py:182
+#: posts/views.py:195
 msgid "Posts you saved to revisit later."
 msgstr "Posts que guardaste para volver a ellos mas tarde."
 
-#: posts/views.py:237
+#: posts/views.py:250
 msgid "You added this post to your favorites."
 msgstr "Agregaste este post a tus favoritos."
 
-#: posts/views.py:239
+#: posts/views.py:252
 msgid "You removed this post from your favorites."
 msgstr "Quitaste este post de tus favoritos."
 
-#: posts/views.py:386 posts/views.py:387
+#: posts/views.py:399 posts/views.py:400
 msgid "Post not available in this language"
 msgstr "Publicación no disponible en este idioma"
 
-#: posts/views.py:389
+#: posts/views.py:402
 msgid ""
 "This post exists, but it has not been translated into the selected language "
 "yet."
@@ -4854,23 +5004,23 @@ msgstr ""
 "This post exists, but it has not been translated into the selected language "
 "yet."
 
-#: posts/views.py:444
+#: posts/views.py:457
 msgid "Please log in to leave a comment."
 msgstr "Inicia sesión para dejar un comentario."
 
-#: posts/views.py:499
+#: posts/views.py:512
 msgid "✅ Thank you! Your comment has been published."
 msgstr "¡Gracias! Su comentario ha sido publicado."
 
-#: posts/views.py:501
+#: posts/views.py:514
 msgid "🕓 Thank you! Your comment awaits moderation."
 msgstr "🕓 ¡Gracias! Tu comentario está pendiente de moderación."
 
-#: posts/views.py:627
+#: posts/views.py:652
 msgid "Please log in to assign points to this post."
 msgstr ""
 
-#: posts/views.py:658
+#: posts/views.py:683
 #, python-format
 msgid "You assigned %(points)s point(s) to this post for today."
 msgstr "Has asignado %(points)s punto(s) a esta publicación hoy."
@@ -4914,7 +5064,7 @@ msgstr ""
 "Summarize objectives, methods, and key findings. Recommended length: 150–250 "
 "words."
 
-#: publications/models.py:49 publications/views.py:184
+#: publications/models.py:49 publications/views.py:214
 msgid "Introduction"
 msgstr "Institución"
 
@@ -4926,7 +5076,7 @@ msgstr ""
 "Contextualize the problem, justify the study, and introduce the research "
 "topic. Recommended length: 300–800 words."
 
-#: publications/models.py:57 publications/views.py:188
+#: publications/models.py:57 publications/views.py:218
 msgid "Theoretical framework"
 msgstr "Theoretical framework"
 
@@ -4938,7 +5088,7 @@ msgstr ""
 "Develop the conceptual foundation, key authors, theories, and relevant prior "
 "work. Recommended length: 500–1000 words."
 
-#: publications/models.py:65 publications/views.py:192
+#: publications/models.py:65 publications/views.py:222
 msgid "Objectives and hypotheses"
 msgstr "Objectives and hypotheses"
 
@@ -4950,7 +5100,7 @@ msgstr ""
 "Define research questions, objectives, and hypotheses. Recommended length: "
 "100–200 words."
 
-#: publications/models.py:73 publications/views.py:196
+#: publications/models.py:73 publications/views.py:226
 msgid "Methodology"
 msgstr "Methodology"
 
@@ -4962,7 +5112,7 @@ msgstr ""
 "Describe the research design, sample, instruments, data collection, and "
 "analysis techniques. Recommended length: 300–600 words."
 
-#: publications/models.py:81 publications/views.py:200
+#: publications/models.py:81 publications/views.py:230
 msgid "Results"
 msgstr "Results"
 
@@ -4974,7 +5124,7 @@ msgstr ""
 "Present findings, data, tables, figures, categories, or statistical results. "
 "Recommended length: 300–700 words."
 
-#: publications/models.py:89 publications/views.py:204
+#: publications/models.py:89 publications/views.py:234
 msgid "Discussion"
 msgstr "Discussion"
 
@@ -4986,14 +5136,6 @@ msgstr ""
 "Interpret findings, compare them with the literature, and discuss "
 "implications and limitations. Recommended length: 400–800 words."
 
-#: posts/models.py publications/models.py:97 publications/views.py:208
-msgid "Conclusions"
-msgstr "Conclusiones"
-
-#: posts/models.py
-msgid "Optional closing content shown after all mini-posts. Use it for a conclusion, synthesis, open question, or next step."
-msgstr "Contenido final opcional que se muestra después de todos los miniposts. Úsalo para una conclusión, síntesis, pregunta abierta o siguiente paso."
-
 #: publications/models.py:99
 msgid ""
 "Answer the research questions and highlight the main contributions. "
@@ -5002,7 +5144,7 @@ msgstr ""
 "Answer the research questions and highlight the main contributions. "
 "Recommended length: 100–200 words."
 
-#: publications/models.py:105 publications/views.py:223
+#: publications/models.py:105 publications/views.py:253
 msgid "References / Bibliography"
 msgstr "References / Bibliography"
 
@@ -5014,7 +5156,7 @@ msgstr ""
 "List all cited sources, books, academic articles, reports, DOI links, or "
 "URLs. Recommended: 5–20 sources when applicable."
 
-#: publications/models.py:113 publications/views.py:212
+#: publications/models.py:113 publications/views.py:242
 msgid "Annexes"
 msgstr "Annexes"
 
@@ -5062,25 +5204,25 @@ msgstr "Certificación"
 msgid "Sources and bibliography"
 msgstr "References / Bibliography"
 
-#: publications/templates/publications/publication_detail.html:173
+#: publications/templates/publications/publication_detail.html:179
 msgid "Document"
 msgstr "Documento"
 
-#: publications/templates/publications/publication_detail.html:176
+#: publications/templates/publications/publication_detail.html:182
 msgid "This publication includes a document that can be read online."
 msgstr "Esta publicación incluye un documento que puede leerse en línea."
 
-#: publications/templates/publications/publication_detail.html:184
+#: publications/templates/publications/publication_detail.html:190
 msgid "View document"
 msgstr "Ver documento"
 
 #: publications/templates/publications/publication_list.html:12
-#: publications/views.py:83
+#: publications/views.py:112
 msgid "Scientific Publications"
 msgstr "Correo Público"
 
 #: publications/templates/publications/publication_list.html:15
-#: publications/views.py:85
+#: publications/views.py:114
 msgid ""
 "Research, essays, reports, and structured scientific documents published by "
 "TVTente."
@@ -5101,30 +5243,36 @@ msgstr "Paginación de publicaciones"
 msgid "There are no published scientific publications yet."
 msgstr "Actualmente no hay páginas publicadas en esta categoría."
 
-#: publications/views.py:133
+#: publications/views.py:45
+#, fuzzy
+#| msgid "You do not have permission to edit a CV."
+msgid "You do not have permission to access publications."
+msgstr "No tienes permiso para editar un CV."
+
+#: publications/views.py:163
 msgid "Publication not found."
 msgstr "No se encontraron publicaciones."
 
-#: publications/views.py:149 publications/views.py:150
+#: publications/views.py:179 publications/views.py:180
 msgid "Publication not available in this language"
 msgstr "Publicación no disponible en este idioma"
 
-#: publications/views.py:152
+#: publications/views.py:182
 msgid ""
 "This publication exists, but it has not been translated into the selected "
 "language yet."
 msgstr "Esta publicación no está disponible en este idioma."
 
-#: publications/views.py:269
+#: publications/views.py:300
 msgid "Document not found."
 msgstr "No se encontraron publicaciones."
 
-#: publications/views.py:275 publications/views.py:285
-#: publications/views.py:286
+#: publications/views.py:306 publications/views.py:316
+#: publications/views.py:317
 msgid "Document viewer"
 msgstr "Visor de documento"
 
-#: publications/views.py:287
+#: publications/views.py:318
 msgid "Read the publication document online."
 msgstr "Esta publicación incluye un documento que puede leerse en línea."
 
@@ -5149,7 +5297,7 @@ msgstr "Por favor ingrese una consulta en la barra de búsqueda."
 msgid "Blog Posts Found"
 msgstr "Entradas de blog encontradas"
 
-#: search/templates/search/search_results.html:60
+#: search/templates/search/search_results.html:61
 msgid "Pages Found"
 msgstr "Páginas Encontradas"
 
@@ -5201,30 +5349,6 @@ msgstr "Total de línea"
 msgid "Order item"
 msgstr "Artículo del pedido"
 
-#: menus/templates/menus/partials/_navbar_category_tree.html:14
-#, python-format
-msgid "View all in %(title)s"
-msgstr "Ver todo en %(title)s"
-
-#: posts/templates/posts/partials/_category_discussed_posts_sidebar.html:7
-msgid "Most commented in this category"
-msgstr "Más comentados en esta categoría"
-
-#: posts/templates/posts/partials/_category_discussed_posts_sidebar.html:25
-#, python-format
-msgid "%(comments)s approved comment"
-msgid_plural "%(comments)s approved comments"
-msgstr[0] "%(comments)s comentario aprobado"
-msgstr[1] "%(comments)s comentarios aprobados"
-
-#: posts/models.py:382
-msgid "Show in listings and search"
-msgstr "Mostrar en listados y búsqueda"
-
-#: posts/models.py:384
-msgid "Show this complete visual section as a mini-post in latest entries and search results."
-msgstr "Muestra esta sección visual completa como minipost en últimas entradas y resultados de búsqueda."
-
 #: shop/templates/shop/my_orders.html:16
 msgid "Review the books to which your account has access."
 msgstr "Revisa los libros a los que tiene acceso tu cuenta."
@@ -5253,36 +5377,36 @@ msgstr "Cuando crees un pedido provisional desde checkout, aparecerá aquí."
 msgid "Review the orders you have created from the checkout flow."
 msgstr "Revisa los pedidos que has creado desde el flujo de checkout."
 
-#: site_settings/admin.py:35
+#: site_settings/admin.py:37
 msgid ""
 "How many posts appear in blog and category lists before pagination is shown."
 msgstr ""
 "Cuántas publicaciones aparecen en las listas del blog y de categorías antes "
 "de que se muestre la paginación."
 
-#: site_settings/admin.py:36
+#: site_settings/admin.py:38
 msgid "Desktop columns for the latest-posts grid on the homepage."
 msgstr ""
 
-#: site_settings/admin.py:37
+#: site_settings/admin.py:39
 msgid ""
 "Rows shown on the homepage before pagination. The total is rows multiplied "
 "by columns."
 msgstr ""
 
-#: site_settings/admin.py:38
+#: site_settings/admin.py:40
 msgid "How many page results are shown in the Pages section of search results."
 msgstr ""
 "Cuántos resultados de páginas se muestran en la sección Páginas de los "
 "resultados de búsqueda."
 
-#: site_settings/admin.py:39
+#: site_settings/admin.py:41
 msgid "How many post results are shown in the Posts section of search results."
 msgstr ""
 "Cuántos resultados de publicaciones se muestran en la sección Publicaciones "
 "de los resultados de búsqueda."
 
-#: site_settings/admin.py:40
+#: site_settings/admin.py:42
 msgid ""
 "General fallback for paginated search sections. Keep it close to the page/"
 "post values."
@@ -5290,14 +5414,14 @@ msgstr ""
 "Valor general de respaldo para las secciones paginadas de búsqueda. Mantenlo "
 "cercano a los valores de páginas/publicaciones."
 
-#: site_settings/admin.py:41
+#: site_settings/admin.py:43
 msgid ""
 "How many high-priority pages are promoted before regular search matches."
 msgstr ""
 "Cuántas páginas de alta prioridad se promocionan antes de los resultados "
 "normales de búsqueda."
 
-#: site_settings/admin.py:42
+#: site_settings/admin.py:44
 msgid ""
 "Horizontal indentation used for nested comments in the admin. Larger values "
 "make replies more visually nested."
@@ -5305,7 +5429,7 @@ msgstr ""
 "Sangría horizontal usada para comentarios anidados en el admin. Valores "
 "mayores hacen que las respuestas se vean más anidadas."
 
-#: site_settings/admin.py:43
+#: site_settings/admin.py:45
 msgid ""
 "When enabled, comments become public immediately. Leave disabled if "
 "moderation is important."
@@ -5313,23 +5437,23 @@ msgstr ""
 "Cuando se activa, los comentarios se hacen públicos inmediatamente. Déjalo "
 "desactivado si la moderación es importante."
 
-#: site_settings/admin.py:44
+#: site_settings/admin.py:46
 msgid "Turns the daily post-points system on or off across the public site."
 msgstr ""
 
-#: site_settings/admin.py:45
+#: site_settings/admin.py:47
 msgid ""
 "How many points each authenticated user receives per day to distribute "
 "across posts."
 msgstr ""
 
-#: site_settings/admin.py:46
+#: site_settings/admin.py:48
 msgid ""
 "Maximum number of points the same user may assign to one post during a "
 "single day."
 msgstr ""
 
-#: site_settings/admin.py:47
+#: site_settings/admin.py:49
 msgid ""
 "Lets authors spend their daily points on their own published posts. Leave "
 "disabled for stricter editorial neutrality."
@@ -5337,7 +5461,7 @@ msgstr ""
 "Permite que los autores gasten sus puntos diarios en sus propias entradas "
 "publicadas. Dejalo desactivado para una neutralidad editorial mas estricta."
 
-#: site_settings/admin.py:48
+#: site_settings/admin.py:50
 msgid ""
 "How old an account must be before it can assign post points. Useful to "
 "reduce drive-by abuse or fresh-account manipulation."
@@ -5346,7 +5470,7 @@ msgstr ""
 "entradas. Es util para reducir abusos rapidos o manipulacion con cuentas "
 "recien creadas."
 
-#: site_settings/admin.py:49
+#: site_settings/admin.py:51
 msgid ""
 "How long menus stay cached. Use 0 only while editing/testing menus; higher "
 "values are better for production."
@@ -5354,7 +5478,7 @@ msgstr ""
 "Cuánto tiempo permanecen en caché los menús. Usa 0 solo mientras editas o "
 "pruebas menús; valores más altos son mejores en producción."
 
-#: site_settings/admin.py:50
+#: site_settings/admin.py:52
 msgid ""
 "After this number of approved comments, a user can be treated as trusted for "
 "future comment approval."
@@ -5362,7 +5486,7 @@ msgstr ""
 "Después de este número de comentarios aprobados, un usuario puede "
 "considerarse de confianza para la aprobación futura de comentarios."
 
-#: site_settings/admin.py:51
+#: site_settings/admin.py:53
 msgid ""
 "How long the category tree stays cached. High values are recommended because "
 "category trees change rarely."
@@ -5370,23 +5494,23 @@ msgstr ""
 "Cuánto tiempo permanece en caché el árbol de categorías. Se recomiendan "
 "valores altos porque cambia rara vez."
 
-#: site_settings/admin.py:52
+#: site_settings/admin.py:54
 msgid "How many images appear per page in the public Media/Gallery view."
 msgstr ""
 "Cuántas imágenes aparecen por página en la vista pública de medios/galería."
 
-#: site_settings/admin.py:53
+#: site_settings/admin.py:55
 msgid "How many posts/comments appear per page in public user profiles."
 msgstr ""
 "Cuántas publicaciones o comentarios aparecen por página en los perfiles "
 "públicos de usuario."
 
-#: site_settings/admin.py:54
+#: site_settings/admin.py:56
 msgid "How many users appear per page on the public user directory listing."
 msgstr ""
 "Cuántos usuarios aparecen por página en el directorio público de usuarios."
 
-#: site_settings/admin.py:58
+#: site_settings/admin.py:60
 msgid ""
 "Internal name for this visual template. Use a clear name so it is easy to "
 "identify in the admin."
@@ -5394,7 +5518,7 @@ msgstr ""
 "Nombre interno para esta plantilla visual. Usa un nombre claro para "
 "identificarla fácilmente en el admin."
 
-#: site_settings/admin.py:59
+#: site_settings/admin.py:61
 msgid ""
 "When enabled, this template becomes the active theme. Only one template "
 "should be chosen at a time."
@@ -5402,7 +5526,7 @@ msgstr ""
 "Cuando se activa, esta plantilla se convierte en el tema activo. Solo debe "
 "elegirse una plantilla a la vez."
 
-#: site_settings/admin.py:60
+#: site_settings/admin.py:62
 msgid ""
 "Main logo shown in the top bar/header. Its displayed height is controlled by "
 "Logo Height."
@@ -5410,7 +5534,7 @@ msgstr ""
 "Logotipo principal mostrado en la barra superior/cabecera. Su altura visible "
 "se controla con Altura del logotipo."
 
-#: site_settings/admin.py:61
+#: site_settings/admin.py:63
 msgid ""
 "Small browser icon shown in tabs, bookmarks, and shortcuts. Square images "
 "work best."
@@ -5418,7 +5542,7 @@ msgstr ""
 "Pequeño icono del navegador mostrado en pestañas, marcadores y accesos "
 "directos. Las imágenes cuadradas funcionan mejor."
 
-#: site_settings/admin.py:62
+#: site_settings/admin.py:64
 msgid ""
 "Short phrase shown beside or near the logo, depending on the active header "
 "layout."
@@ -5426,7 +5550,7 @@ msgstr ""
 "Frase breve que se muestra junto al logotipo o cerca de él, según el diseño "
 "activo de la cabecera."
 
-#: site_settings/admin.py:63
+#: site_settings/admin.py:65
 msgid ""
 "Optional image displayed in the top bar. Use it for a slim banner, not for "
 "large hero images."
@@ -5434,7 +5558,7 @@ msgstr ""
 "Imagen opcional mostrada en la barra superior. Úsala como banner fino, no "
 "como imagen principal grande."
 
-#: site_settings/admin.py:64
+#: site_settings/admin.py:66
 msgid ""
 "Destination URL when the top bar banner is clicked. Leave blank if the "
 "banner should not link anywhere."
@@ -5442,13 +5566,13 @@ msgstr ""
 "URL de destino cuando se hace clic en el banner de la barra superior. Déjalo "
 "en blanco si el banner no debe enlazar a ningún sitio."
 
-#: site_settings/admin.py:65
+#: site_settings/admin.py:67
 msgid ""
 "Compact image displayed immediately before the shopping cart in the main "
 "navigation."
 msgstr ""
 
-#: site_settings/admin.py:66
+#: site_settings/admin.py:68
 #, fuzzy
 #| msgid ""
 #| "Destination URL when the top bar banner is clicked. Leave blank if the "
@@ -5460,7 +5584,7 @@ msgstr ""
 "URL de destino cuando se hace clic en el banner de la barra superior. Déjalo "
 "en blanco si el banner no debe enlazar a ningún sitio."
 
-#: site_settings/admin.py:67
+#: site_settings/admin.py:69
 #, python-brace-format
 msgid ""
 "Text shown in the footer. Use {year} to insert the current year "
@@ -5469,7 +5593,7 @@ msgstr ""
 "Texto mostrado en el pie de página. Usa {year} para insertar automáticamente "
 "el año actual."
 
-#: site_settings/admin.py:68
+#: site_settings/admin.py:70
 msgid ""
 "Main accent color. Used by buttons, highlights, separators, and theme "
 "accents."
@@ -5477,7 +5601,7 @@ msgstr ""
 "Color de acento principal. Lo usan botones, resaltados, separadores y "
 "acentos del tema."
 
-#: site_settings/admin.py:69
+#: site_settings/admin.py:71
 msgid ""
 "Dark theme color. Used by dark header areas, strong contrast elements, and "
 "dark buttons."
@@ -5485,19 +5609,27 @@ msgstr ""
 "Color oscuro del tema. Se usa en áreas oscuras de la cabecera, elementos de "
 "alto contraste y botones oscuros."
 
-#: site_settings/admin.py:70
+#: site_settings/admin.py:72 site_settings/models.py:220
+msgid "Background color of the upper navigation menu."
+msgstr "Color de fondo del menú de navegación superior."
+
+#: site_settings/admin.py:73 site_settings/models.py:226
+msgid "Background color of the category navigation menu."
+msgstr "Color de fondo del menú de navegación de categorías."
+
+#: site_settings/admin.py:74
 msgid "Light theme color. Used by light backgrounds and subtle contrast areas."
 msgstr ""
 "Color claro del tema. Se usa en fondos claros y áreas de contraste sutil."
 
-#: site_settings/admin.py:71
+#: site_settings/admin.py:75
 msgid ""
 "Main page background color. This affects the overall feel of the whole site."
 msgstr ""
 "Color de fondo principal de la página. Afecta a la sensación general de todo "
 "el sitio."
 
-#: site_settings/admin.py:72
+#: site_settings/admin.py:76
 msgid ""
 "Default text color across public pages. Keep strong contrast against the "
 "body background."
@@ -5505,11 +5637,11 @@ msgstr ""
 "Color de texto predeterminado en las páginas públicas. Mantén un buen "
 "contraste con el fondo del cuerpo."
 
-#: site_settings/admin.py:73
+#: site_settings/admin.py:77
 msgid "Background for cards, widget boxes, and grouped content areas."
 msgstr "Fondo para tarjetas, cajas de widgets y áreas de contenido agrupadas."
 
-#: site_settings/admin.py:74
+#: site_settings/admin.py:78
 msgid ""
 "Border color for cards and boxed areas. Use a subtle color to avoid visual "
 "noise."
@@ -5517,12 +5649,12 @@ msgstr ""
 "Color del borde para tarjetas y áreas enmarcadas. Usa un color sutil para "
 "evitar ruido visual."
 
-#: site_settings/admin.py:75
+#: site_settings/admin.py:79
 msgid "Background for highlighted notice/CTA sections on the homepage."
 msgstr ""
 "Fondo para las secciones destacadas de aviso/CTA en la página de inicio."
 
-#: site_settings/admin.py:76
+#: site_settings/admin.py:80
 msgid ""
 "Text color inside homepage notice/CTA sections. Keep it readable against the "
 "notice background."
@@ -5530,20 +5662,20 @@ msgstr ""
 "Color del texto dentro de las secciones de aviso/CTA de la página de inicio. "
 "Mantén una buena legibilidad sobre su fondo."
 
-#: site_settings/admin.py:77
+#: site_settings/admin.py:81
 msgid ""
 "Main CSS font stack used across the site. Use valid CSS font-family syntax."
 msgstr ""
 "Pila principal de fuentes CSS usada en todo el sitio. Utiliza una sintaxis "
 "válida de font-family."
 
-#: site_settings/admin.py:78
+#: site_settings/admin.py:82
 msgid "Base text size in pixels. This affects most body text across the site."
 msgstr ""
 "Tamaño base del texto en píxeles. Afecta a la mayor parte del texto del "
 "sitio."
 
-#: site_settings/admin.py:79
+#: site_settings/admin.py:83
 msgid ""
 "Slogan text size in pixels. Increase only if the slogan has enough "
 "horizontal space."
@@ -5551,7 +5683,7 @@ msgstr ""
 "Tamaño del eslogan en píxeles. Auméntalo solo si el eslogan tiene suficiente "
 "espacio horizontal."
 
-#: site_settings/admin.py:80
+#: site_settings/admin.py:84
 msgid ""
 "Displayed logo height in pixels in the top/header area. Example: 40 keeps "
 "the logo compact."
@@ -5559,7 +5691,7 @@ msgstr ""
 "Altura mostrada del logotipo en píxeles en la zona superior/cabecera. "
 "Ejemplo: 40 mantiene el logotipo compacto."
 
-#: site_settings/admin.py:81
+#: site_settings/admin.py:85
 msgid ""
 "Maximum banner image height in pixels in the top bar. Keeps banners from "
 "pushing the layout down."
@@ -5567,7 +5699,7 @@ msgstr ""
 "Altura máxima de la imagen del banner en píxeles en la barra superior. Evita "
 "que los banners empujen el diseño hacia abajo."
 
-#: site_settings/admin.py:82
+#: site_settings/admin.py:86
 #, fuzzy
 #| msgid ""
 #| "Displayed logo height in pixels in the top/header area. Example: 40 keeps "
@@ -5579,7 +5711,7 @@ msgstr ""
 "Altura mostrada del logotipo en píxeles en la zona superior/cabecera. "
 "Ejemplo: 40 mantiene el logotipo compacto."
 
-#: site_settings/admin.py:83
+#: site_settings/admin.py:87
 msgid ""
 "Corner rounding in pixels for buttons, cards, images, and panels that follow "
 "the theme."
@@ -5587,7 +5719,7 @@ msgstr ""
 "Redondeo de esquinas en píxeles para botones, tarjetas, imágenes y paneles "
 "que siguen el tema."
 
-#: site_settings/admin.py:84
+#: site_settings/admin.py:88
 msgid ""
 "Maximum page width in pixels. Larger values make content spread more on wide "
 "screens."
@@ -5595,7 +5727,7 @@ msgstr ""
 "Ancho máximo de página en píxeles. Valores mayores hacen que el contenido se "
 "extienda más en pantallas anchas."
 
-#: site_settings/admin.py:85
+#: site_settings/admin.py:89
 msgid ""
 "Horizontal padding in pixels around the main layout. Helps content breathe "
 "on small screens."
@@ -5603,13 +5735,13 @@ msgstr ""
 "Relleno horizontal en píxeles alrededor del diseño principal. Ayuda a que el "
 "contenido respire en pantallas pequeñas."
 
-#: site_settings/admin.py:86
+#: site_settings/admin.py:90
 msgid "Central content column width percentage on desktop layouts."
 msgstr ""
 "Porcentaje de ancho de la columna central de contenido en diseños de "
 "escritorio."
 
-#: site_settings/admin.py:87
+#: site_settings/admin.py:91
 msgid ""
 "Left sidebar width percentage on desktop layouts. Works together with "
 "content and right sidebar widths."
@@ -5617,7 +5749,7 @@ msgstr ""
 "Porcentaje de ancho de la barra lateral izquierda en diseños de escritorio. "
 "Funciona junto con el ancho del contenido y de la barra lateral derecha."
 
-#: site_settings/admin.py:88
+#: site_settings/admin.py:92
 msgid ""
 "Right sidebar width percentage on desktop layouts. Works together with "
 "content and left sidebar widths."
@@ -5625,7 +5757,7 @@ msgstr ""
 "Porcentaje de ancho de la barra lateral derecha en diseños de escritorio. "
 "Funciona junto con el ancho del contenido y de la barra lateral izquierda."
 
-#: site_settings/admin.py:89
+#: site_settings/admin.py:93
 msgid ""
 "Maximum width in pixels for category tree widgets and category navigation "
 "blocks."
@@ -5633,59 +5765,63 @@ msgstr ""
 "Ancho máximo en píxeles para widgets de árbol de categorías y bloques de "
 "navegación por categorías."
 
-#: site_settings/admin.py:90
+#: site_settings/admin.py:94
 msgid "Background color for category tree widgets."
 msgstr "Color de fondo para los widgets del árbol de categorías."
 
-#: site_settings/admin.py:91
+#: site_settings/admin.py:95
 msgid "Border color for category tree widgets."
 msgstr "Color del borde para los widgets del árbol de categorías."
 
-#: site_settings/admin.py:92
+#: site_settings/admin.py:96
 msgid "Base inner padding in pixels for category tree widgets."
 msgstr ""
 "Relleno interior base en píxeles para los widgets del árbol de categorías."
 
-#: site_settings/admin.py:93
+#: site_settings/admin.py:97
 msgid "Indentation step in pixels for each nested category level."
 msgstr "Paso de sangría en píxeles para cada nivel anidado de categoría."
 
-#: site_settings/admin.py:94
+#: site_settings/admin.py:98
 msgid "Vertical padding in pixels for each category tree row."
 msgstr "Relleno vertical en píxeles para cada fila del árbol de categorías."
 
-#: site_settings/admin.py:103
+#: site_settings/admin.py:107
 #, fuzzy
 #| msgid "Site Logo"
 msgid "Site logo"
 msgstr "Logotipo del Sitio"
 
-#: site_settings/admin.py:111 site_settings/models.py:155
+#: site_settings/admin.py:115 site_settings/models.py:155
 msgid "Favicon"
 msgstr "Favicon"
 
-#: site_settings/admin.py:119
+#: site_settings/admin.py:123
+msgid "Digital BeeB system icon"
+msgstr "Icono de sistema de Digital BeeB"
+
+#: site_settings/admin.py:131
 #, fuzzy
 #| msgid "Top Bar Banner Link"
 msgid "Top bar banner"
 msgstr "Enlace de Banner de Barra Superior"
 
-#: site_settings/admin.py:127 site_settings/admin.py:233
+#: site_settings/admin.py:139 site_settings/admin.py:251
 msgid "Navigation banner"
 msgstr ""
 
-#: site_settings/admin.py:137
+#: site_settings/admin.py:149
 msgid "Content pagination"
 msgstr "Paginación de contenido"
 
-#: site_settings/admin.py:139
+#: site_settings/admin.py:151
 msgid ""
 "Controls how many items are shown before pagination appears in public lists."
 msgstr ""
 "Controla cuántos elementos se muestran antes de que aparezca la paginación "
 "en las listas públicas."
 
-#: site_settings/admin.py:152
+#: site_settings/admin.py:164
 msgid ""
 "Controls search result density and how many important pages are promoted "
 "before regular results."
@@ -5693,7 +5829,7 @@ msgstr ""
 "Controla la densidad de resultados de búsqueda y cuántas páginas importantes "
 "se promocionan antes de los resultados normales."
 
-#: site_settings/admin.py:163
+#: site_settings/admin.py:175
 msgid ""
 "Controls moderation behavior and how nested conversations are displayed in "
 "the admin."
@@ -5701,23 +5837,23 @@ msgstr ""
 "Controla el comportamiento de la moderación y cómo se muestran las "
 "conversaciones anidadas en el admin."
 
-#: site_settings/admin.py:171
+#: site_settings/admin.py:183
 #, fuzzy
 #| msgid "Posts"
 msgid "Post points"
 msgstr "Posts"
 
-#: site_settings/admin.py:173
+#: site_settings/admin.py:185
 msgid ""
 "Controls the daily community points that authenticated users can assign to "
 "posts."
 msgstr ""
 
-#: site_settings/admin.py:183
+#: site_settings/admin.py:195
 msgid "Cache"
 msgstr "Caché"
 
-#: site_settings/admin.py:185
+#: site_settings/admin.py:197
 msgid ""
 "Controls how long expensive menu and category tree queries are cached. Use 0 "
 "only while testing."
@@ -5725,11 +5861,11 @@ msgstr ""
 "Controla durante cuánto tiempo se almacenan en caché las consultas costosas "
 "de menús y árboles de categorías. Usa 0 solo durante las pruebas."
 
-#: site_settings/admin.py:215
+#: site_settings/admin.py:227
 msgid "Template identity"
 msgstr "Identidad de la plantilla"
 
-#: site_settings/admin.py:217
+#: site_settings/admin.py:229
 msgid ""
 "Only one template should be marked as chosen. The chosen template provides "
 "the active visual theme."
@@ -5737,11 +5873,11 @@ msgstr ""
 "Solo una plantilla debe marcarse como elegida. La plantilla elegida "
 "proporciona el tema visual activo."
 
-#: site_settings/admin.py:221
+#: site_settings/admin.py:233
 msgid "Branding"
 msgstr "Identidad visual"
 
-#: site_settings/admin.py:223
+#: site_settings/admin.py:235
 msgid ""
 "Images and short text used in the top area of the site. Logo, favicon, and "
 "banner are independent files."
@@ -5749,17 +5885,29 @@ msgstr ""
 "Imágenes y textos breves usados en la zona superior del sitio. El logotipo, "
 "el favicon y el banner son archivos independientes."
 
-#: site_settings/admin.py:235
+#: site_settings/admin.py:245
+msgid "System icons"
+msgstr "Iconos del sistema"
+
+#: site_settings/admin.py:247
+msgid ""
+"Icons used by named areas of the site. The Digital BeeB icon replaces its "
+"standard menu icon."
+msgstr ""
+"Iconos usados por áreas identificadas del sitio. El icono de Digital BeeB "
+"sustituye su icono habitual del menú."
+
+#: site_settings/admin.py:253
 msgid ""
 "A compact optional image placed immediately before the shopping cart in the "
 "main navigation."
 msgstr ""
 
-#: site_settings/admin.py:243
+#: site_settings/admin.py:261
 msgid "Footer"
 msgstr "Pie de página"
 
-#: site_settings/admin.py:245
+#: site_settings/admin.py:263
 #, python-brace-format
 msgid ""
 "Footer text shown at the bottom of the site. Use {year} to insert the "
@@ -5768,11 +5916,11 @@ msgstr ""
 "Texto del pie mostrado en la parte inferior del sitio. Usa {year} para "
 "insertar automáticamente el año actual."
 
-#: site_settings/admin.py:249
+#: site_settings/admin.py:267
 msgid "Colors"
 msgstr "Colores"
 
-#: site_settings/admin.py:251
+#: site_settings/admin.py:269
 msgid ""
 "Use the color selector to open the browser palette. Colors are saved as "
 "hexadecimal values, for example #ffc107."
@@ -5780,11 +5928,11 @@ msgstr ""
 "Usa el selector de color para abrir la paleta del navegador. Los colores se "
 "guardan como valores hexadecimales, por ejemplo #ffc107."
 
-#: site_settings/admin.py:265
+#: site_settings/admin.py:285
 msgid "Typography and Sizes"
 msgstr "Tipografía y tamaños"
 
-#: site_settings/admin.py:267
+#: site_settings/admin.py:287
 msgid ""
 "Controls base typography and common visual sizes. Numeric values are "
 "interpreted as pixels."
@@ -5792,11 +5940,11 @@ msgstr ""
 "Controla la tipografía base y los tamaños visuales comunes. Los valores "
 "numéricos se interpretan como píxeles."
 
-#: site_settings/admin.py:271
+#: site_settings/admin.py:291
 msgid "Layout"
 msgstr "Diseño"
 
-#: site_settings/admin.py:273
+#: site_settings/admin.py:293
 msgid ""
 "Controls the maximum width and the proportion of content versus sidebars. "
 "Percent fields should add up sensibly."
@@ -5804,11 +5952,11 @@ msgstr ""
 "Controla el ancho máximo y la proporción entre contenido y barras laterales. "
 "Los campos de porcentaje deben sumar de forma razonable."
 
-#: site_settings/admin.py:277
+#: site_settings/admin.py:297
 msgid "Category Tree"
 msgstr "Categoría"
 
-#: site_settings/admin.py:279
+#: site_settings/admin.py:299
 msgid ""
 "Controls the category tree container, indentation, spacing, and colors used "
 "by category widgets."
@@ -5816,35 +5964,39 @@ msgstr ""
 "Controla el contenedor del árbol de categorías, la sangría, el espaciado y "
 "los colores usados por los widgets de categorías."
 
-#: site_settings/admin.py:346
+#: site_settings/admin.py:367
 #, fuzzy
 #| msgid "Social image — media library"
 msgid "Site logo — media library"
 msgstr "Imagen social — biblioteca multimedia"
 
-#: site_settings/admin.py:350
+#: site_settings/admin.py:371
 #, fuzzy
 #| msgid "Cover image — media library"
 msgid "Favicon — media library"
 msgstr "Imagen Destacada"
 
-#: site_settings/admin.py:354
+#: site_settings/admin.py:375
+msgid "Digital BeeB system icon — media library"
+msgstr "Icono de sistema de Digital BeeB — biblioteca multimedia"
+
+#: site_settings/admin.py:379
 #, fuzzy
 #| msgid "Cover image — media library"
 msgid "Top bar banner — media library"
 msgstr "Imagen Destacada"
 
-#: site_settings/admin.py:358
+#: site_settings/admin.py:383
 #, fuzzy
 #| msgid "Social image — media library"
 msgid "Navigation banner — media library"
 msgstr "Imagen social — biblioteca multimedia"
 
-#: site_settings/admin.py:418 site_settings/models.py:166
+#: site_settings/admin.py:443 site_settings/models.py:171
 msgid "Site Slogan"
 msgstr "Sitio Slogan"
 
-#: site_settings/admin.py:433
+#: site_settings/admin.py:458
 #, python-format
 msgid ""
 "%(description)s Click the color box to open the palette. The value is stored "
@@ -5853,29 +6005,13 @@ msgstr ""
 "%(description)s Haz clic en la caja de color para abrir la paleta. El valor "
 "se guarda como color hexadecimal."
 
-#: site_settings/admin.py:437 site_settings/models.py:209
+#: site_settings/admin.py:462 site_settings/models.py:214
 msgid "Primary Color"
 msgstr "Color principal"
 
-#: site_settings/admin.py:441 site_settings/models.py:210
+#: site_settings/admin.py:466 site_settings/models.py:215
 msgid "Dark Color"
 msgstr "Color oscuro"
-
-#: site_settings/models.py
-msgid "Main navigation background color"
-msgstr "Color de fondo de navegación superior"
-
-#: site_settings/models.py
-msgid "Background color of the upper navigation menu."
-msgstr "Color de fondo del menú de navegación superior."
-
-#: site_settings/models.py
-msgid "Category navigation background color"
-msgstr "Color de fondo de navegación de categorías"
-
-#: site_settings/models.py
-msgid "Background color of the category navigation menu."
-msgstr "Color de fondo del menú de navegación de categorías."
 
 #: site_settings/models.py:18
 msgid "Items per Page in Blog/Category lists"
@@ -6071,7 +6207,7 @@ msgstr ""
 "Número de usuarios listados por página en el directorio público de usuarios."
 
 #: site_settings/models.py:125 site_settings/models.py:126
-#: site_settings/models.py:129
+#: site_settings/models.py:129 site_settings/tests.py:18
 msgid "Site Configuration"
 msgstr "Configuración del Sitio"
 
@@ -6105,15 +6241,25 @@ msgstr ""
 msgid "Favicon (media library)"
 msgstr "Imagen Destacada"
 
-#: site_settings/models.py:167
+#: site_settings/models.py:164
+msgid "Digital BeeB system icon (media library)"
+msgstr "Icono de sistema de Digital BeeB (biblioteca multimedia)"
+
+#: site_settings/models.py:165
+msgid "Icon shown beside the Digital BeeB category in the category navigation."
+msgstr ""
+"Icono mostrado junto a la categoría Digital BeeB en la navegación de "
+"categorías."
+
+#: site_settings/models.py:172
 msgid "A short tagline displayed next to the logo."
 msgstr "Un eslogan corto que se muestra junto al logotipo."
 
-#: site_settings/models.py:171
+#: site_settings/models.py:176
 msgid "Footer Copyright Text"
 msgstr "Texto de copyright del pie de página"
 
-#: site_settings/models.py:172
+#: site_settings/models.py:177
 #, python-brace-format
 msgid ""
 "Optional footer copyright text. Use {year} where the current year should "
@@ -6122,111 +6268,119 @@ msgstr ""
 "Texto opcional de copyright del pie de página. Usa {year} donde deba "
 "aparecer el año actual."
 
-#: site_settings/models.py:179
+#: site_settings/models.py:184
 msgid "Top Bar Banner Image"
 msgstr "Imagen de Top Bar Banner"
 
-#: site_settings/models.py:180
+#: site_settings/models.py:185
 msgid "An optional banner image displayed in the top bar."
 msgstr "Una imagen de banner opcional que se muestra en la barra superior."
 
-#: site_settings/models.py:184
+#: site_settings/models.py:189
 #, fuzzy
 #| msgid "Cover image — media library"
 msgid "Top bar banner (media library)"
 msgstr "Imagen Destacada"
 
-#: site_settings/models.py:189
+#: site_settings/models.py:194
 msgid "Top Bar Banner Link"
 msgstr "Enlace de Banner de Barra Superior"
 
-#: site_settings/models.py:190
+#: site_settings/models.py:195
 msgid "The URL the banner image will link to."
 msgstr "La URL a la que se vinculará la imagen del banner."
 
-#: site_settings/models.py:196
+#: site_settings/models.py:201
 #, fuzzy
 #| msgid "Top Bar Banner Image"
 msgid "Navigation Banner Image"
 msgstr "Imagen de Top Bar Banner"
 
-#: site_settings/models.py:197
+#: site_settings/models.py:202
 #, fuzzy
 #| msgid "An optional banner image displayed in the top bar."
 msgid "Optional compact image displayed immediately before the shopping cart."
 msgstr "Una imagen de banner opcional que se muestra en la barra superior."
 
-#: site_settings/models.py:201
+#: site_settings/models.py:206
 #, fuzzy
 #| msgid "Social image — media library"
 msgid "Navigation banner (media library)"
 msgstr "Imagen social — biblioteca multimedia"
 
-#: site_settings/models.py:206
+#: site_settings/models.py:211
 #, fuzzy
 #| msgid "Top Bar Banner Link"
 msgid "Navigation Banner Link"
 msgstr "Enlace de Banner de Barra Superior"
 
-#: site_settings/models.py:207
+#: site_settings/models.py:212
 msgid "Destination URL when the navigation banner is clicked."
 msgstr ""
 
-#: site_settings/models.py:211
+#: site_settings/models.py:219
+msgid "Main navigation background color"
+msgstr "Color de fondo de navegación superior"
+
+#: site_settings/models.py:225
+msgid "Category navigation background color"
+msgstr "Color de fondo de navegación de categorías"
+
+#: site_settings/models.py:228
 msgid "Light Color"
 msgstr "Color claro"
 
-#: site_settings/models.py:212
+#: site_settings/models.py:229
 msgid "Body Background Color"
 msgstr "Color de fondo del cuerpo"
 
-#: site_settings/models.py:213
+#: site_settings/models.py:230
 msgid "Body Text Color"
 msgstr "Color del texto del cuerpo"
 
-#: site_settings/models.py:214
+#: site_settings/models.py:231
 msgid "Card Box Background Color"
 msgstr "Color de fondo de cajas y tarjetas"
 
-#: site_settings/models.py:215
+#: site_settings/models.py:232
 msgid "Card Box Border Color"
 msgstr "Color del borde de cajas y tarjetas"
 
-#: site_settings/models.py:216
+#: site_settings/models.py:233
 msgid "Home Notice Background Color"
 msgstr "Color de fondo del aviso de inicio"
 
-#: site_settings/models.py:217
+#: site_settings/models.py:234
 msgid "Home Notice Text Color"
 msgstr "Color del texto del aviso de inicio"
 
-#: site_settings/models.py:222
+#: site_settings/models.py:239
 msgid "Font Family"
 msgstr "Font Family"
 
-#: site_settings/models.py:224
+#: site_settings/models.py:241
 msgid "Base Font Size"
 msgstr "Base Font Size"
 
-#: site_settings/models.py:225
+#: site_settings/models.py:242
 msgid "Slogan Font Size"
 msgstr "Slogan Font Size"
 
-#: site_settings/models.py:226
+#: site_settings/models.py:243
 msgid "Logo Height"
 msgstr "Logo Height"
 
-#: site_settings/models.py:227
+#: site_settings/models.py:244
 msgid "Banner Max Height"
 msgstr "Banner Max Height"
 
-#: site_settings/models.py:230
+#: site_settings/models.py:247
 #, fuzzy
 #| msgid "Banner Max Height"
 msgid "Navigation Banner Height"
 msgstr "Banner Max Height"
 
-#: site_settings/models.py:231
+#: site_settings/models.py:248
 #, fuzzy
 #| msgid ""
 #| "Displayed logo height in pixels in the top/header area. Example: 40 keeps "
@@ -6237,67 +6391,67 @@ msgstr ""
 "Altura mostrada del logotipo en píxeles en la zona superior/cabecera. "
 "Ejemplo: 40 mantiene el logotipo compacto."
 
-#: site_settings/models.py:233
+#: site_settings/models.py:250
 msgid "Border Radius"
 msgstr "Border Radius"
 
-#: site_settings/models.py:234
+#: site_settings/models.py:251
 msgid "Layout Max Width"
 msgstr "Layout Max Width"
 
-#: site_settings/models.py:235
+#: site_settings/models.py:252
 msgid "Layout Horizontal Padding"
 msgstr "Layout Horizontal Padding"
 
-#: site_settings/models.py:236
+#: site_settings/models.py:253
 msgid "Content Width Percent"
 msgstr "Content Width Percent"
 
-#: site_settings/models.py:237
+#: site_settings/models.py:254
 msgid "Left Sidebar Width Percent"
 msgstr "Left Sidebar Width Percent"
 
-#: site_settings/models.py:238
+#: site_settings/models.py:255
 msgid "Right Sidebar Width Percent"
 msgstr "Right Sidebar Width Percent"
 
-#: site_settings/models.py:239
+#: site_settings/models.py:256
 msgid "Category Tree Max Width"
 msgstr "Category Tree Max Width"
 
-#: site_settings/models.py:240
+#: site_settings/models.py:257
 msgid "Category Tree Background Color"
 msgstr "Tiempo de espera en caché (en segundos)"
 
-#: site_settings/models.py:241
+#: site_settings/models.py:258
 msgid "Category Tree Border Color"
 msgstr "Category Tree Border Color"
 
-#: site_settings/models.py:242
+#: site_settings/models.py:259
 msgid "Category Tree Base Padding"
 msgstr "Category Tree Base Padding"
 
-#: site_settings/models.py:243
+#: site_settings/models.py:260
 msgid "Category Tree Indent Step"
 msgstr "Category Tree Indent Step"
 
-#: site_settings/models.py:244
+#: site_settings/models.py:261
 msgid "Category Tree Row Vertical Padding"
 msgstr "Category Tree Row Vertical Padding"
 
-#: site_settings/models.py:248
+#: site_settings/models.py:265
 msgid "Site Template"
 msgstr "Site Template"
 
-#: site_settings/models.py:249
+#: site_settings/models.py:266
 msgid "Site Templates"
 msgstr "Site Templates"
 
-#: site_settings/models.py:252
+#: site_settings/models.py:269
 msgid "chosen"
 msgstr "chosen"
 
-#: site_settings/models.py:252
+#: site_settings/models.py:269
 msgid "available"
 msgstr "Sin usuarios disponibles."
 
@@ -6465,19 +6619,23 @@ msgstr "Páginas en la categoría:"
 msgid "For example: Article 14, page 24, or section 3."
 msgstr ""
 
-#: sources/models.py:245
-#, fuzzy
-#| msgid "Editorial Content"
-msgid "Editorial note"
-msgstr "Contenido editorial"
-
 #: sources/models.py:247
 msgid ""
-"Optional explanation of how this source supports this content, including "
-"relevant sections or pages. It is shown in a collapsible panel."
+"Explain the specific situation, question or section of this post, page or "
+"publication in which the source is used."
 msgstr ""
+"Explica la situación, pregunta o sección concreta de este post, página o "
+"publicación en la que se utiliza la fuente."
 
 #: sources/models.py:255
+msgid ""
+"Explain how this source supports this specific content, including the "
+"relevant sections or pages. It is shown in a collapsible panel."
+msgstr ""
+"Explica cómo esta fuente respalda este contenido concreto, incluidas las "
+"secciones o páginas relevantes. Se muestra en un panel desplegable."
+
+#: sources/models.py:263
 #, fuzzy
 #| msgid "Certifications"
 msgid "Citations"
@@ -6589,7 +6747,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/404.html:4 templates/404.html:15
+#: templates/404.html:4 templates/404.html:16
 msgid "Page Not Found"
 msgstr "Página no Encontrada"
 
@@ -6597,22 +6755,22 @@ msgstr "Página no Encontrada"
 msgid "The requested page could not be found."
 msgstr "The requested page could not be found."
 
-#: templates/404.html:14
+#: templates/404.html:15
 msgid "Error 404"
 msgstr "Error 404"
 
-#: templates/404.html:17
+#: templates/404.html:18
 msgid ""
 "The page you are looking for does not exist, was moved, or is no longer "
 "available."
 msgstr ""
 "¡Oops! Parece que la página que estabas buscando no existe o se ha movido."
 
-#: templates/404.html:22
+#: templates/404.html:23
 msgid "Go to Homepage"
 msgstr "Ir a la página de inicio"
 
-#: templates/404.html:25
+#: templates/404.html:26
 msgid "View Posts"
 msgstr "Ver publicaciones"
 
@@ -6679,7 +6837,7 @@ msgstr "Testimonio"
 #: testimonials/models.py:18
 #: testimonials/templates/testimonials/testimonial_list.html:4
 #: testimonials/templates/testimonials/testimonial_list.html:5
-#: testimonials/views.py:10 widgets/models.py:60
+#: testimonials/views.py:10 widgets/models.py:61
 msgid "Testimonials"
 msgstr "Testimonios"
 
@@ -6688,11 +6846,11 @@ msgstr "Testimonios"
 msgid "What our users are saying"
 msgstr "Lo que dicen nuestros usuarios"
 
-#: tvt/settings.py:469
+#: tvt/settings.py:503
 msgid "Español"
 msgstr "Español"
 
-#: tvt/settings.py:471
+#: tvt/settings.py:505
 msgid "Català"
 msgstr "Catalán"
 
@@ -6700,15 +6858,15 @@ msgstr "Catalán"
 msgid "Number of Widgets"
 msgstr "Número de Widgets"
 
-#: widgets/admin.py:98 widgets/models.py:86
+#: widgets/admin.py:98 widgets/models.py:87
 msgid "Widget Title"
 msgstr "Título del Widget"
 
-#: widgets/admin.py:102 widgets/models.py:93
+#: widgets/admin.py:102 widgets/models.py:94
 msgid "Section Title (Optional)"
 msgstr "Título de la Sección (Opcional)"
 
-#: widgets/admin.py:106 widgets/models.py:100
+#: widgets/admin.py:106 widgets/models.py:101
 msgid "View All Link Text"
 msgstr "Ver Todo el Texto del Enlace"
 
@@ -6752,146 +6910,146 @@ msgstr "Nube de etiquetas de categoría"
 msgid "Editor's Picks (Blog Posts)"
 msgstr "Selección del Editor (Publicaciones de blog)"
 
-#: widgets/models.py:37
+#: widgets/models.py:38
 msgid "Post Grid: Recent Posts"
 msgstr "Post Grid: Publicaciones Recientes"
 
-#: widgets/models.py:38
+#: widgets/models.py:39
 msgid "Post Grid: Category"
 msgstr "Posts en la categoría:"
 
-#: widgets/models.py:39
+#: widgets/models.py:40
 msgid "Post Grid: Most Viewed"
 msgstr "Post Grid: La mayoría de los Visto"
 
-#: widgets/models.py:40
+#: widgets/models.py:41
 msgid "Post Grid: Most Commented"
 msgstr "Post Grid: Más Comentado"
 
-#: widgets/models.py:41
+#: widgets/models.py:42
 msgid "Post Grid: Editor's Picks"
 msgstr "Post Grid: Las elecciones del editor"
 
-#: widgets/models.py:42
+#: widgets/models.py:43
 #, fuzzy
 #| msgid "Post Grid: Category"
 msgid "Post Grid: Top Rated Today"
 msgstr "Posts en la categoría:"
 
-#: widgets/models.py:43
+#: widgets/models.py:44
 #, fuzzy
 #| msgid "Post Grid: Most Viewed"
 msgid "Post Grid: Top Rated This Week"
 msgstr "Post Grid: La mayoría de los Visto"
 
-#: widgets/models.py:44
+#: widgets/models.py:45
 #, fuzzy
 #| msgid "Post Grid: Most Viewed"
 msgid "Post Grid: Most Favorited"
 msgstr "Post Grid: La mayoría de los Visto"
 
-#: widgets/models.py:45
+#: widgets/models.py:46
 msgid "Post Grid: Community Picks"
 msgstr "Post Grid: Selecciones de la comunidad"
 
-#: widgets/models.py:46
+#: widgets/models.py:47
 msgid "Post Grid: Top Tags"
 msgstr "Cuadrícula de posts: etiquetas principales"
 
-#: widgets/models.py:47
+#: widgets/models.py:48
 msgid "Intent: For Reflection"
 msgstr "Intent: For Reflection"
 
-#: widgets/models.py:48
+#: widgets/models.py:49
 msgid "Intent: Quick Reads"
 msgstr "Intent: Quick Reads"
 
-#: widgets/models.py:49
+#: widgets/models.py:50
 msgid "Intent: Well-being"
 msgstr "Intent: Well-being"
 
-#: widgets/models.py:50
+#: widgets/models.py:51
 msgid "Intent: Debate Starters"
 msgstr "Intent: Debate Starters"
 
-#: widgets/models.py:52
+#: widgets/models.py:53
 msgid "Post Carousel"
 msgstr "Carrusel Post"
 
-#: widgets/models.py:53
+#: widgets/models.py:54
 msgid "Post Carousel: Most Commented"
 msgstr "Post Grid: Más Comentado"
 
-#: widgets/models.py:54
+#: widgets/models.py:55
 msgid "Post Carousel: Most Viewed"
 msgstr "Post Grid: La mayoría de los Visto"
 
-#: widgets/models.py:55
+#: widgets/models.py:56
 #, fuzzy
 #| msgid "Post Carousel"
 msgid "Hero Carousel"
 msgstr "Carrusel Post"
 
-#: widgets/models.py:56
+#: widgets/models.py:57
 #, fuzzy
 #| msgid "Post Grid: Recent Posts"
 msgid "Book Grid: Recent Books"
 msgstr "Post Grid: Publicaciones Recientes"
 
-#: widgets/models.py:57
+#: widgets/models.py:58
 #, fuzzy
 #| msgid "Publications pagination"
 msgid "Publication Grid: Recent Publications"
 msgstr "Paginación de publicaciones"
 
-#: widgets/models.py:58
+#: widgets/models.py:59
 #, fuzzy
 #| msgid "Pages by Category"
 msgid "Page Card"
 msgstr "Páginas por Categoría"
 
-#: widgets/models.py:67
+#: widgets/models.py:68
 msgid "Auto"
 msgstr ""
 
-#: widgets/models.py:68
+#: widgets/models.py:69
 msgid "Square / Social"
 msgstr ""
 
-#: widgets/models.py:69
+#: widgets/models.py:70
 msgid "Landscape / Featured"
 msgstr ""
 
-#: widgets/models.py:70
+#: widgets/models.py:71
 msgid "Mobile / 9:16"
 msgstr ""
 
-#: widgets/models.py:81
+#: widgets/models.py:82
 msgid "Widget Type"
 msgstr "Tipo de Widget"
 
-#: widgets/models.py:87
+#: widgets/models.py:88
 msgid "The title that will be displayed above the widget."
 msgstr "El título que se mostrará encima del widget."
 
-#: widgets/models.py:94
+#: widgets/models.py:95
 msgid ""
 "A main title for this grid section (e.g., 'Latest Posts', 'Our Bestsellers')."
 msgstr ""
 "Un título principal para esta sección de cuadrícula (por ejemplo, 'Últimas "
 "publicaciones', 'Nuestros más vendidos')."
 
-#: widgets/models.py:101
+#: widgets/models.py:102
 msgid "Text for the 'View All' link below the grid (e.g., 'View All Posts')."
 msgstr ""
 "Texto para el enlace 'Ver todo' debajo de la cuadrícula (por ejemplo, 'Ver "
 "Todas las publicaciones')."
 
-#: widgets/models.py:112
+#: widgets/models.py:113
 msgid "Number of items to show"
 msgstr "Número de artículos a mostrar"
 
-#: widgets/models.py:114
+#: widgets/models.py:115
 msgid ""
 "Used by widgets that display a list of items, like 'Recent Posts' or 'Blog "
 "Categories'."
@@ -6899,22 +7057,22 @@ msgstr ""
 "Utilizado por widgets que muestran una lista de elementos, como "
 "'Publicaciones recientes' o 'Categorías de blogs'."
 
-#: widgets/models.py:118
+#: widgets/models.py:119
 msgid "Number of top tags"
 msgstr "Número de etiquetas principales"
 
-#: widgets/models.py:119
+#: widgets/models.py:120
 msgid ""
 "For the Top Tags grid, how many leading cloud tags are used to select posts."
 msgstr ""
 "Para la cuadrícula de etiquetas principales, cuántas etiquetas líderes de la "
 "nube se usan para seleccionar posts."
 
-#: widgets/models.py:124
+#: widgets/models.py:125
 msgid "Cache Timeout (in seconds)"
 msgstr "Tiempo de espera en caché (en segundos)"
 
-#: widgets/models.py:125
+#: widgets/models.py:126
 msgid ""
 "How long the results of this widget should be stored in cache. 0 to disable "
 "caching for this widget."
@@ -6922,33 +7080,33 @@ msgstr ""
 "Cuánto tiempo deben almacenarse los resultados de este widget en caché. 0 "
 "para deshabilitar el almacenamiento en caché de este widget."
 
-#: widgets/models.py:132
+#: widgets/models.py:133
 msgid "Filter by Category (optional)"
 msgstr "Filtrar por Categoría (opcional)"
 
-#: widgets/models.py:133
+#: widgets/models.py:134
 msgid ""
 "If selected, the widget will only show items from this specific category."
 msgstr ""
 "Si se selecciona, el widget solo mostrará publicaciones de esta categoría."
 
-#: widgets/models.py:140
+#: widgets/models.py:141
 #, fuzzy
 #| msgid "Featured image (library)"
 msgid "Featured Page (optional)"
 msgstr "Imagen Destacada"
 
-#: widgets/models.py:141
+#: widgets/models.py:142
 #, fuzzy
 #| msgid "The title that will be displayed above the widget."
 msgid "The page displayed by the Page Card widget."
 msgstr "El título que se mostrará encima del widget."
 
-#: widgets/models.py:145
+#: widgets/models.py:146
 msgid "Prefer the author's public CV"
 msgstr ""
 
-#: widgets/models.py:147
+#: widgets/models.py:148
 #, fuzzy
 #| msgid ""
 #| "This book exists, but its full document is not available in the selected "
@@ -6958,47 +7116,47 @@ msgid ""
 "available in the selected language."
 msgstr "Este contenido no está disponible en este idioma."
 
-#: widgets/models.py:154
+#: widgets/models.py:155
 msgid "Column Count"
 msgstr "Cuenta de Columna"
 
-#: widgets/models.py:155
+#: widgets/models.py:156
 msgid "Number of columns for grid display (e.g., 2, 3, 4)."
 msgstr ""
 "Número de columnas para visualización de cuadrícula (por ejemplo, 2, 3, 4)."
 
-#: widgets/models.py:161
+#: widgets/models.py:162
 msgid "Image Format"
 msgstr ""
 
-#: widgets/models.py:162
+#: widgets/models.py:163
 msgid ""
 "Choose which visual format this widget should prefer: landscape, square/"
 "social, or mobile 9:16."
 msgstr ""
 
-#: widgets/models.py:168
+#: widgets/models.py:169
 msgid "View All Link URL"
 msgstr "Ver Todo Enlace URL"
 
-#: widgets/models.py:169
+#: widgets/models.py:170
 msgid "URL for the 'View All' link (e.g., '/blog/')."
 msgstr "URL para el enlace 'Ver todo' (por ejemplo, '/blog/')."
 
-#: widgets/models.py:173
+#: widgets/models.py:174
 msgid "Carousel Interval (ms)"
 msgstr "Intervalo de Carrusel (ms)"
 
-#: widgets/models.py:174
+#: widgets/models.py:175
 msgid "Time in milliseconds between slides for 'Post Carousel' widget."
 msgstr ""
 "Tiempo en milisegundos entre diapositivas para el widget 'Post Carousel'."
 
-#: widgets/models.py:179
+#: widgets/models.py:180
 msgid "Widget"
 msgstr "Widget"
 
-#: widgets/models.py:180
+#: widgets/models.py:181
 msgid "Widgets"
 msgstr "Widgets"
 
@@ -7076,6 +7234,15 @@ msgstr ""
 "                <strong>Error de widget:</strong> La plantilla para el tipo "
 "de widget \"%(widget_type)s\" no se encontró en el despachador.\n"
 "            "
+
+#~ msgid "Add a brief SEO summary before showing this mini-post in listings."
+#~ msgstr ""
+#~ "Añade un resumen SEO breve antes de mostrar este minipost en los listados."
+
+#, fuzzy
+#~| msgid "Editorial Content"
+#~ msgid "Editorial note"
+#~ msgstr "Contenido editorial"
 
 #~ msgid ""
 #~ "Selectable authors are limited to active users with a professional "
@@ -7351,66 +7518,3 @@ msgstr ""
 
 #~ msgid "Show sidebars"
 #~ msgstr "Mostrar barras laterales"
-
-#: accounts/models.py accounts/services.py
-msgid "New follower"
-msgstr "Nuevo seguidor"
-
-#: accounts/services.py
-msgid "Open the notification:"
-msgstr "Abrir la notificación:"
-
-#: accounts/services.py
-msgid "You receive this email because of activity in your TVTente account."
-msgstr "Recibes este correo por actividad en tu cuenta de TVTente."
-
-#: accounts/services.py
-msgid "New reply to your comment"
-msgstr "Nueva respuesta a tu comentario"
-
-#, python-format
-#: accounts/services.py
-msgid "%(user)s replied to your comment on \"%(title)s\"."
-msgstr "%(user)s respondió a tu comentario en «%(title)s»."
-
-#: accounts/services.py
-msgid "You have a new follower"
-msgstr "Tienes un nuevo seguidor"
-
-#, python-format
-#: accounts/services.py
-msgid "%(user)s started following you."
-msgstr "%(user)s ha empezado a seguirte."
-
-#: accounts/services.py
-msgid "New comment awaiting review"
-msgstr "Nuevo comentario pendiente de revisión"
-
-#, python-format
-#: accounts/services.py
-msgid "%(user)s commented on \"%(title)s\" and it is awaiting review."
-msgstr "%(user)s comentó en «%(title)s» y está pendiente de revisión."
-
-#: site_settings/admin.py site_settings/models.py
-msgid "Digital BeeB system icon (media library)"
-msgstr "Icono de sistema de Digital BeeB (biblioteca multimedia)"
-
-#: site_settings/models.py
-msgid "Icon shown beside the Digital BeeB category in the category navigation."
-msgstr "Icono mostrado junto a la categoría Digital BeeB en la navegación de categorías."
-
-#: site_settings/admin.py
-msgid "Digital BeeB system icon"
-msgstr "Icono de sistema de Digital BeeB"
-
-#: site_settings/admin.py
-msgid "System icons"
-msgstr "Iconos del sistema"
-
-#: site_settings/admin.py
-msgid "Icons used by named areas of the site. The Digital BeeB icon replaces its standard menu icon."
-msgstr "Iconos usados por áreas identificadas del sitio. El icono de Digital BeeB sustituye su icono habitual del menú."
-
-#: site_settings/admin.py
-msgid "Digital BeeB system icon — media library"
-msgstr "Icono de sistema de Digital BeeB — biblioteca multimedia"

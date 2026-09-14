@@ -465,7 +465,7 @@ class UserNotificationTests(TestCase):
             EMAIL_NOTIFICATIONS_ENABLED=True,
             EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend",
         ), self.captureOnCommitCallbacks(execute=True):
-            Comment.objects.create(
+            comment = Comment.objects.create(
                 post=post,
                 user=commenter,
                 content="Interesting read",
@@ -476,6 +476,15 @@ class UserNotificationTests(TestCase):
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].to, ["author@example.com"])
         self.assertIn("New comment", mail.outbox[0].subject)
+        notification = UserNotification.objects.get(
+            payload__comment_id=comment.id,
+            recipient=self.author,
+        )
+        self.assertEqual(
+            notification.email_delivery_status,
+            UserNotification.EmailDeliveryStatus.SENT,
+        )
+        self.assertIsNotNone(notification.email_sent_at)
 
     def test_comment_notification_is_created_when_comment_is_approved_later(self):
         post = self._create_published_post(slug="moderated-post", title="Moderated Post")
