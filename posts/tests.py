@@ -141,6 +141,54 @@ class PostContentBlockSummaryTests(TestCase):
         self.assertIn("summary", error.exception.message_dict)
 
 
+@override_settings(MEDIA_ROOT=tempfile.mkdtemp())
+class PublicMiniPostUrlTests(TestCase):
+    def setUp(self):
+        self.user = get_user_model().objects.create_user(username="mini-post-author", password="p")
+        self.post = Post.objects.create(author=self.user, status="published")
+        self.post.set_current_language("es")
+        self.post.title = "Superpost de prueba"
+        self.post.slug = "superpost-de-prueba"
+        self.post.summary = "Resumen del superpost."
+        self.post.content = "Contenido del superpost."
+        self.post.save()
+
+        self.image = Image(title="Mini image", slug="mini-post-image", language="es")
+        self.image.image.save("mini-post-image.jpg", ContentFile(b"image"), save=True)
+        self.block = PostContentBlock.objects.create(
+            post=self.post,
+            language="es",
+            heading="Caso de prueba independiente",
+            summary="Resumen SEO independiente del minipost.",
+            content="Contenido completo del minipost.",
+            image_asset=self.image,
+        )
+
+    def test_complete_block_gets_immutable_public_urls(self):
+        self.assertTrue(self.block.share_slug)
+        self.assertTrue(self.block.short_code)
+        self.assertNotIn("p-", self.block.short_code)
+        self.assertIn("/secciones/", self.block.get_absolute_url())
+        self.assertIn("/r/", self.block.get_short_url())
+
+        original_code = self.block.short_code
+        self.block.short_code = "another-code"
+        with self.assertRaises(ValidationError):
+            self.block.save()
+        self.block.refresh_from_db()
+        self.assertEqual(self.block.short_code, original_code)
+
+    def test_public_page_and_short_link_resolve_to_the_mini_post(self):
+        with override("es"):
+            response = self.client.get(self.block.get_absolute_url())
+            short_response = self.client.get(self.block.get_short_path())
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Caso de prueba independiente")
+        self.assertContains(response, self.block.summary)
+        self.assertRedirects(short_response, self.block.get_absolute_url(), fetch_redirect_response=False)
+
+
 @override_settings(MEDIA_ROOT=tempfile.mkdtemp(), LANGUAGES=(("es", "Español"), ("en", "English")))
 class PostPointsTests(TestCase):
     def setUp(self):

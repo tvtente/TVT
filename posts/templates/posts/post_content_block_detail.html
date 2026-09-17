@@ -1,0 +1,60 @@
+{% extends 'core/base.html' %}
+{% load i18n custom_filters %}
+
+{% block seo_title %}{{ content_block.heading }} | {{ post.title }}{% endblock %}
+{% block seo_description %}{{ content_block.summary }}{% endblock %}
+{% block og_title %}{{ content_block.heading }}{% endblock %}
+{% block og_description %}{{ content_block.summary }}{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block og_image %}<meta property="og:image" content="{{ image_url }}">{% endblock %}
+{% block twitter_card %}summary_large_image{% endblock %}
+{% block twitter_title %}{{ content_block.heading }}{% endblock %}
+{% block twitter_description %}{{ content_block.summary }}{% endblock %}
+{% block twitter_image %}<meta name="twitter:image" content="{{ image_url }}">{% endblock %}
+{% block structured_data %}
+  <link rel="canonical" href="{{ canonical_url }}">
+  <meta property="og:url" content="{{ canonical_url }}">
+  <meta property="article:published_time" content="{{ post.published_date|date:'c' }}">
+  <meta property="article:modified_time" content="{{ content_block.updated_at|date:'c' }}">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "{{ content_block.heading|escapejs }}",
+    "description": "{{ content_block.summary|escapejs }}",
+    "image": ["{{ image_url }}"],
+    "datePublished": "{{ post.published_date|date:'c' }}",
+    "dateModified": "{{ content_block.updated_at|date:'c' }}",
+    "author": {
+      "@type": "Person",
+      "name": "{{ post.author.get_full_name|default:post.author.username|escapejs }}"
+    },
+    "isPartOf": {
+      "@type": "Article",
+      "@id": "{{ parent_anchor_url }}",
+      "headline": "{{ post.title|escapejs }}"
+    },
+    "mainEntityOfPage": {"@type": "WebPage", "@id": "{{ canonical_url }}"}
+  }
+  </script>
+{% endblock %}
+
+{% block content_grid_class %}post-content-block-standalone{% endblock %}
+{% block content %}
+<article class="post-content-block-standalone-card">
+  <h1>{{ content_block.heading }}</h1>
+  <p class="lead">{{ content_block.summary }}</p>
+
+  <figure class="post-content-block-figure my-4">
+    <img src="{{ image_url }}" alt="{{ content_block.image_alt_or_default }}" class="zoomable img-fluid rounded shadow-sm">
+  </figure>
+
+  <div class="post-content fs-5">{{ content_block.content|add_zoom_class_to_images|safe }}</div>
+
+  <aside class="post-content-block-parent mt-5 p-4 rounded">
+    <p class="mb-2 fw-semibold">{% trans "This mini-post is part of:" %}</p>
+    <p class="h4 mb-3">{{ post.title }}</p>
+    <a class="btn btn-primary" href="{{ parent_anchor_url }}">{% trans "Read the complete article" %}</a>
+  </aside>
+</article>
+{% endblock %}

@@ -536,7 +536,16 @@
       {% for block in content_blocks %}
         {% if block.is_renderable and block.block_type == 'content' %}
           <section id="{{ block.anchor_or_default }}" class="post-content-block">
-            {% if block.heading %}<h2>{{ block.heading }}</h2>{% endif %}
+            {% if block.heading %}
+              <h2>
+                {{ block.heading }}
+                {% if block.is_publicly_shareable %}
+                  <a class="post-content-block-share-link" href="{{ block.get_absolute_url }}" aria-label="{% trans 'Open this mini-post independently' %}" title="{% trans 'Open this mini-post independently' %}">
+                    <i class="fa-solid fa-link" aria-hidden="true"></i>
+                  </a>
+                {% endif %}
+              </h2>
+            {% endif %}
             {% if block.summary %}<p class="lead post-content-block-summary">{{ block.summary }}</p>{% endif %}
             {% if block.image_url %}
               <figure class="post-content-block-figure">

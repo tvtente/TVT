@@ -2700,3 +2700,26 @@ nav[aria-label="breadcrumb"] + * {
     --navbar-banner-height: 32px !important;
   }
 }
+/* Standalone mini-post pages reuse the article language without its comments or sources. */
+.post-content-block-standalone-card {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: clamp(1.25rem, 3vw, 2.5rem);
+  background: #fff;
+  border: 1px solid var(--tavata-card-box-border);
+  border-radius: var(--tavata-border-radius);
+}
+
+.post-content-block-parent {
+  background: var(--tavata-card-box-bg);
+  border-left: 4px solid var(--tavata-yellow);
+}
+
+.post-content-block-share-link {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 0.35rem;
+  font-size: 0.62em;
+  vertical-align: middle;
+  text-decoration: none;
+}

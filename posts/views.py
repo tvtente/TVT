@@ -59,16 +59,85 @@ def _is_ajax_request(request):
 
 
 def short_post_redirect_view(request, short_code):
-    """Resolve a public short link without exposing draft or archived posts."""
-    post = get_object_or_404(
-        Post,
-        short_code=short_code,
-        status="published",
+    """Resolve a public short link without exposing draft or incomplete content."""
+    post = Post.objects.filter(short_code=short_code, status="published").first()
+    if post:
+        slug = post.safe_translation_getter("slug", language_code="es", any_language=False)
+        if slug:
+            return redirect(post.get_absolute_url_for_language("es"))
+
+    block = (
+        PostContentBlock.objects.select_related("post", "image_asset")
+        .filter(short_code=short_code)
+        .first()
     )
-    slug = post.safe_translation_getter("slug", language_code="es", any_language=False)
-    if not slug:
+    if block and block.is_publicly_shareable:
+        return redirect(block.get_absolute_url())
+
+    # Preserve the old predictable short links generated before opaque codes.
+    if short_code.startswith("p-") and short_code[2:].isdigit():
+        legacy_post = Post.objects.filter(pk=int(short_code[2:]), status="published").first()
+        if legacy_post:
+            slug = legacy_post.safe_translation_getter("slug", language_code="es", any_language=False)
+            if slug:
+                return redirect(legacy_post.get_absolute_url_for_language("es"))
+
+    raise Http404(gettext("Post not found."))
+
+
+def post_content_block_detail_view(request, year, month, day, slug, section_slug):
+    """Render an indexable mini-post while keeping its parent article context."""
+    language = get_language()
+    post = get_object_or_404(
+        Post.objects.language(language)
+        .prefetch_related("translations", "categories")
+        .filter(
+            translations__language_code=language,
+            translations__slug=slug,
+            published_date__year=year,
+            published_date__month=month,
+            published_date__day=day,
+            status="published",
+        )
+        .distinct()
+    )
+    block = get_object_or_404(
+        PostContentBlock.objects.select_related("post", "image_asset")
+        .filter(
+            post=post,
+            language=language,
+            share_slug=section_slug,
+            block_type=PostContentBlock.BlockType.CONTENT,
+        )
+    )
+    if not block.is_publicly_shareable:
         raise Http404(gettext("Post not found."))
-    return redirect(post.get_absolute_url_for_language("es"))
+
+    Post.objects.filter(pk=post.pk).update(views_count=F("views_count") + 1)
+    metric, _ = PostDailyMetric.objects.get_or_create(post=post, date=timezone.localdate())
+    PostDailyMetric.objects.filter(pk=metric.pk).update(views_count=F("views_count") + 1)
+
+    canonical_url = request.build_absolute_uri(block.get_absolute_url())
+    parent_anchor_url = request.build_absolute_uri(block.get_parent_anchor_url())
+    image_url = request.build_absolute_uri(block.image_url)
+    breadcrumbs = [
+        {"url": "/", "label": gettext("Home")},
+        {"url": reverse("posts:post_list"), "label": gettext("Posts")},
+        {"url": post.get_absolute_url(), "label": post.safe_translation_getter("title", any_language=True)},
+        {"url": "", "label": block.heading},
+    ]
+    return render(
+        request,
+        "posts/post_content_block_detail.html",
+        {
+            "post": post,
+            "content_block": block,
+            "breadcrumbs": breadcrumbs,
+            "canonical_url": canonical_url,
+            "parent_anchor_url": parent_anchor_url,
+            "image_url": image_url,
+        },
+    )
 
 
 def post_list_view(request, list_type=None):

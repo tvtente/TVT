@@ -1,3 +1,5 @@
+import secrets
+
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -14,6 +16,23 @@ from categories.models import Category
 from tags.models import Tag, TaggedPost
 
 User = get_user_model()
+
+
+SHORT_CODE_ALPHABET = "abcdefghijkmnopqrstuvwxyz23456789"
+SHORT_CODE_LENGTH = 8
+
+
+def generate_opaque_short_code():
+    """Return a compact random code unique across posts and mini-posts."""
+    while True:
+        code = "".join(
+            secrets.choice(SHORT_CODE_ALPHABET) for _ in range(SHORT_CODE_LENGTH)
+        )
+        post_exists = Post.objects.filter(short_code=code).exists()
+        block_model = globals().get("PostContentBlock")
+        block_exists = bool(block_model and block_model.objects.filter(short_code=code).exists())
+        if not post_exists and not block_exists:
+            return code
 
 
 # ---------------------------------------------------------------------------
@@ -220,11 +239,17 @@ class Post(TranslatableModel):
 
     def save(self, *args, **kwargs):
         """Assign a stable, non-editable short code once the post has an ID."""
+        if self.pk:
+            original_code = type(self).objects.filter(pk=self.pk).values_list(
+                "short_code", flat=True
+            ).first()
+            if original_code and self.short_code != original_code:
+                raise ValidationError({"short_code": _("The short link code cannot be changed.")})
         super().save(*args, **kwargs)
         if self.short_code:
             return
 
-        short_code = f"p-{self.pk}"
+        short_code = generate_opaque_short_code()
         type(self).objects.filter(pk=self.pk).filter(
             models.Q(short_code__isnull=True) | models.Q(short_code="")
         ).update(short_code=short_code)
@@ -369,6 +394,21 @@ class PostContentBlock(models.Model):
         verbose_name=_("Section anchor"),
         help_text=_("Optional URL fragment for linking directly to this section."),
     )
+    share_slug = models.SlugField(
+        max_length=120,
+        blank=True,
+        editable=False,
+        verbose_name=_("Public mini-post slug"),
+        help_text=_("Stable public slug generated when this mini-post is first saved."),
+    )
+    short_code = models.SlugField(
+        max_length=32,
+        unique=True,
+        null=True,
+        blank=True,
+        editable=False,
+        verbose_name=_("Short link code"),
+    )
     heading = models.CharField(max_length=250, blank=True, verbose_name=_("Section title"))
     summary = models.CharField(
         max_length=160,
@@ -458,7 +498,69 @@ class PostContentBlock(models.Model):
         # as the Admin form. Editors may always replace it before saving.
         if self.heading and not self.anchor:
             self.anchor = slugify(self.heading)
+        if self.pk:
+            original = type(self).objects.filter(pk=self.pk).values(
+                "share_slug", "short_code"
+            ).first()
+            if original:
+                immutable_changes = {}
+                if original["share_slug"] and self.share_slug != original["share_slug"]:
+                    immutable_changes["share_slug"] = _("The public mini-post slug cannot be changed.")
+                if original["short_code"] and self.short_code != original["short_code"]:
+                    immutable_changes["short_code"] = _("The short link code cannot be changed.")
+                if immutable_changes:
+                    raise ValidationError(immutable_changes)
         super().save(*args, **kwargs)
+
+        updates = {}
+        eligible_for_public_url = bool(
+            self.block_type == self.BlockType.CONTENT
+            and self.heading.strip()
+            and self.summary.strip()
+            and self.content.strip()
+            and self.image_asset_id
+        )
+        if eligible_for_public_url and not self.share_slug:
+            base_slug = self.anchor or slugify(self.heading) or f"section-{self.pk}"
+            candidate = base_slug[:120]
+            suffix = 2
+            while type(self).objects.filter(
+                post_id=self.post_id,
+                language=self.language,
+                share_slug=candidate,
+            ).exclude(pk=self.pk).exists():
+                suffix_text = f"-{suffix}"
+                candidate = f"{base_slug[:120 - len(suffix_text)]}{suffix_text}"
+                suffix += 1
+            updates["share_slug"] = candidate
+        if eligible_for_public_url and not self.short_code:
+            updates["short_code"] = generate_opaque_short_code()
+        if updates:
+            type(self).objects.filter(pk=self.pk).update(**updates)
+            for field_name, value in updates.items():
+                setattr(self, field_name, value)
+
+    def get_absolute_url(self):
+        """Canonical, indexable page for this self-contained mini-post."""
+        if not self.share_slug:
+            return ""
+        parent_url = self.post.get_absolute_url_for_language(self.language)
+        return f"{parent_url}secciones/{self.share_slug}/"
+
+    def get_parent_anchor_url(self):
+        return f"{self.post.get_absolute_url_for_language(self.language)}#{self.anchor_or_default}"
+
+    def get_short_path(self):
+        if not self.short_code:
+            return ""
+        return reverse("short_post_redirect", kwargs={"short_code": self.short_code})
+
+    def get_short_url(self):
+        short_path = self.get_short_path()
+        if not short_path:
+            return ""
+        base_url = str(getattr(settings, "PUBLIC_SITE_URL", "https://tvtente.com")).rstrip("/")
+        return f"{base_url}{short_path}"
 
     @property
     def image_url(self):
@@ -488,6 +590,20 @@ class PostContentBlock(models.Model):
             and self.heading.strip()
             and self.anchor_or_default
             and self.is_renderable
+        )
+
+    @property
+    def is_publicly_shareable(self):
+        """Whether this block can safely be exposed as its own public page."""
+        return bool(
+            self.post.status == "published"
+            and self.block_type == self.BlockType.CONTENT
+            and self.heading.strip()
+            and self.summary.strip()
+            and self.content.strip()
+            and self.image_url
+            and self.share_slug
+            and self.short_code
         )
 
     @property

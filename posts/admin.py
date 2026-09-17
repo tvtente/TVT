@@ -219,6 +219,8 @@ class PostContentBlockInline(admin.StackedInline):
         "block_type",
         "heading",
         "anchor",
+        "public_url_admin",
+        "short_url_admin",
         "summary",
         "content",
         "image_asset",
@@ -226,8 +228,41 @@ class PostContentBlockInline(admin.StackedInline):
         "show_in_listings",
         "related_post",
     )
+    readonly_fields = ("public_url_admin", "short_url_admin")
     verbose_name = _("Content block")
     verbose_name_plural = _("Post content blocks")
+
+    @admin.display(description=_("Public mini-post URL"))
+    def public_url_admin(self, obj):
+        if not obj or not obj.pk or not obj.share_slug:
+            return _("It will be generated automatically when the complete mini-post is first saved.")
+        return format_html(
+            '<div class="d-flex align-items-center gap-2">'
+            '<input type="text" value="{}" readonly aria-label="{}" '
+            'style="width:min(100%, 460px); font-family:monospace;">'
+            '<button type="button" class="button" '
+            'onclick="if(navigator.clipboard){{navigator.clipboard.writeText(this.previousElementSibling.value)}}">{}</button>'
+            '</div>',
+            obj.get_absolute_url(),
+            _("Public mini-post URL"),
+            _("Copy"),
+        )
+
+    @admin.display(description=_("Short URL"))
+    def short_url_admin(self, obj):
+        if not obj or not obj.pk or not obj.short_code:
+            return _("It will be generated automatically when the complete mini-post is first saved.")
+        return format_html(
+            '<div class="d-flex align-items-center gap-2">'
+            '<input type="text" value="{}" readonly aria-label="{}" '
+            'style="width:min(100%, 460px); font-family:monospace;">'
+            '<button type="button" class="button" '
+            'onclick="if(navigator.clipboard){{navigator.clipboard.writeText(this.previousElementSibling.value)}}">{}</button>'
+            '</div>',
+            obj.get_short_url(),
+            _("Short URL"),
+            _("Copy"),
+        )
 
     def formfield_for_dbfield(self, db_field, request, **kwargs):
         # Avoid Django's related-object wrapper (its pencil/plus icons).  This
