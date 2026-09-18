@@ -88,7 +88,11 @@ class HomepageResolutionTests(TestCase):
         section.content = "<p>Homepage section body</p>"
         section.save()
 
-        response = self.client.get(reverse("home"))
+        # The test data below exists only in English.  Make the requested
+        # localized route explicit so this test does not depend on a previous
+        # test, a cookie, or the runner's default language.
+        with translation.override("en"):
+            response = self.client.get(reverse("home"))
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Homepage heading")
@@ -147,8 +151,12 @@ class HomepageResolutionTests(TestCase):
             post.save()
             post.categories.add(category)
 
-        first_page = self.client.get(reverse("home"))
-        second_page = self.client.get(reverse("home"), {"home_page": 2})
+        # All fixture translations in this test are English.  Request the
+        # English homepage explicitly; otherwise the current language can be
+        # Spanish and Django correctly renders the empty Spanish homepage.
+        with translation.override("en"):
+            first_page = self.client.get(reverse("home"))
+            second_page = self.client.get(reverse("home"), {"home_page": 2})
 
         self.assertContains(first_page, "Latest post 7")
         self.assertContains(first_page, "Latest post 2")
