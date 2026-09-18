@@ -90,6 +90,15 @@
     </style>
     <link rel="stylesheet" href="{% static 'css/theme.css' %}?v={{ theme_css_version }}">
     <link rel="stylesheet" href="{% static 'css/cookie-consent.css' %}">
+    {% if google_analytics_measurement_id %}
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ google_analytics_measurement_id }}"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '{{ google_analytics_measurement_id }}');
+    </script>
+    {% endif %}
     
     {# Block for extra, page-specific CSS #}
     {% block extra_css %}{% endblock %}

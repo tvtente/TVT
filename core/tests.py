@@ -15,6 +15,7 @@ from posts.models import Post
 from categories.models import Category
 from publications.models import Publication
 from site_settings.models import SiteConfiguration
+from core.cookie_consent import set_consent_cookie
 
 
 class LanguageUrlTests(TestCase):
@@ -47,6 +48,20 @@ class PaginationTests(TestCase):
         page = paginate_queryset(list(range(25)), "999", 10)
         self.assertEqual(page.number, 3)
         self.assertEqual(list(page.object_list), list(range(20, 25)))
+
+
+class AnalyticsConsentTests(TestCase):
+    @override_settings(GOOGLE_ANALYTICS_MEASUREMENT_ID="G-4TQJVY38WH")
+    def test_google_analytics_tag_requires_analytics_consent(self):
+        without_consent = self.client.get("/es/")
+        self.assertNotContains(without_consent, "googletagmanager.com/gtag/js")
+
+        accepted = set_consent_cookie(
+            self.client.get("/es/"), analytics=True, marketing=False
+        )
+        self.client.cookies.update(accepted.cookies)
+        with_consent = self.client.get("/es/")
+        self.assertContains(with_consent, "googletagmanager.com/gtag/js?id=G-4TQJVY38WH")
 
 
 class HomepageResolutionTests(TestCase):

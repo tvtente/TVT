@@ -111,6 +111,11 @@ PUBLIC_SITE_URL = config('PUBLIC_SITE_URL', default='https://tvtente.com').rstri
 GOOGLE_CLIENT_ID = config('GOOGLE_CLIENT_ID', default='').strip()
 GOOGLE_CLIENT_SECRET = config('GOOGLE_CLIENT_SECRET', default='').strip()
 GOOGLE_AUTH_ENABLED = bool(GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET)
+# Public GA4 measurement identifier.  The tag is still rendered only after
+# the browser has explicitly accepted the analytics category.
+GOOGLE_ANALYTICS_MEASUREMENT_ID = config(
+    'GOOGLE_ANALYTICS_MEASUREMENT_ID', default=''
+).strip()
 EMAIL_NOTIFICATIONS_ENABLED = config(
     'EMAIL_NOTIFICATIONS_ENABLED',
     default=False,
