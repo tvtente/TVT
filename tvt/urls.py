@@ -8,7 +8,9 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.contrib.staticfiles.views import serve as staticfiles_serve
 from django.views.static import serve as media_serve
 from django.views.generic import RedirectView
+from django.contrib.sitemaps.views import sitemap
 from core import views as core_views
+from core.sitemaps import public_sitemaps
 from posts import views as post_views
 
 
@@ -20,6 +22,8 @@ urlpatterns = [
     # deterministic instead of letting LocaleMiddleware choose a language
     # from an old cookie or the browser's Accept-Language header.
     path('', RedirectView.as_view(url='/es/', permanent=False), name='spanish_home_redirect'),
+    path('robots.txt', core_views.robots_txt, name='robots_txt'),
+    path('sitemap.xml', sitemap, {'sitemaps': public_sitemaps}, name='sitemap'),
     # Browsers often request this path automatically, even when a page uses an
     # SVG favicon. Redirect it to the bundled fallback so the request is not a 404.
     path('favicon.ico', RedirectView.as_view(url=f'{settings.STATIC_URL}images/favicon.svg', permanent=False)),

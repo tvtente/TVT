@@ -1,6 +1,7 @@
 from django.conf import settings
 from books.cart import get_cart_count
 from accounts.services import get_unread_notifications_count
+from core.cookie_consent import read_consent
 
 
 def languages_context(request):
@@ -25,3 +26,8 @@ def notifications_context(request):
     return {
         "unread_notifications_count": get_unread_notifications_count(request.user),
     }
+
+
+def cookie_consent_context(request):
+    """Expose only consent categories; never expose a visitor identifier."""
+    return {"cookie_consent": read_consent(request)}

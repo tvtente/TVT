@@ -1,0 +1,11 @@
+{% load i18n %}
+{% if not cookie_consent.has_choice %}
+<aside class="cookie-consent-banner shadow-lg" aria-label="{% if LANGUAGE_CODE == 'ca' %}Preferències de cookies{% else %}Preferencias de cookies{% endif %}">
+  <div><strong>{% if LANGUAGE_CODE == 'ca' %}La teva privacitat{% else %}Tu privacidad{% endif %}</strong><p class="mb-0">{% if LANGUAGE_CODE == 'ca' %}TVTente utilitza cookies tècniques i de preferència. L'analítica i el màrqueting romanen desactivats fins que els acceptis.{% else %}TVTente utiliza cookies técnicas y de preferencia. La analítica y el marketing permanecen desactivados hasta que los aceptes.{% endif %} <a href="{% if LANGUAGE_CODE == 'en' %}{% url 'pages:page_detail' slug='cookies-policy' %}{% else %}{% url 'pages:page_detail' slug='politica-de-cookies' %}{% endif %}">{% if LANGUAGE_CODE == 'ca' %}Més informació{% else %}Más información{% endif %}</a></p></div>
+  <div class="cookie-consent-actions">
+    <form method="post" action="{% url 'cookie_preferences' %}">{% csrf_token %}<input type="hidden" name="analytics" value="yes"><input type="hidden" name="marketing" value="yes"><input type="hidden" name="next" value="{{ request.get_full_path }}"><button class="btn btn-primary" type="submit">{% if LANGUAGE_CODE == 'ca' %}Acceptar tot{% else %}Aceptar todo{% endif %}</button></form>
+    <form method="post" action="{% url 'cookie_preferences' %}">{% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}"><button class="btn btn-outline-secondary" type="submit">{% if LANGUAGE_CODE == 'ca' %}Rebutjar no necessàries{% else %}Rechazar no necesarias{% endif %}</button></form>
+    <a class="btn btn-link" href="{% url 'cookie_preferences' %}?next={{ request.get_full_path|urlencode }}">{% if LANGUAGE_CODE == 'ca' %}Configurar{% else %}Configurar{% endif %}</a>
+  </div>
+</aside>
+{% endif %}

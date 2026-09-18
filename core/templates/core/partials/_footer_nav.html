@@ -7,5 +7,6 @@
         <ul class="nav">
             {% show_simple_menu 'footer-menu' %}
         </ul>
+        <a class="footer-cookie-link ms-md-3" href="{% url 'cookie_preferences' %}">{% if LANGUAGE_CODE == 'ca' %}Gestionar cookies{% else %}Gestionar cookies{% endif %}</a>
     </div>
 </div>

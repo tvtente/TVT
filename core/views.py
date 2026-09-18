@@ -2,10 +2,12 @@
 import logging
 from pathlib import Path
 
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils.http import url_has_allowed_host_and_scheme
 from django.utils.translation import gettext, get_language
 from books.cart import get_cart_items
 from categories.models import Category
@@ -20,11 +22,43 @@ from posts.selectors import (
 )
 from shop.models import Order
 from shop.services import create_provisional_order_from_request
+from core.cookie_consent import set_consent_cookie
 
 # Get a logger instance for this module.
 logger = logging.getLogger(__name__)
 
 HOMEPAGE_POSTS_CATEGORY_SLUG = "fundamentos-de-la-prevencion-moderna"
+
+
+def robots_txt(request):
+    """Tell crawlers where the automatically maintained public sitemap lives."""
+    base_url = str(getattr(settings, "PUBLIC_SITE_URL", "https://tvtente.com")).rstrip("/")
+    content = "\n".join(
+        [
+            "User-agent: *",
+            "Allow: /",
+            f"Sitemap: {base_url}/sitemap.xml",
+            "",
+        ]
+    )
+    return HttpResponse(content, content_type="text/plain; charset=utf-8")
+
+
+def cookie_preferences(request):
+    """Show and save optional cookie preferences without any profiling."""
+    if request.method == "POST":
+        response = redirect(request.POST.get("next") or request.path)
+        next_url = request.POST.get("next", "")
+        if next_url and url_has_allowed_host_and_scheme(
+            next_url, allowed_hosts={request.get_host()}, require_https=request.is_secure()
+        ):
+            response = redirect(next_url)
+        return set_consent_cookie(
+            response,
+            analytics=request.POST.get("analytics") == "yes",
+            marketing=request.POST.get("marketing") == "yes",
+        )
+    return render(request, "core/cookie_preferences.html")
 
 
 def _get_homepage_posts_queryset():

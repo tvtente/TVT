@@ -181,6 +181,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'django.contrib.sites',
+    'django.contrib.sitemaps',
 
     # 2. Otras apps de Terceros
     'allauth',
@@ -271,6 +272,7 @@ TEMPLATES = [
                 'tvt.context_processors.social_auth_context',
                 'tvt.context_processors.cart_context',
                 'tvt.context_processors.notifications_context',
+                'tvt.context_processors.cookie_consent_context',
             ],
         },
     },
