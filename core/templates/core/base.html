@@ -90,6 +90,39 @@
     </style>
     <link rel="stylesheet" href="{% static 'css/theme.css' %}?v={{ theme_css_version }}">
     <link rel="stylesheet" href="{% static 'css/cookie-consent.css' %}">
+    {# theme.css provides fallbacks; Site Template values must win over them. #}
+    <style id="site-template-overrides">
+        :root {
+            --tavata-yellow: {{ site_template.primary_color|default:"#F8D454" }};
+            --tavata-dark: {{ site_template.dark_color|default:"#003399" }};
+            --tavata-main-navigation-bg: {{ site_template.main_navigation_background_color|default:"#003399" }};
+            --tavata-category-navigation-bg: {{ site_template.category_navigation_background_color|default:"#1B262B" }};
+            --tavata-light: {{ site_template.light_color|default:"#f8f9fa" }};
+            --tavata-body-bg: {{ site_template.body_background_color|default:"#f8f9fa" }};
+            --tavata-body-color: {{ site_template.body_text_color|default:"#212529" }};
+            --tavata-card-box-bg: {{ site_template.card_box_background_color|default:"#f1f3f5" }};
+            --tavata-card-box-border: {{ site_template.card_box_border_color|default:"#dee2e6" }};
+            --tavata-home-notice-bg: {{ site_template.home_notice_background_color|default:"#eef2f5" }};
+            --tavata-home-notice-color: {{ site_template.home_notice_text_color|default:"#495057" }};
+            --tavata-font-family: {{ site_template.font_family|default:"system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }};
+            --tavata-base-font-size: {{ site_template.base_font_size|default:16 }}px;
+            --tavata-slogan-font-size: {{ site_template.slogan_font_size|default:28 }}px;
+            --tavata-logo-height: {{ site_template.logo_height|default:50 }}px;
+            --tavata-banner-max-height: {{ site_template.banner_max_height|default:50 }}px;
+            --tavata-border-radius: {{ site_template.border_radius|default:4 }}px;
+            --tavata-layout-max-width: {{ site_template.layout_max_width|default:1440 }}px;
+            --tavata-layout-horizontal-padding: {{ site_template.layout_horizontal_padding|default:16 }}px;
+            --tavata-content-width: {{ site_template.content_width_percent|default:64 }}%;
+            --tavata-left-sidebar-width: {{ site_template.left_sidebar_width_percent|default:18 }}%;
+            --tavata-right-sidebar-width: {{ site_template.right_sidebar_width_percent|default:18 }}%;
+            --tavata-category-tree-max-width: {{ site_template.category_tree_max_width|default:860 }}px;
+            --tavata-category-tree-bg: {{ site_template.category_tree_background_color|default:"#ffffff" }};
+            --tavata-category-tree-border: {{ site_template.category_tree_border_color|default:"#dee2e6" }};
+            --tavata-category-tree-base-padding: {{ site_template.category_tree_base_padding|default:8 }}px;
+            --tavata-category-tree-indent-step: {{ site_template.category_tree_indent_step|default:24 }}px;
+            --tavata-category-tree-row-padding-y: {{ site_template.category_tree_row_padding_y|default:8 }}px;
+        }
+    </style>
     {% if google_analytics_measurement_id %}
     <script async src="https://www.googletagmanager.com/gtag/js?id={{ google_analytics_measurement_id }}"></script>
     <script>
