@@ -51,6 +51,15 @@ class PaginationTests(TestCase):
 
 
 class AnalyticsConsentTests(TestCase):
+    @override_settings(GOOGLE_SEARCH_CONSOLE_VERIFICATION="verification-token")
+    def test_search_console_verification_tag_is_rendered_without_consent(self):
+        response = self.client.get("/es/")
+
+        self.assertContains(
+            response,
+            '<meta name="google-site-verification" content="verification-token">',
+        )
+
     @override_settings(GOOGLE_ANALYTICS_MEASUREMENT_ID="G-4TQJVY38WH")
     def test_google_analytics_tag_requires_analytics_consent(self):
         without_consent = self.client.get("/es/")

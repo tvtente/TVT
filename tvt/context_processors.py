@@ -33,6 +33,9 @@ def cookie_consent_context(request):
     consent = read_consent(request)
     return {
         "cookie_consent": consent,
+        "google_search_console_verification": getattr(
+            settings, "GOOGLE_SEARCH_CONSOLE_VERIFICATION", ""
+        ),
         "google_analytics_measurement_id": (
             getattr(settings, "GOOGLE_ANALYTICS_MEASUREMENT_ID", "")
             if consent["analytics"]

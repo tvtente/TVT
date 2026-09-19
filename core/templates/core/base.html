@@ -11,6 +11,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% if google_search_console_verification %}
+    <meta name="google-site-verification" content="{{ google_search_console_verification }}">
+    {% endif %}
 
     {# --- SEO and Browser Tab Title Blocks --- #}
     {# These blocks can be overridden by child templates for specific pages. #}

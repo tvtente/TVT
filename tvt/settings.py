@@ -116,6 +116,11 @@ GOOGLE_AUTH_ENABLED = bool(GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET)
 GOOGLE_ANALYTICS_MEASUREMENT_ID = config(
     'GOOGLE_ANALYTICS_MEASUREMENT_ID', default=''
 ).strip()
+# Public verification token issued by Google Search Console. It proves domain
+# ownership only; it does not load analytics or identify visitors.
+GOOGLE_SEARCH_CONSOLE_VERIFICATION = config(
+    'GOOGLE_SEARCH_CONSOLE_VERIFICATION', default=''
+).strip()
 EMAIL_NOTIFICATIONS_ENABLED = config(
     'EMAIL_NOTIFICATIONS_ENABLED',
     default=False,
