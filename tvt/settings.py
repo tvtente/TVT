@@ -262,7 +262,6 @@ INSTAGRAM_AUTO_DRAFT_MESSAGES_ENABLED = config(
 INSTAGRAM_AUTO_REPLY_MESSAGES_ENABLED = config(
     'INSTAGRAM_AUTO_REPLY_MESSAGES_ENABLED', default=False, cast=config_bool
 )
-USE_LLAMA = config('USAR_LLAMA_SINO_OPENAI', default=False, cast=config_bool)
 LLAMA_BASE_URL = config('LLAMA_BASE_URL', default='http://127.0.0.1:11434').rstrip('/')
 LLAMA_MODEL = config('LLAMA_MODEL', default='gemma3:4b').strip()
 

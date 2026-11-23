@@ -5,6 +5,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 DEFAULT_PYTHON_CANDIDATES=(
+    "${PROJECT_ROOT}/.venv/bin/python"
     "${PROJECT_ROOT}/../tvt_313_env/bin/python"
     "${PROJECT_ROOT}/../tta_venv_313/bin/python"
     "${PROJECT_ROOT}/../tvt_311_env/bin/python"

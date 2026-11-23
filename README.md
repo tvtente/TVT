@@ -161,7 +161,7 @@ Instructions on how to set up and run a local instance of this project.
 ### Prerequisites
 
 *   Python 3.13.13 for production parity.
-*   `pip` and `venv`.
+*   `uv` for Python and dependency management.
 *   GNU gettext for internationalization commands.
     *   On Debian/Ubuntu: `sudo apt install gettext`
 
@@ -175,8 +175,8 @@ Instructions on how to set up and run a local instance of this project.
 
 2.  **Create and activate the virtual environment:**
     ```bash
-    python3.13 -m venv ../tvt_313_env
-    source ../tvt_313_env/bin/activate
+    uv sync --locked
+    source .venv/bin/activate
     python --version
     ```
 
@@ -188,7 +188,7 @@ Instructions on how to set up and run a local instance of this project.
 
 3.  **Install dependencies:**
     ```bash
-    pip install -r requirements.txt
+    uv sync --locked
     ```
 
 4.  **Run checks and migrations:**
@@ -208,6 +208,14 @@ Instructions on how to set up and run a local instance of this project.
     ```
 
 The site will be available at `http://127.0.0.1:8000/`.
+
+The local environment lives in `.venv/` inside this repository. You can also run
+commands without activating it: `uv run --locked manage.py check` or
+`uv run --locked manage.py runserver`. If another environment is active, run
+`deactivate` before working here. Dependencies are managed in `pyproject.toml`
+and pinned in `uv.lock`; use `uv add <package>` to add a dependency.
+For deployments that use pip, regenerate `requirements.txt` after dependency
+changes with `uv export --format requirements-txt --no-hashes --no-dev --no-emit-project -o requirements.txt`.
 
 ---
 
@@ -266,7 +274,7 @@ https://www.tvtavata.com/oauth/google/login/callback/
 Generate a secure `SECRET_KEY` locally with:
 
 ```bash
-source ../tvt_313_env/bin/activate
+source .venv/bin/activate
 python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
 ```
 

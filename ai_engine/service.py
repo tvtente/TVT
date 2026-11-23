@@ -23,12 +23,12 @@ class GeneratedReply:
 
 
 def generate_reply(*, comment, fan) -> GeneratedReply:
-    """Crea un borrador; jamás envía nada a Instagram."""
-    if settings.USE_LLAMA:
-        return _generate_with_llama(comment=comment, fan=fan)
-    raise ReplyGenerationError(
-        "Llama local está desactivado. Configura USAR_LLAMA_SINO_OPENAI=yes en .env."
-    )
+    """Crea un borrador; jamás envía nada a Instagram.
+
+    Esta integración heredada usa Llama sin selector de proveedor. Se eliminará
+    por completo de TVTente cuando Meta quede apuntando al webhook de BeeB.
+    """
+    return _generate_with_llama(comment=comment, fan=fan)
 
 
 def _generate_with_llama(*, comment, fan) -> GeneratedReply:
