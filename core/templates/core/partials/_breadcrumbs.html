@@ -1,6 +1,13 @@
 {% load i18n %}
 
 <nav aria-label="breadcrumb" class="breadcrumb-wrapper">
+  <button class="topbar-reveal breadcrumb-reveal d-lg-none" type="button"
+          data-bs-toggle="collapse" data-bs-target="#breadcrumbContent"
+          aria-controls="breadcrumbContent" aria-expanded="false"
+          aria-label="{% translate 'Show breadcrumb navigation' %}">
+    <span aria-hidden="true">⌄</span>
+  </button>
+  <div class="collapse d-lg-block" id="breadcrumbContent">
   <ol class="breadcrumb">
     {% if breadcrumbs %}
       {% for crumb in breadcrumbs %}
@@ -47,4 +54,5 @@
       </button>
     </li>
   </ol>
+  </div>
 </nav>

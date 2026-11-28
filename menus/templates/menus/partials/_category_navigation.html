@@ -13,7 +13,7 @@
         </li>
         {% for category in categories %}
             <li class="category-navbar-menu__item">
-                {% if category.menu_children %}
+                {% if category.menu_children and category.slug != "digital-beeb" %}
                     <details class="category-navbar-branch">
                         <summary>
                             {% if category.slug == "digital-beeb" and site_template.digital_beeb_system_icon_url %}

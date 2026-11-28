@@ -6,8 +6,15 @@
 
 {% get_active_site_template as site_template %}
 
-<div class="top-bar bg-tavata-primary py-2 shadow-sm">
-    <div class="container d-flex justify-content-between align-items-center gap-3">
+<div class="top-bar bg-tavata-primary shadow-sm">
+    <button class="topbar-reveal d-lg-none" type="button"
+            data-bs-toggle="collapse" data-bs-target="#topbarContent"
+            aria-controls="topbarContent" aria-expanded="false"
+            aria-label="{% translate 'Show site information' %}">
+        <span aria-hidden="true">⌄</span>
+    </button>
+    <div class="collapse d-lg-block" id="topbarContent">
+    <div class="container py-2 d-flex justify-content-between align-items-center gap-3">
 
         <!-- Left Side: Logo and Slogan -->
         <div class="brand-identity me-auto d-flex align-items-center">
@@ -71,5 +78,4 @@
 
     </div>
 </div>
-
-<hr class="my-0">
+</div>

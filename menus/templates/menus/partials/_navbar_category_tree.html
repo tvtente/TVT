@@ -2,7 +2,7 @@
 
 {% for category in categories %}
     <li class="category-menu-node">
-        {% if category.menu_children %}
+        {% if category.menu_children and category.slug != "digital-beeb" %}
             <details class="category-menu-branch">
                 <summary>
                     {% if category.slug == "digital-beeb" and site_template.digital_beeb_system_icon_url %}
