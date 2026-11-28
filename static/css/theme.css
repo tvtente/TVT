@@ -2723,3 +2723,90 @@ nav[aria-label="breadcrumb"] + * {
   vertical-align: middle;
   text-decoration: none;
 }
+
+/* Keep branding compact before the slogan competes with social controls. */
+.brand-identity { min-width: 0; }
+.brand-identity > a { min-width: 0; }
+.site-brand-logo { flex-shrink: 0; max-width: 40vw; }
+.topbar-slogan { max-width: 28rem; line-height: 1.35; }
+
+@media (max-width: 1199.98px) {
+  .topbar-slogan { display: none !important; }
+}
+
+/* A slim yellow handle reveals the complete branding row on small screens. */
+.topbar-reveal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 18px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--tavata-dark);
+  cursor: pointer;
+  line-height: 1;
+}
+.topbar-reveal span { transition: transform 180ms ease; }
+.topbar-reveal[aria-expanded="true"] span { transform: rotate(180deg); }
+.topbar-reveal:focus-visible { outline: 2px solid currentColor; outline-offset: -2px; }
+
+@media (max-width: 991.98px) {
+  .top-bar .brand-identity { width: 100%; }
+  .top-bar #topbarContent > .container { flex-direction: column; align-items: stretch !important; }
+  .topbar-actions { width: 100%; justify-content: space-between; }
+  .top-bar-banner { display: none; }
+  .top-bar #topbarContent .topbar-slogan {
+    display: block !important;
+    font-size: min(var(--tavata-slogan-font-size), 1rem);
+    max-width: 28rem;
+  }
+  .site-main-navbar .navbar-collapse { order: 3; flex-basis: 100%; }
+  .category-navbar-menu {
+    flex-direction: column;
+    overflow: visible;
+    margin: 0;
+    padding: 0;
+  }
+  .category-navbar-dropdown {
+    position: static;
+    min-width: 0;
+    max-width: 100%;
+    box-shadow: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .topbar-reveal span { transition: none; }
+}
+
+/* Small screens reserve the available width for the main content. */
+@media (max-width: 991.98px) {
+  body .site-content-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  body .site-sidebar-left,
+  body .site-sidebar-right,
+  .breadcrumb-layout-controls {
+    display: none !important;
+  }
+  .breadcrumb-wrapper,
+  nav.breadcrumb-wrapper[aria-label="breadcrumb"] {
+    margin-block: 0.25rem !important;
+  }
+  .breadcrumb-wrapper .breadcrumb-wrapper {
+    width: 100%;
+    padding-inline: 0;
+    margin-block: 0 !important;
+  }
+  .breadcrumb-reveal {
+    height: 18px;
+    border-radius: var(--tavata-border-radius);
+    background: color-mix(in srgb, var(--tavata-yellow) 25%, var(--tavata-card-box-bg));
+    color: var(--tavata-body-color);
+  }
+  #breadcrumbContent .breadcrumb {
+    margin-top: 0.25rem;
+  }
+}

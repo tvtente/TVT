@@ -87,7 +87,9 @@ def _get_category_menu_tree(root_category):
     categories_by_id = {category.pk: category for category in categories}
 
     for category in categories:
-        category.menu_url = category.get_posts_url()
+        category.menu_url = (
+            "https://beeb.es" if category.slug == "digital-beeb" else category.get_posts_url()
+        )
         category.menu_children = []
 
     roots = []
@@ -156,7 +158,9 @@ def get_blog_category_queryset(item_obj, language_code=None):
     visible_categories.sort(key=lambda category: (category.tree_id, category.lft))
 
     for category in visible_categories:
-        category.menu_url = category.get_posts_url()
+        category.menu_url = (
+            "https://beeb.es" if category.slug == "digital-beeb" else category.get_posts_url()
+        )
 
     return visible_categories
 

@@ -16,6 +16,13 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
 
+            <button class="navbar-toggler category-menu-toggle ms-auto d-lg-none" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#categoryNav"
+                    aria-controls="categoryNav" aria-expanded="false"
+                    aria-label="{% translate 'Categories' %}">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
             <!-- Collapsible Navigation Container -->
             <div class="collapse navbar-collapse navbar-collapse-wrapper" id="navbarNav">
 
@@ -166,7 +173,7 @@
         </div>
     </nav>
 
-    <nav class="category-navbar" aria-label="{% translate 'Categories' %}">
+    <nav id="categoryNav" class="category-navbar collapse d-lg-block" aria-label="{% translate 'Categories' %}">
         <div class="container">
             {% show_category_navigation 'main-menu' %}
         </div>
